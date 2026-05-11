@@ -12,6 +12,12 @@ This repository is an early research prototype for Value Constellation. Keep the
 
 Add source modules only when shared logic emerges. Prefer `src/` for reusable Python code and `tests/` for automated tests once the prototype grows beyond standalone scripts.
 
+Current script entry points:
+
+- `scripts/valuesnet_probe.py`: ValuesNet DeBERTa probe.
+- `scripts/alternative_value_models_probe.py`: Schwartz, Moral Foundations, and VictorYeste ValueEval-style probes.
+- `scripts/hierocles_probe.py`: Hierocles attained/constrained probe.
+
 ## Build, Test, and Development Commands
 
 There is no package build step yet. The current reproducible environment is a conda environment:
@@ -27,11 +33,47 @@ Run the ValuesNet probe and write the CSV output:
 conda run -n valueconstellation-valuesnet python scripts/valuesnet_probe.py
 ```
 
+Run the alternative model probe:
+
+```bash
+conda run -n valueconstellation-valuesnet python scripts/alternative_value_models_probe.py
+```
+
+Run the Hierocles attained/constrained probe:
+
+```bash
+conda run -n valueconstellation-valuesnet python scripts/hierocles_probe.py
+```
+
+For a quick Hierocles smoke test:
+
+```bash
+conda run -n valueconstellation-valuesnet python scripts/hierocles_probe.py --limit 4
+```
+
 If recreating the environment, install the current runtime dependencies:
 
 ```bash
-python -m pip install transformers torch sentencepiece protobuf safetensors pandas tabulate
+python -m pip install transformers torch sentencepiece protobuf safetensors pandas tabulate valueeval24-hierocles-of-alexandria
 ```
+
+## Current Research Direction
+
+The prototype goal is to convert multi-stakeholder deliberation claims into value-dimension vectors. The current working formula is:
+
+```text
+presence_i = P(value_i present)
+direction_i = P(attained_i) - P(constrained_i)
+signed_value_i = presence_i * direction_i
+```
+
+Current model judgment:
+
+- Do not use `nharrel/Valuesnet_DeBERTa_v3` as the main embedding engine. It saturates scores across many values and assigns high scores to neutral sentences.
+- Use `VictorYeste/human-value-detection-deberta-baseline` or `VictorYeste/deberta-based-human-value-detection` for 19-value presence extraction.
+- Use `valueeval24-hierocles-of-alexandria` and/or `VictorYeste/deberta-based-human-value-stance-detection` for attained/constrained direction, then calibrate.
+- Korean direct input is unreliable. Translate Korean utterances to English before value inference.
+- Direction estimates are not robust enough to treat as ground truth. Anti-value and negation cases need LLM review or a small hand-labeled calibration set.
 
 ## Coding Style & Naming Conventions
 
