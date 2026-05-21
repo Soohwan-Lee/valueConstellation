@@ -11,11 +11,18 @@ import transformers
 from alternative_value_models_probe import VALUEEVAL24_GROUPS
 from valuesnet_probe import SAMPLES
 from valueeval24_hierocles_of_alexandria.multi_head_model import MultiHead_MultiLabel_XL, lang_dict
-from valueeval24_hierocles_of_alexandria.value_classifier import label_thresholds, labels, model_name, values
+from valueeval24_hierocles_of_alexandria.value_classifier import label_thresholds, labels, model_name
 
 
 OUTPUT_RAW = Path("results/hierocles_probe_raw.csv")
 OUTPUT_SUMMARY = Path("results/hierocles_probe_summary.csv")
+ATTAINED_SUFFIX = " attained"
+CONSTRAINED_SUFFIX = " constrained"
+values = [
+    label.removesuffix(ATTAINED_SUFFIX)
+    for label in labels
+    if label.endswith(ATTAINED_SUFFIX)
+]
 
 
 def top_items(scores: dict[str, float], n: int = 3) -> str:

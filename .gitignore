@@ -2,3 +2,5 @@
 .omc/
 __pycache__/
 *.py[cod]
+.env
+*.mp3

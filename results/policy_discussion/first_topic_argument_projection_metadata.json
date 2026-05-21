@@ -1,0 +1,245 @@
+{
+  "method": "PCA on 19 signed value dimensions, followed by simple k-means on the 2D coordinates.",
+  "explained_variance_ratio": {
+    "x": 0.19857834748228168,
+    "y": 0.17691631678039302
+  },
+  "loadings": {
+    "x_positive_vs_negative": {
+      "positive": [
+        {
+          "value": "universalism_concern",
+          "loading": 0.8973950410214783
+        },
+        {
+          "value": "security_societal",
+          "loading": 0.22834745161705244
+        },
+        {
+          "value": "self_direction_action",
+          "loading": 0.1468512762103518
+        },
+        {
+          "value": "power_dominance",
+          "loading": 0.14090968294431755
+        },
+        {
+          "value": "conformity_rules",
+          "loading": 0.07790781938694691
+        }
+      ],
+      "negative": [
+        {
+          "value": "stimulation",
+          "loading": -0.22880130186394998
+        },
+        {
+          "value": "power_resources",
+          "loading": -0.1780170372460604
+        },
+        {
+          "value": "achievement",
+          "loading": -0.06982450692052551
+        },
+        {
+          "value": "hedonism",
+          "loading": -0.0006077558927676712
+        },
+        {
+          "value": "humility",
+          "loading": 0.0008709993532214837
+        }
+      ]
+    },
+    "y_positive_vs_negative": {
+      "positive": [
+        {
+          "value": "self_direction_action",
+          "loading": 0.6347370677961173
+        },
+        {
+          "value": "conformity_rules",
+          "loading": 0.06374301342890193
+        },
+        {
+          "value": "self_direction_thought",
+          "loading": 0.04285377431049334
+        },
+        {
+          "value": "tradition",
+          "loading": 0.014053840753419885
+        },
+        {
+          "value": "power_dominance",
+          "loading": 0.008688112332689499
+        }
+      ],
+      "negative": [
+        {
+          "value": "power_resources",
+          "loading": -0.4528064665416515
+        },
+        {
+          "value": "stimulation",
+          "loading": -0.40658333362858606
+        },
+        {
+          "value": "security_societal",
+          "loading": -0.3361372826721721
+        },
+        {
+          "value": "universalism_concern",
+          "loading": -0.22248257251178474
+        },
+        {
+          "value": "achievement",
+          "loading": -0.1919896770903116
+        }
+      ]
+    }
+  },
+  "clusters": [
+    {
+      "cluster_id": 0,
+      "size": 1,
+      "top_signed_values": [
+        {
+          "value": "security_societal",
+          "mean_signed": -0.7168251131040687
+        },
+        {
+          "value": "universalism_nature",
+          "mean_signed": -0.2909935362879678
+        },
+        {
+          "value": "security_personal",
+          "mean_signed": -0.0030166003841028
+        },
+        {
+          "value": "universalism_concern",
+          "mean_signed": -0.0026694408273781
+        },
+        {
+          "value": "tradition",
+          "mean_signed": -0.0018303051985983
+        }
+      ],
+      "examples": [
+        "네, 국민 여러분 지역 소멸은 이제 대한민국의 존립 기반을 위협받고 있습니다."
+      ]
+    },
+    {
+      "cluster_id": 1,
+      "size": 29,
+      "top_signed_values": [
+        {
+          "value": "stimulation",
+          "mean_signed": 0.13947015600894988
+        },
+        {
+          "value": "power_resources",
+          "mean_signed": 0.10886236959635391
+        },
+        {
+          "value": "universalism_concern",
+          "mean_signed": 0.09778081317314555
+        },
+        {
+          "value": "security_societal",
+          "mean_signed": 0.08317361106625304
+        },
+        {
+          "value": "achievement",
+          "mean_signed": 0.055586856052733224
+        }
+      ],
+      "examples": [
+        "정부는 초강력 행정통합을 해답으로 내놓고 있지만 우리는 본질적인 질문을 던져야 합니다.\n행정구역만 합친다고 지방이 정말 잘 살 만한 곳으로 바뀔까요?",
+        "지방을 살리기 위해서는 다음의 조건이 필수적입니다.",
+        "첫째, 국가가 지역 간 격차를 줄이는 컨트롤타워 역할을 끝까지 수행해야 합니다.\n단순히 합치는 것이 아니라 균형을 맞추는 것이 핵심입니다."
+      ]
+    },
+    {
+      "cluster_id": 2,
+      "size": 1,
+      "top_signed_values": [
+        {
+          "value": "universalism_concern",
+          "mean_signed": -0.5773032884436748
+        },
+        {
+          "value": "power_dominance",
+          "mean_signed": -0.3929715826387454
+        },
+        {
+          "value": "self_direction_action",
+          "mean_signed": -0.1605328493305577
+        },
+        {
+          "value": "security_societal",
+          "mean_signed": -0.1087540252607506
+        },
+        {
+          "value": "conformity_rules",
+          "mean_signed": -0.0943195539535308
+        }
+      ],
+      "examples": [
+        "국가 균형 발전을 위한 지방자치 제도가 시작된 지가 30년이 지났습니다.\n그러나 수도권 일극 체제는 고착되고 불평등과 불균형은 더욱 심화되고 있습니다.\n지방 정부에 대한 실질적인 권한 이용이 없었기 때문입니다.\n지방자치가 제대로 작동하여 경쟁력을 갖추려면 중앙 정부의 행정 재정 조세 인허가 권한을 지방 정부에 과감하게 이행해야 합니다."
+      ]
+    },
+    {
+      "cluster_id": 3,
+      "size": 7,
+      "top_signed_values": [
+        {
+          "value": "self_direction_action",
+          "mean_signed": 0.5235068978778339
+        },
+        {
+          "value": "conformity_rules",
+          "mean_signed": 0.08447587577039987
+        },
+        {
+          "value": "power_resources",
+          "mean_signed": -0.05747929724766632
+        },
+        {
+          "value": "power_dominance",
+          "mean_signed": 0.05617263162815124
+        },
+        {
+          "value": "achievement",
+          "mean_signed": -0.05166037404052787
+        }
+      ],
+      "examples": [
+        "셋째, 실질적 자치를 뒷받침하는 연방제 수준의 재정 입법권 이양과 읍면동 단위까지 주민 결정권을 보장하는 헌법 개정이 반드시 필요합니다.",
+        "또한 이 모든 과정을 통합 특별시가 정책을 결정하고 집행할 수 있도록 법적 행정적 위상을 보장할 것입니다.",
+        "더 근본적인 문제를 직시해야 합니다. 서울의 기능을 옥죄고 강제로 이전하면 지방이 살아난다는 환상 이것을 끝내야 합니다."
+      ]
+    }
+  ],
+  "llm_labels": {
+    "x_axis_label": "보편주의·지역균형 vs 자극·자원/성과",
+    "y_axis_label": "자율적 개혁·권한이양 vs 자원/치안·통제 중심",
+    "clusters": [
+      {
+        "cluster_id": 0,
+        "label": "지역생존 경고"
+      },
+      {
+        "cluster_id": 1,
+        "label": "균형개발 개혁론"
+      },
+      {
+        "cluster_id": 2,
+        "label": "권한이양·분권"
+      },
+      {
+        "cluster_id": 3,
+        "label": "자치확대·제도개편"
+      }
+    ]
+  }
+}
