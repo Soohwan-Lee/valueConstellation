@@ -1,0 +1,956 @@
+{
+  "method_note": "Projection is for visualization. Clusters are computed in the original 19D value space and then displayed on the 2D projection.",
+  "standardized_input": false,
+  "methods": {
+    "pca": {
+      "metrics": {
+        "method": "pca",
+        "explained_variance_ratio": {
+          "x": 0.1959854052431168,
+          "y": 0.1402007352233437,
+          "total": 0.3361861404664605
+        },
+        "components": [
+          [
+            0.07681124167502609,
+            0.34149487632038605,
+            0.16671873162496545,
+            0.007171409091030462,
+            0.039174629087601685,
+            0.03975317019400372,
+            0.19826400354270576,
+            0.009443772410862613,
+            0.01173498652361441,
+            0.7701481052932448,
+            0.013227851073686799,
+            0.12626962376191428,
+            0.02735199079672923,
+            0.0018080593521834765,
+            0.0584201568245564,
+            0.03955727996716378,
+            0.42906085796906446,
+            0.08814745200812242,
+            0.012035668298388352
+          ],
+          [
+            0.07471510731914024,
+            0.5501825236010843,
+            0.06706575641259584,
+            0.006976213139620408,
+            -0.015450490233781792,
+            -0.011369361804182989,
+            -0.43663790777036615,
+            0.0062435764722433215,
+            0.0006594461386270038,
+            -0.4525077256021257,
+            0.011179166982942183,
+            0.2322992205204799,
+            -0.004015564179905646,
+            0.0005886677666955295,
+            -0.004004276113530421,
+            -0.008096238168637533,
+            0.483409468203882,
+            -0.0582569222915701,
+            0.009084034726077342
+          ]
+        ],
+        "trustworthiness_5": 0.7905178931451613
+      },
+      "clusters": [
+        {
+          "cluster_id": 0,
+          "size": 3,
+          "top_signed_values": [
+            {
+              "value": "universalism_nature",
+              "mean_signed": -0.5761393203471631
+            },
+            {
+              "value": "security_societal",
+              "mean_signed": -0.16553364682482674
+            },
+            {
+              "value": "universalism_concern",
+              "mean_signed": -0.0139525862451936
+            },
+            {
+              "value": "tradition",
+              "mean_signed": -0.0079520036518797
+            },
+            {
+              "value": "power_dominance",
+              "mean_signed": -0.003402474874761
+            }
+          ],
+          "examples": [
+            "네, 국민 여러분 지역 소멸은 이제 대한민국의 존립 기반을 위협받고 있습니다.",
+            "아 이와 같은 현상은 지역에는 소멸의 공포를 가져오고 수도권에는 과일의 고통을 가중시키고 있습니다.",
+            "경북에 수많은 군이 3만 이하의 군이 너무 많습니다.\n또 전국적으로도 지방 소멸 곧 다가오고 있습니다."
+          ]
+        },
+        {
+          "cluster_id": 1,
+          "size": 12,
+          "top_signed_values": [
+            {
+              "value": "security_societal",
+              "mean_signed": -0.7481655521956148
+            },
+            {
+              "value": "power_resources",
+              "mean_signed": -0.09513852454784039
+            },
+            {
+              "value": "conformity_interpersonal",
+              "mean_signed": -0.02193257867879732
+            },
+            {
+              "value": "power_dominance",
+              "mean_signed": -0.020041331186785225
+            },
+            {
+              "value": "universalism_concern",
+              "mean_signed": -0.018468156371423756
+            }
+          ],
+          "examples": [
+            "우리 아리셀 함사 화재 참사 보고 있지 않습니까? 또 얼마 전에 대전의 안전공업에서 지금 14명이나 죽는 화재 참사가 발생했어요.",
+            "결국 지방 재정에 심각한 영향을 미치고 결국 지역 균형 발전에 심각한 해를 끼친 것이 바로 국민의 힘과 윤석열 정부였던 것입니다.",
+            "말씀하신 것처럼 정부 여당에서는 이를 통해서 지방자치가 발전하고 또 재정 재정 자립도가 상승될 수 있는 것처럼 말씀하시지만 지금 현재 지방자치단체는 계속 재정 자립도가 하락하고 있습니다."
+          ]
+        },
+        {
+          "cluster_id": 2,
+          "size": 32,
+          "top_signed_values": [
+            {
+              "value": "self_direction_action",
+              "mean_signed": 0.4790840600968983
+            },
+            {
+              "value": "stimulation",
+              "mean_signed": 0.13165021871342927
+            },
+            {
+              "value": "self_direction_thought",
+              "mean_signed": 0.08598500630891773
+            },
+            {
+              "value": "universalism_concern",
+              "mean_signed": 0.048380629115780935
+            },
+            {
+              "value": "power_dominance",
+              "mean_signed": 0.02099262926697516
+            }
+          ],
+          "examples": [
+            "셋째, 실질적 자치를 뒷받침하는 연방제 수준의 재정 입법권 이양과 읍면동 단위까지 주민 결정권을 보장하는 헌법 개정이 반드시 필요합니다.",
+            "더 근본적인 문제를 직시해야 합니다. 서울의 기능을 옥죄고 강제로 이전하면 지방이 살아난다는 환상 이것을 끝내야 합니다.",
+            "서울은 대한민국 경제의 심장으로서 제 기능을 다하게 하고 동시에 전국 각 지역이 고유한 산업 생태계로 자립하는 구조를 만드는 것, 그리고 행정구역의 선을 바꾸는 것이 아니라 산업과 재정의 구조를 바꾸는 것 이것이 진정한 균형 발전의 정책입니다."
+          ]
+        },
+        {
+          "cluster_id": 3,
+          "size": 2,
+          "top_signed_values": [
+            {
+              "value": "self_direction_action",
+              "mean_signed": -0.4400254344926853
+            },
+            {
+              "value": "power_dominance",
+              "mean_signed": -0.02681185197355875
+            },
+            {
+              "value": "security_societal",
+              "mean_signed": -0.01762509556709035
+            },
+            {
+              "value": "benevolence_dependability",
+              "mean_signed": -0.01660642227142585
+            },
+            {
+              "value": "self_direction_thought",
+              "mean_signed": -0.0161440127865749
+            }
+          ],
+          "examples": [
+            "이는 충분히 수기 없이 중앙에서 졸속적으로 추진해서 발생하고 있는 문제라고 생각하는데 어떻게 생각하십니까?",
+            "그런데 이것 없이 중앙에서 결정된 내용을 가지고 일방적으로 밀어붙이기 식으로 진행되고 있는 것은 실제 지방자치라든가 지방자치권을 오히려 훼손하고 있는 절차라고 저희들은 매우 강하게 비판한 바가 있습니다."
+          ]
+        },
+        {
+          "cluster_id": 4,
+          "size": 191,
+          "top_signed_values": [
+            {
+              "value": "power_resources",
+              "mean_signed": 0.0473378499048725
+            },
+            {
+              "value": "stimulation",
+              "mean_signed": 0.03706764291620897
+            },
+            {
+              "value": "security_societal",
+              "mean_signed": 0.027798328700679692
+            },
+            {
+              "value": "power_dominance",
+              "mean_signed": 0.02599658305830258
+            },
+            {
+              "value": "self_direction_thought",
+              "mean_signed": 0.025668803548073528
+            }
+          ],
+          "examples": [
+            "정부는 초강력 행정통합을 해답으로 내놓고 있지만 우리는 본질적인 질문을 던져야 합니다.",
+            "행정구역만 합친다고 지방이 정말 잘 살 만한 곳으로 바뀔까요?",
+            "지방을 살리기 위해서는 다음의 조건이 필수적입니다."
+          ]
+        },
+        {
+          "cluster_id": 5,
+          "size": 16,
+          "top_signed_values": [
+            {
+              "value": "conformity_rules",
+              "mean_signed": 0.5760035923817952
+            },
+            {
+              "value": "self_direction_action",
+              "mean_signed": 0.06848201177362612
+            },
+            {
+              "value": "power_dominance",
+              "mean_signed": 0.06825541274438868
+            },
+            {
+              "value": "universalism_concern",
+              "mean_signed": 0.03145636949298714
+            },
+            {
+              "value": "tradition",
+              "mean_signed": 0.013794550376752649
+            }
+          ],
+          "examples": [
+            "또한 이 모든 과정을 통합 특별시가 정책을 결정하고 집행할 수 있도록 법적 행정적 위상을 보장할 것입니다.",
+            "현재 개혁진보 4당은 국회 본청 앞에서 천막 농성을 하고 있으며 어제는 간절한 마음으로 담아 3부 1배까지 하겠습니다.",
+            "가장 중요한 것은 결국 선거의 필요성을 높이는 제도 개선이 필요합니다."
+          ]
+        }
+      ],
+      "loadings": {
+        "x_positive_vs_negative": {
+          "positive": [
+            {
+              "value": "security_societal",
+              "loading": 0.7701481052932448
+            },
+            {
+              "value": "universalism_concern",
+              "loading": 0.42906085796906446
+            },
+            {
+              "value": "self_direction_action",
+              "loading": 0.34149487632038605
+            },
+            {
+              "value": "power_resources",
+              "loading": 0.19826400354270576
+            },
+            {
+              "value": "stimulation",
+              "loading": 0.16671873162496545
+            }
+          ],
+          "negative": [
+            {
+              "value": "humility",
+              "loading": 0.0018080593521834765
+            },
+            {
+              "value": "hedonism",
+              "loading": 0.007171409091030462
+            },
+            {
+              "value": "face",
+              "loading": 0.009443772410862613
+            },
+            {
+              "value": "security_personal",
+              "loading": 0.01173498652361441
+            },
+            {
+              "value": "universalism_tolerance",
+              "loading": 0.012035668298388352
+            }
+          ]
+        },
+        "y_positive_vs_negative": {
+          "positive": [
+            {
+              "value": "self_direction_action",
+              "loading": 0.5501825236010843
+            },
+            {
+              "value": "universalism_concern",
+              "loading": 0.483409468203882
+            },
+            {
+              "value": "conformity_rules",
+              "loading": 0.2322992205204799
+            },
+            {
+              "value": "self_direction_thought",
+              "loading": 0.07471510731914024
+            },
+            {
+              "value": "stimulation",
+              "loading": 0.06706575641259584
+            }
+          ],
+          "negative": [
+            {
+              "value": "security_societal",
+              "loading": -0.4525077256021257
+            },
+            {
+              "value": "power_resources",
+              "loading": -0.43663790777036615
+            },
+            {
+              "value": "universalism_nature",
+              "loading": -0.0582569222915701
+            },
+            {
+              "value": "achievement",
+              "loading": -0.015450490233781792
+            },
+            {
+              "value": "power_dominance",
+              "loading": -0.011369361804182989
+            }
+          ]
+        }
+      }
+    },
+    "mds": {
+      "metrics": {
+        "method": "mds",
+        "stress": 862.9264628450294,
+        "trustworthiness_5": 0.8424899193548387
+      },
+      "clusters": [
+        {
+          "cluster_id": 0,
+          "size": 3,
+          "top_signed_values": [
+            {
+              "value": "universalism_nature",
+              "mean_signed": -0.5761393203471631
+            },
+            {
+              "value": "security_societal",
+              "mean_signed": -0.16553364682482674
+            },
+            {
+              "value": "universalism_concern",
+              "mean_signed": -0.0139525862451936
+            },
+            {
+              "value": "tradition",
+              "mean_signed": -0.0079520036518797
+            },
+            {
+              "value": "power_dominance",
+              "mean_signed": -0.003402474874761
+            }
+          ],
+          "examples": [
+            "네, 국민 여러분 지역 소멸은 이제 대한민국의 존립 기반을 위협받고 있습니다.",
+            "아 이와 같은 현상은 지역에는 소멸의 공포를 가져오고 수도권에는 과일의 고통을 가중시키고 있습니다.",
+            "경북에 수많은 군이 3만 이하의 군이 너무 많습니다.\n또 전국적으로도 지방 소멸 곧 다가오고 있습니다."
+          ]
+        },
+        {
+          "cluster_id": 1,
+          "size": 12,
+          "top_signed_values": [
+            {
+              "value": "security_societal",
+              "mean_signed": -0.7481655521956148
+            },
+            {
+              "value": "power_resources",
+              "mean_signed": -0.09513852454784039
+            },
+            {
+              "value": "conformity_interpersonal",
+              "mean_signed": -0.02193257867879732
+            },
+            {
+              "value": "power_dominance",
+              "mean_signed": -0.020041331186785225
+            },
+            {
+              "value": "universalism_concern",
+              "mean_signed": -0.018468156371423756
+            }
+          ],
+          "examples": [
+            "우리 아리셀 함사 화재 참사 보고 있지 않습니까? 또 얼마 전에 대전의 안전공업에서 지금 14명이나 죽는 화재 참사가 발생했어요.",
+            "결국 지방 재정에 심각한 영향을 미치고 결국 지역 균형 발전에 심각한 해를 끼친 것이 바로 국민의 힘과 윤석열 정부였던 것입니다.",
+            "말씀하신 것처럼 정부 여당에서는 이를 통해서 지방자치가 발전하고 또 재정 재정 자립도가 상승될 수 있는 것처럼 말씀하시지만 지금 현재 지방자치단체는 계속 재정 자립도가 하락하고 있습니다."
+          ]
+        },
+        {
+          "cluster_id": 2,
+          "size": 32,
+          "top_signed_values": [
+            {
+              "value": "self_direction_action",
+              "mean_signed": 0.4790840600968983
+            },
+            {
+              "value": "stimulation",
+              "mean_signed": 0.13165021871342927
+            },
+            {
+              "value": "self_direction_thought",
+              "mean_signed": 0.08598500630891773
+            },
+            {
+              "value": "universalism_concern",
+              "mean_signed": 0.048380629115780935
+            },
+            {
+              "value": "power_dominance",
+              "mean_signed": 0.02099262926697516
+            }
+          ],
+          "examples": [
+            "셋째, 실질적 자치를 뒷받침하는 연방제 수준의 재정 입법권 이양과 읍면동 단위까지 주민 결정권을 보장하는 헌법 개정이 반드시 필요합니다.",
+            "더 근본적인 문제를 직시해야 합니다. 서울의 기능을 옥죄고 강제로 이전하면 지방이 살아난다는 환상 이것을 끝내야 합니다.",
+            "서울은 대한민국 경제의 심장으로서 제 기능을 다하게 하고 동시에 전국 각 지역이 고유한 산업 생태계로 자립하는 구조를 만드는 것, 그리고 행정구역의 선을 바꾸는 것이 아니라 산업과 재정의 구조를 바꾸는 것 이것이 진정한 균형 발전의 정책입니다."
+          ]
+        },
+        {
+          "cluster_id": 3,
+          "size": 2,
+          "top_signed_values": [
+            {
+              "value": "self_direction_action",
+              "mean_signed": -0.4400254344926853
+            },
+            {
+              "value": "power_dominance",
+              "mean_signed": -0.02681185197355875
+            },
+            {
+              "value": "security_societal",
+              "mean_signed": -0.01762509556709035
+            },
+            {
+              "value": "benevolence_dependability",
+              "mean_signed": -0.01660642227142585
+            },
+            {
+              "value": "self_direction_thought",
+              "mean_signed": -0.0161440127865749
+            }
+          ],
+          "examples": [
+            "이는 충분히 수기 없이 중앙에서 졸속적으로 추진해서 발생하고 있는 문제라고 생각하는데 어떻게 생각하십니까?",
+            "그런데 이것 없이 중앙에서 결정된 내용을 가지고 일방적으로 밀어붙이기 식으로 진행되고 있는 것은 실제 지방자치라든가 지방자치권을 오히려 훼손하고 있는 절차라고 저희들은 매우 강하게 비판한 바가 있습니다."
+          ]
+        },
+        {
+          "cluster_id": 4,
+          "size": 191,
+          "top_signed_values": [
+            {
+              "value": "power_resources",
+              "mean_signed": 0.0473378499048725
+            },
+            {
+              "value": "stimulation",
+              "mean_signed": 0.03706764291620897
+            },
+            {
+              "value": "security_societal",
+              "mean_signed": 0.027798328700679692
+            },
+            {
+              "value": "power_dominance",
+              "mean_signed": 0.02599658305830258
+            },
+            {
+              "value": "self_direction_thought",
+              "mean_signed": 0.025668803548073528
+            }
+          ],
+          "examples": [
+            "정부는 초강력 행정통합을 해답으로 내놓고 있지만 우리는 본질적인 질문을 던져야 합니다.",
+            "행정구역만 합친다고 지방이 정말 잘 살 만한 곳으로 바뀔까요?",
+            "지방을 살리기 위해서는 다음의 조건이 필수적입니다."
+          ]
+        },
+        {
+          "cluster_id": 5,
+          "size": 16,
+          "top_signed_values": [
+            {
+              "value": "conformity_rules",
+              "mean_signed": 0.5760035923817952
+            },
+            {
+              "value": "self_direction_action",
+              "mean_signed": 0.06848201177362612
+            },
+            {
+              "value": "power_dominance",
+              "mean_signed": 0.06825541274438868
+            },
+            {
+              "value": "universalism_concern",
+              "mean_signed": 0.03145636949298714
+            },
+            {
+              "value": "tradition",
+              "mean_signed": 0.013794550376752649
+            }
+          ],
+          "examples": [
+            "또한 이 모든 과정을 통합 특별시가 정책을 결정하고 집행할 수 있도록 법적 행정적 위상을 보장할 것입니다.",
+            "현재 개혁진보 4당은 국회 본청 앞에서 천막 농성을 하고 있으며 어제는 간절한 마음으로 담아 3부 1배까지 하겠습니다.",
+            "가장 중요한 것은 결국 선거의 필요성을 높이는 제도 개선이 필요합니다."
+          ]
+        }
+      ]
+    },
+    "tsne": {
+      "metrics": {
+        "method": "tsne",
+        "perplexity": 15,
+        "kl_divergence": 0.36590731143951416,
+        "trustworthiness_5": 0.9433971774193548
+      },
+      "clusters": [
+        {
+          "cluster_id": 0,
+          "size": 3,
+          "top_signed_values": [
+            {
+              "value": "universalism_nature",
+              "mean_signed": -0.5761393203471631
+            },
+            {
+              "value": "security_societal",
+              "mean_signed": -0.16553364682482674
+            },
+            {
+              "value": "universalism_concern",
+              "mean_signed": -0.0139525862451936
+            },
+            {
+              "value": "tradition",
+              "mean_signed": -0.0079520036518797
+            },
+            {
+              "value": "power_dominance",
+              "mean_signed": -0.003402474874761
+            }
+          ],
+          "examples": [
+            "네, 국민 여러분 지역 소멸은 이제 대한민국의 존립 기반을 위협받고 있습니다.",
+            "아 이와 같은 현상은 지역에는 소멸의 공포를 가져오고 수도권에는 과일의 고통을 가중시키고 있습니다.",
+            "경북에 수많은 군이 3만 이하의 군이 너무 많습니다.\n또 전국적으로도 지방 소멸 곧 다가오고 있습니다."
+          ]
+        },
+        {
+          "cluster_id": 1,
+          "size": 12,
+          "top_signed_values": [
+            {
+              "value": "security_societal",
+              "mean_signed": -0.7481655521956148
+            },
+            {
+              "value": "power_resources",
+              "mean_signed": -0.09513852454784039
+            },
+            {
+              "value": "conformity_interpersonal",
+              "mean_signed": -0.02193257867879732
+            },
+            {
+              "value": "power_dominance",
+              "mean_signed": -0.020041331186785225
+            },
+            {
+              "value": "universalism_concern",
+              "mean_signed": -0.018468156371423756
+            }
+          ],
+          "examples": [
+            "우리 아리셀 함사 화재 참사 보고 있지 않습니까? 또 얼마 전에 대전의 안전공업에서 지금 14명이나 죽는 화재 참사가 발생했어요.",
+            "결국 지방 재정에 심각한 영향을 미치고 결국 지역 균형 발전에 심각한 해를 끼친 것이 바로 국민의 힘과 윤석열 정부였던 것입니다.",
+            "말씀하신 것처럼 정부 여당에서는 이를 통해서 지방자치가 발전하고 또 재정 재정 자립도가 상승될 수 있는 것처럼 말씀하시지만 지금 현재 지방자치단체는 계속 재정 자립도가 하락하고 있습니다."
+          ]
+        },
+        {
+          "cluster_id": 2,
+          "size": 32,
+          "top_signed_values": [
+            {
+              "value": "self_direction_action",
+              "mean_signed": 0.4790840600968983
+            },
+            {
+              "value": "stimulation",
+              "mean_signed": 0.13165021871342927
+            },
+            {
+              "value": "self_direction_thought",
+              "mean_signed": 0.08598500630891773
+            },
+            {
+              "value": "universalism_concern",
+              "mean_signed": 0.048380629115780935
+            },
+            {
+              "value": "power_dominance",
+              "mean_signed": 0.02099262926697516
+            }
+          ],
+          "examples": [
+            "셋째, 실질적 자치를 뒷받침하는 연방제 수준의 재정 입법권 이양과 읍면동 단위까지 주민 결정권을 보장하는 헌법 개정이 반드시 필요합니다.",
+            "더 근본적인 문제를 직시해야 합니다. 서울의 기능을 옥죄고 강제로 이전하면 지방이 살아난다는 환상 이것을 끝내야 합니다.",
+            "서울은 대한민국 경제의 심장으로서 제 기능을 다하게 하고 동시에 전국 각 지역이 고유한 산업 생태계로 자립하는 구조를 만드는 것, 그리고 행정구역의 선을 바꾸는 것이 아니라 산업과 재정의 구조를 바꾸는 것 이것이 진정한 균형 발전의 정책입니다."
+          ]
+        },
+        {
+          "cluster_id": 3,
+          "size": 2,
+          "top_signed_values": [
+            {
+              "value": "self_direction_action",
+              "mean_signed": -0.4400254344926853
+            },
+            {
+              "value": "power_dominance",
+              "mean_signed": -0.02681185197355875
+            },
+            {
+              "value": "security_societal",
+              "mean_signed": -0.01762509556709035
+            },
+            {
+              "value": "benevolence_dependability",
+              "mean_signed": -0.01660642227142585
+            },
+            {
+              "value": "self_direction_thought",
+              "mean_signed": -0.0161440127865749
+            }
+          ],
+          "examples": [
+            "이는 충분히 수기 없이 중앙에서 졸속적으로 추진해서 발생하고 있는 문제라고 생각하는데 어떻게 생각하십니까?",
+            "그런데 이것 없이 중앙에서 결정된 내용을 가지고 일방적으로 밀어붙이기 식으로 진행되고 있는 것은 실제 지방자치라든가 지방자치권을 오히려 훼손하고 있는 절차라고 저희들은 매우 강하게 비판한 바가 있습니다."
+          ]
+        },
+        {
+          "cluster_id": 4,
+          "size": 191,
+          "top_signed_values": [
+            {
+              "value": "power_resources",
+              "mean_signed": 0.0473378499048725
+            },
+            {
+              "value": "stimulation",
+              "mean_signed": 0.03706764291620897
+            },
+            {
+              "value": "security_societal",
+              "mean_signed": 0.027798328700679692
+            },
+            {
+              "value": "power_dominance",
+              "mean_signed": 0.02599658305830258
+            },
+            {
+              "value": "self_direction_thought",
+              "mean_signed": 0.025668803548073528
+            }
+          ],
+          "examples": [
+            "정부는 초강력 행정통합을 해답으로 내놓고 있지만 우리는 본질적인 질문을 던져야 합니다.",
+            "행정구역만 합친다고 지방이 정말 잘 살 만한 곳으로 바뀔까요?",
+            "지방을 살리기 위해서는 다음의 조건이 필수적입니다."
+          ]
+        },
+        {
+          "cluster_id": 5,
+          "size": 16,
+          "top_signed_values": [
+            {
+              "value": "conformity_rules",
+              "mean_signed": 0.5760035923817952
+            },
+            {
+              "value": "self_direction_action",
+              "mean_signed": 0.06848201177362612
+            },
+            {
+              "value": "power_dominance",
+              "mean_signed": 0.06825541274438868
+            },
+            {
+              "value": "universalism_concern",
+              "mean_signed": 0.03145636949298714
+            },
+            {
+              "value": "tradition",
+              "mean_signed": 0.013794550376752649
+            }
+          ],
+          "examples": [
+            "또한 이 모든 과정을 통합 특별시가 정책을 결정하고 집행할 수 있도록 법적 행정적 위상을 보장할 것입니다.",
+            "현재 개혁진보 4당은 국회 본청 앞에서 천막 농성을 하고 있으며 어제는 간절한 마음으로 담아 3부 1배까지 하겠습니다.",
+            "가장 중요한 것은 결국 선거의 필요성을 높이는 제도 개선이 필요합니다."
+          ]
+        }
+      ]
+    },
+    "umap": {
+      "metrics": {
+        "method": "umap",
+        "n_neighbors": 15,
+        "min_dist": 0.15,
+        "trustworthiness_5": 0.9197265625
+      },
+      "clusters": [
+        {
+          "cluster_id": 0,
+          "size": 3,
+          "top_signed_values": [
+            {
+              "value": "universalism_nature",
+              "mean_signed": -0.5761393203471631
+            },
+            {
+              "value": "security_societal",
+              "mean_signed": -0.16553364682482674
+            },
+            {
+              "value": "universalism_concern",
+              "mean_signed": -0.0139525862451936
+            },
+            {
+              "value": "tradition",
+              "mean_signed": -0.0079520036518797
+            },
+            {
+              "value": "power_dominance",
+              "mean_signed": -0.003402474874761
+            }
+          ],
+          "examples": [
+            "네, 국민 여러분 지역 소멸은 이제 대한민국의 존립 기반을 위협받고 있습니다.",
+            "아 이와 같은 현상은 지역에는 소멸의 공포를 가져오고 수도권에는 과일의 고통을 가중시키고 있습니다.",
+            "경북에 수많은 군이 3만 이하의 군이 너무 많습니다.\n또 전국적으로도 지방 소멸 곧 다가오고 있습니다."
+          ]
+        },
+        {
+          "cluster_id": 1,
+          "size": 12,
+          "top_signed_values": [
+            {
+              "value": "security_societal",
+              "mean_signed": -0.7481655521956148
+            },
+            {
+              "value": "power_resources",
+              "mean_signed": -0.09513852454784039
+            },
+            {
+              "value": "conformity_interpersonal",
+              "mean_signed": -0.02193257867879732
+            },
+            {
+              "value": "power_dominance",
+              "mean_signed": -0.020041331186785225
+            },
+            {
+              "value": "universalism_concern",
+              "mean_signed": -0.018468156371423756
+            }
+          ],
+          "examples": [
+            "우리 아리셀 함사 화재 참사 보고 있지 않습니까? 또 얼마 전에 대전의 안전공업에서 지금 14명이나 죽는 화재 참사가 발생했어요.",
+            "결국 지방 재정에 심각한 영향을 미치고 결국 지역 균형 발전에 심각한 해를 끼친 것이 바로 국민의 힘과 윤석열 정부였던 것입니다.",
+            "말씀하신 것처럼 정부 여당에서는 이를 통해서 지방자치가 발전하고 또 재정 재정 자립도가 상승될 수 있는 것처럼 말씀하시지만 지금 현재 지방자치단체는 계속 재정 자립도가 하락하고 있습니다."
+          ]
+        },
+        {
+          "cluster_id": 2,
+          "size": 32,
+          "top_signed_values": [
+            {
+              "value": "self_direction_action",
+              "mean_signed": 0.4790840600968983
+            },
+            {
+              "value": "stimulation",
+              "mean_signed": 0.13165021871342927
+            },
+            {
+              "value": "self_direction_thought",
+              "mean_signed": 0.08598500630891773
+            },
+            {
+              "value": "universalism_concern",
+              "mean_signed": 0.048380629115780935
+            },
+            {
+              "value": "power_dominance",
+              "mean_signed": 0.02099262926697516
+            }
+          ],
+          "examples": [
+            "셋째, 실질적 자치를 뒷받침하는 연방제 수준의 재정 입법권 이양과 읍면동 단위까지 주민 결정권을 보장하는 헌법 개정이 반드시 필요합니다.",
+            "더 근본적인 문제를 직시해야 합니다. 서울의 기능을 옥죄고 강제로 이전하면 지방이 살아난다는 환상 이것을 끝내야 합니다.",
+            "서울은 대한민국 경제의 심장으로서 제 기능을 다하게 하고 동시에 전국 각 지역이 고유한 산업 생태계로 자립하는 구조를 만드는 것, 그리고 행정구역의 선을 바꾸는 것이 아니라 산업과 재정의 구조를 바꾸는 것 이것이 진정한 균형 발전의 정책입니다."
+          ]
+        },
+        {
+          "cluster_id": 3,
+          "size": 2,
+          "top_signed_values": [
+            {
+              "value": "self_direction_action",
+              "mean_signed": -0.4400254344926853
+            },
+            {
+              "value": "power_dominance",
+              "mean_signed": -0.02681185197355875
+            },
+            {
+              "value": "security_societal",
+              "mean_signed": -0.01762509556709035
+            },
+            {
+              "value": "benevolence_dependability",
+              "mean_signed": -0.01660642227142585
+            },
+            {
+              "value": "self_direction_thought",
+              "mean_signed": -0.0161440127865749
+            }
+          ],
+          "examples": [
+            "이는 충분히 수기 없이 중앙에서 졸속적으로 추진해서 발생하고 있는 문제라고 생각하는데 어떻게 생각하십니까?",
+            "그런데 이것 없이 중앙에서 결정된 내용을 가지고 일방적으로 밀어붙이기 식으로 진행되고 있는 것은 실제 지방자치라든가 지방자치권을 오히려 훼손하고 있는 절차라고 저희들은 매우 강하게 비판한 바가 있습니다."
+          ]
+        },
+        {
+          "cluster_id": 4,
+          "size": 191,
+          "top_signed_values": [
+            {
+              "value": "power_resources",
+              "mean_signed": 0.0473378499048725
+            },
+            {
+              "value": "stimulation",
+              "mean_signed": 0.03706764291620897
+            },
+            {
+              "value": "security_societal",
+              "mean_signed": 0.027798328700679692
+            },
+            {
+              "value": "power_dominance",
+              "mean_signed": 0.02599658305830258
+            },
+            {
+              "value": "self_direction_thought",
+              "mean_signed": 0.025668803548073528
+            }
+          ],
+          "examples": [
+            "정부는 초강력 행정통합을 해답으로 내놓고 있지만 우리는 본질적인 질문을 던져야 합니다.",
+            "행정구역만 합친다고 지방이 정말 잘 살 만한 곳으로 바뀔까요?",
+            "지방을 살리기 위해서는 다음의 조건이 필수적입니다."
+          ]
+        },
+        {
+          "cluster_id": 5,
+          "size": 16,
+          "top_signed_values": [
+            {
+              "value": "conformity_rules",
+              "mean_signed": 0.5760035923817952
+            },
+            {
+              "value": "self_direction_action",
+              "mean_signed": 0.06848201177362612
+            },
+            {
+              "value": "power_dominance",
+              "mean_signed": 0.06825541274438868
+            },
+            {
+              "value": "universalism_concern",
+              "mean_signed": 0.03145636949298714
+            },
+            {
+              "value": "tradition",
+              "mean_signed": 0.013794550376752649
+            }
+          ],
+          "examples": [
+            "또한 이 모든 과정을 통합 특별시가 정책을 결정하고 집행할 수 있도록 법적 행정적 위상을 보장할 것입니다.",
+            "현재 개혁진보 4당은 국회 본청 앞에서 천막 농성을 하고 있으며 어제는 간절한 마음으로 담아 3부 1배까지 하겠습니다.",
+            "가장 중요한 것은 결국 선거의 필요성을 높이는 제도 개선이 필요합니다."
+          ]
+        }
+      ]
+    }
+  },
+  "llm_labels": {
+    "x_axis_label": "사회적 안전·집단 보호 ↔ 자율·변화 지향",
+    "y_axis_label": "집단 안전·권위 관리 ↔ 자율·보편주의·참여",
+    "clusters": [
+      {
+        "cluster_id": 0,
+        "label": "지역 소멸·생존 위기"
+      },
+      {
+        "cluster_id": 1,
+        "label": "안전사고·재정 위기"
+      },
+      {
+        "cluster_id": 2,
+        "label": "분권 개혁·구조 전환"
+      },
+      {
+        "cluster_id": 3,
+        "label": "중앙집권 반대·절차 비판"
+      },
+      {
+        "cluster_id": 4,
+        "label": "일반적 정책 논쟁"
+      },
+      {
+        "cluster_id": 5,
+        "label": "제도화·규칙 강조"
+      }
+    ]
+  }
+}

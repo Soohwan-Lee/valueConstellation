@@ -1,0 +1,58 @@
+{
+  "threshold": 0.2,
+  "input_units": 256,
+  "active_units": 156,
+  "active_rule": "keep units where any support__value or constraint__value is >= threshold",
+  "projection": "metric MDS recomputed on active units only, using 19 signed__ value dimensions",
+  "clustering": "k-means with k=6, computed in the active subset's original 19D signed-value space",
+  "stress": 737.3442359801369,
+  "trustworthiness_5": 0.8716129591129591,
+  "llm_interpretation": {
+    "x_axis_label": "공공성 ↔ 자원투입",
+    "x_negative_label": "공공권리·연대",
+    "x_positive_label": "재정·투자 집중",
+    "y_axis_label": "안전·규범 ↔ 변화·행동",
+    "y_negative_label": "위험·안정 우려",
+    "y_positive_label": "개혁·실행 지향",
+    "axis_caveat": "MDS 축은 거리 기반 배치의 해석일 뿐, 이론적 잠재차원을 직접 뜻하지는 않습니다.",
+    "clusters": [
+      {
+        "cluster_id": 0,
+        "label": "안전위기 경계",
+        "meaning": "재난·전쟁·불균형 같은 사회적 위험과 안전 문제를 강하게 경계하는 묶음입니다.",
+        "caveat": "위기 대응 담화가 중심이라 보수/진보 이념과는 완전히 일치하지 않을 수 있습니다."
+      },
+      {
+        "cluster_id": 1,
+        "label": "개혁실행 공감",
+        "meaning": "분권과 균형발전을 위해 적극적으로 추진하고 행동하자는 실천 지향 묶음입니다.",
+        "caveat": "변화 지향이 강하지만 반드시 급진적 입장만을 뜻하지는 않습니다."
+      },
+      {
+        "cluster_id": 2,
+        "label": "수도이전 추진",
+        "meaning": "행정수도 이전과 제도 재배치를 통해 지역구조를 바꾸려는 추진형 묶음입니다.",
+        "caveat": "행정개편 논의에 치우쳐 있어 일반적 안전 담론과는 구분됩니다."
+      },
+      {
+        "cluster_id": 3,
+        "label": "자원투입 논쟁",
+        "meaning": "재정·투자 배분과 공공성, 규범 문제를 둘러싼 중간적 논쟁 묶음입니다.",
+        "caveat": "서로 다른 당의 발화가 섞여 있어 한 방향 가치로 단순화하기 어렵습니다."
+      },
+      {
+        "cluster_id": 4,
+        "label": "절차준수 강조",
+        "meaning": "위헌성, 절차적 정당성, 법적 요건을 우선 확인하려는 규범 중심 묶음입니다.",
+        "caveat": "규범 강조가 강해도 정책 찬반의 최종 입장과는 별개일 수 있습니다."
+      },
+      {
+        "cluster_id": 5,
+        "label": "제도개선 실무",
+        "meaning": "선거제·법률 개정 등 제도 정비를 통해 문제를 풀려는 실무형 묶음입니다.",
+        "caveat": "보수적 절차주의와 개혁적 제도개선이 함께 섞여 있습니다."
+      }
+    ]
+  },
+  "axis_caveat": "MDS 축은 거리 기반 배치의 해석일 뿐, 이론적 잠재차원을 직접 뜻하지는 않습니다."
+}
