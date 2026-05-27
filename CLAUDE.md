@@ -94,6 +94,35 @@ conda run -n valueconstellation-valuesnet python scripts/hierocles_probe.py --li
 - Keep `results/model_probes/` for synthetic/model-comparison outputs and `results/policy_discussion/` for real transcript outputs.
 - If adding automated tests later, avoid model downloads in default tests; use mocked logits or small cached sample outputs.
 
+## Frontend Handoff Notes
+
+Frontend work may start before the backend and research pipeline are final. Treat the UI as a client of an evolving value-vector backend, not as the owner of the analysis logic.
+
+Recommended boundaries:
+
+- Keep frontend application code separate from research scripts. If adding a web app, prefer a top-level `frontend/` or `app/` directory instead of mixing UI files into `scripts/`.
+- Do not move or rewrite the existing Python research scripts just to support the UI. Add small backend adapter endpoints or export helpers when the UI needs data.
+- Keep the 19D signed value vector as the canonical measurement. The 2D projection is a view/layout layer, not the source of truth.
+- Do not cluster on t-SNE or UMAP coordinates. If the UI shows clusters, they should come from the original 19D value space or from backend-provided cluster assignments.
+- Preserve both `support_*` and `constraint_*` information where available. A negative/constrained value is not the same thing as a missing value.
+- Treat active-value thresholds such as `0.20`, `0.30`, and `0.40` as configurable UI/backend parameters, not hard-coded facts.
+- Make room in the UI for manual review: editable argument text, editable cluster labels, visible top contributing values, and flags for uncertain direction/translation cases.
+- For Korean transcript data, show the original Korean and English translation together when possible. Do not hide translation uncertainty.
+- Avoid making the frontend depend directly on large model inference. Model execution should stay in Python/backend workflows unless explicitly changed.
+- Avoid committing generated build outputs, package caches, local database files, API keys, or private transcript exports.
+
+Useful frontend data concepts:
+
+- `argument_id`: stable identifier for a claim or argument unit.
+- `speaker`, `party`, `start_time`, `end_time`: transcript metadata for filtering and provenance.
+- `argument_ko`, `argument_en`: original Korean and translated English text.
+- `value_scores`: 19 signed values in `[-1, 1]`.
+- `support_scores`, `constraint_scores`: non-negative per-value components, if exposed by the backend.
+- `projection`: 2D coordinates for display, preferably metric MDS by default with PCA as an interpretable alternative.
+- `cluster_id`, `cluster_label`: backend or user-editable cluster metadata.
+
+When creating frontend mocks, use small fixtures derived from `results/policy_discussion/first_topic_argument_vectors.csv`, `first_topic_argument_active_values.csv`, and `first_topic_argument_projection_compare.csv`. Keep fixtures small and clearly marked as sample data.
+
 ## Current Resume Point
 
 The current real-transcript experiment is in `results/policy_discussion/`.
