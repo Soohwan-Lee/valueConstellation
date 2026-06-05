@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>이 회의의 가치 충돌</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div id="app">
+
+      <!-- ── HEADER ────────────────────────────────────────── -->
+      <header class="topbar">
+        <div class="brand">
+          <div class="eyebrow">이 회의에서 실제로 부딪힌 가치들</div>
+          <h1>가치 충돌 지도</h1>
+        </div>
+        <div class="header-right">
+          <div id="collisionCounter" class="collision-counter">
+            <span class="counter-num" id="counterNum">0</span>
+            <span class="counter-label">/ <span id="counterTotal">0</span> 충돌</span>
+          </div>
+          <div class="view-tabs">
+            <button class="tab-btn active" data-view="story" id="tabStory">순서대로 보기</button>
+            <button class="tab-btn" data-view="map" id="tabMap">전체 지도</button>
+          </div>
+        </div>
+      </header>
+
+      <!-- ── STORY VIEW ─────────────────────────────────────── -->
+      <div id="viewStory" class="view">
+
+        <!-- Left: collision feed -->
+        <div class="collision-feed-wrap">
+          <div class="feed-header">
+            <span class="feed-title">회의에서 감지된 충돌 순간들</span>
+            <span class="feed-hint">카드를 클릭해 자세히 봅니다</span>
+          </div>
+          <div id="collisionFeed" class="collision-feed"></div>
+        </div>
+
+        <!-- Right: collision detail -->
+        <div class="detail-wrap">
+          <div id="detailEmpty" class="detail-empty">
+            <div class="detail-empty-icon">⚡</div>
+            <p>왼쪽에서 충돌 카드를 클릭하면<br />두 가치가 어떻게 부딪혔는지<br />실제 발화와 함께 보여줍니다.</p>
+          </div>
+          <div id="detailPanel" class="detail-panel" hidden>
+            <div id="detailContent"></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ── MAP VIEW ──────────────────────────────────────── -->
+      <div id="viewMap" class="view" hidden>
+        <div class="map-wrap">
+          <svg id="mapSvg" viewBox="0 0 800 560" role="img" aria-label="가치 충돌 지도"></svg>
+          <div id="mapLegend" class="map-legend">
+            <div class="ml-title">읽는 법</div>
+            <div class="ml-row"><span class="ml-circle"></span>원 크기 = 거론 횟수</div>
+            <div class="ml-row"><span class="ml-line"></span>선 굵기 = 충돌 강도</div>
+            <div class="ml-row"><span class="ml-bar-good"></span>지지 비율</div>
+            <div class="ml-row"><span class="ml-bar-bad"></span>위협 비율</div>
+          </div>
+        </div>
+        <div class="map-side">
+          <div id="mapConceptList" class="map-concept-list"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

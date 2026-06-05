@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Value Tension Cards</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div id="app">
+      <header class="topbar">
+        <div>
+          <div class="eyebrow">Value Constellation prototype</div>
+          <h1>Contextual Value Tension Cards</h1>
+        </div>
+        <div class="top-actions">
+          <button class="ghost" id="fallbackButton" title="Use cached deterministic cards">Cached</button>
+          <button class="primary" id="generateButton" title="Run one LLM synthesis pass">Generate</button>
+        </div>
+      </header>
+
+      <main class="workspace">
+        <section class="tension-list-panel">
+          <div class="panel-kicker">dynamic axes</div>
+          <div id="tensionList" class="tension-list"></div>
+        </section>
+
+        <section class="detail-panel">
+          <div class="detail-header">
+            <div>
+              <div class="panel-kicker">selected card</div>
+              <h2 id="detailTitle">loading...</h2>
+            </div>
+            <div id="modeBadge" class="mode-badge">cached</div>
+          </div>
+
+          <div class="axis-strip">
+            <div class="pole left">
+              <div class="pole-label">Pole A</div>
+              <div id="leftPole"></div>
+            </div>
+            <div class="tension-line" aria-hidden="true"></div>
+            <div class="pole right">
+              <div class="pole-label">Pole B</div>
+              <div id="rightPole"></div>
+            </div>
+          </div>
+
+          <div id="description" class="description"></div>
+
+          <div class="lower-grid">
+            <section class="evidence-panel">
+              <div class="section-title">Evidence Trail</div>
+              <div id="evidenceList" class="evidence-list"></div>
+            </section>
+
+            <aside class="facilitation-panel">
+              <div class="section-title">Bridge Prompt</div>
+              <div id="bridgePrompt" class="bridge-prompt"></div>
+
+              <div class="section-title gap">Backfire Risk</div>
+              <div id="riskText" class="risk-text"></div>
+
+              <div class="section-title gap">Schwartz Trace</div>
+              <div id="traceList" class="trace-list"></div>
+            </aside>
+          </div>
+        </section>
+
+        <aside class="meta-panel">
+          <div class="panel-kicker">feasibility</div>
+          <div id="datasetStats" class="stat-grid"></div>
+
+          <div class="section-title gap">LLM Budget</div>
+          <div id="feasibility" class="feasibility"></div>
+
+          <div class="section-title gap">Speaker Surface</div>
+          <div id="speakerStats" class="speaker-stats"></div>
+
+          <div class="section-title gap">Process Moves</div>
+          <ol id="processMoves" class="process-moves"></ol>
+        </aside>
+      </main>
+    </div>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>가치 성좌 — 이 회의의 가치 지도</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div id="app">
+      <header class="topbar">
+        <div class="brand">
+          <div class="eyebrow">Value Constellation · 실시간 재생 프로토타입</div>
+          <h1>이 회의에서 부딪히는 <em>가치</em>들</h1>
+        </div>
+        <div class="transport">
+          <div class="time-readout">
+            <span id="clock">00:50</span>
+            <span class="sep">·</span>
+            <span id="progress">0 / 256</span>
+          </div>
+          <button class="t-btn" id="resetButton" title="처음으로">⟲</button>
+          <button class="t-btn" id="stepButton" title="한 발화씩">▷|</button>
+          <button class="t-btn play" id="playButton">▶ 재생</button>
+          <div class="speed" id="speedControl">
+            <button data-speed="900">0.5×</button>
+            <button data-speed="520" class="active">1×</button>
+            <button data-speed="220">2×</button>
+          </div>
+          <button class="t-btn ghost" id="refineButton" title="LLM으로 가치 이름 다듬기">✦ 이름 다듬기</button>
+        </div>
+      </header>
+
+      <main class="workspace">
+        <!-- LEFT: the constellation is the star of the show -->
+        <section class="stage-panel">
+          <svg id="stage" viewBox="0 0 920 600" role="img" aria-label="이 회의의 가치 성좌"></svg>
+
+          <!-- legend: always visible so a first-time viewer can read the map -->
+          <div class="legend">
+            <div class="legend-title">읽는 법</div>
+            <div class="legend-row"><span class="lg-size"></span>원이 클수록 <b>지금 이 가치가 강하게 거론됨</b></div>
+            <div class="legend-row"><span class="lg-edge"></span>선이 굵을수록 <b>두 가치가 동시에 충돌</b></div>
+            <div class="legend-row"><span class="lg-dot"></span>점은 <b>각 정당의 현재 무게중심</b></div>
+            <div class="legend-hint">원을 클릭하면 그 가치가 무엇인지 자세히 봅니다</div>
+          </div>
+
+          <!-- seismograph timeline -->
+          <div class="timeline-wrap">
+            <div class="timeline-label">가치 충돌 강도 (시간순) — 막대를 클릭해 그 순간으로 이동</div>
+            <div id="timeline" class="timeline"></div>
+          </div>
+        </section>
+
+        <!-- RIGHT: context + inspection -->
+        <aside class="side-panel">
+          <!-- current utterance -->
+          <section class="card now-card">
+            <div class="card-kicker">지금 발화 중</div>
+            <div id="nowMeta" class="now-meta"></div>
+            <p id="nowText" class="now-text">재생을 누르면 회의가 시간순으로 흘러갑니다.</p>
+            <div id="nowConcepts" class="chip-row"></div>
+          </section>
+
+          <!-- inspector: what is this value? (driven by node click) -->
+          <section class="card inspect-card" id="inspectCard">
+            <div class="card-kicker">가치 들여다보기</div>
+            <div class="inspect-empty" id="inspectEmpty">
+              왼쪽 성좌에서 <b>원 하나를 클릭</b>하면,<br />
+              그 가치가 이 회의에서 무엇을 뜻하는지 ·
+              지지됐는지 위협받았는지 · 실제 발화 근거를 보여줍니다.
+            </div>
+            <div class="inspect-body" id="inspectBody" hidden></div>
+          </section>
+
+          <!-- strongest current collision -->
+          <section class="card spike-card" id="spikeCard">
+            <div class="card-kicker">가장 강한 충돌</div>
+            <div class="spike-empty" id="spikeEmpty">아직 뚜렷한 충돌이 없습니다.</div>
+            <div class="spike-body" id="spikeBody" hidden></div>
+          </section>
+        </aside>
+      </main>
+
+      <!-- first-run onboarding for study participants -->
+      <div class="onboarding" id="onboarding" hidden>
+        <div class="onb-card">
+          <div class="onb-step" id="onbStep"></div>
+          <button class="onb-skip" id="onbSkip">건너뛰기</button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>
