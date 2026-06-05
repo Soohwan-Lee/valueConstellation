@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Value Constellation · Absent Stakeholder Probe</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div id="app">
+      <header class="topbar">
+        <div>
+          <div class="eyebrow">rough concept prototype</div>
+          <h1>Absent Stakeholder & Value Blind Spot</h1>
+        </div>
+        <div class="top-actions">
+          <button class="ghost" id="referenceToggle">Reference HTML</button>
+          <button class="primary" id="checkinButton">Periodic Check-in</button>
+        </div>
+      </header>
+
+      <main class="workspace">
+        <section class="map-panel">
+          <div class="map-header">
+            <div>
+              <div class="panel-label">MDS value landscape</div>
+              <div id="axisLabel" class="axis-label">loading data...</div>
+              <div class="map-hint">점선 영역 = blind spot 클릭 · 두 cluster(C0…) 클릭 = 가치 긴장 분석</div>
+            </div>
+            <div class="filter-block">
+              <div class="filter-label">Party highlight</div>
+              <div id="speakerLegend" class="speaker-legend"></div>
+            </div>
+          </div>
+          <div class="map-wrap">
+            <svg id="map" viewBox="0 0 900 620" role="img" aria-label="Value landscape map"></svg>
+            <div id="tooltip" class="tooltip hidden"></div>
+          </div>
+          <div class="map-footer">
+            <div>
+              <div class="filter-label">Cluster highlight</div>
+              <div id="clusterLegend" class="cluster-legend"></div>
+            </div>
+            <div id="selectionSummary" class="selection-summary"></div>
+          </div>
+        </section>
+
+        <aside class="probe-panel">
+          <div class="panel-label">boundary object layer</div>
+          <h2>What is not being discussed?</h2>
+          <p class="intro">
+            Click a dotted sparse zone or run a check-in. The core artifact is not the answer;
+            it is a carefully delivered question that helps the group decide what to explore,
+            defer, or explicitly exclude.
+          </p>
+
+          <section class="section question-section">
+            <div class="section-title">Question delivery</div>
+            <div id="questionOutput" class="question-card empty">
+              아직 전달할 질문이 없습니다. 빈 영역을 클릭하거나 체크인을 실행하세요.
+            </div>
+            <div class="question-actions">
+              <button class="mini-action" id="answerQuestionButton">Generate possible answers</button>
+            </div>
+            <div id="answerOutput" class="output empty compact-output">
+              질문을 생성한 뒤, LLM으로 가능한 그룹 응답을 시뮬레이션할 수 있습니다.
+            </div>
+          </section>
+
+          <section class="section">
+            <div class="section-title">Current probe</div>
+            <div id="probeOutput" class="output empty">
+              아직 probe가 없습니다. 지도 위 점선 영역을 클릭하거나 Periodic Check-in을 실행하세요.
+            </div>
+          </section>
+
+          <section class="section">
+            <div class="section-title">Empty Chair</div>
+            <button class="mini-action full-width" id="suggestStakeholdersButton">Suggest stakeholders</button>
+            <div id="emptyChairOutput" class="output empty">
+              LLM이 추가할 수 있는 이해관계자를 제안하거나, 후보를 선택하면 1인칭 가상 발화를 생성하고 지도에 추가합니다.
+            </div>
+          </section>
+
+          <section class="section">
+            <div class="section-title">Decision trace</div>
+            <p class="section-help">
+              현재 화면 위쪽의 <strong>질문 하나</strong>에 대해 그룹이 어떻게 처리하기로 했는지를 남기는 회의 기록입니다.
+              지금 다룰지(Explore), 다음으로 미룰지(Defer), 의도적으로 제외할지(Exclude)를 고르면
+              아래에 한 줄로 기록됩니다. <strong>같은 질문을 다시 결정하면 새 줄이 추가되지 않고 기존 줄이 갱신</strong>되며,
+              번복한 경우 이전 결정이 함께 표시됩니다.
+            </p>
+            <div class="trace-actions">
+              <button data-decision="Explore now">Explore</button>
+              <button data-decision="Defer">Defer</button>
+              <button data-decision="Intentionally excluded">Exclude</button>
+            </div>
+            <div id="decisionTrace" class="decision-trace"></div>
+          </section>
+
+          <section class="section">
+            <div class="section-title">Decision rationale</div>
+            <p class="section-help">
+              지금까지의 결정 기록(Explore/Defer/Exclude), Empty Chair 발화, 활성 cluster를 모아
+              <strong>결정문 초안</strong>을 구성합니다. AI가 대신 결정하지 않으며, 합의되지 않은 충돌은
+              <strong>억지로 합치지 않고 그대로 남깁니다</strong>(boundary object). 모든 칸은 직접 수정할 수 있습니다.
+            </p>
+            <button class="mini-action full-width" id="composeRationaleButton">Compose decision rationale</button>
+            <div id="rationaleOutput" class="output empty">
+              결정을 몇 개 남긴 뒤 이 버튼을 누르면, 선택한 결정 · 우선한 가치 · 감수한 trade-off ·
+              남겨둔 unresolved tension · 정당화 맥락 · 재검토 조건으로 초안을 만듭니다.
+            </div>
+          </section>
+        </aside>
+      </main>
+
+      <div id="referenceModal" class="modal hidden">
+        <div class="modal-header">
+          <div>
+            <div class="eyebrow">existing output</div>
+            <h2>Full Argument Active MDS Party Cluster HTML</h2>
+          </div>
+          <button class="ghost" id="closeReference">Close</button>
+        </div>
+        <iframe id="referenceFrame" title="Existing Value Constellation HTML output"></iframe>
+      </div>
+    </div>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

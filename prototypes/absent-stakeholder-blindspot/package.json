@@ -1,0 +1,9 @@
+{
+  "name": "absent-stakeholder-blindspot-prototype",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "node server.mjs"
+  }
+}
