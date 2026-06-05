@@ -1,5 +1,6 @@
 .DS_Store
 .omc/
+.playwright-mcp/
 __pycache__/
 *.py[cod]
 .env

@@ -51,16 +51,43 @@ Korean utterance
 
 ## Entry Points
 
+### Research pipeline (Python)
+
 - `scripts/valuesnet_probe.py`: probes `nharrel/Valuesnet_DeBERTa_v3`.
 - `scripts/alternative_value_models_probe.py`: probes Schwartz, Moral Foundations, and VictorYeste ValueEval-style models.
 - `scripts/hierocles_probe.py`: probes Hierocles attained/constrained outputs and writes raw plus summary CSVs.
 - `scripts/victoryeste_cascade_probe.py`: probes VictorYeste presence + stance cascade and writes `results/victoryeste_cascade_raw.csv` plus `results/victoryeste_cascade_summary.csv`.
 - `scripts/policy_discussion_value_pipeline.py`: reads `data/koreanPolicyMakingDiscussion.xlsx`, splits policy speech into claim units, translates, and writes raw plus wide 19-value vector CSVs.
 - `scripts/project_value_vectors.py`: PCA-projects wide 19-value vector CSVs to 2D and optionally asks OpenAI to label axes/clusters.
+- `scripts/plot_active_value_mds.py`: renders a static matplotlib MDS map for active values; imports `kmeans` from `project_value_vectors`.
 
-Generated outputs live in `results/`.
+Generated outputs live in `results/model_probes/` (synthetic probes) and `results/policy_discussion/` (real transcript).
+
+### Frontend (React + Vite)
+
+`frontend/` is a React 18 + TypeScript + Tailwind app built with Vite. It has two tabs:
+- **Reference Map**: iframe embed of the static Plotly HTML from `results/policy_discussion/figures/`.
+- **Interactive**: canvas/SVG scatter of argument nodes, speaker filter, projection switcher (PCA / MDS), cluster label editor, and value detail panel.
+
+Data flow: on load, the app attempts `loadFromCsv()` against files served from the Vite dev server (or a separate backend). On failure it falls back to small in-repo fixtures in `frontend/src/data/fixture.ts`.
+
+### Prototypes (Node.js)
+
+Each prototype is a standalone `server.mjs` (no build step; ESM, Node ≥ 18) that:
+1. Reads `results/policy_discussion/` CSV/JSON at startup (lazy-cached).
+2. Serves a `public/` vanilla-JS UI.
+3. Calls OpenAI `gpt-5.4-mini` via `POST /api/…`; falls back to hardcoded Korean responses when `OPENAI_API_KEY` is absent.
+
+| Directory | Port | Focus |
+|---|---|---|
+| `prototypes/absent-stakeholder-blindspot/` | 5177 | Empty-chair / blind-spot detection; tension & rationale endpoints |
+| `prototypes/live-tension-constellation/` | — | Real-time value-tension graph overlay |
+| `prototypes/contextual-value-tensions/` | — | Context-aware tension explorer |
+| `prototypes/value-collision-story/` | — | Narrative framing of value collisions |
 
 ## Commands
+
+### Python research pipeline
 
 Use the existing conda environment:
 
@@ -79,11 +106,31 @@ conda run -n valueconstellation-valuesnet python scripts/policy_discussion_value
 conda run -n valueconstellation-valuesnet python scripts/project_value_vectors.py --input results/policy_discussion/first_topic_argument_vectors.csv --output results/policy_discussion/first_topic_argument_projection_compare.csv --metadata-output results/policy_discussion/first_topic_argument_projection_compare_metadata.json --method all --label-with-openai
 ```
 
-Use `--limit` on `hierocles_probe.py` for quick smoke tests:
+Quick smoke test with `--limit`:
 
 ```bash
 conda run -n valueconstellation-valuesnet python scripts/hierocles_probe.py --limit 4
 ```
+
+### Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev        # dev server at http://localhost:5173
+npm run build      # tsc + vite build → dist/
+```
+
+### Prototypes
+
+```bash
+node prototypes/absent-stakeholder-blindspot/server.mjs   # http://localhost:5177
+node prototypes/live-tension-constellation/server.mjs
+node prototypes/contextual-value-tensions/server.mjs
+node prototypes/value-collision-story/server.mjs
+```
+
+All prototypes load `.env` from repo root, their own directory, and a personal path; set `OPENAI_API_KEY` before starting for live LLM responses.
 
 ## Development Notes
 
@@ -128,12 +175,15 @@ When creating frontend mocks, use small fixtures derived from `results/policy_di
 The current real-transcript experiment is in `results/policy_discussion/`.
 
 - Source: `data/koreanPolicyMakingDiscussion.xlsx`.
-- Processed segment: `00:50~08:36`, the opening common-answer segment for the transcript's "second discussion topic."
+- Processed segments:
+  - `first_topic_*` files: `00:50~08:36`, opening common-answer segment for the second discussion topic.
+  - `full_argument_*` files: full discussion pipeline (all non-moderator speech).
 - Current best segmentation: `--unit argument`, not sentence-level `--unit claim`.
-- Current model path: Korean argument unit -> OpenAI `gpt-5.4-mini` translation -> VictorYeste 19-value presence -> VictorYeste attained/constrained stance -> signed/support/constraint values.
-- Current projection comparison: PCA, metric MDS, t-SNE, and UMAP are written to `first_topic_argument_projection_compare.csv`; metadata is in `first_topic_argument_projection_compare_metadata.json`.
-- Current map recommendation: use the 19D vector as the actual measurement, use metric MDS as the default 2D layout candidate, keep PCA available when interpretable axes matter, and treat t-SNE/UMAP as exploratory only.
-- Current cluster recommendation: cluster in original 19D value space and display cluster labels on the 2D map; do not cluster on t-SNE/UMAP coordinates.
-- Current threshold: `0.20` is only an exploratory active-value cutoff. Calibrate it before using in the system.
+- Current model path: Korean argument unit → OpenAI `gpt-5.4-mini` translation → VictorYeste 19-value presence → VictorYeste attained/constrained stance → signed/support/constraint values.
+- Current projection files: `full_argument_projection_compare.csv` + `full_argument_projection_compare_metadata.json`; static MDS map is `results/policy_discussion/figures/full_argument_active_mds_party_cluster.html` (served by the frontend and prototypes via `/reference/` route).
+- Current map recommendation: metric MDS as default 2D layout; PCA when interpretable axes matter; t-SNE/UMAP exploratory only.
+- Current cluster recommendation: cluster in original 19D value space; display labels on 2D map; do not cluster on t-SNE/UMAP coordinates.
+- Current threshold: `0.20` is an exploratory active-value cutoff. Calibrate before production use.
+- Absent-stakeholder prototype (`prototypes/absent-stakeholder-blindspot/`) is the most developed UI; it reads `full_argument_vectors.csv` and `full_argument_projection_compare.csv`.
 
-Next session should start by reviewing `first_topic_argument_active_values.csv`, creating a 30-50 item hand-labeled calibration sheet, and comparing `0.20`, `0.30`, and `0.40` thresholds plus direction errors.
+Next session should start by reviewing `full_argument_active_values.csv` and `full_argument_calibration_seed_sample.csv`, completing a hand-labeled calibration sheet, and comparing `0.20`, `0.30`, and `0.40` thresholds plus direction errors.
