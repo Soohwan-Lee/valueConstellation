@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Value Minority Check-in — surfacing buried value poles in group deliberation."
+    />
+    <title>Value Minority Check-in</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <!-- ─── topbar ─── -->
+      <header class="topbar">
+        <div class="brand">
+          <span class="mark">Value Constellation</span>
+          <h1>Minority Check-in</h1>
+          <span class="sub">묻힌 가치극을 그룹 앞에 다시 세웁니다</span>
+        </div>
+        <div class="topbar-right">
+          <span id="windowChip" class="window-chip"></span>
+          <span id="modeBadge" class="badge dot">cached</span>
+          <button id="fallbackButton" class="btn" type="button">Cached</button>
+          <button id="generateButton" class="btn primary" type="button">Generate check-in</button>
+        </div>
+      </header>
+
+      <div class="body">
+        <!-- ─── left rail ─── -->
+        <aside class="rail" aria-label="check-in summary">
+          <div class="summary-block">
+            <span class="kicker">이번 체크인</span>
+            <h2 id="checkinTitle">가치 축 생성 중</h2>
+            <p id="synthesisNote" class="note"></p>
+          </div>
+
+          <section class="rail-section">
+            <span class="kicker">Value axes · 중요도순</span>
+            <div id="axisList" class="axis-list"></div>
+          </section>
+
+          <section class="rail-section">
+            <span class="kicker">Blind spots · 묻힌 가치극</span>
+            <div id="blindSpotList" class="blind-list"></div>
+          </section>
+        </aside>
+
+        <!-- ─── stage ─── -->
+        <main class="stage" aria-label="value map">
+          <!-- check-in step flow -->
+          <nav id="stepper" class="stepper" aria-label="check-in steps"></nav>
+          <div id="stepGuide" class="step-guide">
+            <div class="step-guide-text">
+              <span id="stepGuideNum" class="step-guide-num">1</span>
+              <div>
+                <h3 id="stepGuideTitle">읽기</h3>
+                <p id="stepGuideDesc" class="note"></p>
+              </div>
+            </div>
+            <div class="step-guide-nav">
+              <button id="stepPrev" class="btn" type="button">← 이전</button>
+              <button id="stepNext" class="btn primary" type="button">다음 →</button>
+            </div>
+          </div>
+
+          <div class="axis-selector">
+            <div class="axis-pick">
+              <label for="xSelect">X</label>
+              <select id="xSelect"></select>
+            </div>
+            <div class="axis-pick">
+              <label for="ySelect">Y</label>
+              <select id="ySelect"></select>
+            </div>
+            <div class="legend">
+              <span class="legend-item"><i class="legend-person"></i>사람</span>
+              <span class="legend-item"><i class="legend-utterance"></i>발언</span>
+              <span class="legend-item"><i class="legend-centroid"></i>합의 무게중심</span>
+              <span class="legend-item"><i class="legend-minority">✦</i>묻힌 극</span>
+            </div>
+          </div>
+
+          <section class="plane-wrap" data-step="1 2">
+            <div id="plane" class="plane" aria-label="value minority plane">
+              <div id="minorityRegion" class="minority-region"></div>
+              <svg id="tensionLayer" class="tension-layer" aria-hidden="true"></svg>
+              <div id="axisXLeft" class="axis-end x-left"></div>
+              <div id="axisXRight" class="axis-end x-right"></div>
+              <div id="axisYTop" class="axis-end y-top"></div>
+              <div id="axisYBottom" class="axis-end y-bottom"></div>
+              <div id="planeLayer"></div>
+            </div>
+          </section>
+
+          <!-- STEP 3: joint-prompt gate — group authors the question before AI speaks -->
+          <section class="jointprompt" data-step="3" aria-label="joint prompt">
+            <div class="jp-head">
+              <span class="kicker">함께 질문 만들기 · 이 단계를 지나야 AI 개입이 열립니다</span>
+              <h3>AI에게 무엇을 물을지 그룹이 먼저 정합니다</h3>
+              <p class="note">AI가 분석에서 곧장 권고로 넘어가지 않게 합니다. 묻힌 극에 대해 그룹이 던질 질문을 고르거나 직접 쓰세요.</p>
+            </div>
+            <div id="jpSuggestions" class="jp-suggestions"></div>
+            <div class="jp-compose">
+              <input id="jpInput" class="jp-input" type="text" placeholder="또는 직접 질문을 쓰세요…" />
+              <button id="jpSet" class="btn primary" type="button">이 질문으로 AI 열기</button>
+            </div>
+            <p id="jpChosen" class="jp-chosen" hidden></p>
+          </section>
+
+          <!-- STEP 4: AI intervention (gated by joint prompt) -->
+          <section class="intervention" data-step="4" aria-label="ai intervention">
+            <div class="intervention-top">
+              <div>
+                <h3>AI 개입 — 소수가 말할 자리를 엽니다</h3>
+                <p id="levelDescription" class="note"></p>
+              </div>
+              <div id="levelTabs" class="level-tabs"></div>
+            </div>
+            <div id="jpGateNotice" class="jp-gate-notice">
+              <strong>아직 잠겨 있습니다.</strong>
+              <span>3단계에서 그룹 질문을 정하면 AI 개입이 열립니다.</span>
+            </div>
+            <div id="interventionBody" class="intervention-body">
+              <div class="itit">
+                <span id="interventionBadge" class="badge">표시</span>
+                <span id="supportTarget" class="support-tag"></span>
+                <h4 id="interventionTitle">Intervention</h4>
+              </div>
+              <p id="interventionText" class="itext"></p>
+              <p id="interventionDelivery" class="idelivery"></p>
+              <p id="scaffoldNote" class="scaffold-note"></p>
+              <div id="revoiceControls" class="revoice-controls" hidden>
+                <span class="revoice-label">재표현은 당사자의 것입니다</span>
+                <button class="btn" data-revoice="원화자 수정" type="button">원화자가 수정</button>
+                <button class="btn contest" data-revoice="거부" type="button">원화자가 거부</button>
+              </div>
+            </div>
+          </section>
+
+          <!-- what-if (part of step 4 reasoning) -->
+          <section class="whatif" data-step="4" aria-label="what-if">
+            <div class="whatif-head">
+              <span class="kicker">What if · 제안이 아니라 조건문</span>
+              <span id="whatifPole" class="pole-pill"></span>
+            </div>
+            <p id="whatifBody" class="body"></p>
+            <p class="caveat">
+              AI는 균형점을 <b>제안하지 않습니다</b>. 묻힌 극을 반영했을 때의 조건적 결과만 보여주며, 반영 여부는 그룹이 판단합니다.
+            </p>
+          </section>
+
+          <!-- STEP 5: decide / uptake -->
+          <section class="uptake" data-step="5" aria-label="decision uptake">
+            <div class="uptake-head">
+              <span class="kicker">처리하기 · 묻힌 극을 어떻게 다룰지 기록합니다</span>
+              <h3>이 묻힌 가치극을 어떻게 처리할까요?</h3>
+              <p class="note">표시하고 끝내지 않습니다. 각 극을 명시적으로 처리해야 결정 기록에 남습니다. 정당한 기각도 숙의입니다.</p>
+            </div>
+            <div class="decision-row">
+              <button class="btn" data-decision="탐색" type="button">탐색 — 지금 의제로</button>
+              <button class="btn" data-decision="이월" type="button">이월 — 다음으로</button>
+              <button class="btn" data-decision="의도적 제외" type="button">의도적 제외 — 이유 남김</button>
+              <button class="btn contest" id="contestButton" type="button">Contest — AI가 틀림</button>
+            </div>
+            <div id="uptakeStatus" class="uptake-status"></div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <!-- ─── slide-in detail panel ─── -->
+    <div id="scrim" class="scrim"></div>
+    <aside id="detailPanel" class="detail-panel" aria-label="selection detail" aria-hidden="true">
+      <div class="detail-header">
+        <div>
+          <span id="detailKicker" class="kicker">선택</span>
+          <h3 id="detailTitle">상세</h3>
+          <p id="detailSub" class="dsub"></p>
+        </div>
+        <button id="detailClose" class="detail-close" type="button" aria-label="닫기">×</button>
+      </div>
+      <div id="detailScroll" class="detail-scroll"></div>
+    </aside>
+
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>
