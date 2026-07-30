@@ -7,6 +7,7 @@ import type {
 } from '@/lib/types'
 import { speakerColor } from '@/lib/colors'
 import { MIN_UTTERANCES_FOR_POSITION } from '@/lib/aggregate'
+import { t, tf, type Lang } from '@/lib/i18n'
 
 /**
  * Right-hand panel. Its purpose is to make every coordinate traceable back to
@@ -17,11 +18,13 @@ export function DetailPanel({
   projection,
   selectedUtterance,
   selectedSpeaker,
+  lang,
   onSelectUtterance,
 }: {
   projection: Projection
   selectedUtterance: ProjectedUtterance | null
   selectedSpeaker: string | null
+  lang: Lang
   onSelectUtterance: (u: ProjectedUtterance) => void
 }) {
   if (selectedUtterance) {
@@ -35,13 +38,20 @@ export function DetailPanel({
           title={selectedUtterance.speaker}
           subtitle={selectedUtterance.kind}
         />
-        <p className="text-[14px] leading-[1.6] text-[var(--ink)]">
-          {selectedUtterance.text}
-        </p>
+        {/* Original and translation appear together, never one replacing the
+            other: the words as spoken are the evidence behind the position. */}
+        <div>
+          <div className="mb-1 text-[11px] tracking-wide text-[var(--muted)]">
+            {t('original', lang).toUpperCase()}
+          </div>
+          <p className="text-[14px] leading-[1.6] text-[var(--ink)]">
+            {selectedUtterance.text}
+          </p>
+        </div>
         {selectedUtterance.textEn && (
           <div className="border-t border-[var(--hairline)] pt-3">
             <div className="mb-1 text-[11px] tracking-wide text-[var(--muted)]">
-              TRANSLATION
+              {t('translation', lang).toUpperCase()}
             </div>
             <p className="text-[13px] leading-[1.6] text-[var(--body)]">
               {selectedUtterance.textEn}
@@ -49,11 +59,11 @@ export function DetailPanel({
           </div>
         )}
         <dl className="grid grid-cols-2 gap-x-4 gap-y-1 border-t border-[var(--hairline)] pt-3 text-[12px]">
-          <dt className="text-[var(--muted)]">position</dt>
+          <dt className="text-[var(--muted)]">{t('position', lang)}</dt>
           <dd className="tnum text-[var(--body)]">
             {selectedUtterance.x.toFixed(3)}, {selectedUtterance.y.toFixed(3)}
           </dd>
-          <dt className="text-[var(--muted)]">order</dt>
+          <dt className="text-[var(--muted)]">{t('order', lang)}</dt>
           <dd className="tnum text-[var(--body)]">#{selectedUtterance.index + 1}</dd>
         </dl>
       </div>
@@ -62,30 +72,29 @@ export function DetailPanel({
 
   if (selectedSpeaker) {
     const speaker = projection.speakers.find((s) => s.speaker === selectedSpeaker)
-    if (!speaker) return <Empty />
+    if (!speaker) return <Empty lang={lang} />
     const own = projection.utterances.filter((u) => u.speaker === selectedSpeaker)
     return (
       <div className="space-y-3">
         <Header
           color={speakerColor(speaker.colorIndex)}
           title={speaker.speaker}
-          subtitle={`${speaker.n} mapped · ${speaker.nExcluded} excluded`}
+          subtitle={`${speaker.n} · ${speaker.nExcluded} ${t('excluded', lang)}`}
         />
 
         {speaker.underdetermined && (
           <p className="rounded-[6px] border border-[var(--hairline-strong)] bg-[var(--surface-2)] px-3 py-2 text-[12px] leading-[1.5] text-[var(--body)]">
-            Only {speaker.n} substantive utterance
-            {speaker.n === 1 ? '' : 's'}, below the {MIN_UTTERANCES_FOR_POSITION}{' '}
-            needed for a stable estimate. Treat this position as provisional.
+            {t('provisional', lang)} ({speaker.n} &lt;{' '}
+            {MIN_UTTERANCES_FOR_POSITION})
           </p>
         )}
 
         <dl className="grid grid-cols-2 gap-x-4 gap-y-1 text-[12px]">
-          <dt className="text-[var(--muted)]">centroid</dt>
+          <dt className="text-[var(--muted)]">{t('centroid', lang)}</dt>
           <dd className="tnum text-[var(--body)]">
             {speaker.x.toFixed(3)}, {speaker.y.toFixed(3)}
           </dd>
-          <dt className="text-[var(--muted)]">spread</dt>
+          <dt className="text-[var(--muted)]">{t('spreadLabel', lang)}</dt>
           <dd className="tnum text-[var(--body)]">
             {speaker.ellipse
               ? `${speaker.ellipse.rx.toFixed(3)} × ${speaker.ellipse.ry.toFixed(3)}`
@@ -95,27 +104,30 @@ export function DetailPanel({
 
         <div className="border-t border-[var(--hairline)] pt-3">
           <div className="mb-2 text-[11px] tracking-wide text-[var(--muted)]">
-            UTTERANCES
+            {t('utterances', lang).toUpperCase()}
           </div>
           <ul className="space-y-1.5">
-            {own.map((u) => (
-              <li key={u.id}>
-                <button
-                  type="button"
-                  onClick={() => onSelectUtterance(u)}
-                  className="w-full rounded-[6px] border border-[var(--hairline)] px-2.5 py-2 text-left text-[13px] leading-[1.5] text-[var(--body)] transition-colors hover:border-[var(--hairline-strong)] hover:bg-[var(--surface-2)]"
-                >
-                  {u.text.length > 150 ? `${u.text.slice(0, 150)}…` : u.text}
-                </button>
-              </li>
-            ))}
+            {own.map((u) => {
+              const body = lang === 'en' && u.textEn ? u.textEn : u.text
+              return (
+                <li key={u.id}>
+                  <button
+                    type="button"
+                    onClick={() => onSelectUtterance(u)}
+                    className="w-full rounded-[6px] border border-[var(--hairline)] px-2.5 py-2 text-left text-[13px] leading-[1.5] text-[var(--body)] transition-colors hover:border-[var(--hairline-strong)] hover:bg-[var(--surface-2)]"
+                  >
+                    {body.length > 150 ? `${body.slice(0, 150)}…` : body}
+                  </button>
+                </li>
+              )
+            })}
           </ul>
         </div>
       </div>
     )
   }
 
-  return <Empty />
+  return <Empty lang={lang} />
 }
 
 function Header({
@@ -139,11 +151,10 @@ function Header({
   )
 }
 
-function Empty() {
+function Empty({ lang }: { lang: Lang }) {
   return (
     <p className="text-[13px] leading-[1.6] text-[var(--muted)]">
-      Select a point to read the utterance behind it, or a speaker marker to see
-      everything they said.
+      {t('selectPrompt', lang)}
     </p>
   )
 }
@@ -159,33 +170,25 @@ function Empty() {
 export function ProjectionNotice({
   projection,
   droppedSpeakers,
+  lang,
 }: {
   projection: Projection
   droppedSpeakers: string[]
+  lang: Lang
 }) {
   const ev = projection.meta.explainedVariance
   const weak = ev !== null && ev < 0.5
   const notes: string[] = []
 
   if (ev !== null) {
-    notes.push(
-      `The two components capture ${(ev * 100).toFixed(0)}% of the variance in the original embedding space.`,
-    )
-    if (weak) {
-      notes.push(
-        'Distances on this plane are a rough guide only — much of the structure does not fit in two dimensions.',
-      )
-    }
+    notes.push(tf('variance', lang, { pct: (ev * 100).toFixed(0) }))
+    if (weak) notes.push(t('varianceWeak', lang))
   } else {
-    notes.push(
-      'Metric MDS preserves pairwise distances but has no explained-variance measure.',
-    )
+    notes.push(t('mdsNote', lang))
   }
 
   if (droppedSpeakers.length > 0) {
-    notes.push(
-      `Not placed (no substantive utterances): ${droppedSpeakers.join(', ')}.`,
-    )
+    notes.push(`${t('notPlaced', lang)}: ${droppedSpeakers.join(', ')}`)
   }
 
   return (

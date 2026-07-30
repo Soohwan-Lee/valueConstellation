@@ -12,11 +12,13 @@ export function SpeakerChips({
   active,
   onToggle,
   onClear,
+  showAllLabel = 'show all',
 }: {
   speakers: SpeakerProfile[]
   active: Set<string>
   onToggle: (speaker: string) => void
   onClear: () => void
+  showAllLabel?: string
 }) {
   return (
     <div className="flex flex-wrap items-center gap-1.5">
@@ -62,7 +64,7 @@ export function SpeakerChips({
           onClick={onClear}
           className="ml-1 text-[12px] text-[var(--muted)] underline decoration-[var(--hairline-strong)] underline-offset-2 hover:text-[var(--ink)]"
         >
-          show all
+          {showAllLabel}
         </button>
       )}
     </div>
