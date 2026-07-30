@@ -49,14 +49,19 @@ function normalize(v: Vector): Vector {
  * of a set of directions is the normalised mean direction, not the raw average.
  */
 export function centroid(vectors: Vector[]): Vector | null {
-  if (vectors.length === 0) return null
-  const dim = vectors[0].length
+  // Ignore rows of the wrong length rather than averaging across ragged input,
+  // which would silently yield NaN for every dimension.
+  const dim = vectors.find((v) => v?.length)?.length ?? 0
+  if (dim === 0) return null
+  const usable = vectors.filter((v) => v?.length === dim)
+  if (usable.length === 0) return null
+
   const sum = new Array<number>(dim).fill(0)
-  for (const v of vectors) {
+  for (const v of usable) {
     const unit = normalize(v)
     for (let d = 0; d < dim; d++) sum[d] += unit[d]
   }
-  return normalize(sum.map((x) => x / vectors.length))
+  return normalize(sum.map((x) => x / usable.length))
 }
 
 /**
@@ -147,9 +152,21 @@ export function aggregateAndProject(input: AggregateInput): AggregateOutput {
   const excluded = new Set(input.excludeSpeakers ?? [])
 
   // Index of every utterance that both carries a position and is not excluded.
+  //
+  // The length check matters: an empty array is truthy in JS, so a missing
+  // embedding would pass a bare existence check and then poison the column-wise
+  // mean with NaN — corrupting every coordinate on the map, not just its own.
+  const dim = vectors.find((v) => v?.length)?.length ?? 0
   const mappableIdx: number[] = []
   utterances.forEach((u, i) => {
-    if (isMappable(u) && !excluded.has(u.speaker) && vectors[i]) mappableIdx.push(i)
+    if (
+      isMappable(u) &&
+      !excluded.has(u.speaker) &&
+      vectors[i]?.length === dim &&
+      dim > 0
+    ) {
+      mappableIdx.push(i)
+    }
   })
 
   const emptyResult: AggregateOutput = {
