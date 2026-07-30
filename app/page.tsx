@@ -261,6 +261,18 @@ export default function Home() {
         <section className="space-y-4">
           <div className="grid gap-4 lg:grid-cols-[1fr_320px]">
             <div className="space-y-3">
+              {/* Speaker legend above the map: identifying who is who is
+                  needed constantly, so it does not belong behind a disclosure.
+                  Clicking a chip filters; counts stay visible so a position
+                  built on two statements never looks like one built on forty. */}
+              <SpeakerChips
+                speakers={projection.speakers}
+                active={activeSpeakers}
+                onToggle={toggleSpeaker}
+                onClear={() => setActiveSpeakers(new Set())}
+                showAllLabel={t('showAll', lang)}
+              />
+
               <div className="rounded-[8px] border border-[var(--hairline)] bg-[var(--surface)]">
                 <ConstellationMap
                   projection={projection}
@@ -278,6 +290,27 @@ export default function Home() {
                   }}
                 />
               </div>
+
+              {/* Surfaced outside the disclosure: when the fit is saturated the
+                  map is barely evidence at all, which the reader needs before
+                  they start drawing conclusions from it, not after. */}
+              {projection.meta.saturated && (
+                <p
+                  className="rounded-[6px] border px-3 py-2 text-[12px] leading-[1.55]"
+                  style={{
+                    borderColor: 'var(--hairline-strong)',
+                    background: 'var(--surface-2)',
+                    color: 'var(--body)',
+                  }}
+                >
+                  {tf('varianceSaturated', lang, {
+                    n: projection.meta.fittedOn,
+                    pct: (
+                      (projection.meta.explainedVariance ?? 0) * 100
+                    ).toFixed(0),
+                  })}
+                </p>
+              )}
 
               <HowToRead lang={lang} />
 
@@ -315,15 +348,6 @@ export default function Home() {
                     value={method}
                     options={METHOD_OPTIONS}
                     onChange={setMethod}
-                  />
-                </div>
-                <div className="mt-3 border-t border-[var(--hairline)] pt-3">
-                  <SpeakerChips
-                    speakers={projection.speakers}
-                    active={activeSpeakers}
-                    onToggle={toggleSpeaker}
-                    onClear={() => setActiveSpeakers(new Set())}
-                    showAllLabel={t('showAll', lang)}
                   />
                 </div>
                 <div className="mt-3 space-y-2 border-t border-[var(--hairline)] pt-3">

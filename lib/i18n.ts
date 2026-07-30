@@ -100,6 +100,10 @@ export const STRINGS = {
     ko: '2개 축이 원래 의미 공간의 분산 중 {pct}%를 담습니다.',
     en: 'The two axes capture {pct}% of the variance in the original meaning space.',
   },
+  varianceSaturated: {
+    ko: '발언이 {n}개뿐이라 이 수치({pct}%)는 의미가 없습니다 — 점이 적으면 2차원에 거의 그대로 들어맞습니다. 더 긴 회의록이 필요합니다.',
+    en: 'With only {n} statements this figure ({pct}%) carries no information — few points always fit two dimensions almost exactly. A longer transcript is needed.',
+  },
   varianceWeak: {
     ko: '나머지는 2차원에 담기지 않았으므로 거리는 참고용으로만 보세요.',
     en: 'The rest does not fit in two dimensions, so read distances as approximate.',

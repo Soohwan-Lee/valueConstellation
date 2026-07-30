@@ -193,10 +193,24 @@ export async function POST(req: Request) {
         method,
         explainedVariance: out.explainedVariance,
         componentVariance: out.componentVariance,
+        fittedOn: out.fittedOn,
+        saturated: out.saturated,
       },
     }
     // Method-independent, so either pass yields the same set.
     droppedSpeakers = out.droppedSpeakers
+  }
+
+  // A map of one person shows no relative position, which is the entire point.
+  // Better to say so than to draw a single marker and let it imply otherwise.
+  const placed = projections.pca.speakers.length
+  if (placed < 2) {
+    return jsonError(
+      placed === 0
+        ? 'No speaker could be placed. The transcript may contain only assent or procedural talk.'
+        : 'Only one speaker could be placed. A map needs at least two to show relative position.',
+      422,
+    )
   }
 
   const counts: Record<UtteranceKind, number> = {

@@ -177,12 +177,22 @@ export function ProjectionNotice({
   lang: Lang
 }) {
   const ev = projection.meta.explainedVariance
-  const weak = ev !== null && ev < 0.5
+  const { saturated, fittedOn } = projection.meta
+  // A saturated fit is a stronger caveat than a low one: the figure is not
+  // merely weak, it is arithmetically guaranteed and says nothing at all.
+  const weak = ev !== null && (saturated || ev < 0.5)
   const notes: string[] = []
 
   if (ev !== null) {
-    notes.push(tf('variance', lang, { pct: (ev * 100).toFixed(0) }))
-    if (weak) notes.push(t('varianceWeak', lang))
+    notes.push(
+      saturated
+        ? tf('varianceSaturated', lang, {
+            n: fittedOn,
+            pct: (ev * 100).toFixed(0),
+          })
+        : tf('variance', lang, { pct: (ev * 100).toFixed(0) }),
+    )
+    if (!saturated && ev < 0.5) notes.push(t('varianceWeak', lang))
   } else {
     notes.push(t('mdsNote', lang))
   }

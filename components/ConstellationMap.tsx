@@ -1,6 +1,8 @@
 'use client'
 
-import { useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { select } from 'd3-selection'
+import { zoom, zoomIdentity, type D3ZoomEvent } from 'd3-zoom'
 import type {
   Projection,
   ProjectedUtterance,
@@ -39,11 +41,53 @@ export function ConstellationMap({
 }: Props) {
   const [hovered, setHovered] = useState<ProjectedUtterance | null>(null)
   const svgRef = useRef<SVGSVGElement>(null)
+  const [transform, setTransform] = useState({ k: 1, x: 0, y: 0 })
 
   const { toX, toY, scaleLen } = useMemo(
     () => buildScales(projection),
     [projection],
   )
+
+  // Zoom and pan. Marks are counter-scaled below so that magnifying the layout
+  // separates crowded points without inflating the points themselves.
+  const behaviorRef = useRef<ReturnType<typeof zoom<SVGSVGElement, unknown>>>(null)
+
+  useEffect(() => {
+    const svg = svgRef.current
+    if (!svg) return
+    const behavior = zoom<SVGSVGElement, unknown>()
+      .scaleExtent([1, 8])
+      .translateExtent([
+        [0, 0],
+        [VIEW_W, VIEW_H],
+      ])
+      .on('zoom', (event: D3ZoomEvent<SVGSVGElement, unknown>) => {
+        const { k, x, y } = event.transform
+        setTransform({ k, x, y })
+      })
+    behaviorRef.current = behavior
+    const selection = select(svg)
+    selection.call(behavior)
+    // Suppress the double-click-to-zoom default: double-clicking a point should
+    // belong to selection, not navigation.
+    selection.on('dblclick.zoom', null)
+    return () => {
+      selection.on('.zoom', null)
+    }
+  }, [])
+
+  const resetZoom = () => {
+    const svg = svgRef.current
+    const behavior = behaviorRef.current
+    if (!svg || !behavior) return
+    // Reset through the behaviour so its internal transform stays in sync with
+    // ours; setting state alone would leave the next gesture resuming from the
+    // old zoom level.
+    select(svg).call(behavior.transform, zoomIdentity)
+  }
+
+  /** Counter-scale so strokes and radii stay constant while zooming. */
+  const inv = 1 / transform.k
 
   const showPoints = renderMode === 'point' || renderMode === 'both'
   const showRegions = renderMode === 'region' || renderMode === 'both'
@@ -61,6 +105,9 @@ export function ConstellationMap({
         aria-label="Map of participant positions and their utterances"
         onClick={() => onSelect(null)}
       >
+        <g
+          transform={`translate(${transform.x} ${transform.y}) scale(${transform.k})`}
+        >
         {/* Axes are a reference frame only: in an embedding projection the
             directions carry no independent meaning, so they stay unlabelled
             and very faint rather than inviting a reading. */}
@@ -70,7 +117,7 @@ export function ConstellationMap({
           x2={VIEW_W - PADDING / 2}
           y2={VIEW_H / 2}
           stroke="var(--hairline)"
-          strokeWidth={1}
+          strokeWidth={inv}
         />
         <line
           x1={VIEW_W / 2}
@@ -78,7 +125,7 @@ export function ConstellationMap({
           x2={VIEW_W / 2}
           y2={VIEW_H - PADDING / 2}
           stroke="var(--hairline)"
-          strokeWidth={1}
+          strokeWidth={inv}
         />
 
         {/* Speaker regions sit beneath the points they summarise. */}
@@ -100,8 +147,9 @@ export function ConstellationMap({
                 fillOpacity={active ? 0.13 : 0.03}
                 stroke={speakerColor(s.colorIndex)}
                 strokeOpacity={active ? 0.35 : 0.08}
-                strokeWidth={1}
+                strokeWidth={inv}
                 pointerEvents="none"
+                className="motion-safe:[transition:cx_500ms_cubic-bezier(0.32,0.72,0,1),cy_500ms_cubic-bezier(0.32,0.72,0,1),rx_500ms_cubic-bezier(0.32,0.72,0,1),ry_500ms_cubic-bezier(0.32,0.72,0,1)]"
               />
             )
           })}
@@ -117,12 +165,12 @@ export function ConstellationMap({
               key={u.id}
               cx={toX(u.x)}
               cy={toY(u.y)}
-              r={isSelected || isHovered ? 6 : 4}
+              r={(isSelected || isHovered ? 6 : 4) * inv}
               fill={speakerColor(speaker?.colorIndex ?? 0)}
               fillOpacity={active ? (isSelected ? 1 : 0.6) : DIMMED}
               stroke={isSelected ? 'var(--ink)' : 'transparent'}
-              strokeWidth={1.5}
-              className="cursor-pointer transition-[r] duration-100"
+              strokeWidth={1.5 * inv}
+              className="cursor-pointer motion-safe:[transition:cx_500ms_cubic-bezier(0.32,0.72,0,1),cy_500ms_cubic-bezier(0.32,0.72,0,1)]"
               onMouseEnter={() => setHovered(u)}
               onMouseLeave={() => setHovered(null)}
               onClick={(e) => {
@@ -145,8 +193,8 @@ export function ConstellationMap({
             return (
               <g
                 key={`speaker-${s.speaker}`}
-                transform={`translate(${cx} ${cy})`}
-                className="cursor-pointer"
+                transform={`translate(${cx} ${cy}) scale(${inv})`}
+                className="cursor-pointer motion-safe:[transition:transform_500ms_cubic-bezier(0.32,0.72,0,1)]"
                 onClick={(e) => {
                   e.stopPropagation()
                   onSelectSpeaker(s.speaker)
@@ -179,13 +227,26 @@ export function ConstellationMap({
               </g>
             )
           })}
+        </g>
       </svg>
+
+      {transform.k > 1.01 && (
+        <button
+          type="button"
+          onClick={resetZoom}
+          className="absolute right-2 top-2 rounded-[6px] border border-[var(--hairline-strong)] bg-[var(--surface)] px-2 py-1 text-[11px] text-[var(--body)] hover:text-[var(--ink)]"
+        >
+          <span className="tnum">{transform.k.toFixed(1)}×</span> · reset
+        </button>
+      )}
 
       {hovered && (
         <Tooltip
           utterance={hovered}
-          x={toX(hovered.x)}
-          y={toY(hovered.y)}
+          // The tooltip lives outside the zoom group, so place it using the
+          // zoomed screen position rather than the raw layout coordinate.
+          x={toX(hovered.x) * transform.k + transform.x}
+          y={toY(hovered.y) * transform.k + transform.y}
           preferEnglish={preferEnglish}
         />
       )}

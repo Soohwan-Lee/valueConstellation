@@ -79,6 +79,15 @@ export interface ProjectionMeta {
   explainedVariance: number | null
   /** Per-axis share, when meaningful. */
   componentVariance: [number, number] | null
+  /** Utterances the projection was fitted on. */
+  fittedOn: number
+  /**
+   * True when there are too few points for explained variance to mean anything:
+   * n points always fit an (n-1)-dimensional space exactly, so three utterances
+   * yield 100% by arithmetic rather than by capturing real structure. Without
+   * this, the weakest possible input displays as maximum confidence.
+   */
+  saturated: boolean
 }
 
 export interface Projection {

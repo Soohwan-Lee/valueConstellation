@@ -138,7 +138,17 @@ export interface AggregateOutput {
   explainedVariance: number | null
   componentVariance: [number, number] | null
   droppedSpeakers: string[]
+  /** Utterances the projection was fitted on. */
+  fittedOn: number
+  /** Too few points for explained variance to carry information. See ProjectionMeta. */
+  saturated: boolean
 }
+
+/**
+ * Below this many utterances, a 2D projection reproduces the input almost
+ * exactly regardless of structure, so explained variance stops being evidence.
+ */
+export const SATURATION_THRESHOLD = 6
 
 /**
  * Projects utterances and speaker centroids into one shared 2D space.
@@ -175,6 +185,8 @@ export function aggregateAndProject(input: AggregateInput): AggregateOutput {
     explainedVariance: null,
     componentVariance: null,
     droppedSpeakers: [],
+    fittedOn: 0,
+    saturated: false,
   }
   if (mappableIdx.length < 2) return emptyResult
 
@@ -268,5 +280,7 @@ export function aggregateAndProject(input: AggregateInput): AggregateOutput {
     explainedVariance,
     componentVariance,
     droppedSpeakers,
+    fittedOn: mappableIdx.length,
+    saturated: mappableIdx.length < SATURATION_THRESHOLD,
   }
 }
