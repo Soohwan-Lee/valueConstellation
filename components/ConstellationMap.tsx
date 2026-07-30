@@ -17,6 +17,8 @@ interface Props {
   selectedId: string | null
   onSelect: (utterance: ProjectedUtterance | null) => void
   onSelectSpeaker: (speaker: string) => void
+  /** Prefer the English rendering in tooltips when one exists. */
+  preferEnglish?: boolean
 }
 
 const PADDING = 56
@@ -33,6 +35,7 @@ export function ConstellationMap({
   selectedId,
   onSelect,
   onSelectSpeaker,
+  preferEnglish = false,
 }: Props) {
   const [hovered, setHovered] = useState<ProjectedUtterance | null>(null)
   const svgRef = useRef<SVGSVGElement>(null)
@@ -183,7 +186,7 @@ export function ConstellationMap({
           utterance={hovered}
           x={toX(hovered.x)}
           y={toY(hovered.y)}
-          viewW={VIEW_W}
+          preferEnglish={preferEnglish}
         />
       )}
     </div>
@@ -194,20 +197,22 @@ function Tooltip({
   utterance,
   x,
   y,
-  viewW,
+  preferEnglish,
 }: {
   utterance: ProjectedUtterance
   x: number
   y: number
-  viewW: number
+  preferEnglish: boolean
 }) {
   // Flip toward the centre near the right edge so the card stays on screen.
-  const flip = x > viewW * 0.62
+  const flip = x > VIEW_W * 0.62
+  const body =
+    preferEnglish && utterance.textEn ? utterance.textEn : utterance.text
   return (
     <div
       className="pointer-events-none absolute z-10 max-w-[320px] rounded-[8px] border border-[var(--hairline-strong)] bg-[var(--surface)] px-3 py-2 shadow-lg"
       style={{
-        left: `${(x / viewW) * 100}%`,
+        left: `${(x / VIEW_W) * 100}%`,
         top: `${(y / VIEW_H) * 100}%`,
         transform: `translate(${flip ? 'calc(-100% - 14px)' : '14px'}, -50%)`,
       }}
@@ -217,9 +222,7 @@ function Tooltip({
         <span className="tnum">{utterance.kind}</span>
       </div>
       <p className="text-[13px] leading-[1.5] text-[var(--body)]">
-        {utterance.text.length > 220
-          ? `${utterance.text.slice(0, 220)}…`
-          : utterance.text}
+        {body.length > 220 ? `${body.slice(0, 220)}…` : body}
       </p>
     </div>
   )
@@ -248,13 +251,20 @@ function buildScales(projection: Projection) {
     }
   }
 
-  const minX = Math.min(...xs)
-  const maxX = Math.max(...xs)
-  const minY = Math.min(...ys)
-  const maxY = Math.max(...ys)
+  // Math.min() of an empty list is Infinity, and a span of -Infinity is truthy,
+  // so `|| 1` would not catch it — the result would be NaN geometry.
+  const finite = (v: number, fallback: number) =>
+    Number.isFinite(v) ? v : fallback
 
-  const spanX = maxX - minX || 1
-  const spanY = maxY - minY || 1
+  const minX = finite(Math.min(...xs), 0)
+  const maxX = finite(Math.max(...xs), 1)
+  const minY = finite(Math.min(...ys), 0)
+  const maxY = finite(Math.max(...ys), 1)
+
+  const rawSpanX = maxX - minX
+  const rawSpanY = maxY - minY
+  const spanX = Number.isFinite(rawSpanX) && rawSpanX > 0 ? rawSpanX : 1
+  const spanY = Number.isFinite(rawSpanY) && rawSpanY > 0 ? rawSpanY : 1
   const usableW = VIEW_W - PADDING * 2
   const usableH = VIEW_H - PADDING * 2
 

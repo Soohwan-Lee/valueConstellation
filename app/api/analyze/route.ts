@@ -120,17 +120,32 @@ export async function POST(req: Request) {
 
   // Reconcile speaker names against the parsed set: the model occasionally
   // returns a variant, and an unrecognised name would create a phantom speaker.
+  // Units whose speaker cannot be resolved are dropped, not reassigned.
   const knownSpeakers = new Set(parsed.speakers)
-  units = units.map((u) =>
-    knownSpeakers.has(u.speaker)
-      ? u
-      : { ...u, speaker: nearestSpeaker(u.speaker, parsed.speakers) },
-  )
+  let unresolvedSpeakerUnits = 0
+  units = units.flatMap((u) => {
+    if (knownSpeakers.has(u.speaker)) return [u]
+    const resolved = nearestSpeaker(u.speaker, parsed.speakers)
+    if (resolved) return [{ ...u, speaker: resolved }]
+    unresolvedSpeakerUnits += 1
+    return []
+  })
+
+  if (units.length === 0) {
+    return jsonError(
+      'No segmented unit could be attributed to a known speaker.',
+      422,
+    )
+  }
 
   const utterances: Utterance[] = units.map((u, i) => ({
     id: `u${i}`,
     speaker: u.speaker,
     text: u.text,
+    // Only carry a translation when it says something the original does not.
+    ...(u.textEn && u.textEn.trim() && u.textEn.trim() !== u.text.trim()
+      ? { textEn: u.textEn.trim() }
+      : {}),
     kind: u.kind,
     index: i,
   }))
@@ -205,7 +220,9 @@ export async function POST(req: Request) {
       moderatorsExcluded: !includeModerators,
       aliasMap: parsed.aliasMap,
       continuationLines: parsed.continuationLines,
+      preambleLines: parsed.preambleLines,
       unitsDroppedAsHallucinated: hallucinatedCount,
+      unitsDroppedUnresolvedSpeaker: unresolvedSpeakerUnits,
       model: MODEL,
       embeddingModel: EMBEDDING_MODEL,
     },
@@ -238,15 +255,32 @@ async function embedUtterances(
 }
 
 /**
- * Maps a model-returned speaker name onto a known one.
+ * Maps a model-returned speaker name onto a known one, or null if it cannot be
+ * resolved confidently.
  *
- * Falls back to the first known speaker rather than inventing an entry; the
- * hallucination filter has already verified the text belongs to the transcript.
+ * Returns null rather than guessing. Assigning an unresolvable name to the first
+ * known speaker would credit real words to the wrong participant and shift that
+ * participant's centroid, with nothing in the output to indicate it happened.
  */
-function nearestSpeaker(candidate: string, known: string[]): string {
+function nearestSpeaker(candidate: string, known: string[]): string | null {
   const c = candidate.replace(/\s+/g, '')
-  const contained = known.find(
-    (k) => k.replace(/\s+/g, '').includes(c) || c.includes(k.replace(/\s+/g, '')),
-  )
-  return contained ?? known[0] ?? candidate
+  if (!c) return null
+
+  const stripped = known.map((k) => ({ name: k, key: k.replace(/\s+/g, '') }))
+
+  // Exact match after whitespace removal.
+  const exact = stripped.find((k) => k.key === c)
+  if (exact) return exact.name
+
+  // The candidate carries the known name plus a title, e.g. "김철수 위원".
+  const extended = stripped.filter((k) => c.startsWith(k.key))
+  if (extended.length === 1) return extended[0].name
+
+  // The candidate is a prefix of exactly one known name. Requiring uniqueness
+  // matters for Korean surnames: "김" prefixes both 김철수 and 김영수, and
+  // picking the first would attribute by transcript order rather than identity.
+  const prefixOf = stripped.filter((k) => k.key.startsWith(c))
+  if (prefixOf.length === 1 && c.length >= 2) return prefixOf[0].name
+
+  return null
 }

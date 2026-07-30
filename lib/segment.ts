@@ -24,6 +24,15 @@ export const SegmentedUtteranceSchema = z.object({
   text: z
     .string()
     .describe('The argument unit, verbatim from the source. Never paraphrased.'),
+  // Nullable rather than optional: OpenAI structured output rejects optional
+  // fields, and a null here means "same language as the source".
+  textEn: z
+    .string()
+    .nullable()
+    .describe(
+      'Faithful English translation when the source is not English; null when ' +
+        'the source is already English. Translation only — never a summary.',
+    ),
   kind: UtteranceKindSchema.describe(
     'claim: a substantive position, usually with reasons. ' +
       'question: asking rather than asserting. ' +
@@ -53,6 +62,7 @@ An argument unit is one claim together with the reasons and implications that be
    - "procedural" — agenda, timing, turn-taking, logistics. Not about the substance.
 6. Drop filler that carries nothing: "음", "어", "저기", throat-clearing.
 7. Output every unit in transcript order.
+8. For "textEn": give a faithful English translation of the unit when the source is not English. Translate, do not summarise or soften — hedging and force must survive. Set it to null when the source is already English.
 
 Be conservative about splitting. A long turn developing one argument is ONE unit.`
 
@@ -76,31 +86,34 @@ export function filterHallucinated(
   units: SegmentedUtterance[],
   turns: { speaker: string; text: string }[],
 ): { kept: SegmentedUtterance[]; dropped: SegmentedUtterance[] } {
-  const bySpeaker = new Map<string, string>()
-  for (const t of turns) {
-    bySpeaker.set(t.speaker, (bySpeaker.get(t.speaker) ?? '') + ' ' + t.text)
-  }
-
   const normalize = (s: string) => s.replace(/\s+/g, '').toLowerCase()
-  const haystacks = new Map(
-    [...bySpeaker.entries()].map(([k, v]) => [k, normalize(v)]),
-  )
-  const allText = normalize(turns.map((t) => t.text).join(' '))
+
+  // Each turn is kept as a separate haystack. Concatenating a speaker's turns
+  // would erase the boundaries between them, letting a unit that splices the
+  // end of one turn onto the start of the next pass verification.
+  const turnsBySpeaker = new Map<string, string[]>()
+  for (const t of turns) {
+    const list = turnsBySpeaker.get(t.speaker) ?? []
+    list.push(normalize(t.text))
+    turnsBySpeaker.set(t.speaker, list)
+  }
 
   const kept: SegmentedUtterance[] = []
   const dropped: SegmentedUtterance[] = []
 
   for (const u of units) {
     const needle = normalize(u.text)
-    if (needle.length < 2) {
+    // A few characters can match almost any sentence — "니다" is a bare Korean
+    // verb ending. Require enough length for the match to mean something.
+    if (needle.length < MIN_VERIFIABLE_CHARS) {
       dropped.push(u)
       continue
     }
-    const own = haystacks.get(u.speaker)
-    // Accept if the text appears under this speaker, or anywhere in the
-    // transcript (covering minor speaker-attribution slips without letting
-    // fabricated text through).
-    if (own?.includes(needle) || allText.includes(needle)) {
+    // Verify against the attributed speaker's own turns only. Falling back to
+    // the whole transcript would let one speaker's words be credited to
+    // another, which is exactly the corruption this check exists to stop.
+    const own = turnsBySpeaker.get(u.speaker) ?? []
+    if (own.some((turn) => turn.includes(needle))) {
       kept.push(u)
     } else {
       dropped.push(u)
@@ -109,3 +122,11 @@ export function filterHallucinated(
 
   return { kept, dropped }
 }
+
+/**
+ * Minimum normalised length for a text match to be evidence of provenance.
+ *
+ * Short fragments match by coincidence: two Korean characters will appear
+ * somewhere in almost any transcript.
+ */
+const MIN_VERIFIABLE_CHARS = 8

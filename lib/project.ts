@@ -133,7 +133,9 @@ export function fitPca(vectors: Vector[]): PcaModel | null {
   // Total variance, for the explained-variance ratio.
   let total = 0
   for (const row of centered) total += dot(row, row)
-  if (total < 1e-12) return null
+  // `NaN < 1e-12` is false, so a magnitude test alone would let NaN through and
+  // yield an all-NaN model whose coordinates serialise as null.
+  if (!Number.isFinite(total) || total < 1e-12) return null
 
   // Work on a copy: deflation is destructive.
   const work = centered.map((row) => [...row])

@@ -63,6 +63,8 @@ export interface ParseResult {
   aliasMap: Record<string, string>
   /** Lines that carried no speaker label and were attached to the previous turn. */
   continuationLines: number
+  /** Lines discarded because they appeared before any speaker (titles, headers). */
+  preambleLines: number
 }
 
 /**
@@ -128,23 +130,76 @@ export function canonicalizeSpeaker(raw: string): string {
   return name
 }
 
+/**
+ * Whether a label denotes a facilitator rather than a stakeholder.
+ *
+ * Matched exactly, with only an honorific allowed to follow. An unanchored
+ * prefix test would classify 사회복지사 (social worker), 사회학과 교수
+ * (sociology professor), and chairperson as moderators — and since moderators
+ * are excluded by default, that would silently delete real stakeholders from a
+ * deliberation map.
+ */
 export function isModerator(speaker: string): boolean {
-  const lowered = speaker.toLowerCase()
-  return MODERATOR_LABELS.some(
-    (label) => lowered === label.toLowerCase() || speaker.startsWith(label),
-  )
+  const lowered = speaker.trim().toLowerCase()
+  return MODERATOR_LABELS.some((label) => {
+    const l = label.toLowerCase()
+    if (lowered === l) return true
+    // Allow a bare honorific after the role: "사회자님", "위원장님".
+    return HONORIFIC_SUFFIXES.some(
+      (suffix) => lowered === l + suffix.toLowerCase(),
+    )
+  })
 }
 
+/** A line that is only a timestamp, e.g. "00:50" or "[01:20:33]". */
+const TIMESTAMP_ONLY = /^[[(（]?\s*\d{1,2}:\d{2}(?::\d{2})?\s*[)）\]]?$/
+
 /**
- * A label is only credible if it recurs or looks like a name. This rejects
- * prose that happens to contain a colon, e.g. "제 생각은: 그렇습니다".
+ * Field labels common in Korean minutes headers. Without this, "장소: 시청 3층"
+ * ("Location: City Hall 3F") becomes a speaker named 장소.
+ */
+const HEADER_FIELD_LABELS = [
+  '장소',
+  '일시',
+  '날짜',
+  '시간',
+  '참석',
+  '참석자',
+  '불참',
+  '안건',
+  '제목',
+  '작성자',
+  '기록',
+  '배석',
+  '의결사항',
+  'date',
+  'time',
+  'location',
+  'venue',
+  'attendees',
+  'present',
+  'agenda',
+  'subject',
+]
+
+/**
+ * A label is only credible if it looks like a name. This rejects prose that
+ * happens to contain a colon ("제 생각은: 그렇습니다"), bare timestamps, and
+ * minutes-header fields.
  */
 function looksLikeSpeakerLabel(name: string): boolean {
   if (!name || name.length > 20) return false
+  // A timestamp is not a speaker: "00:50" would otherwise yield speaker "00".
+  if (/^\d+$/.test(name)) return false
+  if (TIMESTAMP_ONLY.test(name)) return false
+  // Header fields describe the meeting, not a participant.
+  if (HEADER_FIELD_LABELS.includes(name.trim().toLowerCase())) return false
   // Sentence-ending punctuation means we are mid-prose, not at a label.
-  if (/[.!?。]$/.test(name)) return false
+  if (/[.!?。,]$/.test(name)) return false
   // Korean sentence endings that would not appear in a name.
   if (/(습니다|입니다|however|therefore)$/i.test(name)) return false
+  // Connective/clausal endings marking prose rather than a label.
+  if (/(하면|말하면|정리하면|보면|때문|결과)$/.test(name)) return false
   // Particles marking this as a clause rather than a label.
   if (/(은|는|이|가|을|를|에서|으로|와|과)$/.test(name) && name.length > 4) return false
   return true
@@ -156,12 +211,23 @@ export function parseTranscript(input: string): ParseResult {
   const aliasMap: Record<string, string> = {}
   const order: string[] = []
   let continuationLines = 0
+  /** Lines discarded before any speaker was seen (titles, headers). */
+  let preambleLines = 0
+  /** Timestamp from a standalone line, applied to the next turn. */
+  let pendingTime: string | undefined
 
   for (const rawLine of lines) {
     const trimmedRaw = rawLine.trim()
     const hadMarker = LEADING_MARKER.test(trimmedRaw)
     const line = trimmedRaw.replace(LEADING_MARKER, '').trim()
     if (!line) continue
+
+    // A standalone timestamp is a structural marker, not speech. Record it so
+    // the following turn can carry it, and never treat it as a speaker.
+    if (TIMESTAMP_ONLY.test(line)) {
+      pendingTime = line.replace(/[^\d:]/g, '')
+      continue
+    }
 
     let matched = false
 
@@ -176,7 +242,8 @@ export function parseTranscript(input: string): ParseResult {
         if (canonical && text) {
           aliasMap[rawName] = canonical
           if (!order.includes(canonical)) order.push(canonical)
-          const time = m.groups.time
+          const time = m.groups.time ?? pendingTime
+          pendingTime = undefined
           turns.push({ speaker: canonical, text, ...(time ? { time } : {}) })
           continue
         }
@@ -191,11 +258,12 @@ export function parseTranscript(input: string): ParseResult {
       if (!looksLikeSpeakerLabel(rawName)) continue
 
       const text = (m.groups.text ?? '').trim()
-      const time = m.groups.time ?? m.groups.time2
+      const time = m.groups.time ?? m.groups.time2 ?? pendingTime
 
       const canonical = canonicalizeSpeaker(rawName)
       if (!canonical) continue
 
+      pendingTime = undefined
       aliasMap[rawName] = canonical
       if (!order.includes(canonical)) order.push(canonical)
 
@@ -212,8 +280,11 @@ export function parseTranscript(input: string): ParseResult {
     if (last) {
       last.text = last.text ? `${last.text} ${line}` : line
       continuationLines += 1
+    } else {
+      // Before any speaker: a title or header block. Counted so that silently
+      // discarded input is visible in diagnostics.
+      preambleLines += 1
     }
-    // Text before any speaker label (a title or header) is dropped.
   }
 
   // Drop turns that never accumulated text.
@@ -228,5 +299,6 @@ export function parseTranscript(input: string): ParseResult {
     moderators,
     aliasMap,
     continuationLines,
+    preambleLines,
   }
 }
