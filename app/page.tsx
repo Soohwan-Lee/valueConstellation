@@ -6,8 +6,8 @@ import { DetailPanel, ProjectionNotice } from '@/components/DetailPanel'
 import { HowToRead } from '@/components/HowToRead'
 import { LangToggle, ScenarioChips, StageList, type Stage } from '@/components/Chrome'
 import {
-  METHOD_OPTIONS,
-  RENDER_MODE_OPTIONS,
+  methodOptions,
+  renderModeOptions,
   SegmentedControl,
   SpeakerChips,
 } from '@/components/MapControls'
@@ -243,8 +243,10 @@ export default function Home() {
             </button>
             {detectedSpeakers > 0 && !loading && (
               <span className="tnum text-[12px] text-[var(--muted)]">
-                {detectedSpeakers}{' '}
-                {lang === 'ko' ? '명 감지' : detectedSpeakers === 1 ? 'speaker' : 'speakers'}
+                {tf('speakersDetected', lang, {
+                  n: detectedSpeakers,
+                  s: detectedSpeakers === 1 ? '' : 's',
+                })}
               </span>
             )}
             {analysis && !loading && (
@@ -287,7 +289,7 @@ export default function Home() {
                 active={activeSpeakers}
                 onToggle={toggleSpeaker}
                 onClear={() => setActiveSpeakers(new Set())}
-                showAllLabel={t('showAll', lang)}
+                lang={lang}
               />
 
               <div className="rounded-[8px] border border-[var(--hairline)] bg-[var(--surface)]">
@@ -345,27 +347,19 @@ export default function Home() {
                   <span className="inline-block transition-transform group-open:rotate-90">
                     ▸
                   </span>
-                  {lang === 'ko' ? '표시 설정' : 'Display options'}
+                  {t('displayOptions', lang)}
                 </summary>
                 <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-3">
                   <SegmentedControl
                     label={t('speakersLabel', lang)}
                     value={renderMode}
-                    options={RENDER_MODE_OPTIONS.map((o) => ({
-                      ...o,
-                      label:
-                        o.value === 'point'
-                          ? t('modePoint', lang)
-                          : o.value === 'region'
-                            ? t('modeRegion', lang)
-                            : t('modeBoth', lang),
-                    }))}
+                    options={renderModeOptions(lang)}
                     onChange={setRenderMode}
                   />
                   <SegmentedControl
                     label={t('layoutLabel', lang)}
                     value={method}
-                    options={METHOD_OPTIONS}
+                    options={methodOptions(lang)}
                     onChange={setMethod}
                   />
                 </div>

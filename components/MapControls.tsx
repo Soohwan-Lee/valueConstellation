@@ -6,19 +6,20 @@ import type {
   SpeakerRenderMode,
 } from '@/lib/types'
 import { shapePath, speakerColor, speakerShape } from '@/lib/colors'
+import { t, tf, type Lang } from '@/lib/i18n'
 
 export function SpeakerChips({
   speakers,
   active,
   onToggle,
   onClear,
-  showAllLabel = 'show all',
+  lang,
 }: {
   speakers: SpeakerProfile[]
   active: Set<string>
   onToggle: (speaker: string) => void
   onClear: () => void
-  showAllLabel?: string
+  lang: Lang
 }) {
   return (
     <div className="flex flex-wrap items-center gap-1.5">
@@ -50,7 +51,10 @@ export function SpeakerChips({
             {s.underdetermined && (
               <span
                 className="text-[var(--muted)]"
-                title={`Only ${s.n} substantive utterance(s) — position is not well determined`}
+                title={tf('underdeterminedHint', lang, {
+                  n: s.n,
+                  s: s.n === 1 ? '' : 's',
+                })}
               >
                 ?
               </span>
@@ -64,7 +68,7 @@ export function SpeakerChips({
           onClick={onClear}
           className="ml-1 text-[12px] text-[var(--muted)] underline decoration-[var(--hairline-strong)] underline-offset-2 hover:text-[var(--ink)]"
         >
-          {showAllLabel}
+          {t('showAll', lang)}
         </button>
       )}
     </div>
@@ -107,37 +111,22 @@ export function SegmentedControl<T extends string>({
   )
 }
 
-export const RENDER_MODE_OPTIONS: {
-  value: SpeakerRenderMode
-  label: string
-  title: string
-}[] = [
-  {
-    value: 'point',
-    label: 'Point',
-    title: 'One marker per speaker at their centroid',
-  },
-  {
-    value: 'region',
-    label: 'Region',
-    title: 'A 1-SD ellipse over each speaker’s utterances',
-  },
-  { value: 'both', label: 'Both', title: 'Centroid marker and spread ellipse' },
-]
+export function renderModeOptions(
+  lang: Lang,
+): { value: SpeakerRenderMode; label: string; title: string }[] {
+  return [
+    { value: 'point', label: t('modePoint', lang), title: t('modePointHint', lang) },
+    { value: 'region', label: t('modeRegion', lang), title: t('modeRegionHint', lang) },
+    { value: 'both', label: t('modeBoth', lang), title: t('modeBothHint', lang) },
+  ]
+}
 
-export const METHOD_OPTIONS: {
-  value: ProjectionMethod
-  label: string
-  title: string
-}[] = [
-  {
-    value: 'pca',
-    label: 'PCA',
-    title: 'Linear projection; reports how much variance the 2D view captures',
-  },
-  {
-    value: 'mds',
-    label: 'MDS',
-    title: 'Metric MDS on cosine distance; preserves pairwise distance',
-  },
-]
+export function methodOptions(
+  lang: Lang,
+): { value: ProjectionMethod; label: string; title: string }[] {
+  return [
+    // Method names stay as-is: PCA and MDS are the terms a reader would look up.
+    { value: 'pca', label: 'PCA', title: t('methodPcaHint', lang) },
+    { value: 'mds', label: 'MDS', title: t('methodMdsHint', lang) },
+  ]
+}

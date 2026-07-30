@@ -41,8 +41,38 @@ export const STRINGS = {
   modePoint: { ko: '점', en: 'Point' },
   modeRegion: { ko: '범위', en: 'Region' },
   modeBoth: { ko: '둘 다', en: 'Both' },
+  modePointHint: {
+    ko: '참여자마다 중심 위치에 표식 하나',
+    en: 'One marker per speaker at their centroid',
+  },
+  modeRegionHint: {
+    ko: '참여자의 발언이 퍼진 범위를 타원으로',
+    en: 'An ellipse covering the spread of that speaker’s statements',
+  },
+  modeBothHint: {
+    ko: '중심 표식과 퍼짐 타원을 함께',
+    en: 'Centroid marker together with the spread ellipse',
+  },
+  methodPcaHint: {
+    ko: '선형 투영. 2차원이 원래 공간을 얼마나 담는지 함께 보고합니다',
+    en: 'Linear projection; reports how much of the original space the 2D view captures',
+  },
+  methodMdsHint: {
+    ko: '코사인 거리 기반 MDS. 쌍 간 거리를 보존합니다',
+    en: 'Metric MDS on cosine distance; preserves pairwise distance',
+  },
+  displayOptions: { ko: '표시 설정', en: 'Display options' },
+  // Korean has no plural marker, so `{s}` appears only in the English form.
+  speakersDetected: {
+    ko: '{n}명 감지',
+    en: '{n} speaker{s} detected',
+  },
   newTranscript: { ko: '새 회의록', en: 'New transcript' },
   showAll: { ko: '전체 보기', en: 'Show all' },
+  underdeterminedHint: {
+    ko: '실질 발언이 {n}개뿐이라 위치가 확정적이지 않습니다',
+    en: 'Only {n} substantive statement{s}, so the position is provisional',
+  },
 
   // How to read
   howToRead: { ko: '이 지도 읽는 법', en: 'How to read this map' },
