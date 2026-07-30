@@ -17,13 +17,39 @@ transcript → speaker attribution → argument-unit segmentation (gpt-5.4-mini)
   → PCA / metric MDS → SVG map
 ```
 
-Working: Korean and English transcript parsing across five formats, argument
-segmentation with hallucination filtering, speaker centroids with 1-SD spread
-ellipses, PCA and MDS layouts, speaker filtering, per-utterance detail with
-traceback to source text.
+Working: Korean and English transcript parsing across six formats (including
+transcription-tool exports and Korean official minutes), argument segmentation
+with hallucination filtering, speaker centroids with 1-SD spread ellipses, PCA
+and MDS layouts with animated transition, zoom and pan, speaker filtering,
+per-utterance detail with traceback to source text, KOR/ENG interface toggle.
 
-Not built yet: projection-transition animation, transcript↔map linking,
-participant position correction, value-dimension axes.
+Not built yet: transcript↔map linking, participant position correction,
+value-dimension axes.
+
+## What testing on real data showed
+
+A 57-minute five-party political debate (105 turns) is the honest test case, and
+the result is a caution rather than a success:
+
+**All five parties landed on top of each other.** Centroids fell within 0.17 of
+one another while each party's own ellipse spanned 0.18–0.26 — every speaker's
+statements scattered wider than the speakers sat apart. Explained variance was
+10.8%.
+
+Measuring the ratio directly (mean between-speaker distance over mean
+within-speaker spread) gives **0.38**. In raw text embeddings, **topic dominates
+speaker identity**: each party discussed every sub-topic, so averaging across all
+of them returns roughly the topic centroid for everybody.
+
+The tool now measures and reports this as `separation` and says so above the map
+when it falls below 1, rather than presenting a meaningless layout as a finding.
+The three built-in examples score 1.68–3.37; that debate scores 0.46.
+
+The practical consequence: **one map wants one question.** A meeting covering
+several agenda items needs a map per item, and per-speaker averaging over
+heterogeneous topics is a real limitation of this method, not a bug to fix by
+tuning. Making speaker identity separable — rather than relying on raw embedding
+distance — is the open research problem here.
 
 ## Running it
 
@@ -66,6 +92,11 @@ These exist because a map of people is easy to make confidently wrong.
   transcript or it is dropped and counted.
 - **Eight speakers is the colour limit.** Past that, hue stops distinguishing
   people under common colour-vision deficiencies, so marker shape takes over.
+- **A map that shows nothing says so.** Below six utterances the explained-variance
+  figure is arithmetic rather than evidence (n points always fit n−1 dimensions),
+  and below a separation of 1 the centroids are not distinguishing anybody. Both
+  are stated above the map. A single-speaker transcript is refused outright —
+  there is no relative position to show.
 
 ## Layout
 
