@@ -155,6 +155,19 @@ export function isModerator(speaker: string): boolean {
 const TIMESTAMP_ONLY = /^[[(（]?\s*\d{1,2}:\d{2}(?::\d{2})?\s*[)）\]]?$/
 
 /**
+ * A speaker header on its own line, with the speech following:
+ *
+ *   사회자 00:00
+ *   자 두 번째 토론 주제로 넘어가겠습니다.
+ *
+ * Common in transcription-tool exports (Clova, Otter, Daglo). Without this the
+ * timestamp's colon is read as the label separator, producing a distinct phantom
+ * speaker for every minute mark — "정의당 00", "정의당 02", and so on.
+ */
+const SPEAKER_HEADER_LINE =
+  /^(?<name>.{1,30}?)\s+(?<time>\d{1,2}:\d{2}(?::\d{2})?)\s*$/
+
+/**
  * Field labels common in Korean minutes headers. Without this, "장소: 시청 3층"
  * ("Location: City Hall 3F") becomes a speaker named 장소.
  */
@@ -192,6 +205,11 @@ function looksLikeSpeakerLabel(name: string): boolean {
   // A timestamp is not a speaker: "00:50" would otherwise yield speaker "00".
   if (/^\d+$/.test(name)) return false
   if (TIMESTAMP_ONLY.test(name)) return false
+  // Recording metadata, e.g. "2026.05.21 Thu AM 11" from a transcription export.
+  if (/\d{4}[.\-/]\d{1,2}[.\-/]\d{1,2}/.test(name)) return false
+  if (/\b(AM|PM)\b/i.test(name)) return false
+  // A label that is mostly digits is a measurement, not a name.
+  if ((name.replace(/\D/g, '').length / name.length) > 0.5) return false
   // Header fields describe the meeting, not a participant.
   if (HEADER_FIELD_LABELS.includes(name.trim().toLowerCase())) return false
   // Sentence-ending punctuation means we are mid-prose, not at a label.
@@ -227,6 +245,26 @@ export function parseTranscript(input: string): ParseResult {
     if (TIMESTAMP_ONLY.test(line)) {
       pendingTime = line.replace(/[^\d:]/g, '')
       continue
+    }
+
+    // "이름 00:00" alone on a line: open a turn whose speech follows.
+    const header = SPEAKER_HEADER_LINE.exec(line)
+    if (header?.groups) {
+      const rawName = header.groups.name.trim()
+      if (looksLikeSpeakerLabel(rawName)) {
+        const canonical = canonicalizeSpeaker(rawName)
+        if (canonical) {
+          aliasMap[rawName] = canonical
+          if (!order.includes(canonical)) order.push(canonical)
+          pendingTime = undefined
+          turns.push({
+            speaker: canonical,
+            text: '',
+            time: header.groups.time,
+          })
+          continue
+        }
+      }
     }
 
     let matched = false
