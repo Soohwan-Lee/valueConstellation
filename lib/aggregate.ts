@@ -142,6 +142,8 @@ export interface AggregateOutput {
   fittedOn: number
   /** Too few points for explained variance to carry information. See ProjectionMeta. */
   saturated: boolean
+  /** Between-speaker distance over within-speaker spread. See speakerSeparation. */
+  separation: number | null
 }
 
 /**
@@ -149,6 +151,67 @@ export interface AggregateOutput {
  * exactly regardless of structure, so explained variance stops being evidence.
  */
 export const SATURATION_THRESHOLD = 6
+
+/**
+ * Separation: how far apart speakers sit relative to how far each spreads.
+ *
+ *   separation = mean pairwise centroid distance / mean within-speaker spread
+ *
+ * Below 1, speakers overlap more than they differ, and the centroids are not
+ * distinguishing anybody — the layout is being driven by something other than
+ * who is talking. Measured on a real 57-minute five-party debate this came out
+ * at 0.38: each party discussed every sub-topic, so averaging across all of
+ * them returned the topic centroid rather than a position, and all five landed
+ * on top of each other.
+ *
+ * This is a property of the data, not a defect, but a map that hides it invites
+ * exactly the misreading the tool exists to prevent.
+ */
+export function speakerSeparation(
+  utterances: ProjectedUtterance[],
+  speakers: SpeakerProfile[],
+): number | null {
+  if (speakers.length < 2) return null
+
+  const points = new Map<string, [number, number][]>()
+  for (const u of utterances) {
+    const list = points.get(u.speaker) ?? []
+    list.push([u.x, u.y])
+    points.set(u.speaker, list)
+  }
+
+  let withinSum = 0
+  let withinCount = 0
+  for (const s of speakers) {
+    const pts = points.get(s.speaker) ?? []
+    if (pts.length < 2) continue
+    for (const [x, y] of pts) {
+      withinSum += Math.hypot(x - s.x, y - s.y)
+      withinCount += 1
+    }
+  }
+  if (withinCount === 0) return null
+  const within = withinSum / withinCount
+  if (within < 1e-9) return null
+
+  let betweenSum = 0
+  let betweenCount = 0
+  for (let i = 0; i < speakers.length; i++) {
+    for (let j = i + 1; j < speakers.length; j++) {
+      betweenSum += Math.hypot(
+        speakers[i].x - speakers[j].x,
+        speakers[i].y - speakers[j].y,
+      )
+      betweenCount += 1
+    }
+  }
+  if (betweenCount === 0) return null
+
+  return betweenSum / betweenCount / within
+}
+
+/** Below this, speaker centroids are not separating the participants. */
+export const MIN_USEFUL_SEPARATION = 1
 
 /**
  * Projects utterances and speaker centroids into one shared 2D space.
@@ -187,6 +250,7 @@ export function aggregateAndProject(input: AggregateInput): AggregateOutput {
     droppedSpeakers: [],
     fittedOn: 0,
     saturated: false,
+    separation: null,
   }
   if (mappableIdx.length < 2) return emptyResult
 
@@ -282,5 +346,6 @@ export function aggregateAndProject(input: AggregateInput): AggregateOutput {
     droppedSpeakers,
     fittedOn: mappableIdx.length,
     saturated: mappableIdx.length < SATURATION_THRESHOLD,
+    separation: speakerSeparation(projectedUtterances, speakers),
   }
 }

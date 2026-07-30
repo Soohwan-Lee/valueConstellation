@@ -64,7 +64,14 @@ An argument unit is one claim together with the reasons and implications that be
 7. Output every unit in transcript order.
 8. For "textEn": give a faithful English translation of the unit when the source is not English. Translate, do not summarise or soften — hedging and force must survive. Set it to null when the source is already English.
 
-Be conservative about splitting. A long turn developing one argument is ONE unit.`
+Be conservative about splitting. A long turn developing one argument is ONE unit.
+
+Splitting discipline — this matters more than any other rule:
+- Most turns yield exactly ONE unit. A turn becomes two only when it makes two claims that could stand as separate positions someone might agree with one of and reject the other.
+- Never split a claim from its supporting reason, evidence, statistic, example, or consequence. "We should do X. The cost is Y. So Z follows." is ONE unit.
+- Never split on sentence boundaries, discourse markers, or paragraph breaks alone. "그리고", "또한", "먼저", "마지막으로", "However", "Additionally" signal continuation of one argument, not a new one.
+- A one-minute speaking turn is normally one unit, occasionally two, and almost never three or more.
+- If unsure whether to split, do not split.`
 
 /** Turns, formatted for the model with indices so it can preserve order. */
 export function formatTurnsForPrompt(

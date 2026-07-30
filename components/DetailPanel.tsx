@@ -197,6 +197,12 @@ export function ProjectionNotice({
     notes.push(t('mdsNote', lang))
   }
 
+  if (projection.meta.separation !== null) {
+    notes.push(
+      `${t('separationLabel', lang)} ${projection.meta.separation.toFixed(2)}`,
+    )
+  }
+
   if (droppedSpeakers.length > 0) {
     notes.push(`${t('notPlaced', lang)}: ${droppedSpeakers.join(', ')}`)
   }

@@ -88,6 +88,14 @@ export interface ProjectionMeta {
    * this, the weakest possible input displays as maximum confidence.
    */
   saturated: boolean
+  /**
+   * Mean between-speaker distance over mean within-speaker spread.
+   *
+   * Below 1, each speaker's own statements scatter further than the speakers sit
+   * apart, so the centroids are not distinguishing anybody and the layout is
+   * driven by topic rather than by who is talking.
+   */
+  separation: number | null
 }
 
 export interface Projection {

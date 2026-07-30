@@ -25,8 +25,53 @@ const EMBEDDING_MODEL = 'text-embedding-3-small'
 
 /** Guards against a paste large enough to blow the duration limit. */
 const MAX_TRANSCRIPT_CHARS = 120_000
-/** Turns per segmentation call; keeps each request well inside maxDuration. */
-const SEGMENT_BATCH_TURNS = 40
+/**
+ * Turns per segmentation call.
+ *
+ * Kept small deliberately: latency tracks the text volume of the slowest single
+ * call, not the number of calls, so many small concurrent batches finish sooner
+ * than a few large ones. Measured on a 105-turn transcript: 40 turns/call ran in
+ * 73s, 15 turns/call in 28s, for equivalent output.
+ */
+const SEGMENT_BATCH_TURNS = 15
+/**
+ * Concurrent segmentation calls. Bounded rather than unlimited so a very long
+ * transcript does not open dozens of simultaneous requests and hit provider
+ * rate limits, which would fail the whole analysis rather than just slow it.
+ */
+const SEGMENT_CONCURRENCY = 8
+
+interface ParsedTurnBatch {
+  index: number
+  turns: { speaker: string; text: string }[]
+}
+
+/**
+ * Runs `fn` over `items` with at most `limit` in flight, preserving input order
+ * in the returned array. Rejects on the first failure, like Promise.all.
+ */
+async function mapWithConcurrency<T, R>(
+  items: T[],
+  limit: number,
+  fn: (item: T) => Promise<R>,
+): Promise<R[]> {
+  const results = new Array<R>(items.length)
+  let next = 0
+
+  const workers = Array.from(
+    { length: Math.min(limit, items.length) },
+    async () => {
+      while (true) {
+        const i = next++
+        if (i >= items.length) return
+        results[i] = await fn(items[i])
+      }
+    },
+  )
+
+  await Promise.all(workers)
+  return results
+}
 
 const RequestSchema = z.object({
   transcript: z.string().min(1),
@@ -76,22 +121,42 @@ export async function POST(req: Request) {
   }
 
   // 2. Segment turns into argument units.
+  //
+  // Batches run concurrently. Sequentially, a real 105-turn transcript took
+  // 110s and would have been killed by the 60s function limit. The batches are
+  // independent — each needs only its own turns — so wall clock is the slowest
+  // call rather than their sum.
   let units: SegmentedUtterance[] = []
   let hallucinatedCount = 0
 
-  try {
-    for (let i = 0; i < parsed.turns.length; i += SEGMENT_BATCH_TURNS) {
-      const batch = parsed.turns.slice(i, i + SEGMENT_BATCH_TURNS)
-      const { object } = await generateObject({
-        model: openai(MODEL),
-        schema: SegmentationSchema,
-        system: SEGMENTATION_SYSTEM_PROMPT,
-        prompt: formatTurnsForPrompt(batch),
-      })
+  const batches: ParsedTurnBatch[] = []
+  for (let i = 0; i < parsed.turns.length; i += SEGMENT_BATCH_TURNS) {
+    batches.push({
+      index: batches.length,
+      turns: parsed.turns.slice(i, i + SEGMENT_BATCH_TURNS),
+    })
+  }
 
-      const { kept, dropped } = filterHallucinated(object.utterances, batch)
-      units.push(...kept)
-      hallucinatedCount += dropped.length
+  try {
+    const results = await mapWithConcurrency(
+      batches,
+      SEGMENT_CONCURRENCY,
+      async (batch) => {
+        const { object } = await generateObject({
+          model: openai(MODEL),
+          schema: SegmentationSchema,
+          system: SEGMENTATION_SYSTEM_PROMPT,
+          prompt: formatTurnsForPrompt(batch.turns),
+        })
+        return { batch, ...filterHallucinated(object.utterances, batch.turns) }
+      },
+    )
+
+    // Reassemble in batch order so utterance indices follow the transcript.
+    results.sort((a, b) => a.batch.index - b.batch.index)
+    for (const r of results) {
+      units.push(...r.kept)
+      hallucinatedCount += r.dropped.length
     }
   } catch (error) {
     // A schema-conformance failure is worth distinguishing from a transport
@@ -195,6 +260,7 @@ export async function POST(req: Request) {
         componentVariance: out.componentVariance,
         fittedOn: out.fittedOn,
         saturated: out.saturated,
+        separation: out.separation,
       },
     }
     // Method-independent, so either pass yields the same set.

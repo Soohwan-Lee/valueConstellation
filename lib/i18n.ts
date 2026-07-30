@@ -100,6 +100,11 @@ export const STRINGS = {
     ko: '2개 축이 원래 의미 공간의 분산 중 {pct}%를 담습니다.',
     en: 'The two axes capture {pct}% of the variance in the original meaning space.',
   },
+  lowSeparation: {
+    ko: '참여자들이 서로 떨어진 거리보다 각자의 발언이 더 넓게 퍼져 있습니다(분리도 {sep}). 이 회의에서는 화자 위치가 참여자를 구분하지 못합니다 — 여러 쟁점을 함께 다뤄서 평균이 모두 가운데로 모인 경우입니다. 쟁점을 하나로 좁혀 다시 만들어 보세요.',
+    en: 'Each speaker\'s statements scatter wider than the speakers sit apart (separation {sep}). Here the centroids are not distinguishing anybody — the discussion covered several issues, so averaging pulled everyone to the middle. Try a transcript narrowed to one question.',
+  },
+  separationLabel: { ko: '분리도', en: 'Separation' },
   varianceSaturated: {
     ko: '발언이 {n}개뿐이라 이 수치({pct}%)는 의미가 없습니다 — 점이 적으면 2차원에 거의 그대로 들어맞습니다. 더 긴 회의록이 필요합니다.',
     en: 'With only {n} statements this figure ({pct}%) carries no information — few points always fit two dimensions almost exactly. A longer transcript is needed.',

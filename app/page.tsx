@@ -11,6 +11,7 @@ import {
   SegmentedControl,
   SpeakerChips,
 } from '@/components/MapControls'
+import { MIN_USEFUL_SEPARATION } from '@/lib/aggregate'
 import { SCENARIOS, getScenario } from '@/data/scenarios'
 import precomputed from '@/data/fixtures/precomputed.json'
 import { needsShapeEncoding, SPEAKER_SLOTS } from '@/lib/colors'
@@ -33,6 +34,22 @@ const STAGE_SCHEDULE: { at: number; stage: Stage }[] = [
   { at: 5200, stage: 'embed' },
   { at: 6800, stage: 'project' },
 ]
+
+/** A caveat that must be read before the map, not after. */
+function Caveat({ children }: { children: React.ReactNode }) {
+  return (
+    <p
+      className="rounded-[6px] border px-3 py-2 text-[12px] leading-[1.55]"
+      style={{
+        borderColor: 'var(--hairline-strong)',
+        background: 'var(--surface-2)',
+        color: 'var(--body)',
+      }}
+    >
+      {children}
+    </p>
+  )
+}
 
 export default function Home() {
   const [lang, setLang] = useState<Lang>('ko')
@@ -291,26 +308,28 @@ export default function Home() {
                 />
               </div>
 
-              {/* Surfaced outside the disclosure: when the fit is saturated the
-                  map is barely evidence at all, which the reader needs before
-                  they start drawing conclusions from it, not after. */}
+              {/* Surfaced outside the disclosure: when the fit is saturated or
+                  the speakers do not separate, the map is barely evidence at
+                  all, which the reader needs before drawing conclusions from
+                  it, not after. */}
               {projection.meta.saturated && (
-                <p
-                  className="rounded-[6px] border px-3 py-2 text-[12px] leading-[1.55]"
-                  style={{
-                    borderColor: 'var(--hairline-strong)',
-                    background: 'var(--surface-2)',
-                    color: 'var(--body)',
-                  }}
-                >
+                <Caveat>
                   {tf('varianceSaturated', lang, {
                     n: projection.meta.fittedOn,
                     pct: (
                       (projection.meta.explainedVariance ?? 0) * 100
                     ).toFixed(0),
                   })}
-                </p>
+                </Caveat>
               )}
+              {projection.meta.separation !== null &&
+                projection.meta.separation < MIN_USEFUL_SEPARATION && (
+                  <Caveat>
+                    {tf('lowSeparation', lang, {
+                      sep: projection.meta.separation.toFixed(2),
+                    })}
+                  </Caveat>
+                )}
 
               <HowToRead lang={lang} />
 
