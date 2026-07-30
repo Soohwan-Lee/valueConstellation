@@ -4,7 +4,7 @@
   "description": "Value Constellation is an early research prototype for mapping multi-stakeholder policy deliberation into value-space representations.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node --test --experimental-strip-types lib/*.test.ts",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",

@@ -20,8 +20,8 @@ import type {
   SpeakerProfile,
   Utterance,
   UtteranceKind,
-} from './types'
-import { applyPca, classicalMds, fitPca, type Vector } from './project'
+} from './types.ts'
+import { applyPca, classicalMds, fitPca, type Vector } from './project.ts'
 
 /** Below this many mappable utterances, a centroid is not reported as a position. */
 export const MIN_UTTERANCES_FOR_POSITION = 3
