@@ -71,6 +71,7 @@ export function ConstellationMap({
   settleKey,
 }: Props) {
   const [hovered, setHovered] = useState<ProjectedUtterance | null>(null)
+  const [hoveredSpeaker, setHoveredSpeaker] = useState<string | null>(null)
   const svgRef = useRef<SVGSVGElement>(null)
   const [transform, setTransform] = useState({ k: 1, x: 0, y: 0 })
 
@@ -157,7 +158,12 @@ export function ConstellationMap({
         preserveAspectRatio="xMidYMid meet"
         className="h-full w-full touch-none select-none"
         role="img"
-        aria-label="Map of participant positions and their utterances"
+        // A scatter cannot be read by a screen reader whatever is done to it,
+        // so the label states what is on it and the rail carries the same
+        // information as focusable controls.
+        aria-label={`${projection.utterances.length} statements from ${projection.speakers.length} participants: ${projection.speakers
+          .map((s) => `${s.speaker} (${s.n})`)
+          .join(', ')}`}
         onClick={() => onSelect(null)}
       >
         <defs>
@@ -261,25 +267,31 @@ export function ConstellationMap({
                 const shape = speakerShape(s.colorIndex)
                 const r = 7 + Math.min(5, Math.log2(Math.max(1, s.n)) * 1.6)
                 const isPicked = selectedSpeaker === s.speaker
+                const isHot = hoveredSpeaker === s.speaker
 
                 return (
                   <g
                     key={`speaker-${s.speaker}`}
                     transform={`translate(${cx} ${cy}) scale(${inv})`}
                     className="cursor-pointer motion-safe:[transition:transform_560ms_cubic-bezier(0.32,0.72,0,1)]"
+                    onMouseEnter={() => setHoveredSpeaker(s.speaker)}
+                    onMouseLeave={() => setHoveredSpeaker(null)}
                     onClick={(e) => {
                       e.stopPropagation()
                       onSelectSpeaker(s.speaker)
                     }}
                   >
-                    {isPicked && (
+                    {/* A marker is the only thing on the map that measures
+                        anything when clicked, and nothing else says so. The
+                        ring on hover is the signpost. */}
+                    {(isPicked || isHot) && (
                       <circle
                         r={r + 7}
                         fill="none"
                         stroke="var(--ink)"
-                        strokeOpacity={0.5}
+                        strokeOpacity={isPicked ? 0.5 : 0.24}
                         strokeWidth={1}
-                        strokeDasharray="2 3"
+                        strokeDasharray={isPicked ? '2 3' : undefined}
                       />
                     )}
                     {/* A dashed outline marks a position inferred from too few

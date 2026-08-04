@@ -106,6 +106,12 @@ export const STRINGS = {
     en: '**Measure lines** appear when you select a participant. The number beside each is that gap as a share of the widest gap on this map.',
   },
 
+  // Mark legend, on the plate
+  legendMarker: { ko: '그 사람의 중심', en: 'Their centre' },
+  legendDot: { ko: '발언 하나', en: 'One statement' },
+  legendRegion: { ko: '발언이 퍼진 범위', en: 'Where they ranged' },
+  legendMeasure: { ko: '사이 거리 — 참여자를 클릭', en: 'Gap — click a participant' },
+
   // Console rail
   sourceLabel: { ko: '자료', en: 'Source' },
   participantsLabel: { ko: '참여자', en: 'Participants' },

@@ -208,6 +208,86 @@ export function DistanceList({
   )
 }
 
+/**
+ * What each mark means, stated on the plate.
+ *
+ * A first-time reader arrives at a field of dots and shapes with no idea which
+ * of them is a person and which is a sentence. That belongs above the map and
+ * permanently visible, not inside a disclosure in the rail — by the time
+ * somebody knows to look for an explanation they have already misread the
+ * picture. The glyphs are drawn in ink rather than in a speaker's colour,
+ * because colour on this page means identity and the legend names mark types.
+ *
+ * The measure entry doubles as the only signpost for the map's one hidden
+ * action, which is why it names the gesture rather than just the mark.
+ */
+export function MarkLegend({
+  showRegions,
+  showPoints,
+  lang,
+}: {
+  showRegions: boolean
+  showPoints: boolean
+  lang: Lang
+}) {
+  const items: { key: string; glyph: React.ReactNode; label: string }[] = []
+
+  if (showPoints) {
+    items.push({
+      key: 'marker',
+      glyph: <circle cx={7} cy={7} r={4.5} fill="var(--muted)" />,
+      label: t('legendMarker', lang),
+    })
+  }
+  items.push({
+    key: 'dot',
+    glyph: <circle cx={7} cy={7} r={2} fill="var(--muted)" />,
+    label: t('legendDot', lang),
+  })
+  if (showRegions) {
+    items.push({
+      key: 'region',
+      glyph: (
+        <path
+          d="M2.4 7.6C2.4 4.4 4.4 2.2 7.4 2.4C10.6 2.6 12 4.4 11.7 7.6C11.4 10.5 9.6 11.8 6.8 11.6C4 11.4 2.4 10.2 2.4 7.6Z"
+          fill="none"
+          stroke="var(--muted)"
+          strokeWidth={1}
+          strokeDasharray="2.5 2"
+        />
+      ),
+      label: t('legendRegion', lang),
+    })
+  }
+  items.push({
+    key: 'measure',
+    glyph: (
+      <>
+        <line x1={1.5} y1={10} x2={12.5} y2={4} stroke="var(--muted)" strokeWidth={1} />
+        <circle cx={1.5} cy={10} r={1.6} fill="var(--muted)" />
+        <circle cx={12.5} cy={4} r={1.6} fill="var(--muted)" />
+      </>
+    ),
+    label: t('legendMeasure', lang),
+  })
+
+  return (
+    <ul className="flex flex-wrap items-center gap-x-4 gap-y-1">
+      {items.map((item) => (
+        <li
+          key={item.key}
+          className="flex items-center gap-1.5 text-[11.5px] text-[var(--muted)]"
+        >
+          <svg width={14} height={14} viewBox="0 0 14 14" aria-hidden className="shrink-0">
+            {item.glyph}
+          </svg>
+          {item.label}
+        </li>
+      ))}
+    </ul>
+  )
+}
+
 export function SegmentedControl<T extends string>({
   label,
   value,

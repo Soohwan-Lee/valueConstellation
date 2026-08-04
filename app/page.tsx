@@ -15,6 +15,7 @@ import {
 } from '@/components/Chrome'
 import {
   DistanceList,
+  MarkLegend,
   methodOptions,
   ParticipantList,
   renderModeOptions,
@@ -85,6 +86,19 @@ export default function Home() {
     )
     return () => timers.forEach(clearTimeout)
   }, [loading])
+
+  // Escape clears whatever is selected. The inspector covers part of the map,
+  // and reaching for its close button is the wrong amount of work to undo a
+  // click made out of curiosity.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return
+      setSelected(null)
+      setSelectedSpeaker(null)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
 
   const resetSelection = useCallback(() => {
     setSelected(null)
@@ -331,24 +345,16 @@ export default function Home() {
             />
           ) : projection && speakerCount > 0 ? (
             <>
-              <header className="flex flex-wrap items-baseline gap-x-4 gap-y-1 border-b border-[var(--line)] px-4 py-3">
+              {/* Title and legend at the top, provenance and caveats at the
+                  bottom: what the marks mean has to be read before the map,
+                  and how far to trust it after. */}
+              <header className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-b border-[var(--line)] px-4 py-3">
                 <h2 className="title text-[15px]">{sourceTitle}</h2>
-                <div className="flex items-center gap-3 text-[11.5px] text-[var(--muted)]">
-                  <span>
-                    {t('mapped', lang)}{' '}
-                    <span className="readout text-[var(--body)]">
-                      {projection.utterances.length}
-                    </span>
-                  </span>
-                  <span className="text-[var(--faint)]">/</span>
-                  <span>
-                    {t('assentProcedural', lang)}{' '}
-                    <span className="readout text-[var(--body)]">
-                      {analysis ? analysis.counts.agreement : 0} ·{' '}
-                      {analysis ? analysis.counts.procedural : 0}
-                    </span>
-                  </span>
-                </div>
+                <MarkLegend
+                  showRegions={renderMode !== 'point'}
+                  showPoints={renderMode !== 'region'}
+                  lang={lang}
+                />
               </header>
 
               <div className="relative min-h-0 flex-1">
@@ -392,12 +398,28 @@ export default function Home() {
               {/* Caveats sit under the map rather than behind a disclosure:
                   what the projection failed to capture has to be readable
                   without first suspecting that something is wrong. */}
-              <footer className="border-t border-[var(--line)] px-4 py-3">
+              <footer className="space-y-2 border-t border-[var(--line)] px-4 py-3">
                 <ProjectionNotice
                   projection={projection}
                   droppedSpeakers={analysis?.droppedSpeakers ?? []}
                   lang={lang}
                 />
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11.5px] text-[var(--muted)]">
+                  <span>
+                    {t('mapped', lang)}{' '}
+                    <span className="readout text-[var(--body)]">
+                      {projection.utterances.length}
+                    </span>
+                  </span>
+                  <span className="text-[var(--faint)]">/</span>
+                  <span>
+                    {t('assentProcedural', lang)}{' '}
+                    <span className="readout text-[var(--body)]">
+                      {analysis ? analysis.counts.agreement : 0} ·{' '}
+                      {analysis ? analysis.counts.procedural : 0}
+                    </span>
+                  </span>
+                </div>
               </footer>
             </>
           ) : (
