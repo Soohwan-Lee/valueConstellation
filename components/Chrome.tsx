@@ -135,22 +135,23 @@ export function SourcePicker({
           </li>
         )
       })}
-      <li className="pt-1">
+      {/* Given its own weight rather than a fourth row in the list: pasting a
+          transcript is what this tool is for, and a control that looks like one
+          more example reads as one more example. */}
+      <li className="px-1.5 pt-3">
         <button
           type="button"
           disabled={disabled}
           onClick={onPaste}
           aria-pressed={pasting}
-          className="flex w-full items-center gap-2 rounded-[6px] px-1.5 py-1.5 text-left text-[13.5px] transition-colors disabled:opacity-50"
+          className="flex w-full items-center justify-center gap-2 rounded-[8px] border border-dashed px-3 py-2.5 text-[13.5px] font-medium transition-colors disabled:opacity-50"
           style={{
-            background: pasting ? 'var(--panel-2)' : 'transparent',
-            color: pasting ? 'var(--ink)' : 'var(--body)',
+            borderColor: pasting ? 'transparent' : 'var(--line-strong)',
+            background: pasting ? 'var(--signal)' : 'transparent',
+            color: pasting ? 'var(--on-signal)' : 'var(--ink)',
           }}
         >
-          <span
-            aria-hidden
-            className="readout w-[11px] shrink-0 text-center text-[13px] leading-none text-[var(--faint)]"
-          >
+          <span aria-hidden className="readout text-[14px] leading-none">
             +
           </span>
           {t('orPasteOwn', lang)}

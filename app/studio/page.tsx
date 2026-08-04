@@ -374,14 +374,24 @@ export default function Studio() {
           </>
         )}
 
-        <Section title={t('howToRead', lang)}>
+        <Section
+          title={t('howToRead', lang)}
+          aside={
+            <Link
+              href="/#marks"
+              className="text-[11.5px] text-[var(--muted)] underline decoration-[var(--line-strong)] underline-offset-[3px] transition-colors hover:text-[var(--ink)]"
+            >
+              {t('guideLink', lang)}
+            </Link>
+          }
+        >
           <HowToRead lang={lang} />
         </Section>
       </aside>
 
       {/* The plate. */}
       <main className="order-1 min-w-0 flex-1 p-3 sm:p-4 lg:order-2 lg:h-full lg:p-5">
-        <div className="flex h-[70vh] min-h-[460px] flex-col overflow-hidden rounded-[14px] border border-[var(--line)] bg-[var(--plate)] lg:h-full">
+        <div className="flex h-[70vh] min-h-[460px] flex-col overflow-hidden rounded-[18px] border border-[var(--line)] bg-[var(--plate)] lg:h-full">
           {/* Loading is checked before the composer: the request is started
               from the composer and leaves it mounted, so testing `pasting`
               first would keep the editor on screen for the whole eight-second
@@ -416,7 +426,7 @@ export default function Studio() {
                   bottom: what the marks mean has to be read before the map,
                   and how far to trust it after. */}
               <header className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-b border-[var(--line)] px-4 py-3">
-                <h2 className="title text-[15px]">{sourceTitle}</h2>
+                <h2 className="t-title">{sourceTitle}</h2>
                 <MarkLegend
                   showRegions={renderMode !== 'point'}
                   showPoints={renderMode !== 'region'}
@@ -534,7 +544,7 @@ function Composer({
   return (
     <div className="flex min-h-0 flex-1 flex-col">
       <header className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-b border-[var(--line)] px-4 py-3">
-        <h2 className="title text-[15px]">{t('pasteTitle', lang)}</h2>
+        <h2 className="t-title">{t('pasteTitle', lang)}</h2>
         <button
           type="button"
           onClick={() => onChange(SAMPLE_TRANSCRIPT)}

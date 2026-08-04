@@ -80,6 +80,7 @@ export const STRINGS = {
 
   // How to read
   howToRead: { ko: '이 지도 읽는 법', en: 'How to read this map' },
+  guideLink: { ko: '자세한 설명', en: 'Full guide' },
   markLegend: { ko: '기호 하나씩 보기', en: 'What each mark means' },
   readMarker: {
     ko: '**표식**은 그 사람의 발언 전체를 요약한 위치입니다.',

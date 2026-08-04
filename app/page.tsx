@@ -87,7 +87,7 @@ export default function Overview() {
 
         {/* ── Reading guide ────────────────────────────────────────────────
             Every mark, once, with the figure drawn the way the map draws it. */}
-        <Band>
+        <Band id="marks">
           <SectionHead
             eyebrow={say(MARKS_SECTION.eyebrow)}
             headline={say(MARKS_SECTION.headline)}
@@ -282,9 +282,9 @@ export default function Overview() {
 }
 
 /** A page section with the shared vertical rhythm and a top rule. */
-function Band({ children }: { children: React.ReactNode }) {
+function Band({ id, children }: { id?: string; children: React.ReactNode }) {
   return (
-    <section className="mx-auto max-w-[1240px] px-5 py-20 sm:px-8 sm:py-28">
+    <section id={id} className="mx-auto max-w-[1240px] scroll-mt-20 px-5 py-20 sm:px-8 sm:py-28">
       {children}
     </section>
   )

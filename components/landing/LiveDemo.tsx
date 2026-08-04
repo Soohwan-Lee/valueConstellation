@@ -95,6 +95,7 @@ export function LiveDemo({
         emphasised={null}
         lang={lang}
         settleKey="demo"
+        interaction="select"
         onSelect={(u) => {
           setAutoplay(false)
           setSelected(u)

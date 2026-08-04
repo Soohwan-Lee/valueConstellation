@@ -35,6 +35,12 @@ interface Props {
   onSelectSpeaker: (speaker: string) => void
   lang: Lang
   /**
+   * `full` adds zoom and pan. `select` leaves them off, for a map embedded in a
+   * scrolling page: d3-zoom binds wheel and touch, so a map that zooms would
+   * swallow the gesture the reader is using to get past it.
+   */
+  interaction?: 'full' | 'select'
+  /**
    * Changes when a different analysis is loaded, which restarts the settle
    * animation. Deliberately not tied to the projection method: switching PCA
    * to MDS animates position instead, so the same points visibly move rather
@@ -74,6 +80,7 @@ export function ConstellationMap({
   onSelectSpeaker,
   lang,
   settleKey,
+  interaction = 'full',
 }: Props) {
   const [hovered, setHovered] = useState<ProjectedUtterance | null>(null)
   const [hoveredSpeaker, setHoveredSpeaker] = useState<string | null>(null)
@@ -112,7 +119,7 @@ export function ConstellationMap({
 
   useEffect(() => {
     const svg = svgRef.current
-    if (!svg) return
+    if (!svg || interaction !== 'full') return
     const behavior = zoom<SVGSVGElement, unknown>()
       .scaleExtent([1, 8])
       .translateExtent([
@@ -132,7 +139,7 @@ export function ConstellationMap({
     return () => {
       selection.on('.zoom', null)
     }
-  }, [])
+  }, [interaction])
 
   const resetZoom = () => {
     const svg = svgRef.current
@@ -164,7 +171,12 @@ export function ConstellationMap({
         ref={svgRef}
         viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
         preserveAspectRatio="xMidYMid meet"
-        className="h-full w-full touch-none select-none"
+        // `touch-none` is what lets a finger pan the map instead of scrolling
+        // the page, and is exactly wrong when the map is embedded in a page
+        // somebody is scrolling through.
+        className={`h-full w-full select-none ${
+          interaction === 'full' ? 'touch-none' : ''
+        }`}
         role="img"
         // A scatter cannot be read by a screen reader whatever is done to it,
         // so the label states what is on it and the rail carries the same
