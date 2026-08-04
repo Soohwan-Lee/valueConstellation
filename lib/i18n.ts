@@ -76,6 +76,7 @@ export const STRINGS = {
 
   // How to read
   howToRead: { ko: '이 지도 읽는 법', en: 'How to read this map' },
+  markLegend: { ko: '기호 하나씩 보기', en: 'What each mark means' },
   readMarker: {
     ko: '**표식**은 그 사람의 발언 전체를 요약한 위치입니다.',
     en: '**A marker** is the average position of everything that speaker said.',
@@ -100,6 +101,40 @@ export const STRINGS = {
     ko: '축에는 이름이 없습니다. 방향 자체에 정해진 의미가 없고, 중요한 것은 **서로 간의 거리**입니다.',
     en: 'The axes are unlabelled: the directions carry no fixed meaning. Only **relative distance** matters.',
   },
+  readMeasure: {
+    ko: '**측정선**은 참여자를 선택하면 그어집니다. 옆의 숫자는 이 지도에서 가장 먼 쌍을 1.00으로 둔 상대 거리입니다.',
+    en: '**Measure lines** appear when you select a participant. The number beside each is that gap as a share of the widest gap on this map.',
+  },
+
+  // Console rail
+  sourceLabel: { ko: '자료', en: 'Source' },
+  participantsLabel: { ko: '참여자', en: 'Participants' },
+  distanceLabel: { ko: '사이 거리', en: 'Distance' },
+  distanceNote: {
+    ko: '이 지도에서 가장 먼 두 사람을 1.00으로 둔 상대 거리입니다.',
+    en: 'Relative to the widest gap on this map, which is 1.00.',
+  },
+  widestGap: { ko: '가장 멀다', en: 'Widest' },
+  closestGap: { ko: '가장 가깝다', en: 'Closest' },
+  distanceFrom: { ko: '{name} 기준', en: 'From {name}' },
+  measureHint: {
+    ko: '참여자를 선택하면 나머지와의 거리를 지도에 긋습니다.',
+    en: 'Select a participant to draw their distance to everyone else.',
+  },
+  pasteTitle: { ko: '회의록 붙여넣기', en: 'Paste a transcript' },
+  customSource: { ko: '붙여넣은 회의록', en: 'Pasted transcript' },
+  cancel: { ko: '취소', en: 'Cancel' },
+  close: { ko: '닫기', en: 'Close' },
+  toDark: { ko: '어둡게 보기', en: 'Switch to dark' },
+  toLight: { ko: '밝게 보기', en: 'Switch to light' },
+  hideOnMap: { ko: '지도에서 숨기기', en: 'Hide on map' },
+  showOnMap: { ko: '지도에 다시 표시', en: 'Show on map' },
+
+  // Kinds of contribution, as named in the interface rather than in the schema.
+  kindClaim: { ko: '주장', en: 'Claim' },
+  kindQuestion: { ko: '질문', en: 'Question' },
+  kindAgreement: { ko: '동의', en: 'Assent' },
+  kindProcedural: { ko: '진행', en: 'Procedural' },
 
   // Detail panel
   selectPrompt: {
@@ -175,6 +210,20 @@ export function tf(
     (acc, [k, v]) => acc.replaceAll(`{${k}}`, String(v)),
     t(key, lang),
   )
+}
+
+/** Interface name for an utterance kind. */
+export function kindLabel(
+  kind: 'claim' | 'question' | 'agreement' | 'procedural',
+  lang: Lang,
+): string {
+  const keys = {
+    claim: 'kindClaim',
+    question: 'kindQuestion',
+    agreement: 'kindAgreement',
+    procedural: 'kindProcedural',
+  } as const
+  return t(keys[kind], lang)
 }
 
 /** Renders **bold** spans in a string as React-ready segments. */

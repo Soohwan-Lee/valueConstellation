@@ -5,23 +5,34 @@
 /* ---------------------------------------------------------------------------
    Design tokens.
 
-   Contrast ratios in comments are measured against that theme's --bg.
-   --faint is deliberately below 4.5:1: decorative only, never text.
+   One rule governs colour: saturation belongs to people, not to chrome.
+   The eight speaker hues are the only chromatic marks on the page. Buttons,
+   selection, focus and active states are ink-on-paper, because a categorical
+   palette cannot be read against an interface that competes with it — a blue
+   "brand accent" sitting next to a blue speaker is a false signal.
 
-   Depth comes from the surface ladder plus hairlines, not shadows. Shadows are
-   reserved for modals and popovers.
+   The surface ladder runs tray -> panel -> plate: the map is the lightest
+   thing in the light theme and the raised thing in the dark theme, so the eye
+   lands on it first without a border shouting for attention.
+
+   Contrast ratios in comments are measured against --plate, the surface text
+   most often sits on. --faint is deliberately below 4.5:1: decorative only.
    --------------------------------------------------------------------------- */
 :root {
-  --bg: #ffffff;
-  --surface: #fafafa;
-  --surface-2: #f4f4f5;
-  --hairline: #e4e4e7;         /* 1.27 */
-  --hairline-strong: #d4d4d8;  /* 1.48 */
-  --ink: #18181b;              /* 17.7 */
-  --body: #52525b;             /* 7.73 */
-  --muted: #71717a;            /* 4.83 */
-  --faint: #a1a1aa;            /* 2.56 — decorative only */
-  --accent: #2563eb;           /* 5.17 */
+  --tray: #e7eaec;             /* the surround the plate rests on */
+  --plate: #fcfdfd;            /* the plotting surface */
+  --panel: #f3f5f6;
+  --panel-2: #edf0f1;
+  --line: #d5dadd;             /* 1.30 */
+  --line-strong: #bfc6ca;      /* 1.61 */
+  --ink: #0f1416;              /* 18.4 */
+  --body: #475156;             /* 8.42 */
+  --muted: #6b777d;            /* 4.54 */
+  --faint: #a3adb2;            /* 2.30 — decorative only */
+
+  /* Interaction is expressed as ink, not as hue. */
+  --signal: #0f1416;
+  --on-signal: #fcfdfd;
 
   /* Speaker colours. A single categorical palette cannot serve both themes:
      Observable10's yellow measures 1.91:1 on white, and Okabe-Ito's black
@@ -40,16 +51,19 @@
 }
 
 .dark {
-  --bg: #09090b;
-  --surface: #131316;
-  --surface-2: #18181c;
-  --hairline: #26262b;         /* 1.32 */
-  --hairline-strong: #34343a;  /* 1.61 */
-  --ink: #f4f4f5;              /* 18.1 */
-  --body: #c4c4cc;             /* 11.5 */
-  --muted: #8b8b94;            /* 5.89 */
-  --faint: #5f5f68;            /* 3.15 — decorative only */
-  --accent: #7aa2f7;           /* 7.90 */
+  --tray: #0a0e10;
+  --plate: #12181b;
+  --panel: #151c20;
+  --panel-2: #1b2429;
+  --line: #262f34;             /* 1.42 */
+  --line-strong: #38444a;      /* 1.92 */
+  --ink: #eaf0f2;              /* 16.3 */
+  --body: #b6c1c6;             /* 9.42 */
+  --muted: #87949a;            /* 5.74 */
+  --faint: #5c686d;            /* 2.70 — decorative only */
+
+  --signal: #eaf0f2;
+  --on-signal: #0f1416;
 
   --s1: #7aa2f7;
   --s2: #e39b4f;
@@ -62,62 +76,159 @@
 }
 
 @theme inline {
-  --color-bg: var(--bg);
-  --color-surface: var(--surface);
-  --color-surface-2: var(--surface-2);
-  --color-hairline: var(--hairline);
-  --color-hairline-strong: var(--hairline-strong);
+  --color-tray: var(--tray);
+  --color-plate: var(--plate);
+  --color-panel: var(--panel);
+  --color-panel-2: var(--panel-2);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
   --color-ink: var(--ink);
   --color-body: var(--body);
   --color-muted: var(--muted);
   --color-faint: var(--faint);
-  --color-accent: var(--accent);
+  --color-signal: var(--signal);
+  --color-on-signal: var(--on-signal);
 
-  --font-sans: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+  --font-sans: var(--font-plex-kr), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
 
-  --radius-xs: 4px;
-  --radius-sm: 6px;
+  --radius-xs: 3px;
+  --radius-sm: 5px;
   --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-xl: 16px;
+  --radius-lg: 14px;
 }
 
 html {
-  background: var(--bg);
-  color-scheme: light dark;
+  background: var(--tray);
+  /* Set explicitly rather than as `light dark`: the theme follows the stored
+     preference, not the OS, once the reader has chosen one. Without it, native
+     controls and default scrollbars stay light inside a dark instrument. */
+  color-scheme: light;
+}
+
+html.dark {
+  color-scheme: dark;
 }
 
 body {
-  background: var(--bg);
+  background: var(--tray);
   color: var(--body);
   font-family: var(--font-sans);
   font-size: 14px;
-  line-height: 1.5;
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-/* Proportional sans fonts do not align digits in columns without this. Applied
-   to every numeric readout: counts, coordinates, percentages. */
+/* ---------------------------------------------------------------------------
+   Type roles.
+
+   Three, and no more. `.eyebrow` labels a region, `.readout` carries any
+   number the reader might compare against another number, and `.title` is the
+   only place negative tracking appears.
+
+   The mono face is reserved for digits and Latin identifiers — PCA, KOR, 1.00
+   — and never used for a Korean string, because it has no Hangul: every label
+   set in it would silently drop to whatever mono face the OS ships, and a
+   Korean-first interface would change texture at every label. Eyebrows carry
+   their label texture through size, weight and tracking instead, which works
+   in both scripts.
+   --------------------------------------------------------------------------- */
+.eyebrow {
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.readout {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum';
+}
+
+.title {
+  color: var(--ink);
+  font-weight: 600;
+  letter-spacing: -0.022em;
+}
+
+/* Kept for numbers set in the sans face, where proportional digits would stop
+   a column of counts from lining up. */
 .tnum {
   font-variant-numeric: tabular-nums;
   font-feature-settings: 'tnum';
 }
 
-/* Negative tracking belongs on display type only; body stays at 0. */
-.display {
-  color: var(--ink);
-  letter-spacing: -0.02em;
-}
-
 ::selection {
-  background: color-mix(in oklab, var(--accent) 22%, transparent);
+  background: color-mix(in oklab, var(--signal) 18%, transparent);
 }
 
 *:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--signal);
   outline-offset: 2px;
   border-radius: 2px;
+}
+
+/* Rails and panels scroll independently; the scrollbar should not draw a
+   bright channel down the side of a quiet interface. */
+.scroll-quiet {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+}
+.scroll-quiet::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.scroll-quiet::-webkit-scrollbar-thumb {
+  background: var(--line-strong);
+  border-radius: 4px;
+}
+.scroll-quiet::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ---------------------------------------------------------------------------
+   Motion.
+
+   One orchestrated moment: the map settles when a new analysis arrives. Marks
+   rise in transcript order over a 420ms window, so the sequence reads as the
+   discussion being laid down rather than as a decorative shimmer.
+   --------------------------------------------------------------------------- */
+@keyframes settle {
+  from {
+    opacity: 0;
+    transform: scale(0.72);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes draw {
+  from {
+    stroke-dashoffset: var(--draw-length, 400);
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.animate-rise {
+  animation: rise 220ms cubic-bezier(0.32, 0.72, 0, 1) both;
 }
 
 /* Users stare at a research tool for hours. */

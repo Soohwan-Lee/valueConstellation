@@ -3,40 +3,45 @@
 import { boldSegments, t, type Lang } from '@/lib/i18n'
 
 /**
- * The permanent one-liner plus a collapsible explainer.
+ * Reference for reading the map.
  *
- * Placed under the map rather than in a modal or a first-run tour: this is
- * reference text people consult at the moment they start misreading something,
- * which is not the moment they arrive. A dismissable overlay would be gone by
- * then.
+ * Kept in the rail as a collapsed list rather than as a first-run tour: this is
+ * text people consult at the moment they start misreading something, which is
+ * not the moment they arrive. A dismissable overlay would be gone by then.
+ *
+ * One line stays open — the one that corrects the mistake everyone makes, which
+ * is treating proximity as agreement.
  */
 export function HowToRead({ lang }: { lang: Lang }) {
   const bullets = [
     'readMarker',
     'readEllipse',
     'readDot',
-    'readDistance',
+    'readMeasure',
     'readDashed',
     'readAxes',
   ] as const
 
   return (
-    <div className="space-y-2">
-      <p className="text-[12px] leading-[1.55] text-[var(--muted)]">
+    <div>
+      <p className="mb-2.5 text-[12.5px] leading-[1.65] text-[var(--body)]">
         <Rich text={t('readDistance', lang)} />
       </p>
       <details className="group">
-        <summary className="inline-flex cursor-pointer list-none items-center gap-1.5 text-[12px] text-[var(--body)] hover:text-[var(--ink)]">
-          <span className="inline-block transition-transform group-open:rotate-90">
-            ▸
+        <summary className="inline-flex cursor-pointer list-none items-center gap-1.5 text-[12px] text-[var(--muted)] transition-colors hover:text-[var(--ink)]">
+          <span
+            aria-hidden
+            className="readout inline-block text-[9px] transition-transform group-open:rotate-90"
+          >
+            ▶
           </span>
-          {t('howToRead', lang)}
+          {t('markLegend', lang)}
         </summary>
-        <ul className="mt-2.5 space-y-2 border-l border-[var(--hairline)] pl-3">
+        <ul className="mt-3 space-y-2.5 border-l border-[var(--line)] pl-3">
           {bullets.map((key) => (
             <li
               key={key}
-              className="text-[12px] leading-[1.6] text-[var(--body)]"
+              className="text-[12px] leading-[1.7] text-[var(--muted)]"
             >
               <Rich text={t(key, lang)} />
             </li>
