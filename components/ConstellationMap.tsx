@@ -9,7 +9,13 @@ import type {
   SpeakerRenderMode,
 } from '@/lib/types'
 import type { SpeakerPair } from '@/lib/pairs'
-import { blobPath, blobPolygon, polygonArea, type Point } from '@/lib/blob'
+import {
+  mapResolution,
+  regionPath,
+  regionRings,
+  ringsArea,
+  type Point,
+} from '@/lib/blob'
 import { buildScales, VIEW_H, VIEW_W } from '@/lib/frame'
 import { shapePath, speakerColor, speakerShape } from '@/lib/colors'
 import { kindLabel, type Lang } from '@/lib/i18n'
@@ -46,10 +52,12 @@ const SETTLE_WINDOW = 420
 /** Duration of a layout change, shared by points and regions. */
 const MOVE_MS = 560
 
-/** Smallest reach around one statement, in viewBox units. */
-const REGION_PAD = 22
-/** Floor, so a speaker whose statements nearly coincide still reads as one. */
-const REGION_MIN_RADIUS = 26
+/**
+ * Radius a statement claims when the map has too few statements to measure a
+ * resolution from, in viewBox units. Large enough to see, small enough not to
+ * imply anybody covered ground.
+ */
+const REGION_FLOOR = 30
 
 const MOVE =
   'motion-safe:[transition:cx_560ms_cubic-bezier(0.32,0.72,0,1),cy_560ms_cubic-bezier(0.32,0.72,0,1)]'
@@ -80,17 +88,20 @@ export function ConstellationMap({
    * Built here rather than server-side because they describe a particular
    * layout: the same speaker occupies a different shape under PCA than under
    * MDS, and the region has to follow the points the reader is looking at.
+   *
+   * The resolution is measured once over every statement and shared by all of
+   * them, so two regions are drawn at the same scale and can be compared.
    */
   const regions = useMemo(() => {
+    const all: Point[] = projection.utterances.map((u) => [toX(u.x), toY(u.y)])
+    const { reach } = mapResolution(all, REGION_FLOOR)
+
     const byArea = projection.speakers.map((s) => {
       const points: Point[] = projection.utterances
         .filter((u) => u.speaker === s.speaker)
         .map((u) => [toX(u.x), toY(u.y)])
-      const polygon = blobPolygon(points, [toX(s.x), toY(s.y)], {
-        pad: REGION_PAD,
-        minRadius: REGION_MIN_RADIUS,
-      })
-      return { speaker: s, polygon, area: polygonArea(polygon) }
+      const rings = regionRings(points, reach)
+      return { speaker: s, d: regionPath(rings), area: ringsArea(rings) }
     })
     return byArea.sort((a, b) => b.area - a.area)
   }, [projection, toX, toY])
@@ -194,16 +205,29 @@ export function ConstellationMap({
           <g key={settleKey}>
             {/* Speaker regions sit beneath the points they summarise, largest
                 first so a tight region is never buried under a wide one. */}
-            {showRegions &&
-              regions.map(({ speaker, polygon }) => (
-                <Region
-                  key={`region-${speaker.speaker}`}
-                  polygon={polygon}
-                  color={speakerColor(speaker.colorIndex)}
-                  active={isActive(speaker.speaker)}
-                  inv={inv}
-                />
-              ))}
+            {showRegions && (
+              <RegionLayer signature={`${settleKey}-${renderMode}`}>
+                {regions.map(({ speaker, d }) =>
+                  d ? (
+                    <path
+                      key={`region-${speaker.speaker}`}
+                      d={d}
+                      // A ring inside a ring is a hole: statements arranged
+                      // around empty ground, which the region should show as
+                      // empty rather than fill in.
+                      fillRule="evenodd"
+                      fill={speakerColor(speaker.colorIndex)}
+                      fillOpacity={isActive(speaker.speaker) ? 0.1 : 0.025}
+                      stroke={speakerColor(speaker.colorIndex)}
+                      strokeOpacity={isActive(speaker.speaker) ? 0.34 : 0.07}
+                      strokeWidth={inv}
+                      strokeLinejoin="round"
+                      pointerEvents="none"
+                    />
+                  ) : null,
+                )}
+              </RegionLayer>
+            )}
 
             {/* Utterances. */}
             {projection.utterances.map((u, i) => {
@@ -365,71 +389,52 @@ export function ConstellationMap({
 }
 
 /**
- * A speaker's region.
+ * The region layer.
  *
- * The shape animates between layouts rather than cutting, because switching
- * PCA to MDS is meant to read as the same statements being rearranged. CSS
- * cannot interpolate a path, so this walks the vertices itself — every region
- * has the same vertex count in the same angular order, which makes that a
- * straight lerp. Interrupting mid-flight resumes from what is on screen, not
- * from the previous target.
+ * Regions do not travel between layouts. Their outline is a contour of a field
+ * rebuilt from scratch each time, so it has no vertices in common with the last
+ * one and there is nothing to interpolate — and animating between two unrelated
+ * shapes would read as the region morphing into something else rather than as
+ * the same statements being rearranged.
+ *
+ * So it stands aside instead. The layer clears while the points travel and
+ * returns once they have arrived, which also leaves the movement itself
+ * unobstructed.
  */
-function Region({
-  polygon,
-  color,
-  active,
-  inv,
+function RegionLayer({
+  signature,
+  children,
 }: {
-  polygon: Point[]
-  color: string
-  active: boolean
-  inv: number
+  signature: string
+  children: React.ReactNode
 }) {
-  const [shown, setShown] = useState(polygon)
-  const shownRef = useRef(polygon)
-  const frameRef = useRef(0)
+  const [settled, setSettled] = useState(true)
+  const first = useRef(true)
 
   useEffect(() => {
-    const from = shownRef.current
+    if (first.current) {
+      first.current = false
+      return
+    }
     const reduced =
       typeof matchMedia === 'function' &&
       matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reduced) return
 
-    if (reduced || from.length !== polygon.length) {
-      shownRef.current = polygon
-      setShown(polygon)
-      return
-    }
-
-    const started = performance.now()
-    const tick = (now: number) => {
-      const t = Math.min(1, (now - started) / MOVE_MS)
-      // The same easing the points use, so nothing arrives out of step.
-      const e = 1 - Math.pow(1 - t, 3)
-      const next: Point[] = polygon.map((p, i) => [
-        from[i][0] + (p[0] - from[i][0]) * e,
-        from[i][1] + (p[1] - from[i][1]) * e,
-      ])
-      shownRef.current = next
-      setShown(next)
-      if (t < 1) frameRef.current = requestAnimationFrame(tick)
-    }
-    frameRef.current = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(frameRef.current)
-  }, [polygon])
+    setSettled(false)
+    const timer = setTimeout(() => setSettled(true), MOVE_MS)
+    return () => clearTimeout(timer)
+  }, [signature])
 
   return (
-    <path
-      d={blobPath(shown)}
-      fill={color}
-      fillOpacity={active ? 0.09 : 0.02}
-      stroke={color}
-      strokeOpacity={active ? 0.32 : 0.06}
-      strokeWidth={inv}
-      strokeDasharray={`${5 * inv} ${4 * inv}`}
-      strokeLinejoin="round"
-      pointerEvents="none"
-    />
+    <g
+      style={{
+        opacity: settled ? 1 : 0,
+        transition: `opacity ${settled ? 260 : 140}ms ease`,
+      }}
+    >
+      {children}
+    </g>
   )
 }
 

@@ -17,7 +17,7 @@ import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import fixtures from '../data/fixtures/precomputed.json' with { type: 'json' }
-import { blobPath, blobPolygon, polygonArea, type Point } from '../lib/blob.ts'
+import { mapResolution, regionPath, regionRings, ringsArea, type Point } from '../lib/blob.ts'
 import { buildScales, VIEW_H, VIEW_W } from '../lib/frame.ts'
 import { shapePath, speakerShape } from '../lib/colors.ts'
 import { speakerPairs, pairsWith } from '../lib/pairs.ts'
@@ -61,25 +61,29 @@ const parts: string[] = [
   `<rect width="${VIEW_W}" height="${VIEW_H}" fill="url(#field)" opacity="0.55"/>`,
 ]
 
+// One resolution for the whole map, so every region is drawn at one scale.
+const { reach } = mapResolution(
+  projection.utterances.map((u) => [toX(u.x), toY(u.y)] as Point),
+  30,
+)
+
 // Regions, widest first so a tight one is never buried under a wide one.
 const regions = projection.speakers
   .map((s) => {
     const points: Point[] = projection.utterances
       .filter((u) => u.speaker === s.speaker)
       .map((u) => [toX(u.x), toY(u.y)])
-    const polygon = blobPolygon(points, [toX(s.x), toY(s.y)], {
-      pad: 22,
-      minRadius: 26,
-    })
-    return { s, polygon, area: polygonArea(polygon) }
+    const rings = regionRings(points, reach)
+    return { s, d: regionPath(rings), area: ringsArea(rings) }
   })
   .sort((a, b) => b.area - a.area)
 
-for (const { s, polygon } of regions) {
+for (const { s, d } of regions) {
+  if (!d) continue
   parts.push(
-    `<path d="${blobPath(polygon)}" fill="${color(s.colorIndex)}" fill-opacity="0.09" ` +
-      `stroke="${color(s.colorIndex)}" stroke-opacity="0.32" stroke-width="1" ` +
-      `stroke-dasharray="5 4" stroke-linejoin="round"/>`,
+    `<path d="${d}" fill-rule="evenodd" fill="${color(s.colorIndex)}" fill-opacity="0.1" ` +
+      `stroke="${color(s.colorIndex)}" stroke-opacity="0.34" stroke-width="1" ` +
+      `stroke-linejoin="round"/>`,
   )
 }
 

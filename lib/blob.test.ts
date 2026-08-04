@@ -2,27 +2,23 @@ import { test } from 'node:test'
 import assert from 'node:assert/strict'
 
 import {
-  blobPath,
-  blobPolygon,
-  contains,
-  polygonArea,
+  containsAny,
+  mapResolution,
+  regionPath,
+  regionRings,
+  ringsArea,
   type Point,
 } from './blob.ts'
 
 /**
  * The property that matters is coverage: a region that leaves one of the
- * speaker's own statements outside it is drawing a claim about where they
- * stood that the data does not support. Dilation before smoothing exists
- * solely to hold that guarantee, so it is the thing under test.
+ * speaker's own statements outside it is drawing a claim about where they stood
+ * that the data does not support.
+ *
+ * The second property is that the region separates when the statements do. That
+ * is the whole reason for not using an ellipse, so a shape that always comes
+ * back as one connected blob would have failed at the thing it was built for.
  */
-
-function centroid(points: Point[]): Point {
-  const n = points.length
-  return [
-    points.reduce((s, p) => s + p[0], 0) / n,
-    points.reduce((s, p) => s + p[1], 0) / n,
-  ]
-}
 
 /** Deterministic pseudo-random, so a failure is reproducible. */
 function lcg(seed: number): () => number {
@@ -33,77 +29,124 @@ function lcg(seed: number): () => number {
   }
 }
 
-test('every point is inside its own region', () => {
-  const rand = lcg(7)
-  for (let trial = 0; trial < 60; trial += 1) {
-    const n = 2 + Math.floor(rand() * 25)
+function ringsFor(points: Point[], floor = 12) {
+  const { reach } = mapResolution(points, floor)
+  return regionRings(points, reach)
+}
+
+test('every statement is inside its own region', () => {
+  const rand = lcg(11)
+  for (let trial = 0; trial < 40; trial += 1) {
+    const n = 3 + Math.floor(rand() * 24)
     const points: Point[] = Array.from({ length: n }, () => [
       rand() * 800,
       rand() * 600,
     ])
-    const polygon = blobPolygon(points, centroid(points), { pad: 12 })
+    const rings = ringsFor(points)
     for (const p of points) {
       assert.ok(
-        contains(polygon, p),
-        `trial ${trial}: point ${p} fell outside its region`,
+        containsAny(rings, p),
+        `trial ${trial}: statement at ${p} fell outside its region`,
       )
     }
   }
 })
 
-test('a two-lobed speaker keeps both lobes and the waist between them', () => {
-  // Two tight clusters far apart on one axis: the shape an ellipse smooths
-  // into a single fat oval spanning ground nobody occupied.
+test('coverage holds when the statements are nearly collinear', () => {
+  // A degenerate arrangement the grid could miss between samples.
+  const points: Point[] = Array.from({ length: 9 }, (_, i) => [
+    100 + i * 37,
+    300 + i * 0.4,
+  ])
+  const rings = ringsFor(points)
+  for (const p of points) assert.ok(containsAny(rings, p))
+})
+
+test('two groups far apart draw as two shapes, not one', () => {
+  // The case an ellipse gets wrong: one fat oval spanning ground nobody took.
   const left: Point[] = [
     [100, 300],
-    [110, 290],
-    [95, 312],
+    [118, 288],
+    [96, 316],
+    [124, 312],
   ]
   const right: Point[] = [
-    [500, 300],
-    [512, 306],
-    [495, 292],
+    [600, 300],
+    [618, 306],
+    [592, 288],
+    [612, 320],
   ]
   const points = [...left, ...right]
-  const centre = centroid(points)
-  const polygon = blobPolygon(points, centre, { pad: 10 })
+  const rings = ringsFor(points)
 
-  for (const p of points) assert.ok(contains(polygon, p))
-
-  // The waist: a point on the axis midway between the lobes is far enough from
-  // either cluster that the region should not claim it.
+  assert.equal(rings.length, 2, 'two separated groups should draw two rings')
+  for (const p of points) assert.ok(containsAny(rings, p))
   assert.ok(
-    !contains(polygon, [centre[0], centre[1] + 120]),
-    'the region reaches well off-axis between two clusters',
-  )
-
-  // And it is meaningfully tighter than the bounding oval would be.
-  const oval = Math.PI * 210 * 120
-  assert.ok(
-    polygonArea(polygon) < oval * 0.8,
-    'the region is no tighter than an ellipse over the same points',
+    !containsAny(rings, [350, 300]),
+    'the empty ground between the groups is not claimed',
   )
 })
 
-test('a single statement still draws a region', () => {
-  const polygon = blobPolygon([[200, 200]], [200, 200], {
-    pad: 8,
-    minRadius: 14,
-  })
-  assert.equal(polygon.length, 36)
-  assert.ok(contains(polygon, [200, 200]))
-  for (const [x, y] of polygon) {
+test('statements at the typical spacing merge into one shape', () => {
+  // Evenly spaced along a line: every gap is the typical gap, so the region has
+  // to hold together. This is the other half of the promise the reach makes.
+  const points: Point[] = Array.from({ length: 6 }, (_, i) => [
+    100 + i * 40,
+    300,
+  ])
+  const rings = ringsFor(points)
+  assert.equal(rings.length, 1)
+  for (const p of points) assert.ok(containsAny(rings, p))
+})
+
+test('the resolution is the typical neighbour gap, and says when there is none', () => {
+  const evenlySpaced: Point[] = [
+    [0, 0],
+    [40, 0],
+    [80, 0],
+    [120, 0],
+  ]
+  const measured = mapResolution(evenlySpaced, 5)
+  assert.equal(measured.reach, 40)
+  assert.equal(measured.provisional, false)
+
+  // One outlier must not move the scale for the whole map, which is why this
+  // is a median rather than a mean.
+  const withOutlier: Point[] = [...evenlySpaced, [9000, 0]]
+  assert.equal(mapResolution(withOutlier, 5).reach, 40)
+
+  // Too few statements to take a median of anything.
+  const pair = mapResolution(
+    [
+      [0, 0],
+      [400, 0],
+    ],
+    12,
+  )
+  assert.equal(pair.reach, 12)
+  assert.equal(pair.provisional, true)
+
+  const alone = mapResolution([[5, 5]], 12)
+  assert.equal(alone.reach, 12)
+  assert.equal(alone.provisional, true)
+})
+
+test('a lone statement draws a disk of exactly the reach', () => {
+  const rings = regionRings([[200, 200]], 30)
+  assert.equal(rings.length, 1)
+  const radii = rings[0].map(([x, y]) => Math.hypot(x - 200, y - 200))
+  for (const r of radii) {
     assert.ok(
-      Math.abs(Math.hypot(x - 200, y - 200) - 14) < 0.001,
-      'a lone point yields a circle at the floor radius',
+      Math.abs(r - 30) < 1.5,
+      `outline sits at ${r.toFixed(2)} rather than at the reach of 30`,
     )
   }
 })
 
-test('no points at all yields a circle rather than a collapsed shape', () => {
-  const polygon = blobPolygon([], [0, 0], { minRadius: 10 })
-  assert.equal(polygon.length, 36)
-  assert.ok(polygonArea(polygon) > 250)
+test('nothing to draw yields nothing, not a stray shape', () => {
+  assert.deepEqual(regionRings([], 20), [])
+  assert.deepEqual(regionRings([[1, 1]], 0), [])
+  assert.equal(regionPath([]), '')
 })
 
 test('non-finite coordinates are skipped, not propagated', () => {
@@ -111,28 +154,28 @@ test('non-finite coordinates are skipped, not propagated', () => {
     [100, 100],
     [Number.NaN, 40],
     [140, 130],
+    [120, 160],
   ]
-  const polygon = blobPolygon(points, [120, 115], { pad: 10 })
-  for (const [x, y] of polygon) {
-    assert.ok(Number.isFinite(x) && Number.isFinite(y))
-  }
-  assert.ok(contains(polygon, [100, 100]))
-  assert.ok(contains(polygon, [140, 130]))
+  const rings = ringsFor(points)
+  const d = regionPath(rings)
+  assert.ok(!/NaN|Infinity/.test(d))
+  assert.ok(containsAny(rings, [100, 100]))
+  assert.ok(containsAny(rings, [140, 130]))
 })
 
-test('the path is closed and starts at the first vertex', () => {
-  const polygon = blobPolygon(
-    [
-      [10, 10],
-      [60, 20],
-      [30, 70],
-    ],
-    [33, 33],
-  )
-  const d = blobPath(polygon)
-  assert.match(d, /^M/)
-  assert.match(d, /Z$/)
-  // One cubic per edge of a closed ring.
-  assert.equal(d.match(/C/g)?.length, polygon.length)
+test('the path closes every ring and stays finite', () => {
+  const points: Point[] = [
+    [100, 100],
+    [160, 120],
+    [130, 170],
+    [400, 400],
+    [440, 420],
+    [410, 460],
+  ]
+  const rings = ringsFor(points)
+  const d = regionPath(rings)
+  assert.equal(d.match(/M/g)?.length, rings.length)
+  assert.equal(d.match(/Z/g)?.length, rings.length)
   assert.ok(!/NaN|Infinity/.test(d))
+  assert.ok(ringsArea(rings) > 0)
 })
