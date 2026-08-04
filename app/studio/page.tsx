@@ -421,6 +421,14 @@ export default function Studio() {
                 </div>
               </header>
 
+              {/* The inspector is docked, not floated.
+                  As an overlay it sat exactly where the right-hand axis name
+                  is, so opening a participant hid the label that says what
+                  that side of the map means. Taking width from the map instead
+                  means nothing on the plate can ever be covered — and the map
+                  reflows rather than being obscured, which is also how the
+                  layout tools this borrows from behave. */}
+              <div className="flex min-h-0 flex-1 flex-col sm:flex-row">
               <div className="relative min-h-0 flex-1">
                 <ConstellationMap
                   projection={projection}
@@ -439,27 +447,28 @@ export default function Studio() {
                   }}
                   onSelectSpeaker={selectSpeaker}
                 />
+              </div>
 
-                {(selected || selectedSpeaker) && (
-                  <div className="absolute inset-x-3 bottom-3 max-h-[70%] sm:inset-x-auto sm:bottom-3 sm:right-3 sm:top-3 sm:w-[330px]">
-                    <DetailPanel
-                      projection={projection}
-                      pairs={pairs}
-                      selectedUtterance={selected}
-                      selectedSpeaker={selectedSpeaker}
-                      lang={lang}
-                      speakerNames={analysis?.speakerNames ?? null}
-                      onSelectUtterance={(u) => {
-                        setSelected(u)
-                        setSelectedSpeaker(null)
-                      }}
-                      onClose={() => {
-                        setSelected(null)
-                        setSelectedSpeaker(null)
-                      }}
-                    />
-                  </div>
-                )}
+              {(selected || selectedSpeaker) && (
+                <aside className="animate-rise flex max-h-[46%] min-h-0 shrink-0 flex-col border-t border-[var(--line)] bg-[var(--panel)] sm:max-h-none sm:w-[336px] sm:border-l sm:border-t-0">
+                  <DetailPanel
+                    projection={projection}
+                    pairs={pairs}
+                    selectedUtterance={selected}
+                    selectedSpeaker={selectedSpeaker}
+                    lang={lang}
+                    speakerNames={analysis?.speakerNames ?? null}
+                    onSelectUtterance={(u) => {
+                      setSelected(u)
+                      setSelectedSpeaker(null)
+                    }}
+                    onClose={() => {
+                      setSelected(null)
+                      setSelectedSpeaker(null)
+                    }}
+                  />
+                </aside>
+              )}
               </div>
 
               {/* Caveats sit under the map rather than behind a disclosure:
