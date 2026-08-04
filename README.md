@@ -47,8 +47,9 @@ to run the pipeline without one of your own.
 
 | Route | What it is |
 |---|---|
-| `/` | Overview — live demo, what each mark means, how a region is decided, examples, limits, and a working paste box |
-| `/studio` | The tool — console rail, map, composer, inspector |
+| `/` | Overview — the four examples as a gallery, what each mark means, how a region is decided, limits |
+| `/new` | Paste a transcript, with live speaker preview and the recognised formats |
+| `/studio` | The tool — console rail, map, inspector |
 | `/how-it-works` | Reference — models, projections, every threshold, what happens to a pasted transcript |
 
 ## Reading the map
@@ -170,6 +171,7 @@ transcript
   → speaker attribution         rule-based, six formats, no model call
   → argument-unit segmentation  gpt-5.4-mini, 15 turns per call, 8 in flight
   → translation repair          any Korean unit segmentation left untranslated
+  → speaker names               each name rendered in the other language
   → embedding                   text-embedding-3-small, 1536d
   → centroid + spread           per speaker, in embedding space
   → PCA / metric MDS            flattened to 2D, both computed
@@ -216,7 +218,12 @@ uses, and what happens to a pasted transcript.
   behind it; click a participant for everything they said, original and
   translation side by side rather than one replacing the other.
 - **Colour means a person.** The eight speaker hues are the only saturated colour
-  in the interface. Buttons, selection and focus are ink on paper.
+  in the interface. Buttons, selection and focus are ink on paper, and the one
+  section that changes gravity does it with value rather than hue.
+- **The language toggle reaches the names.** Participant names are rendered in
+  both scripts, because they are the one thing on a map you have to be able to
+  read. A romanisation, not a translation — and a role like 사회자 becomes
+  Facilitator because that is a job, not a name.
 - **Eight speakers is the colour limit.** Past that, hue stops separating people
   under common colour-vision deficiencies, so marker shape takes over.
 - **A transcript is other people's words.** It is sent only to build the map,
@@ -228,8 +235,9 @@ uses, and what happens to a pasted transcript.
 
 ```text
 app/
-  page.tsx                 overview: live demo, reading guide, region rule, examples, limits, composer
-  studio/page.tsx          the tool: console rail, plate, composer, inspector
+  page.tsx                 overview: example gallery, reading guide, region rule, limits
+  new/page.tsx             the composer, on its own page
+  studio/page.tsx          the tool: console rail, plate, inspector
   how-it-works/page.tsx    reference: models, thresholds, data handling
   api/analyze/route.ts     request handling only
 lib/
@@ -241,14 +249,15 @@ lib/
   blob.ts                  map resolution, and regions as its contours
   axes.ts                  naming the two PCA axes from their extremes
   translate.ts             filling in translations segmentation missed
+  speakers.ts              each participant name in both languages
   pairs.ts                 gaps between participants, in map units
   frame.ts                 the drawing frame, shared with the hero renderer
   colors.ts                speaker colour and shape assignment
   i18n.ts                  every interface string, KOR and ENG
   landing.ts / how.ts      overview and reference prose, KOR and ENG
 components/                ConstellationMap, Composer, MapControls, DetailPanel,
-                           Chrome, Preferences, Reveal
-  landing/                 LiveDemo, MarkFigure, RegionSteps
+                           Chrome, SiteHeader, Preferences, Reveal
+  landing/                 ScenarioCard, MarkFigure, RegionSteps
   studio/                  SourceMenu, GuideButton
 scripts/                   fixture builders and the hero renderer
 archive/                   frozen v1 value-vector research pipeline
@@ -292,9 +301,10 @@ Early research prototype. The pipeline runs end to end on real transcripts.
 transcription-tool exports and Korean official minutes; argument segmentation with
 a fabrication filter; participant centroids with regions; PCA and MDS with an
 animated transition between them; zoom and pan; per-participant filtering; measured
-gaps; per-statement traceback to source text; a composer that previews what the
-parser found before spending the request; an overview that teaches the map; a
-reference page; light and dark themes; KOR/ENG throughout, both persisted.
+gaps; LLM-named PCA axes; per-statement traceback to source text; a composer that
+previews what the parser found before spending the request; an overview built as
+an example gallery; a reference page; light and dark themes; KOR/ENG throughout
+including participant names, both persisted.
 
 **Not built yet** — transcript ↔ map linking, participant position correction,
 value-dimension axes.

@@ -16,9 +16,10 @@ this codebase exist because a specific misreading was observed.
 ## Architecture
 
 ```text
-app/page.tsx              overview: live demo, reading guide, region rule, examples,
-                          limits, and a working composer
-app/studio/page.tsx       the tool: console rail, plate, composer, inspector
+app/page.tsx              overview: the example gallery, reading guide, region
+                          rule, limits
+app/new/page.tsx          the composer, on its own page
+app/studio/page.tsx       the tool: console rail, plate, inspector
 app/how-it-works/page.tsx reference: models, thresholds, data handling
 app/api/analyze/route.ts  request handling only
 lib/analyze.ts            the pipeline, shared with the fixture builders
@@ -66,8 +67,9 @@ absolute projected distance — they mean nothing across two maps, so every
 distance on the page is a share of the widest gap.
 
 **Colour means a person.** The eight speaker hues are the only saturated colour
-in the interface. Buttons, selection, focus and warnings are ink on paper. A
-"brand accent" would read as somebody's identity colour.
+in the interface. Buttons, selection, focus and warnings are ink on paper, and
+the overview changes gravity with an inverted band rather than a hue. A "brand
+accent" would read as somebody's identity colour.
 
 **The mono face has no Hangul.** `--font-plex-mono` is for digits and Latin
 identifiers only. Any Korean string set in it silently falls back to a system

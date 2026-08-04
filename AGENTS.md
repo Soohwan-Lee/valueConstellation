@@ -6,7 +6,8 @@ Value Constellation maps where participants in a meeting stand relative to each
 other, from the transcript. One Next.js 16 app, TypeScript throughout.
 
 ```text
-app/          `/` explains, `/studio` works, `/how-it-works` is the reference
+app/          `/` explains, `/new` takes a transcript, `/studio` works,
+              `/how-it-works` is the reference
 lib/          all logic — no React, no Node-only imports
 components/   presentation; components/landing/ is overview-only
 data/         example transcripts, precomputed fixture
