@@ -2,86 +2,73 @@
 
 ## Project Shape
 
-Value Constellation is an early research prototype for turning deliberation claims into value-dimension vectors. Keep the repo simple:
+Value Constellation maps where participants in a meeting stand relative to each
+other, from the transcript. One Next.js 16 app, TypeScript throughout.
 
-- `scripts/`: standalone research and evaluation scripts.
-- `results/`: generated CSV/JSON outputs, organized by experiment family.
-- `data/`: local input data. Do not commit private or sensitive data.
-- `frontend/` and `prototypes/`: UI experiments.
-- Add `src/` and `tests/` only when shared reusable code and automated tests become worthwhile.
+```text
+app/          route handler and the client shell
+lib/          all logic — no React, no Node-only imports
+components/   presentation
+data/         example transcripts, precomputed fixture
+docs/         generated assets
+scripts/      one-off generators, run with node's native type stripping
+archive/      frozen v1 Python pipeline — do not extend
+```
 
-Prefer explicit scripts over broad abstractions until duplication becomes real.
+Keep logic in `lib/` and components thin. `lib/` runs unchanged in the browser,
+in the API route, in the test runner and in `scripts/`, which is what lets the
+composer preview a transcript with the exact parser the server will use. Do not
+introduce a second, looser implementation of something `lib/` already does.
+
+Add directories only when duplication becomes real.
 
 ## Common Commands
 
-Use the conda environment:
-
 ```bash
-conda activate valueconstellation-valuesnet
+npm install
+npm run dev        # http://localhost:3000
+npm run build      # production build; also typechecks
+npm test           # node --test over lib/*.test.ts
+npm run typecheck  # tsc --noEmit
+npm run hero       # regenerate docs/hero.svg after changing map geometry
 ```
 
-Run scripts through `conda run` when reproducibility matters:
-
-```bash
-conda run -n valueconstellation-valuesnet python scripts/victoryeste_cascade_probe.py
-conda run -n valueconstellation-valuesnet python scripts/hierocles_probe.py --limit 4
-conda run -n valueconstellation-valuesnet python scripts/policy_discussion_value_pipeline.py --start-time 00:50 --end-time 08:36
-```
-
-Project generated 19D vectors:
-
-```bash
-conda run -n valueconstellation-valuesnet python scripts/project_value_vectors.py --input results/policy_discussion/first_topic_argument_vectors.csv --output results/policy_discussion/first_topic_argument_projection_compare.csv --metadata-output results/policy_discussion/first_topic_argument_projection_compare_metadata.json --method all --label-with-openai
-```
-
-If rebuilding the environment:
-
-```bash
-python -m pip install transformers torch sentencepiece protobuf safetensors pandas tabulate openpyxl scikit-learn umap-learn valueeval24-hierocles-of-alexandria
-```
-
-## Research Notes
-
-Current scoring formula:
-
-```text
-raw_signed_i = presence_i * (P(attained_i) - P(constrained_i))
-support_i = max(0, raw_signed_i)
-constraint_i = max(0, -raw_signed_i)
-```
-
-Current defaults and cautions:
-
-- Do not use `nharrel/Valuesnet_DeBERTa_v3` as the main engine; it over-saturates many values.
-- Prefer `VictorYeste/deberta-based-human-value-detection` for 19-value presence and `VictorYeste/deberta-based-human-value-stance-detection` for direction.
-- `presence` is not support. A value can be present because it is being constrained or rejected.
-- Translate Korean utterances to English before value inference. Set `OPENAI_API_KEY` in `.env` for reliable translation; the Helsinki fallback is for smoke tests only.
-- For real transcripts, prefer `--unit argument`. Direction estimates still need hand calibration or LLM review.
-- Keep 19D vectors as the measurement. Use MDS/PCA only as map layouts; cluster in original 19D space.
-- Current active-value threshold `0.20` is exploratory. Compare `0.20`, `0.30`, and `0.40` against hand labels.
-
-Current policy-discussion baseline:
-
-- Source: `data/koreanPolicyMakingDiscussion.xlsx`
-- Processed segment: `00:50~08:36`
-- Main outputs: `results/policy_discussion/first_topic_argument_*`
+Node 22.6+ is required for native type stripping. `OPENAI_API_KEY` goes in
+`.env.local` and is read server-side only — never prefix it with `NEXT_PUBLIC_`.
 
 ## Coding Style
 
-- Python 3.11+, PEP 8, 4-space indentation.
-- Use `snake_case` for functions, variables, and filenames; `UPPER_CASE` for constants.
-- Prefer `pathlib.Path`.
-- Keep scripts readable, typed where practical, and self-contained.
-- Do not download large models in default tests or commit model caches.
+- TypeScript, 2-space indentation, no semicolons, single quotes.
+- `camelCase` for values and functions, `PascalCase` for types and components,
+  `UPPER_CASE` for module constants.
+- Comments explain why a decision was made, especially where the obvious
+  implementation would be wrong. Do not narrate what the code already says.
+- Interface strings belong in `lib/i18n.ts`, in both languages, `title` hints
+  included. Transcript content is never translated.
+- The mono face carries no Hangul: use it for digits and Latin identifiers only.
+- Colour is reserved for speaker identity. Chrome is ink on paper.
 
 ## Testing
 
-No formal test suite is configured yet. Treat script execution as the smoke test and inspect generated files in `results/`.
+`npm test` runs node's built-in runner over `lib/*.test.ts`. Tests must not call
+a model or hit the network.
 
-When tests are added, use `pytest`, put them in `tests/`, and avoid large model downloads by default.
+Every case in the suite is a transcript format or failure mode observed in real
+data rather than an invented example — the timestamp, moderator and
+speaker-header parser cases each shipped as a bug that corrupted attribution.
+When fixing a defect in parsing, projection, regions or distances, add the input
+that produced it.
+
+The properties worth pinning are the ones that break silently: PCA linearity,
+rejection of non-finite input, region coverage, and the degenerate cases where a
+divisor can be zero.
 
 ## Git And Security
 
-- Use concise imperative commits, preferably Conventional Commits.
-- PR notes should include purpose, changed workflows, commands run, and generated artifacts.
-- Do not commit secrets, API keys, Hugging Face tokens, private research data, or large local caches.
+- Conventional Commits, imperative mood, lower-case subject.
+- The body explains what was wrong and why the change is right, not what the
+  diff shows. Long bodies are normal here and preferred to terse ones.
+- One coherent change per commit. Split a refactor from the behaviour change it
+  enables when both can stand alone.
+- Do not commit secrets, API keys, private transcripts, generated build output,
+  `node_modules/`, or model caches.
