@@ -78,7 +78,9 @@ test('every placed speaker has a name in both languages', () => {
     const names = map.speakerNames
     assert.ok(names, `"${id}" has no English speaker names`)
     for (const speaker of map.projections.pca.speakers) {
-      const en = names[speaker.speaker]
+      // Annotated rather than inferred: `assert.ok` narrows `names` for the
+      // runtime but the checker still sees the nullable type on the index.
+      const en: string | undefined = names[speaker.speaker]
       assert.ok(en?.trim(), `"${id}" has no English name for ${speaker.speaker}`)
       assert.ok(
         !/[가-힣]/.test(en),
