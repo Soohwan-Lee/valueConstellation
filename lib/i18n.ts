@@ -210,6 +210,10 @@ export const STRINGS = {
     ko: '이 지도는 참여자를 구분하지 못합니다. 이름을 가린 발언 100개 중 {pct}개만 실제 발언자에게 돌아가는데, 아무렇게나 찍어도 {chance}개입니다. 대개 한 회의에서 여러 안건을 함께 다룬 경우로, 안건이 바뀔 때마다 발언이 딴 곳으로 튀어 평균이 모두 가운데로 모입니다 — 쟁점 하나로 좁혀서 다시 만들어 보세요.',
     en: 'This map cannot tell the participants apart. Of 100 statements with the names removed only {pct} land nearest the person who said them, and guessing would get {chance}. That usually means one meeting covered several agenda items: every change of topic throws a person’s statements somewhere else and every average lands in the middle. Narrow it to one question and try again.',
   },
+  verdictThin: {
+    ko: '이 회의는 판정을 내리기에 발언이 적습니다. 한 사람당 중앙값 {n}개로, {min}개는 있어야 합니다. 지도는 그대로 읽으셔도 되지만, 참여자가 실제로 갈렸는지 여부는 이 자료만으로 말할 수 없습니다 — 회의가 산만했다는 뜻이 아니라 짧았다는 뜻입니다.',
+    en: 'There are too few statements here to reach a verdict: {n} per person at the median, where {min} is the minimum. The map is still worth reading, but whether these people genuinely differ is not something this much material can settle — which says the meeting was short, not that it was unfocused.',
+  },
   attributionTerm: { ko: '발언 되찾기', en: 'Statements traced back' },
   separationTerm: { ko: '사람 구분 정도', en: 'Separation' },
 

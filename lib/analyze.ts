@@ -315,6 +315,21 @@ export async function analyzeTranscript(
     droppedSpeakers = out.droppedSpeakers
   }
 
+  // `aggregateAndProject` can only see the speakers that survived segmentation,
+  // so somebody whose every unit was dropped upstream — as a hallucination, or
+  // for saying nothing but "네, 맞습니다" — disappeared from the map without
+  // being reported anywhere. A participant who was in the room and is not in
+  // the picture has to be named, or the map quietly claims a meeting had fewer
+  // people in it than it did.
+  const placedOrDropped = new Set([
+    ...projections.pca.speakers.map((s) => s.speaker),
+    ...droppedSpeakers,
+  ])
+  droppedSpeakers = [
+    ...droppedSpeakers,
+    ...mappableSpeakers.filter((s) => !placedOrDropped.has(s)),
+  ]
+
   // A map of one person shows no relative position, which is the entire point.
   // Better to say so than to draw a single marker and let it imply otherwise.
   const placed = projections.pca.speakers.length

@@ -191,6 +191,14 @@ export const GROUPS: Group[] = [
         },
       },
       {
+        term: { ko: '판정을 보류하는 지점', en: 'Where it declines to judge' },
+        value: '< 6 per speaker',
+        body: {
+          ko: '한 사람당 발언 중앙값이 6개 미만이면 되찾기 비율로 판정하지 않고 발언 수를 대신 알립니다. 하나를 빼고 다시 재는 방식이라, 발언이 세 개뿐이면 뺀 하나가 그 사람의 중심을 자기 퍼짐의 절반만큼 밀어냅니다 — 회의와 무관한 이유로 점수가 무너집니다. 실제로 한 안건만 다룬 9발언 회의에서 되찾기는 11%(우연 33%)로 나왔지만 사람 구분 정도는 1.30이었습니다. 이때 “안건을 좁히세요”라고 안내하면 틀린 처방입니다. 그 회의는 산만한 게 아니라 짧았습니다.',
+          en: 'Below a median of six statements per speaker the tool reports the count instead of a verdict. Leave-one-out removes 1/(n−1) of what builds a centroid, so at three statements the held-out point shifts its own speaker’s centre by half that speaker’s spread and the score collapses for reasons unrelated to the meeting. Measured: a 9-statement transcript on a single agenda item scored 11% against 33% chance while separation read 1.30. Telling that reader to narrow their agenda would be the wrong instruction — their meeting was short, not unfocused.',
+        },
+      },
+      {
         term: { ko: '잠정 위치', en: 'Provisional position' },
         value: '< 3 statements',
         body: {

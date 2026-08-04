@@ -247,7 +247,32 @@ export interface Attribution {
   share: number
   /** What guessing would get: one over the number of speakers. */
   chance: number
+  /**
+   * Median statements per scored speaker.
+   *
+   * Carried with the figure because it decides whether the figure can be read
+   * at all — see MIN_STATEMENTS_FOR_ATTRIBUTION.
+   */
+  perSpeaker: number
 }
+
+/**
+ * Statements per speaker below which attribution measures its own method.
+ *
+ * Leave-one-out removes a fraction 1/(n-1) of what builds a centroid, so at
+ * three statements each held-out point shifts its own speaker's centre by half
+ * that speaker's spread, and the score collapses for reasons that have nothing
+ * to do with the meeting. Observed directly: a 9-statement transcript on one
+ * agenda item, three statements each, scored 11% against 33% chance while
+ * separation read 1.30 — the two disagreed because only one of them pays the
+ * hold-out cost.
+ *
+ * Six is where that penalty falls to a fifth and the figure starts describing
+ * the room. Below it the interface reports the count instead of a verdict,
+ * rather than telling somebody their meeting was unfocused when the truth is
+ * that it was short.
+ */
+export const MIN_STATEMENTS_FOR_ATTRIBUTION = 6
 
 /**
  * How often a statement is nearest to the centre of the person who said it.
@@ -307,11 +332,22 @@ export function speakerAttribution(
   }
 
   if (total === 0) return null
+
+  const counts = names
+    .map((n) => vectorsBySpeaker.get(n)!.length)
+    .sort((a, b) => a - b)
+  const mid = Math.floor(counts.length / 2)
+  const perSpeaker =
+    counts.length % 2 === 1
+      ? counts[mid]
+      : (counts[mid - 1] + counts[mid]) / 2
+
   return {
     correct,
     total,
     share: correct / total,
     chance: 1 / names.length,
+    perSpeaker,
   }
 }
 

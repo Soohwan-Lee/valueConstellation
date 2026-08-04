@@ -3,6 +3,7 @@ import assert from 'node:assert/strict'
 
 import fixtures from '../data/fixtures/precomputed.json' with { type: 'json' }
 import { SCENARIOS } from '../data/scenarios.ts'
+import { MIN_STATEMENTS_FOR_ATTRIBUTION } from './aggregate.ts'
 import { needsTranslation } from './translate.ts'
 import { speakerLabel } from './speakers.ts'
 import type { SpeakerSummary } from './summaries.ts'
@@ -170,6 +171,18 @@ test('the examples still demonstrate what they claim to', () => {
     failing.share <= failing.chance,
     'the "map fails" example now tells its speakers apart, so it teaches nothing',
   )
+
+  // No example may be thin enough that the interface hedges instead of
+  // judging. `mixed` in particular has to reach the verdict that names its
+  // cause — too many agenda items — rather than the one that says there was
+  // not enough material to tell, which would be a different lesson.
+  for (const id of Object.keys(MAPS)) {
+    assert.ok(
+      attribution(id).perSpeaker >= MIN_STATEMENTS_FOR_ATTRIBUTION,
+      `"${id}" has only ${attribution(id).perSpeaker} statements per speaker,` +
+        ' so the map reports that it cannot judge rather than what it found',
+    )
+  }
 })
 
 test('every placed speaker is summarised, from statements they made', () => {

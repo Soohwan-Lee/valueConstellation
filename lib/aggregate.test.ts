@@ -6,6 +6,8 @@ import {
   aggregateAndProject,
   centroid,
   covarianceEllipse,
+  MIN_STATEMENTS_FOR_ATTRIBUTION,
+  speakerAttribution,
   speakerSeparation,
 } from './aggregate.ts'
 import type { Utterance } from './types.ts'
@@ -232,6 +234,75 @@ test('separation detects speakers who do not separate', () => {
   ])
   const high = speakerSeparation(far, farCentroids)
   assert.ok(high !== null && high > 1, `expected > 1, got ${high}`)
+})
+
+test('attribution reports how much it had to work with', () => {
+  // The figure alone cannot distinguish "these people did not differ" from
+  // "there was not enough of them to tell", and those need opposite advice, so
+  // the sample size travels with it.
+  const r = rng(11)
+  const cloud = (cx: number, n: number) =>
+    Array.from({ length: n }, () => [cx + (r() - 0.5) * 0.4, (r() - 0.5) * 0.4])
+
+  const thin = speakerAttribution(
+    new Map([
+      ['A', cloud(0, 3)],
+      ['B', cloud(5, 3)],
+      ['C', cloud(10, 3)],
+    ]),
+  )
+  assert.ok(thin)
+  assert.equal(thin.perSpeaker, 3)
+  assert.ok(thin.perSpeaker < MIN_STATEMENTS_FOR_ATTRIBUTION)
+  assert.equal(thin.chance, 1 / 3)
+
+  // The median, not the mean, so one talkative participant cannot vouch for a
+  // room where nobody else said enough to be placed.
+  const lopsided = speakerAttribution(
+    new Map([
+      ['A', cloud(0, 40)],
+      ['B', cloud(5, 3)],
+      ['C', cloud(10, 2)],
+    ]),
+  )
+  assert.ok(lopsided)
+  assert.equal(lopsided.perSpeaker, 3)
+})
+
+test('attribution scores separated speakers and rejects overlapping ones', () => {
+  // Built on the unit sphere, because a centroid here is a mean *direction* —
+  // every vector is normalised before averaging, which is right for text
+  // embeddings and makes a cloud centred on the origin meaningless.
+  const r = rng(12)
+  const around = (base: number[], n: number, spread: number) =>
+    Array.from({ length: n }, () => {
+      const noise = randomUnit(base.length, r)
+      return base.map((x, i) => x + noise[i] * spread)
+    })
+
+  const [a, b] = [randomUnit(24, r), randomUnit(24, r)]
+  const apart = speakerAttribution(
+    new Map([
+      ['A', around(a, 12, 0.2)],
+      ['B', around(b, 12, 0.2)],
+    ]),
+  )
+  assert.ok(apart && apart.share > 0.9, `expected near 1, got ${apart?.share}`)
+
+  // One cloud split arbitrarily between two names: nothing distinguishes them,
+  // so the score must land near chance rather than near 1. This is the failure
+  // the `mixed` example exists to show, in miniature.
+  const shared = randomUnit(24, r)
+  const merged = speakerAttribution(
+    new Map([
+      ['A', around(shared, 20, 1.4)],
+      ['B', around(shared, 20, 1.4)],
+    ]),
+  )
+  assert.ok(
+    merged && merged.share < 0.75,
+    `expected near chance, got ${merged?.share}`,
+  )
 })
 
 test('separation does not change when the layout does', () => {
