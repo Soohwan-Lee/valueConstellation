@@ -4,7 +4,8 @@ import Link from 'next/link'
 import { mapResolution, regionPath, regionRings, type Point } from '@/lib/blob'
 import { buildScales } from '@/lib/frame'
 import { speakerLabel } from '@/lib/speakers'
-import type { Lang } from '@/lib/i18n'
+import { attributionVerdict } from '@/components/DetailPanel'
+import { t, tf, type Lang } from '@/lib/i18n'
 import type { AnalysisResult } from '@/lib/types'
 import type { Scenario } from '@/data/scenarios'
 
@@ -39,7 +40,10 @@ export function ScenarioCard({
   cta: string
   index: number
 }) {
-  const projection = analysis.projections.pca
+  // The layout the studio opens on, so the shape on the card is the shape you
+  // land on. It used to draw the PCA layout while the studio defaulted to
+  // people, which made every card a preview of a different picture.
+  const projection = analysis.projections.people
   const { toX, toY } = buildScales(projection, {
     width: W,
     height: H,
@@ -52,6 +56,7 @@ export function ScenarioCard({
       .map((u) => [toX(u.x), toY(u.y)] as Point),
   )
   const { reach } = mapResolution(bySpeaker, 14)
+  const verdict = attributionVerdict(projection.meta.attribution)
 
   return (
     <Link
@@ -149,10 +154,49 @@ export function ScenarioCard({
       </div>
 
       <div className="flex flex-1 flex-col p-5">
-        <h3 className="t-title">{scenario.title[lang]}</h3>
+        {/* The agenda item first. Somebody scanning these is deciding whether
+            the tool fits their own meeting, and that is answered by what was
+            being decided — not by what this particular map happened to find. */}
+        <p className="text-[11.5px] leading-[1.5] text-[var(--muted)]">
+          <span className="eyebrow mr-1.5">{t('agendaLabel', lang)}</span>
+          {scenario.topic[lang]}
+        </p>
+        <h3 className="t-title mt-2">{scenario.title[lang]}</h3>
         <p className="mt-2 flex-1 text-[13px] leading-[1.65] text-[var(--muted)]">
           {scenario.teaser[lang]}
         </p>
+
+        {/* What the map scored, on the card rather than behind the click. One
+            of these four is a failure and says so here: an example gallery
+            where every tile promises success teaches that the tool always
+            works, which is the one thing it must not teach. */}
+        <div className="mt-3.5 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[11.5px] text-[var(--muted)]">
+          <span>
+            {tf('cardPeople', lang, { n: projection.speakers.length })}
+          </span>
+          <span className="text-[var(--faint)]">·</span>
+          <span>
+            {tf('cardStatements', lang, { n: projection.utterances.length })}
+          </span>
+          {verdict && (
+            <>
+              <span className="text-[var(--faint)]">·</span>
+              <span
+                className="rounded-full px-1.5 py-0.5"
+                style={{
+                  background:
+                    verdict === 'none'
+                      ? 'color-mix(in oklch, var(--warn) 14%, transparent)'
+                      : 'var(--panel-2)',
+                  color: verdict === 'none' ? 'var(--warn)' : 'var(--body)',
+                }}
+              >
+                {t(verdict === 'none' ? 'cardFails' : 'cardWorks', lang)}
+              </span>
+            </>
+          )}
+        </div>
+
         <span className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-medium text-[var(--body)] transition-colors group-hover:text-[var(--ink)]">
           {cta}
           <span

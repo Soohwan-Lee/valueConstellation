@@ -46,7 +46,7 @@ test('no fixture is left behind by a renamed scenario', () => {
 
 test('every scenario carries the text the interface renders', () => {
   for (const scenario of SCENARIOS) {
-    for (const field of ['title', 'teaser', 'lookFor'] as const) {
+    for (const field of ['topic', 'title', 'teaser', 'lookFor'] as const) {
       for (const lang of ['ko', 'en'] as const) {
         assert.ok(
           scenario[field][lang].trim().length > 0,

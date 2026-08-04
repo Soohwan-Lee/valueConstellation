@@ -32,7 +32,18 @@
 
 export interface Scenario {
   id: string
-  /** Short label for the card. */
+  /**
+   * The agenda item, as it would read on a meeting notice.
+   *
+   * Separate from `title`, which names what the map turned out to show. The
+   * two were one field, and the card led with the finding — "Same yes,
+   * different reasons" — leaving a reader to work out what was being decided
+   * from a one-line teaser. Somebody deciding whether this tool applies to
+   * their own meeting is asking what kind of meeting it takes, and that
+   * question was being answered last.
+   */
+  topic: { ko: string; en: string }
+  /** Short label for the card: what the map turned out to show. */
   title: { ko: string; en: string }
   /** One line on what the resulting map shows. */
   teaser: { ko: string; en: string }
@@ -44,6 +55,10 @@ export interface Scenario {
 export const SCENARIOS: Scenario[] = [
   {
     id: 'siting',
+    topic: {
+      ko: '북부 재생에너지 발전단지 부지를 어디로 정할 것인가',
+      en: 'Where to site the northern renewable energy plant',
+    },
     title: {
       ko: '한 쟁점, 네 갈래',
       en: 'One question, four positions',
@@ -87,6 +102,10 @@ export const SCENARIOS: Scenario[] = [
 
   {
     id: 'consensus',
+    topic: {
+      ko: '노후 청사를 재건축할 것인가',
+      en: 'Whether to rebuild the ageing city hall',
+    },
     title: {
       ko: '말은 같고, 이유는 다르다',
       en: 'Same yes, different reasons',
@@ -128,6 +147,10 @@ export const SCENARIOS: Scenario[] = [
 
   {
     id: 'drift',
+    topic: {
+      ko: '초등학교 통학로 안전 대책을 어떻게 할 것인가',
+      en: 'What to do about safety on the primary school route',
+    },
     title: {
       ko: '둘만 있어도 갈린다',
       en: 'Two people, two worlds',
@@ -170,6 +193,10 @@ export const SCENARIOS: Scenario[] = [
 
   {
     id: 'mixed',
+    topic: {
+      ko: '주차장 요금·급식 식재료·도서관 운영시간을 한 회의에서',
+      en: 'Parking fees, school meal sourcing, and library hours in one sitting',
+    },
     title: {
       ko: '지도가 실패하는 경우',
       en: 'When the map fails',

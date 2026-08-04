@@ -101,8 +101,11 @@ export function SourceMenu({
                     >
                       {s.title[lang]}
                     </span>
+                    {/* The agenda item rather than the teaser. Switching
+                        between examples is switching between meetings, and
+                        this is the line that says which meeting. */}
                     <span className="mt-0.5 block text-[11.5px] leading-[1.5] text-[var(--muted)]">
-                      {s.teaser[lang]}
+                      {s.topic[lang]}
                     </span>
                   </button>
                 </li>

@@ -250,7 +250,8 @@ export default function Studio() {
     [visiblePairs, selectedSpeaker],
   )
 
-  const lookFor = scenarioId ? getScenario(scenarioId)?.lookFor[lang] : null
+  const scenario = scenarioId ? getScenario(scenarioId) : null
+  const lookFor = scenario?.lookFor[lang] ?? null
 
   const hasMap = !loading && !pasting && projection && speakerCount > 0
 
@@ -429,11 +430,18 @@ export default function Studio() {
                   />
                   <GuideButton lang={lang} />
                 </div>
-                {/* What to look for in this particular map. Carried over from
-                    the overview so somebody who arrived by picking an example
-                    is not left to work out why that one was worth opening. */}
+                {/* What was being decided, then what to look for. Both carried
+                    over from the overview: somebody who arrived by picking an
+                    example should not have to work out which meeting they are
+                    looking at, nor why this one was worth opening. */}
+                {scenario && (
+                  <p className="mt-3 text-[12px] leading-[1.6] text-[var(--muted)]">
+                    <span className="eyebrow mr-1.5">{t('agendaLabel', lang)}</span>
+                    {scenario.topic[lang]}
+                  </p>
+                )}
                 {lookFor && (
-                  <p className="mt-3 text-[12.5px] leading-[1.7] text-[var(--body)]">
+                  <p className="mt-1.5 text-[12.5px] leading-[1.7] text-[var(--body)]">
                     {lookFor}
                   </p>
                 )}
