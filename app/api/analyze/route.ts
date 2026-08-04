@@ -1,77 +1,16 @@
-import { embedMany, generateObject, NoObjectGeneratedError } from 'ai'
-import { openai } from '@ai-sdk/openai'
 import { z } from 'zod'
 
-import { parseTranscript, isModerator } from '@/lib/parse'
-import {
-  SegmentationSchema,
-  SEGMENTATION_SYSTEM_PROMPT,
-  formatTurnsForPrompt,
-  filterHallucinated,
-  type SegmentedUtterance,
-} from '@/lib/segment'
-import { aggregateAndProject } from '@/lib/aggregate'
-import type {
-  AnalysisResult,
-  ProjectionMethod,
-  Utterance,
-  UtteranceKind,
-} from '@/lib/types'
+import { analyzeTranscript } from '@/lib/analyze'
+
+/**
+ * The analyse endpoint.
+ *
+ * Request handling only — validate, call the pipeline, shape the response. The
+ * pipeline itself lives in `lib/analyze.ts` so that the committed examples are
+ * produced by the same code that serves a paste.
+ */
 
 export const maxDuration = 60
-
-const MODEL = 'gpt-5.4-mini'
-const EMBEDDING_MODEL = 'text-embedding-3-small'
-
-/** Guards against a paste large enough to blow the duration limit. */
-const MAX_TRANSCRIPT_CHARS = 120_000
-/**
- * Turns per segmentation call.
- *
- * Kept small deliberately: latency tracks the text volume of the slowest single
- * call, not the number of calls, so many small concurrent batches finish sooner
- * than a few large ones. Measured on a 105-turn transcript: 40 turns/call ran in
- * 73s, 15 turns/call in 28s, for equivalent output.
- */
-const SEGMENT_BATCH_TURNS = 15
-/**
- * Concurrent segmentation calls. Bounded rather than unlimited so a very long
- * transcript does not open dozens of simultaneous requests and hit provider
- * rate limits, which would fail the whole analysis rather than just slow it.
- */
-const SEGMENT_CONCURRENCY = 8
-
-interface ParsedTurnBatch {
-  index: number
-  turns: { speaker: string; text: string }[]
-}
-
-/**
- * Runs `fn` over `items` with at most `limit` in flight, preserving input order
- * in the returned array. Rejects on the first failure, like Promise.all.
- */
-async function mapWithConcurrency<T, R>(
-  items: T[],
-  limit: number,
-  fn: (item: T) => Promise<R>,
-): Promise<R[]> {
-  const results = new Array<R>(items.length)
-  let next = 0
-
-  const workers = Array.from(
-    { length: Math.min(limit, items.length) },
-    async () => {
-      while (true) {
-        const i = next++
-        if (i >= items.length) return
-        results[i] = await fn(items[i])
-      }
-    },
-  )
-
-  await Promise.all(workers)
-  return results
-}
 
 const RequestSchema = z.object({
   transcript: z.string().min(1),
@@ -85,10 +24,7 @@ function jsonError(message: string, status: number) {
 
 export async function POST(req: Request) {
   if (!process.env.OPENAI_API_KEY) {
-    return jsonError(
-      'OPENAI_API_KEY is not configured on the server.',
-      503,
-    )
+    return jsonError('OPENAI_API_KEY is not configured on the server.', 503)
   }
 
   let body: unknown
@@ -98,269 +34,15 @@ export async function POST(req: Request) {
     return jsonError('Request body must be JSON.', 400)
   }
 
-  const parsedBody = RequestSchema.safeParse(body)
-  if (!parsedBody.success) {
+  const parsed = RequestSchema.safeParse(body)
+  if (!parsed.success) {
     return jsonError('Expected { transcript: string }.', 400)
   }
 
-  const { transcript, includeModerators = false } = parsedBody.data
-  if (transcript.length > MAX_TRANSCRIPT_CHARS) {
-    return jsonError(
-      `Transcript is ${transcript.length} characters; the limit is ${MAX_TRANSCRIPT_CHARS}.`,
-      413,
-    )
-  }
-
-  // 1. Attribute lines to speakers.
-  const parsed = parseTranscript(transcript)
-  if (parsed.turns.length === 0) {
-    return jsonError(
-      'No speaker-attributed lines found. Expected lines like "김철수: ..." or "[김철수] ...".',
-      422,
-    )
-  }
-
-  // 2. Segment turns into argument units.
-  //
-  // Batches run concurrently. Sequentially, a real 105-turn transcript took
-  // 110s and would have been killed by the 60s function limit. The batches are
-  // independent — each needs only its own turns — so wall clock is the slowest
-  // call rather than their sum.
-  let units: SegmentedUtterance[] = []
-  let hallucinatedCount = 0
-
-  const batches: ParsedTurnBatch[] = []
-  for (let i = 0; i < parsed.turns.length; i += SEGMENT_BATCH_TURNS) {
-    batches.push({
-      index: batches.length,
-      turns: parsed.turns.slice(i, i + SEGMENT_BATCH_TURNS),
-    })
-  }
-
-  try {
-    const results = await mapWithConcurrency(
-      batches,
-      SEGMENT_CONCURRENCY,
-      async (batch) => {
-        const { object } = await generateObject({
-          model: openai(MODEL),
-          schema: SegmentationSchema,
-          system: SEGMENTATION_SYSTEM_PROMPT,
-          prompt: formatTurnsForPrompt(batch.turns),
-        })
-        return { batch, ...filterHallucinated(object.utterances, batch.turns) }
-      },
-    )
-
-    // Reassemble in batch order so utterance indices follow the transcript.
-    results.sort((a, b) => a.batch.index - b.batch.index)
-    for (const r of results) {
-      units.push(...r.kept)
-      hallucinatedCount += r.dropped.length
-    }
-  } catch (error) {
-    // A schema-conformance failure is worth distinguishing from a transport
-    // error: it usually means the prompt or schema needs work, not a retry.
-    if (NoObjectGeneratedError.isInstance(error)) {
-      console.error('segmentation: no object generated', {
-        cause: error.cause,
-        text: error.text?.slice(0, 500),
-      })
-      return jsonError(
-        'The model did not return usable segmentation output.',
-        502,
-      )
-    }
-    const message =
-      error instanceof Error ? error.message : 'Segmentation failed.'
-    return jsonError(`Segmentation failed: ${message}`, 502)
-  }
-
-  if (units.length === 0) {
-    return jsonError(
-      'Segmentation produced no usable units. The transcript may be too short.',
-      422,
-    )
-  }
-
-  // Reconcile speaker names against the parsed set: the model occasionally
-  // returns a variant, and an unrecognised name would create a phantom speaker.
-  // Units whose speaker cannot be resolved are dropped, not reassigned.
-  const knownSpeakers = new Set(parsed.speakers)
-  let unresolvedSpeakerUnits = 0
-  units = units.flatMap((u) => {
-    if (knownSpeakers.has(u.speaker)) return [u]
-    const resolved = nearestSpeaker(u.speaker, parsed.speakers)
-    if (resolved) return [{ ...u, speaker: resolved }]
-    unresolvedSpeakerUnits += 1
-    return []
+  const outcome = await analyzeTranscript(parsed.data.transcript, {
+    includeModerators: parsed.data.includeModerators,
   })
 
-  if (units.length === 0) {
-    return jsonError(
-      'No segmented unit could be attributed to a known speaker.',
-      422,
-    )
-  }
-
-  const utterances: Utterance[] = units.map((u, i) => ({
-    id: `u${i}`,
-    speaker: u.speaker,
-    text: u.text,
-    // Only carry a translation when it says something the original does not.
-    ...(u.textEn && u.textEn.trim() && u.textEn.trim() !== u.text.trim()
-      ? { textEn: u.textEn.trim() }
-      : {}),
-    kind: u.kind,
-    index: i,
-  }))
-
-  // 3. Embed. Only units that can carry a position need vectors.
-  const embeddable = utterances.filter(
-    (u) => u.kind === 'claim' || u.kind === 'question',
-  )
-  if (embeddable.length < 2) {
-    return jsonError(
-      'Fewer than two substantive utterances were found, so no map can be drawn.',
-      422,
-    )
-  }
-
-  let vectorByIndex: Map<number, number[]>
-  try {
-    vectorByIndex = await embedUtterances(embeddable)
-  } catch (error) {
-    const message = error instanceof Error ? error.message : 'Embedding failed.'
-    return jsonError(`Embedding failed: ${message}`, 502)
-  }
-
-  // 4. Project, once per method, so the client can switch without a round trip.
-  const vectors = utterances.map((u) => vectorByIndex.get(u.index) ?? [])
-  const excludeSpeakers = includeModerators
-    ? []
-    : parsed.speakers.filter(isModerator)
-
-  const methods: ProjectionMethod[] = ['pca', 'mds']
-  const projections = {} as AnalysisResult['projections']
-  let droppedSpeakers: string[] = []
-
-  for (const method of methods) {
-    const out = aggregateAndProject({
-      utterances,
-      vectors,
-      method,
-      excludeSpeakers,
-    })
-    projections[method] = {
-      utterances: out.projectedUtterances,
-      speakers: out.speakers,
-      meta: {
-        method,
-        explainedVariance: out.explainedVariance,
-        componentVariance: out.componentVariance,
-        fittedOn: out.fittedOn,
-        saturated: out.saturated,
-        separation: out.separation,
-      },
-    }
-    // Method-independent, so either pass yields the same set.
-    droppedSpeakers = out.droppedSpeakers
-  }
-
-  // A map of one person shows no relative position, which is the entire point.
-  // Better to say so than to draw a single marker and let it imply otherwise.
-  const placed = projections.pca.speakers.length
-  if (placed < 2) {
-    return jsonError(
-      placed === 0
-        ? 'No speaker could be placed. The transcript may contain only assent or procedural talk.'
-        : 'Only one speaker could be placed. A map needs at least two to show relative position.',
-      422,
-    )
-  }
-
-  const counts: Record<UtteranceKind, number> = {
-    claim: 0,
-    question: 0,
-    agreement: 0,
-    procedural: 0,
-  }
-  for (const u of utterances) counts[u.kind] += 1
-
-  const result: AnalysisResult & {
-    diagnostics: Record<string, unknown>
-  } = {
-    projections,
-    counts,
-    droppedSpeakers,
-    diagnostics: {
-      turns: parsed.turns.length,
-      speakers: parsed.speakers,
-      moderators: parsed.speakers.filter(isModerator),
-      moderatorsExcluded: !includeModerators,
-      aliasMap: parsed.aliasMap,
-      continuationLines: parsed.continuationLines,
-      preambleLines: parsed.preambleLines,
-      unitsDroppedAsHallucinated: hallucinatedCount,
-      unitsDroppedUnresolvedSpeaker: unresolvedSpeakerUnits,
-      model: MODEL,
-      embeddingModel: EMBEDDING_MODEL,
-    },
-  }
-
-  return Response.json(result)
-}
-
-/**
- * Embeds utterances, returning vectors keyed by utterance index.
- *
- * `embedMany` chunks against the model's `maxEmbeddingsPerCall` (2048 here),
- * retries, and guarantees the returned array is ordered to match `values`.
- */
-async function embedUtterances(
-  utterances: Utterance[],
-): Promise<Map<number, number[]>> {
-  const { embeddings } = await embedMany({
-    model: openai.embeddingModel(EMBEDDING_MODEL),
-    values: utterances.map((u) => u.text),
-    maxParallelCalls: 2,
-  })
-
-  const out = new Map<number, number[]>()
-  utterances.forEach((u, i) => {
-    const vector = embeddings[i]
-    if (vector) out.set(u.index, vector)
-  })
-  return out
-}
-
-/**
- * Maps a model-returned speaker name onto a known one, or null if it cannot be
- * resolved confidently.
- *
- * Returns null rather than guessing. Assigning an unresolvable name to the first
- * known speaker would credit real words to the wrong participant and shift that
- * participant's centroid, with nothing in the output to indicate it happened.
- */
-function nearestSpeaker(candidate: string, known: string[]): string | null {
-  const c = candidate.replace(/\s+/g, '')
-  if (!c) return null
-
-  const stripped = known.map((k) => ({ name: k, key: k.replace(/\s+/g, '') }))
-
-  // Exact match after whitespace removal.
-  const exact = stripped.find((k) => k.key === c)
-  if (exact) return exact.name
-
-  // The candidate carries the known name plus a title, e.g. "김철수 위원".
-  const extended = stripped.filter((k) => c.startsWith(k.key))
-  if (extended.length === 1) return extended[0].name
-
-  // The candidate is a prefix of exactly one known name. Requiring uniqueness
-  // matters for Korean surnames: "김" prefixes both 김철수 and 김영수, and
-  // picking the first would attribute by transcript order rather than identity.
-  const prefixOf = stripped.filter((k) => k.key.startsWith(c))
-  if (prefixOf.length === 1 && c.length >= 2) return prefixOf[0].name
-
-  return null
+  if (!outcome.ok) return jsonError(outcome.error, outcome.status)
+  return Response.json(outcome.result)
 }

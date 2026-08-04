@@ -9,7 +9,8 @@
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "hero": "node --experimental-strip-types scripts/render-hero.ts"
+    "hero": "node --experimental-strip-types scripts/render-hero.ts",
+    "fixtures": "node --experimental-strip-types scripts/build-fixtures.ts"
   },
   "repository": {
     "type": "git",
