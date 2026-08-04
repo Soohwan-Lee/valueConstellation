@@ -1,12 +1,16 @@
 'use client'
 
+import { useCallback, useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { LangSwitch, ThemeSwitch, usePreferences } from '@/components/Preferences'
 import { Reveal } from '@/components/Reveal'
 import { Wordmark } from '@/components/Chrome'
 import { LiveDemo } from '@/components/landing/LiveDemo'
 import { MarkFigure } from '@/components/landing/MarkFigure'
 import { RegionSteps } from '@/components/landing/RegionSteps'
+import { Composer } from '@/components/Composer'
+import { stageTranscript } from '@/lib/handoff'
 import { SCENARIOS } from '@/data/scenarios'
 import precomputed from '@/data/fixtures/precomputed.json'
 import {
@@ -20,19 +24,33 @@ import {
   PIPELINE,
   PIPELINE_SECTION,
   REGION_RULE,
+  TRY_SECTION,
   type Bilingual,
 } from '@/lib/landing'
 import type { AnalysisResult } from '@/lib/types'
 
 const FIXTURES = precomputed as unknown as Record<string, AnalysisResult>
 
-/** The example the hero runs on: four people who split on different grounds. */
-const DEMO_ID = 'siting'
-
 export default function Overview() {
+  const router = useRouter()
   const { lang } = usePreferences()
   const say = (b: Bilingual) => b[lang]
-  const demo = FIXTURES[DEMO_ID]
+
+  /** Opens on the example with four grounds; the picker changes it. */
+  const [demoId, setDemoId] = useState(SCENARIOS[0].id)
+  const demo = FIXTURES[demoId]
+  const demoScenario = SCENARIOS.find((s) => s.id === demoId)
+
+  const [transcript, setTranscript] = useState('')
+
+  // The overview hands the text over rather than analysing it here, so a result
+  // is only ever produced in one place. On the way it goes through session
+  // storage, not the URL — a transcript is other people's words.
+  const handOff = useCallback(() => {
+    if (!transcript.trim()) return
+    const staged = stageTranscript(transcript)
+    router.push(staged ? '/studio?pending=1' : '/studio?compose=1')
+  }, [router, transcript])
 
   return (
     <div className="min-h-dvh bg-[var(--tray)]">
@@ -59,29 +77,82 @@ export default function Overview() {
             </h2>
             <p className="t-lead mt-7 max-w-[40rem]">{say(HERO.lead)}</p>
             <div className="mt-9 flex flex-wrap items-center gap-3">
-              <Link
-                href="/studio?compose=1"
+              <a
+                href="#try"
                 className="rounded-full bg-[var(--signal)] px-6 py-3 text-[14px] font-medium text-[var(--on-signal)] transition-opacity hover:opacity-88"
               >
                 {say(HERO.primary)}
-              </Link>
-              <Link
-                href="/studio"
+              </a>
+              <a
+                href="#marks"
                 className="rounded-full border border-[var(--line-strong)] px-6 py-3 text-[14px] text-[var(--body)] transition-colors hover:border-[var(--ink)] hover:text-[var(--ink)]"
               >
                 {say(HERO.secondary)}
-              </Link>
+              </a>
             </div>
           </div>
 
           {demo && (
             <div className="mt-14">
-              <div className="relative h-[clamp(340px,52vh,600px)] overflow-hidden rounded-[18px] border border-[var(--line)] bg-[var(--plate)] shadow-[0_40px_80px_-60px_rgba(0,0,0,0.5)]">
-                <LiveDemo analysis={demo} lang={lang} />
+              {/* The example picker sits on the demo rather than only in the
+                  gallery further down: the four maps are the fastest way to
+                  learn what this can and cannot show, and somebody who never
+                  scrolls should still meet more than one of them. */}
+              <div
+                role="tablist"
+                aria-label={say(EXAMPLES_SECTION.eyebrow)}
+                className="mb-3 flex flex-wrap gap-1.5"
+              >
+                {SCENARIOS.map((scenario) => {
+                  const on = scenario.id === demoId
+                  return (
+                    <button
+                      key={scenario.id}
+                      role="tab"
+                      aria-selected={on}
+                      type="button"
+                      onClick={() => setDemoId(scenario.id)}
+                      className="rounded-full border px-3.5 py-1.5 text-[12.5px] transition-colors"
+                      style={{
+                        borderColor: on ? 'transparent' : 'var(--line)',
+                        background: on ? 'var(--signal)' : 'var(--panel)',
+                        color: on ? 'var(--on-signal)' : 'var(--muted)',
+                      }}
+                    >
+                      {scenario.title[lang]}
+                    </button>
+                  )
+                })}
               </div>
-              <p className="mt-3 text-[12.5px] text-[var(--muted)]">
-                {say(HERO.demoCaption)}
-              </p>
+
+              <div className="relative h-[clamp(340px,52vh,600px)] overflow-hidden rounded-[18px] border border-[var(--line)] bg-[var(--plate)] shadow-[0_40px_80px_-60px_rgba(0,0,0,0.5)]">
+                <LiveDemo key={demoId} analysis={demo} lang={lang} />
+              </div>
+
+              <div className="mt-3 flex flex-wrap items-start justify-between gap-x-6 gap-y-2">
+                <div className="max-w-[46rem]">
+                  {demoScenario && (
+                    <p className="text-[13px] leading-[1.7] text-[var(--body)]">
+                      {demoScenario.lookFor[lang]}
+                    </p>
+                  )}
+                  <p className="mt-1 text-[12.5px] text-[var(--muted)]">
+                    {say(HERO.demoCaption)}
+                  </p>
+                </div>
+                <Link
+                  href={`/studio?example=${demoId}`}
+                  className="group shrink-0 text-[13px] text-[var(--body)] transition-colors hover:text-[var(--ink)]"
+                >
+                  {say(HERO.demoOpen)}{' '}
+                  <span
+                    aria-hidden
+                    className="readout inline-block transition-transform group-hover:translate-x-0.5"
+                  >
+                    →
+                  </span>
+                </Link>
+              </div>
             </div>
           )}
         </section>
@@ -264,21 +335,33 @@ export default function Overview() {
           </ul>
         </Band>
 
-        <section className="mx-auto max-w-[1240px] px-5 pb-24 pt-8 sm:px-8">
-          <Reveal>
-            <div className="flex flex-col items-start gap-6 rounded-[16px] border border-[var(--line)] bg-[var(--panel)] p-8 sm:flex-row sm:items-center sm:justify-between sm:p-11">
-              <h3 className="t-headline max-w-[26rem]">
-                {say(HERO.headline).replace('\n', ' ')}
-              </h3>
-              <Link
-                href="/studio?compose=1"
-                className="shrink-0 rounded-full bg-[var(--signal)] px-6 py-3 text-[14px] font-medium text-[var(--on-signal)] transition-opacity hover:opacity-88"
-              >
-                {say(HERO.primary)}
-              </Link>
+        {/* ── Try it ───────────────────────────────────────────────────────
+            A working composer, not a link to one. Somebody who has read this
+            far should be able to act without first landing in an unfamiliar
+            interface and looking for the box. */}
+        <Band id="try">
+          <SectionHead
+            eyebrow={say(TRY_SECTION.eyebrow)}
+            headline={say(TRY_SECTION.headline)}
+            lead={say(TRY_SECTION.lead)}
+          />
+          <Reveal delay={60}>
+            <div className="mt-10 rounded-[16px] border border-[var(--line)] bg-[var(--panel)] p-6 sm:p-8">
+              <Composer
+                lang={lang}
+                transcript={transcript}
+                onChange={setTranscript}
+                onSubmit={handOff}
+                error={null}
+                loading={false}
+                variant="inline"
+              />
+              <p className="mt-4 border-t border-[var(--line)] pt-4 text-[12.5px] leading-[1.7] text-[var(--muted)]">
+                {say(TRY_SECTION.privacy)}
+              </p>
             </div>
           </Reveal>
-        </section>
+        </Band>
       </main>
 
       <footer className="border-t border-[var(--line)]">

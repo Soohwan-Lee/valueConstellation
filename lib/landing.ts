@@ -32,10 +32,27 @@ export const HERO = {
     en: 'Paste a transcript. Each participant’s speech is split into argument units and laid out so that statements meaning similar things sit close together — who stands near whom, and who stands alone, on one page.',
   },
   primary: { ko: '회의록 붙여넣기', en: 'Paste a transcript' },
-  secondary: { ko: '예시부터 보기', en: 'See an example first' },
+  secondary: { ko: '읽는 법부터 보기', en: 'Learn to read it first' },
   demoCaption: {
-    ko: '아래는 실제 예시입니다. 참여자 표식을 클릭하면 나머지와의 거리를 잽니다.',
-    en: 'A real example. Click a participant marker to measure their distance to everyone else.',
+    ko: '실제 예시입니다. 위에서 다른 회의를 골라 보거나, 참여자 표식을 클릭해 거리를 재보세요.',
+    en: 'A real example. Pick a different meeting above, or click a participant to measure their distance to everyone else.',
+  },
+  demoOpen: { ko: '이 예시를 도구에서 열기', en: 'Open this one in the studio' },
+} satisfies Record<string, Bilingual>
+
+export const TRY_SECTION = {
+  eyebrow: { ko: '직접 해보기', en: 'Try it' },
+  headline: {
+    ko: '가지고 계신 회의록을 그대로 붙여넣어 보세요.',
+    en: 'Paste a transcript you already have.',
+  },
+  lead: {
+    ko: '한 줄에 한 발언씩이면 됩니다. 붙여넣는 즉시 누가 발언자로 인식되는지 아래에 표시되고, 그 상태에서 지도를 만듭니다. 회의록은 지도를 만드는 동안에만 서버로 보내고 저장하지 않습니다.',
+    en: 'One statement per line is enough. The names it recognises appear underneath as you type, and the map is built from exactly those. The transcript is sent only to build the map, and is not stored.',
+  },
+  privacy: {
+    ko: '민감한 회의록이라면 이름을 A, B, C로 바꿔서 붙여넣어도 결과는 같습니다.',
+    en: 'If the meeting is sensitive, replacing names with A, B and C changes nothing about the result.',
   },
 } satisfies Record<string, Bilingual>
 

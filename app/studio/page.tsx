@@ -22,8 +22,8 @@ import {
   SegmentedControl,
 } from '@/components/MapControls'
 import { SCENARIOS, getScenario } from '@/data/scenarios'
-import { SAMPLE_TRANSCRIPT } from '@/data/sample'
-import { isModerator, parseTranscript } from '@/lib/parse'
+import { Composer } from '@/components/Composer'
+import { takeStagedTranscript } from '@/lib/handoff'
 import precomputed from '@/data/fixtures/precomputed.json'
 import { needsShapeEncoding, SPEAKER_SLOTS } from '@/lib/colors'
 import { pairsWith, speakerPairs, type SpeakerPair } from '@/lib/pairs'
@@ -38,18 +38,6 @@ import type {
 type Analysis = AnalysisResult & { diagnostics?: Record<string, unknown> }
 
 const FIXTURES = precomputed as unknown as Record<string, Analysis>
-
-/**
- * The line shapes the parser recognises, shown while the editor is empty.
- *
- * Taken from the formats the parser is tested against rather than invented, so
- * following one of them is a guarantee rather than a suggestion. The last is
- * the speaker-header form that Clova, Otter and Daglo export.
- */
-const TRANSCRIPT_FORMATS: Record<Lang, string[]> = {
-  ko: ['김철수: 발언', '[김철수] 발언', '◯ 김철수 위원  발언', '김철수 00:12 ⏎ 발언'],
-  en: ['Alice: what she said', '[Alice] what she said', 'Alice 00:12 ⏎ what she said'],
-}
 
 /** Stage timings for the progress display, tuned to observed pipeline latency. */
 const STAGE_SCHEDULE: { at: number; stage: Stage }[] = [
@@ -88,6 +76,8 @@ export default function Studio() {
   const [selected, setSelected] = useState<ProjectedUtterance | null>(null)
   const [selectedSpeaker, setSelectedSpeaker] = useState<string | null>(null)
   const [hoveredPair, setHoveredPair] = useState<SpeakerPair | null>(null)
+  /** Set when a transcript arrived from the overview and should run on its own. */
+  const [runStaged, setRunStaged] = useState(false)
 
   const projection = analysis?.projections[method] ?? null
 
@@ -112,6 +102,20 @@ export default function Studio() {
    */
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
+
+    // A transcript pasted on the overview page. It is analysed here rather than
+    // there so there is only ever one place a result is produced.
+    if (params.get('pending') !== null) {
+      const staged = takeStagedTranscript()
+      if (staged) {
+        setTranscript(staged)
+        setPasting(true)
+        setScenarioId(null)
+        setRunStaged(true)
+        return
+      }
+    }
+
     if (params.get('compose') !== null) {
       setPasting(true)
       setScenarioId(null)
@@ -199,6 +203,15 @@ export default function Studio() {
     }
   }, [transcript, resetSelection, lang])
 
+  // Runs the handed-over transcript once it has landed in state. Kept separate
+  // from the URL effect because `analyze` reads `transcript`, which is not set
+  // yet at the moment the handoff is read.
+  useEffect(() => {
+    if (!runStaged || !transcript.trim()) return
+    setRunStaged(false)
+    void analyze()
+  }, [runStaged, transcript, analyze])
+
   const toggleVisible = useCallback((speaker: string) => {
     setHiddenSpeakers((prev) => {
       const next = new Set(prev)
@@ -238,23 +251,6 @@ export default function Studio() {
     () => pairsWith(visiblePairs, selectedSpeaker),
     [visiblePairs, selectedSpeaker],
   )
-
-  /**
-   * Pre-flight on what was pasted, using the same parser the server runs.
-   *
-   * An approximation here would be worse than nothing: the point of showing
-   * detected speakers before spending eight seconds and an API call is to
-   * catch a transcript the parser reads differently than the reader does, and
-   * a second, looser regex would report names the analysis will not produce.
-   */
-  const detected = useMemo(() => {
-    if (!transcript.trim()) return { speakers: [], moderators: [] as string[] }
-    const parsed = parseTranscript(transcript)
-    return {
-      speakers: parsed.speakers,
-      moderators: parsed.speakers.filter(isModerator),
-    }
-  }, [transcript])
 
   const sourceTitle = scenarioId
     ? (getScenario(scenarioId)?.title[lang] ?? '')
@@ -419,9 +415,9 @@ export default function Studio() {
                     }
                   : null
               }
-              detected={detected}
               error={error}
               loading={loading}
+              autoFocus
             />
           ) : projection && speakerCount > 0 ? (
             <>
@@ -512,152 +508,6 @@ export default function Studio() {
           )}
         </div>
       </main>
-    </div>
-  )
-}
-
-/**
- * Transcript composer.
- *
- * Takes the whole plate rather than opening in a dialog: pasting a transcript
- * is the one moment the map has nothing to say, and a modal over a stale map
- * would suggest the old result still applies to the new text.
- */
-function Composer({
-  lang,
-  transcript,
-  onChange,
-  onSubmit,
-  onCancel,
-  detected,
-  error,
-  loading,
-}: {
-  lang: Lang
-  transcript: string
-  onChange: (v: string) => void
-  onSubmit: () => void
-  onCancel: (() => void) | null
-  detected: { speakers: string[]; moderators: string[] }
-  error: string | null
-  loading: boolean
-}) {
-  const empty = !transcript.trim()
-
-  return (
-    <div className="flex min-h-0 flex-1 flex-col">
-      <header className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-b border-[var(--line)] px-4 py-3">
-        <h2 className="t-title">{t('pasteTitle', lang)}</h2>
-        <button
-          type="button"
-          onClick={() => onChange(SAMPLE_TRANSCRIPT)}
-          className="text-[12.5px] text-[var(--muted)] underline decoration-[var(--line-strong)] underline-offset-[3px] transition-colors hover:text-[var(--ink)]"
-        >
-          {t('loadSample', lang)}
-        </button>
-        <p className="w-full text-[12.5px] leading-[1.6] text-[var(--muted)]">
-          {t('transcriptLabel', lang)}
-        </p>
-      </header>
-
-      {/* The editor is set in the sans face rather than in mono: the transcript
-          is Korean, and the mono face has no Hangul to set it in. */}
-      <div className="flex min-h-0 flex-1 flex-col p-4">
-        <textarea
-          id="transcript"
-          value={transcript}
-          onChange={(e) => onChange(e.target.value)}
-          spellCheck={false}
-          autoFocus
-          placeholder={
-            lang === 'ko'
-              ? '김철수: 저는 이 사업을 추진해야 한다고 봅니다.\n이영희: 주민 부담을 먼저 봐야 합니다.'
-              : 'Alice: I think we should move ahead.\nBob: We should look at the cost first.'
-          }
-          className="scroll-quiet min-h-[220px] w-full flex-1 resize-none rounded-[8px] border border-[var(--line)] bg-[var(--panel)] p-3.5 text-[13.5px] leading-[1.8] text-[var(--ink)] outline-none transition-colors placeholder:text-[var(--faint)] focus:border-[var(--line-strong)]"
-        />
-
-        {/* Below the editor: the format help while there is nothing to read,
-            and what the parser found once there is. The preview matters more
-            than it looks — a transcript the parser splits differently than the
-            reader expects is the failure that costs eight seconds and an API
-            call to discover. */}
-        <div className="mt-3 min-h-[52px]">
-          {empty ? (
-            <div>
-              <div className="eyebrow mb-1.5">{t('formatsLabel', lang)}</div>
-              <ul className="flex flex-wrap gap-1.5 text-[12px] text-[var(--body)]">
-                {TRANSCRIPT_FORMATS[lang].map((f) => (
-                  <li
-                    key={f}
-                    className="rounded-[4px] bg-[var(--panel-2)] px-2 py-1"
-                  >
-                    {f}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ) : detected.speakers.length === 0 ? (
-            <p className="text-[12.5px] leading-[1.6] text-[var(--body)]">
-              {t('noSpeakersYet', lang)}
-            </p>
-          ) : (
-            <div>
-              <div className="eyebrow mb-1.5">
-                {t('detectedLabel', lang)}{' '}
-                <span className="readout normal-case tracking-normal">
-                  {detected.speakers.length}
-                </span>
-              </div>
-              <ul className="flex flex-wrap items-baseline gap-x-3 gap-y-1 text-[13px]">
-                {detected.speakers.map((name) => {
-                  const isModeratorName = detected.moderators.includes(name)
-                  return (
-                    <li
-                      key={name}
-                      className={
-                        isModeratorName
-                          ? 'text-[var(--muted)]'
-                          : 'text-[var(--ink)]'
-                      }
-                    >
-                      {name}
-                      {isModeratorName && (
-                        <span className="ml-1 text-[11.5px] text-[var(--muted)]">
-                          — {t('moderatorExcluded', lang)}
-                        </span>
-                      )}
-                    </li>
-                  )
-                })}
-              </ul>
-            </div>
-          )}
-        </div>
-
-        <div className="mt-3 flex flex-wrap items-center gap-3">
-          <button
-            type="button"
-            onClick={onSubmit}
-            disabled={loading || empty}
-            className="rounded-[6px] px-3.5 py-2 text-[13px] font-medium transition-opacity disabled:opacity-40"
-            style={{ background: 'var(--signal)', color: 'var(--on-signal)' }}
-          >
-            {loading ? t('analyzing', lang) : t('buildMap', lang)}
-          </button>
-          {onCancel && !loading && (
-            <button
-              type="button"
-              onClick={onCancel}
-              className="ml-auto text-[12.5px] text-[var(--muted)] underline decoration-[var(--line-strong)] underline-offset-[3px] transition-colors hover:text-[var(--ink)]"
-            >
-              {t('cancel', lang)}
-            </button>
-          )}
-        </div>
-
-        {error && <div className="mt-3"><Caveat>{error}</Caveat></div>}
-      </div>
     </div>
   )
 }
