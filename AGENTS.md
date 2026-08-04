@@ -6,9 +6,9 @@ Value Constellation maps where participants in a meeting stand relative to each
 other, from the transcript. One Next.js 16 app, TypeScript throughout.
 
 ```text
-app/          route handler and the client shell
+app/          `/` explains, `/studio` works, `api/analyze` is the only server work
 lib/          all logic — no React, no Node-only imports
-components/   presentation
+components/   presentation; components/landing/ is overview-only
 data/         example transcripts, precomputed fixture
 docs/         generated assets
 scripts/      one-off generators, run with node's native type stripping

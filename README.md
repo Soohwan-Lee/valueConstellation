@@ -69,7 +69,7 @@ with the utterances.
 | Mark | Means |
 |---|---|
 | **Marker** | The average position of everything that speaker said. |
-| **Region** | Where their statements actually fell. Two lobes means they argued from two separate positions. |
+| **Region** | Where their statements actually fell. Two separate shapes means two separate positions, and the gap between them is ground nobody stood on. |
 | **Dot** | One statement. Click it for the verbatim line. |
 | **Measure line** | The gap between two people, as a share of the widest gap on that map. Select a participant to draw them. |
 | **Dashed marker** | Fewer than three statements. The position is provisional. |
@@ -77,6 +77,32 @@ with the utterances.
 
 Distances are always relative. Projected units mean nothing across two maps, so
 nothing on the page ever reports one.
+
+### How the region decides its shape
+
+The one mark whose outline comes from a decision rather than from the data
+directly, so the decision is published rather than tuned.
+
+Measure how far every statement on the map is from the nearest other statement,
+and take the median. That is the **map's resolution**: two statements closer
+together than that are not distinguishable positions. Each statement then claims
+the ground within one resolution of itself, and the outline of everything that
+overlaps is the speaker's region.
+
+Three consequences, all checkable against the picture:
+
+- A statement with nothing near it draws a circle of exactly one resolution.
+- Statements within about 2.6 resolutions merge into one shape; further apart,
+  they stay separate.
+- The resolution is measured once for the whole map, not per speaker, so two
+  regions are drawn at one scale and can be compared. Per speaker it would not
+  be an estimate at all — three statements give two or three numbers to take a
+  median of, and on the built-in examples that figure swung by 3× between
+  speakers in the same discussion.
+
+There is nothing to tune. No number in it was chosen because the picture looked
+better with it, which is what makes the shape explainable to somebody who
+disagrees with what it says about them.
 
 ## What testing on real data showed
 
@@ -113,7 +139,8 @@ research problem here.
 - **Regions are built from the statements, not fitted to them.** A covariance
   ellipse draws a smooth oval over points that are rarely oval, and asserts the
   speaker occupied the empty ground between two separate framings. The region is
-  the silhouette of a disk around each statement, so it can be concave.
+  the contour of what the statements together cover, so it can be concave, and
+  can be two shapes when the speaker held two positions.
 - **Explained variance is shown, not hidden.** A two-component projection looks like
   a confident picture of who clusters together no matter how little variance it
   captured. On real transcripts this has run as low as 37%.
@@ -142,20 +169,23 @@ research problem here.
 
 ```text
 app/
-  page.tsx                 console rail, plate, composer
+  page.tsx                 overview: live demo, reading guide, examples, limits
+  studio/page.tsx          the tool: console rail, plate, composer, inspector
   api/analyze/route.ts     segment → embed → project
 lib/
   parse.ts                 speaker attribution, six transcript formats
   segment.ts               argument-unit schema, prompt, hallucination filter
   project.ts               PCA (power iteration) and classical MDS
   aggregate.ts             centroids, spread, saturation, separation
-  blob.ts                  speaker regions as a union of disks
+  blob.ts                  map resolution, and regions as its contours
   pairs.ts                 gaps between participants, in map units
   frame.ts                 the drawing frame, shared with the hero renderer
   colors.ts                speaker colour and shape assignment
   i18n.ts                  every interface string, KOR and ENG
+  landing.ts               overview prose, KOR and ENG
 components/                ConstellationMap, MapControls, DetailPanel,
-                           Chrome, HowToRead
+                           Chrome, HowToRead, Preferences, Reveal
+  landing/                 LiveDemo, MarkFigure
 scripts/render-hero.ts     regenerates docs/hero.svg
 archive/                   frozen v1 value-vector research pipeline
 ```
@@ -196,8 +226,9 @@ Early research prototype, and the pipeline runs end to end on real transcripts.
 transcription-tool exports and Korean official minutes; argument segmentation with
 hallucination filtering; speaker centroids with regions; PCA and MDS with animated
 transition between them; zoom and pan; per-participant filtering; measured gaps
-between participants; per-statement traceback to source text; light and dark themes;
-KOR/ENG interface toggle.
+between participants; per-statement traceback to source text; a transcript composer
+that previews what the parser found before spending the request; an overview page
+that teaches the map; light and dark themes; KOR/ENG interface, both persisted.
 
 **Not built yet** — transcript ↔ map linking, participant position correction,
 value-dimension axes.
