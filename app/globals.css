@@ -121,6 +121,65 @@ body {
 }
 
 /* ---------------------------------------------------------------------------
+   Type scale.
+
+   The instrument runs on four sizes between 11 and 15px, which is correct for
+   a dense working surface and wrong for everything else: a page whose largest
+   type is 15px has no hierarchy, so a reader has nothing to land on and no way
+   to tell a heading from a caption. These are the display sizes, used only
+   where the page is explaining itself rather than working.
+
+   Each step is fluid between a phone and a wide desktop, so the hierarchy holds
+   at every width instead of collapsing into one size on small screens.
+   --------------------------------------------------------------------------- */
+.t-display {
+  font-size: clamp(2.4rem, 1.2rem + 4.6vw, 5.1rem);
+  line-height: 1.02;
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  color: var(--ink);
+}
+
+.t-headline {
+  font-size: clamp(1.6rem, 1.1rem + 1.9vw, 2.6rem);
+  line-height: 1.16;
+  font-weight: 600;
+  letter-spacing: -0.028em;
+  color: var(--ink);
+}
+
+.t-title {
+  font-size: clamp(1.05rem, 0.95rem + 0.5vw, 1.3rem);
+  line-height: 1.32;
+  font-weight: 600;
+  letter-spacing: -0.018em;
+  color: var(--ink);
+}
+
+.t-lead {
+  font-size: clamp(0.98rem, 0.92rem + 0.35vw, 1.15rem);
+  line-height: 1.7;
+  font-weight: 300;
+  color: var(--body);
+}
+
+.t-body {
+  font-size: 0.9375rem;
+  line-height: 1.72;
+  color: var(--body);
+}
+
+/* Korean has no descender-free lowercase to hang punctuation on, so a Korean
+   line at display size needs slightly more leading than the same line in Latin
+   to avoid the strokes of one line touching the next. */
+:root[data-lang='ko'] .t-display {
+  line-height: 1.14;
+}
+:root[data-lang='ko'] .t-headline {
+  line-height: 1.3;
+}
+
+/* ---------------------------------------------------------------------------
    Type roles.
 
    Three, and no more. `.eyebrow` labels a region, `.readout` carries any
@@ -229,6 +288,40 @@ body {
 
 .animate-rise {
   animation: rise 220ms cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+
+/* ---------------------------------------------------------------------------
+   Scroll reveal.
+
+   Explanatory sections arrive as the reader reaches them, which paces a long
+   page and keeps the eye on one idea at a time. Implemented so that the content
+   is visible with no JavaScript and with animation disabled: the resting state
+   is `opacity: 1`, and the transform only applies once the observer has marked
+   an element as pending.
+   --------------------------------------------------------------------------- */
+[data-reveal='pending'] {
+  opacity: 0;
+  transform: translateY(14px);
+}
+
+[data-reveal='shown'] {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 520ms cubic-bezier(0.32, 0.72, 0, 1),
+    transform 520ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* A hairline that reads as part of the instrument frame rather than as a
+   divider between unrelated blocks. */
+.rule {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    var(--line-strong),
+    var(--line) 45%,
+    transparent
+  );
 }
 
 /* Users stare at a research tool for hours. */

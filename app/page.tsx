@@ -1,612 +1,377 @@
 'use client'
 
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { ConstellationMap } from '@/components/ConstellationMap'
-import { Caveat, DetailPanel, ProjectionNotice } from '@/components/DetailPanel'
-import { HowToRead } from '@/components/HowToRead'
-import {
-  LangToggle,
-  Section,
-  SourcePicker,
-  StageList,
-  ThemeToggle,
-  Wordmark,
-  type Stage,
-} from '@/components/Chrome'
-import {
-  DistanceList,
-  MarkLegend,
-  methodOptions,
-  ParticipantList,
-  renderModeOptions,
-  SegmentedControl,
-} from '@/components/MapControls'
-import { SCENARIOS, getScenario } from '@/data/scenarios'
-import { SAMPLE_TRANSCRIPT } from '@/data/sample'
-import { isModerator, parseTranscript } from '@/lib/parse'
+import Link from 'next/link'
+import { LangSwitch, ThemeSwitch, usePreferences } from '@/components/Preferences'
+import { Reveal } from '@/components/Reveal'
+import { Wordmark } from '@/components/Chrome'
+import { LiveDemo } from '@/components/landing/LiveDemo'
+import { MarkFigure } from '@/components/landing/MarkFigure'
+import { SCENARIOS } from '@/data/scenarios'
 import precomputed from '@/data/fixtures/precomputed.json'
-import { needsShapeEncoding, SPEAKER_SLOTS } from '@/lib/colors'
-import { pairsWith, speakerPairs, type SpeakerPair } from '@/lib/pairs'
-import { t, tf, type Lang } from '@/lib/i18n'
-import type {
-  AnalysisResult,
-  ProjectedUtterance,
-  ProjectionMethod,
-  SpeakerRenderMode,
-} from '@/lib/types'
+import {
+  EXAMPLES_SECTION,
+  FOOTER,
+  HERO,
+  LIMITS,
+  LIMITS_SECTION,
+  MARKS,
+  MARKS_SECTION,
+  PIPELINE,
+  PIPELINE_SECTION,
+  REGION_RULE,
+  type Bilingual,
+} from '@/lib/landing'
+import type { AnalysisResult } from '@/lib/types'
 
-type Analysis = AnalysisResult & { diagnostics?: Record<string, unknown> }
+const FIXTURES = precomputed as unknown as Record<string, AnalysisResult>
 
-const FIXTURES = precomputed as unknown as Record<string, Analysis>
+/** The example the hero runs on: four people who split on different grounds. */
+const DEMO_ID = 'siting'
 
-/**
- * The line shapes the parser recognises, shown while the editor is empty.
- *
- * Taken from the formats the parser is tested against rather than invented, so
- * following one of them is a guarantee rather than a suggestion. The last is
- * the speaker-header form that Clova, Otter and Daglo export.
- */
-const TRANSCRIPT_FORMATS: Record<Lang, string[]> = {
-  ko: ['김철수: 발언', '[김철수] 발언', '◯ 김철수 위원  발언', '김철수 00:12 ⏎ 발언'],
-  en: ['Alice: what she said', '[Alice] what she said', 'Alice 00:12 ⏎ what she said'],
-}
-
-/** Stage timings for the progress display, tuned to observed pipeline latency. */
-const STAGE_SCHEDULE: { at: number; stage: Stage }[] = [
-  { at: 0, stage: 'parse' },
-  { at: 400, stage: 'segment' },
-  { at: 5200, stage: 'embed' },
-  { at: 6800, stage: 'project' },
-]
-
-export default function Home() {
-  const [lang, setLang] = useState<Lang>('ko')
-
-  // The landing state is a finished example, not an empty box: a first-time
-  // visitor sees what the tool produces before being asked to supply anything.
-  const [scenarioId, setScenarioId] = useState<string | null>(SCENARIOS[0].id)
-  const [analysis, setAnalysis] = useState<Analysis | null>(
-    FIXTURES[SCENARIOS[0].id] ?? null,
-  )
-  /**
-   * Bumped whenever a different analysis is loaded. The map keys its settle
-   * animation off this rather than off the data itself, so re-running the same
-   * transcript still visibly redraws.
-   */
-  const [analysisSerial, setAnalysisSerial] = useState(0)
-
-  const [pasting, setPasting] = useState(false)
-  const [transcript, setTranscript] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [stage, setStage] = useState<Stage>('parse')
-  const [error, setError] = useState<string | null>(null)
-
-  const [method, setMethod] = useState<ProjectionMethod>('pca')
-  const [renderMode, setRenderMode] = useState<SpeakerRenderMode>('both')
-  const [hiddenSpeakers, setHiddenSpeakers] = useState<Set<string>>(new Set())
-  const [selected, setSelected] = useState<ProjectedUtterance | null>(null)
-  const [selectedSpeaker, setSelectedSpeaker] = useState<string | null>(null)
-  const [hoveredPair, setHoveredPair] = useState<SpeakerPair | null>(null)
-
-  const projection = analysis?.projections[method] ?? null
-
-  // Advance the stage labels while a request is in flight. The server does not
-  // report progress, so these are elapsed-time estimates — which is also why
-  // there is no percentage bar pretending to be a measurement.
-  useEffect(() => {
-    if (!loading) return
-    const timers = STAGE_SCHEDULE.map(({ at, stage: s }) =>
-      setTimeout(() => setStage(s), at),
-    )
-    return () => timers.forEach(clearTimeout)
-  }, [loading])
-
-  // Escape clears whatever is selected. The inspector covers part of the map,
-  // and reaching for its close button is the wrong amount of work to undo a
-  // click made out of curiosity.
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key !== 'Escape') return
-      setSelected(null)
-      setSelectedSpeaker(null)
-    }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [])
-
-  const resetSelection = useCallback(() => {
-    setSelected(null)
-    setSelectedSpeaker(null)
-    setHoveredPair(null)
-    setHiddenSpeakers(new Set())
-  }, [])
-
-  const pickScenario = useCallback(
-    (id: string) => {
-      const fixture = FIXTURES[id]
-      setScenarioId(id)
-      setError(null)
-      resetSelection()
-      if (fixture) {
-        setAnalysis(fixture)
-        setAnalysisSerial((n) => n + 1)
-        setPasting(false)
-        return
-      }
-      // No fixture committed for this scenario: fall back to loading its
-      // transcript into the editor rather than showing nothing.
-      setTranscript(getScenario(id)?.transcript ?? '')
-      setPasting(true)
-    },
-    [resetSelection],
-  )
-
-  const analyze = useCallback(async () => {
-    const text = transcript.trim()
-    if (!text) return
-    setLoading(true)
-    setStage('parse')
-    setError(null)
-    resetSelection()
-    try {
-      const res = await fetch('/api/analyze', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ transcript: text }),
-      })
-      const json = await res.json()
-      if (!res.ok) {
-        // The one failure a reader can act on is a server with no key
-        // configured, so it is the one that gets said in their language.
-        throw new Error(
-          res.status === 503
-            ? t('needsKey', lang)
-            : (json?.error ?? `Request failed (${res.status})`),
-        )
-      }
-      setAnalysis(json as Analysis)
-      setAnalysisSerial((n) => n + 1)
-      setScenarioId(null)
-      setPasting(false)
-    } catch (e) {
-      setError(e instanceof Error ? e.message : 'Analysis failed.')
-    } finally {
-      setLoading(false)
-    }
-  }, [transcript, resetSelection, lang])
-
-  const toggleVisible = useCallback((speaker: string) => {
-    setHiddenSpeakers((prev) => {
-      const next = new Set(prev)
-      if (next.has(speaker)) next.delete(speaker)
-      else next.add(speaker)
-      return next
-    })
-  }, [])
-
-  const selectSpeaker = useCallback((speaker: string) => {
-    // Selecting the same person again clears, so the measure lines can be put
-    // away with the control that drew them.
-    setSelectedSpeaker((prev) => (prev === speaker ? null : speaker))
-    setSelected(null)
-  }, [])
-
-  const speakerCount = projection?.speakers.length ?? 0
-  const shapeNotice = useMemo(
-    () => needsShapeEncoding(speakerCount),
-    [speakerCount],
-  )
-
-  const pairs = useMemo(
-    () => (projection ? speakerPairs(projection.speakers) : []),
-    [projection],
-  )
-  const visiblePairs = useMemo(
-    () =>
-      pairs.filter(
-        (p) => !hiddenSpeakers.has(p.a.speaker) && !hiddenSpeakers.has(p.b.speaker),
-      ),
-    [pairs, hiddenSpeakers],
-  )
-  // A gap to somebody switched off the map is not one the reader can see, so
-  // it is not drawn or listed either.
-  const measure = useMemo(
-    () => pairsWith(visiblePairs, selectedSpeaker),
-    [visiblePairs, selectedSpeaker],
-  )
-
-  /**
-   * Pre-flight on what was pasted, using the same parser the server runs.
-   *
-   * An approximation here would be worse than nothing: the point of showing
-   * detected speakers before spending eight seconds and an API call is to
-   * catch a transcript the parser reads differently than the reader does, and
-   * a second, looser regex would report names the analysis will not produce.
-   */
-  const detected = useMemo(() => {
-    if (!transcript.trim()) return { speakers: [], moderators: [] as string[] }
-    const parsed = parseTranscript(transcript)
-    return {
-      speakers: parsed.speakers,
-      moderators: parsed.speakers.filter(isModerator),
-    }
-  }, [transcript])
-
-  const sourceTitle = scenarioId
-    ? (getScenario(scenarioId)?.title[lang] ?? '')
-    : t('customSource', lang)
-
-  const hasMap = !loading && !pasting && projection && speakerCount > 0
-
-  const identity = (
-    <div className="flex items-start justify-between gap-4 px-5 pb-5 pt-5">
-      <Wordmark lang={lang} />
-      <div className="flex shrink-0 items-center gap-2">
-        <LangToggle lang={lang} onChange={setLang} />
-        <ThemeToggle lang={lang} />
-      </div>
-    </div>
-  )
+export default function Overview() {
+  const { lang } = usePreferences()
+  const say = (b: Bilingual) => b[lang]
+  const demo = FIXTURES[DEMO_ID]
 
   return (
-    <div className="flex flex-col lg:h-dvh lg:flex-row lg:overflow-hidden">
-      {/* On a narrow screen the map comes first and the console follows it:
-          scrolling past five blocks of controls to reach the thing they
-          describe is the wrong order to meet them in. */}
-      <div className="border-b border-[var(--line)] bg-[var(--panel)] lg:hidden">
-        {identity}
-      </div>
+    <div className="min-h-dvh bg-[var(--tray)]">
+      <header className="sticky top-0 z-30 border-b border-[var(--line)] bg-[color-mix(in_oklab,var(--tray)_86%,transparent)] backdrop-blur-md">
+        <div className="mx-auto flex max-w-[1240px] items-center justify-between gap-4 px-5 py-3 sm:px-8">
+          <Wordmark lang={lang} compact />
+          <div className="flex shrink-0 items-center gap-2">
+            <LangSwitch />
+            <ThemeSwitch />
+          </div>
+        </div>
+      </header>
 
-      {/* Console rail. Identity, source, and every control that changes what
-          the map shows — kept off the plate so the map is never covered by the
-          things that describe it. */}
-      <aside className="scroll-quiet order-2 bg-[var(--panel)] lg:order-1 lg:h-full lg:w-[336px] lg:shrink-0 lg:overflow-y-auto lg:border-r lg:border-[var(--line)]">
-        <div className="hidden lg:block">{identity}</div>
-
-        <Section title={t('sourceLabel', lang)}>
-          <SourcePicker
-            activeId={scenarioId}
-            pasting={pasting}
-            lang={lang}
-            onPick={pickScenario}
-            onPaste={() => {
-              setPasting(true)
-              setScenarioId(null)
-              setTranscript('')
-              setError(null)
-            }}
-            disabled={loading}
-          />
-        </Section>
-
-        {hasMap && (
-          <>
-            <Section title={t('participantsLabel', lang)}>
-              <ParticipantList
-                speakers={projection.speakers}
-                hidden={hiddenSpeakers}
-                selected={selectedSpeaker}
-                onSelect={selectSpeaker}
-                onToggleVisible={toggleVisible}
-                onShowAll={() => setHiddenSpeakers(new Set())}
-                lang={lang}
-              />
-              {!selectedSpeaker && (
-                <p className="mt-2.5 px-0.5 text-[11.5px] leading-[1.55] text-[var(--muted)]">
-                  {t('measureHint', lang)}
-                </p>
-              )}
-            </Section>
-
-            {visiblePairs.length > 0 && (
-              <Section title={t('distanceLabel', lang)}>
-                <DistanceList
-                  pairs={selectedSpeaker ? measure : visiblePairs}
-                  selected={selectedSpeaker}
-                  onHover={setHoveredPair}
-                  lang={lang}
-                />
-              </Section>
-            )}
-
-            <Section title={t('displayOptions', lang)}>
-              <div className="space-y-2.5">
-                <SegmentedControl
-                  label={t('speakersLabel', lang)}
-                  value={renderMode}
-                  options={renderModeOptions(lang)}
-                  onChange={setRenderMode}
-                />
-                <SegmentedControl
-                  label={t('layoutLabel', lang)}
-                  value={method}
-                  options={methodOptions(lang)}
-                  onChange={setMethod}
-                />
-              </div>
-              {shapeNotice && (
-                <p className="mt-3 text-[11.5px] leading-[1.55] text-[var(--muted)]">
-                  {tf('shapeNote', lang, {
-                    n: speakerCount,
-                    max: SPEAKER_SLOTS,
-                  })}
-                </p>
-              )}
-            </Section>
-          </>
-        )}
-
-        <Section title={t('howToRead', lang)}>
-          <HowToRead lang={lang} />
-        </Section>
-      </aside>
-
-      {/* The plate. */}
-      <main className="order-1 min-w-0 flex-1 p-3 sm:p-4 lg:order-2 lg:h-full lg:p-5">
-        <div className="flex h-[70vh] min-h-[460px] flex-col overflow-hidden rounded-[14px] border border-[var(--line)] bg-[var(--plate)] lg:h-full">
-          {/* Loading is checked before the composer: the request is started
-              from the composer and leaves it mounted, so testing `pasting`
-              first would keep the editor on screen for the whole eight-second
-              wait and the staged progress would never appear. */}
-          {loading ? (
-            <div className="flex flex-1 items-center justify-center p-6">
-              <div className="animate-rise">
-                <StageList current={stage} lang={lang} />
-              </div>
+      <main>
+        {/* ── Hero ─────────────────────────────────────────────────────────
+            The map, running, before a word of explanation. The gesture that
+            makes it useful plays itself, so the headline lands on somebody who
+            has already seen what it is talking about. */}
+        <section className="mx-auto max-w-[1240px] px-5 pb-16 pt-14 sm:px-8 sm:pb-24 sm:pt-20">
+          <div className="max-w-[52rem]">
+            <p className="eyebrow">{say(HERO.eyebrow)}</p>
+            <h2 className="t-display mt-5 whitespace-pre-line">
+              {say(HERO.headline)}
+            </h2>
+            <p className="t-lead mt-7 max-w-[40rem]">{say(HERO.lead)}</p>
+            <div className="mt-9 flex flex-wrap items-center gap-3">
+              <Link
+                href="/studio?compose=1"
+                className="rounded-full bg-[var(--signal)] px-6 py-3 text-[14px] font-medium text-[var(--on-signal)] transition-opacity hover:opacity-88"
+              >
+                {say(HERO.primary)}
+              </Link>
+              <Link
+                href="/studio"
+                className="rounded-full border border-[var(--line-strong)] px-6 py-3 text-[14px] text-[var(--body)] transition-colors hover:border-[var(--ink)] hover:text-[var(--ink)]"
+              >
+                {say(HERO.secondary)}
+              </Link>
             </div>
-          ) : pasting ? (
-            <Composer
-              lang={lang}
-              transcript={transcript}
-              onChange={setTranscript}
-              onSubmit={analyze}
-              onCancel={
-                analysis
-                  ? () => {
-                      setPasting(false)
-                      setError(null)
-                    }
-                  : null
-              }
-              detected={detected}
-              error={error}
-              loading={loading}
-            />
-          ) : projection && speakerCount > 0 ? (
-            <>
-              {/* Title and legend at the top, provenance and caveats at the
-                  bottom: what the marks mean has to be read before the map,
-                  and how far to trust it after. */}
-              <header className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-b border-[var(--line)] px-4 py-3">
-                <h2 className="title text-[15px]">{sourceTitle}</h2>
-                <MarkLegend
-                  showRegions={renderMode !== 'point'}
-                  showPoints={renderMode !== 'region'}
-                  lang={lang}
-                />
-              </header>
+          </div>
 
-              <div className="relative min-h-0 flex-1">
-                <ConstellationMap
-                  projection={projection}
-                  renderMode={renderMode}
-                  hiddenSpeakers={hiddenSpeakers}
-                  selectedId={selected?.id ?? null}
-                  selectedSpeaker={selectedSpeaker}
-                  measure={measure}
-                  emphasised={hoveredPair}
-                  lang={lang}
-                  settleKey={String(analysisSerial)}
-                  onSelect={(u) => {
-                    setSelected(u)
-                    if (u) setSelectedSpeaker(null)
-                  }}
-                  onSelectSpeaker={selectSpeaker}
-                />
-
-                {(selected || selectedSpeaker) && (
-                  <div className="absolute inset-x-3 bottom-3 max-h-[70%] sm:inset-x-auto sm:bottom-3 sm:right-3 sm:top-3 sm:w-[330px]">
-                    <DetailPanel
-                      projection={projection}
-                      pairs={pairs}
-                      selectedUtterance={selected}
-                      selectedSpeaker={selectedSpeaker}
-                      lang={lang}
-                      onSelectUtterance={(u) => {
-                        setSelected(u)
-                        setSelectedSpeaker(null)
-                      }}
-                      onClose={() => {
-                        setSelected(null)
-                        setSelectedSpeaker(null)
-                      }}
-                    />
-                  </div>
-                )}
+          {demo && (
+            <div className="mt-14">
+              <div className="relative h-[clamp(340px,52vh,600px)] overflow-hidden rounded-[18px] border border-[var(--line)] bg-[var(--plate)] shadow-[0_40px_80px_-60px_rgba(0,0,0,0.5)]">
+                <LiveDemo analysis={demo} lang={lang} />
               </div>
-
-              {/* Caveats sit under the map rather than behind a disclosure:
-                  what the projection failed to capture has to be readable
-                  without first suspecting that something is wrong. */}
-              <footer className="space-y-2 border-t border-[var(--line)] px-4 py-3">
-                <ProjectionNotice
-                  projection={projection}
-                  droppedSpeakers={analysis?.droppedSpeakers ?? []}
-                  lang={lang}
-                />
-                <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11.5px] text-[var(--muted)]">
-                  <span>
-                    {t('mapped', lang)}{' '}
-                    <span className="readout text-[var(--body)]">
-                      {projection.utterances.length}
-                    </span>
-                  </span>
-                  <span className="text-[var(--faint)]">/</span>
-                  <span>
-                    {t('assentProcedural', lang)}{' '}
-                    <span className="readout text-[var(--body)]">
-                      {analysis ? analysis.counts.agreement : 0} ·{' '}
-                      {analysis ? analysis.counts.procedural : 0}
-                    </span>
-                  </span>
-                </div>
-              </footer>
-            </>
-          ) : (
-            <div className="flex flex-1 items-center justify-center p-8">
-              <p className="max-w-[36ch] text-center text-[13.5px] leading-[1.7] text-[var(--muted)]">
-                {t('leadIn', lang)}
+              <p className="mt-3 text-[12.5px] text-[var(--muted)]">
+                {say(HERO.demoCaption)}
               </p>
             </div>
           )}
-        </div>
+        </section>
+
+        {/* ── Reading guide ────────────────────────────────────────────────
+            Every mark, once, with the figure drawn the way the map draws it. */}
+        <Band>
+          <SectionHead
+            eyebrow={say(MARKS_SECTION.eyebrow)}
+            headline={say(MARKS_SECTION.headline)}
+            lead={say(MARKS_SECTION.lead)}
+          />
+          <ul className="mt-14 grid gap-px overflow-hidden rounded-[16px] border border-[var(--line)] bg-[var(--line)] sm:grid-cols-2">
+            {MARKS.map((mark, i) => (
+              <li key={mark.figure} className="bg-[var(--panel)]">
+                <Reveal delay={i * 60} className="h-full">
+                  <article className="flex h-full flex-col gap-5 p-6 sm:p-7">
+                    <div className="h-[104px] w-full overflow-hidden rounded-[10px] border border-[var(--line)] bg-[var(--plate)]">
+                      <MarkFigure figure={mark.figure} />
+                    </div>
+                    <div>
+                      <h4 className="t-title">{say(mark.title)}</h4>
+                      <p className="t-body mt-2.5 text-[var(--muted)]">
+                        {say(mark.body)}
+                      </p>
+                    </div>
+                  </article>
+                </Reveal>
+              </li>
+            ))}
+          </ul>
+        </Band>
+
+        {/* ── The one rule worth stating in full ───────────────────────────
+            The region is the only mark whose shape comes from a decision
+            rather than from the data directly, so the decision is published. */}
+        <Band>
+          <Reveal>
+            <div className="grid gap-10 rounded-[16px] border border-[var(--line)] bg-[var(--panel)] p-7 sm:p-11 lg:grid-cols-[1fr_0.9fr] lg:gap-16">
+              <div>
+                <p className="eyebrow">{say(REGION_RULE.eyebrow)}</p>
+                <h3 className="t-headline mt-4">{say(REGION_RULE.headline)}</h3>
+                <p className="t-body mt-5">{say(REGION_RULE.body)}</p>
+                <p className="t-body mt-4 text-[var(--muted)]">
+                  {say(REGION_RULE.rejected)}
+                </p>
+              </div>
+              <div className="lg:pt-[3.2rem]">
+                <ul className="space-y-4">
+                  {REGION_RULE.consequences.map((line) => (
+                    <li key={line.en} className="flex gap-3">
+                      <span
+                        aria-hidden
+                        className="mt-[0.62rem] h-px w-4 shrink-0 bg-[var(--line-strong)]"
+                      />
+                      <span className="text-[13.5px] leading-[1.7] text-[var(--body)]">
+                        {say(line)}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+                <p className="mt-7 border-l-2 border-[var(--ink)] pl-4 text-[13px] leading-[1.7] text-[var(--ink)]">
+                  {say(REGION_RULE.note)}
+                </p>
+              </div>
+            </div>
+          </Reveal>
+        </Band>
+
+        {/* ── Pipeline ─────────────────────────────────────────────────────
+            Numbered, because this genuinely is a sequence: each step consumes
+            what the one before it produced. */}
+        <Band>
+          <SectionHead
+            eyebrow={say(PIPELINE_SECTION.eyebrow)}
+            headline={say(PIPELINE_SECTION.headline)}
+          />
+          <ol className="mt-14 grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
+            {PIPELINE.map((step, i) => (
+              <li key={step.title.en}>
+                <Reveal delay={i * 70}>
+                  <div className="rule mb-5" />
+                  <span className="readout text-[11px] text-[var(--muted)]">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <h4 className="t-title mt-3">{say(step.title)}</h4>
+                  <p className="t-body mt-2.5 text-[var(--muted)]">
+                    {say(step.body)}
+                  </p>
+                </Reveal>
+              </li>
+            ))}
+          </ol>
+        </Band>
+
+        {/* ── Examples ─────────────────────────────────────────────────────*/}
+        <Band>
+          <SectionHead
+            eyebrow={say(EXAMPLES_SECTION.eyebrow)}
+            headline={say(EXAMPLES_SECTION.headline)}
+            lead={say(EXAMPLES_SECTION.lead)}
+          />
+          <ul className="mt-14 grid gap-5 md:grid-cols-3">
+            {SCENARIOS.map((scenario, i) => {
+              const fixture = FIXTURES[scenario.id]
+              return (
+                <li key={scenario.id}>
+                  <Reveal delay={i * 70} className="h-full">
+                    <Link
+                      href={`/studio?example=${scenario.id}`}
+                      className="group flex h-full flex-col overflow-hidden rounded-[14px] border border-[var(--line)] bg-[var(--panel)] transition-colors hover:border-[var(--line-strong)]"
+                    >
+                      <div className="h-[176px] border-b border-[var(--line)] bg-[var(--plate)]">
+                        {fixture && (
+                          <MiniMap
+                            analysis={fixture}
+                            label={scenario.title[lang]}
+                          />
+                        )}
+                      </div>
+                      <div className="flex flex-1 flex-col p-5">
+                        <h4 className="t-title">{scenario.title[lang]}</h4>
+                        <p className="t-body mt-2 flex-1 text-[13.5px] text-[var(--muted)]">
+                          {scenario.teaser[lang]}
+                        </p>
+                        <span className="mt-5 inline-flex items-center gap-1.5 text-[13px] text-[var(--body)] transition-colors group-hover:text-[var(--ink)]">
+                          {say(EXAMPLES_SECTION.open)}
+                          <span
+                            aria-hidden
+                            className="readout transition-transform group-hover:translate-x-0.5"
+                          >
+                            →
+                          </span>
+                        </span>
+                      </div>
+                    </Link>
+                  </Reveal>
+                </li>
+              )
+            })}
+          </ul>
+        </Band>
+
+        {/* ── Limits ───────────────────────────────────────────────────────
+            Placed before the closing call to action rather than in a footnote:
+            a tool that draws conclusions about named people should say what it
+            cannot do while somebody is still deciding whether to use it. */}
+        <Band>
+          <SectionHead
+            eyebrow={say(LIMITS_SECTION.eyebrow)}
+            headline={say(LIMITS_SECTION.headline)}
+          />
+          <ul className="mt-12 space-y-px overflow-hidden rounded-[16px] border border-[var(--line)] bg-[var(--line)]">
+            {LIMITS.map((limit, i) => (
+              <li key={limit.title.en} className="bg-[var(--panel)]">
+                <Reveal delay={i * 60}>
+                  <div className="grid gap-3 p-6 sm:grid-cols-[16rem_1fr] sm:gap-10 sm:p-8">
+                    <h4 className="t-title">{say(limit.title)}</h4>
+                    <p className="t-body text-[var(--muted)]">{say(limit.body)}</p>
+                  </div>
+                </Reveal>
+              </li>
+            ))}
+          </ul>
+        </Band>
+
+        <section className="mx-auto max-w-[1240px] px-5 pb-24 pt-8 sm:px-8">
+          <Reveal>
+            <div className="flex flex-col items-start gap-6 rounded-[16px] border border-[var(--line)] bg-[var(--panel)] p-8 sm:flex-row sm:items-center sm:justify-between sm:p-11">
+              <h3 className="t-headline max-w-[26rem]">
+                {say(HERO.headline).replace('\n', ' ')}
+              </h3>
+              <Link
+                href="/studio?compose=1"
+                className="shrink-0 rounded-full bg-[var(--signal)] px-6 py-3 text-[14px] font-medium text-[var(--on-signal)] transition-opacity hover:opacity-88"
+              >
+                {say(HERO.primary)}
+              </Link>
+            </div>
+          </Reveal>
+        </section>
       </main>
+
+      <footer className="border-t border-[var(--line)]">
+        <div className="mx-auto flex max-w-[1240px] flex-wrap items-center justify-between gap-4 px-5 py-8 sm:px-8">
+          <p className="max-w-[34rem] text-[12.5px] leading-[1.7] text-[var(--muted)]">
+            {say(FOOTER.builtWith)}
+          </p>
+          <a
+            href="https://github.com/Soohwan-Lee/valueConstellation"
+            className="readout text-[11px] uppercase tracking-[0.16em] text-[var(--muted)] transition-colors hover:text-[var(--ink)]"
+          >
+            {say(FOOTER.repo)}
+          </a>
+        </div>
+      </footer>
     </div>
   )
 }
 
-/**
- * Transcript composer.
- *
- * Takes the whole plate rather than opening in a dialog: pasting a transcript
- * is the one moment the map has nothing to say, and a modal over a stale map
- * would suggest the old result still applies to the new text.
- */
-function Composer({
-  lang,
-  transcript,
-  onChange,
-  onSubmit,
-  onCancel,
-  detected,
-  error,
-  loading,
+/** A page section with the shared vertical rhythm and a top rule. */
+function Band({ children }: { children: React.ReactNode }) {
+  return (
+    <section className="mx-auto max-w-[1240px] px-5 py-20 sm:px-8 sm:py-28">
+      {children}
+    </section>
+  )
+}
+
+function SectionHead({
+  eyebrow,
+  headline,
+  lead,
 }: {
-  lang: Lang
-  transcript: string
-  onChange: (v: string) => void
-  onSubmit: () => void
-  onCancel: (() => void) | null
-  detected: { speakers: string[]; moderators: string[] }
-  error: string | null
-  loading: boolean
+  eyebrow: string
+  headline: string
+  lead?: string
 }) {
-  const empty = !transcript.trim()
+  return (
+    <Reveal>
+      <div className="max-w-[44rem]">
+        <p className="eyebrow">{eyebrow}</p>
+        <h3 className="t-headline mt-4">{headline}</h3>
+        {lead && <p className="t-lead mt-5">{lead}</p>}
+      </div>
+    </Reveal>
+  )
+}
+
+/**
+ * A still of one example, drawn from its committed analysis.
+ *
+ * Only the marks, at card size: labels and measure lines would be unreadable
+ * here, and a card that promises detail it cannot render is worse than one that
+ * shows the shape of the result and lets the reader open it.
+ */
+function MiniMap({
+  analysis,
+  label,
+}: {
+  analysis: AnalysisResult
+  label: string
+}) {
+  const projection = analysis.projections.pca
+  const xs = projection.utterances.map((u) => u.x)
+  const ys = projection.utterances.map((u) => u.y)
+  const minX = Math.min(...xs)
+  const maxX = Math.max(...xs)
+  const minY = Math.min(...ys)
+  const maxY = Math.max(...ys)
+  const spanX = maxX - minX || 1
+  const spanY = maxY - minY || 1
+  const scale = Math.min(180 / spanX, 108 / spanY)
+  const toX = (v: number) => 30 + (v - minX) * scale + (180 - spanX * scale) / 2
+  const toY = (v: number) =>
+    138 - (v - minY) * scale - (108 - spanY * scale) / 2
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col">
-      <header className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-b border-[var(--line)] px-4 py-3">
-        <h2 className="title text-[15px]">{t('pasteTitle', lang)}</h2>
-        <button
-          type="button"
-          onClick={() => onChange(SAMPLE_TRANSCRIPT)}
-          className="text-[12.5px] text-[var(--muted)] underline decoration-[var(--line-strong)] underline-offset-[3px] transition-colors hover:text-[var(--ink)]"
-        >
-          {t('loadSample', lang)}
-        </button>
-        <p className="w-full text-[12.5px] leading-[1.6] text-[var(--muted)]">
-          {t('transcriptLabel', lang)}
-        </p>
-      </header>
-
-      {/* The editor is set in the sans face rather than in mono: the transcript
-          is Korean, and the mono face has no Hangul to set it in. */}
-      <div className="flex min-h-0 flex-1 flex-col p-4">
-        <textarea
-          id="transcript"
-          value={transcript}
-          onChange={(e) => onChange(e.target.value)}
-          spellCheck={false}
-          autoFocus
-          placeholder={
-            lang === 'ko'
-              ? '김철수: 저는 이 사업을 추진해야 한다고 봅니다.\n이영희: 주민 부담을 먼저 봐야 합니다.'
-              : 'Alice: I think we should move ahead.\nBob: We should look at the cost first.'
-          }
-          className="scroll-quiet min-h-[220px] w-full flex-1 resize-none rounded-[8px] border border-[var(--line)] bg-[var(--panel)] p-3.5 text-[13.5px] leading-[1.8] text-[var(--ink)] outline-none transition-colors placeholder:text-[var(--faint)] focus:border-[var(--line-strong)]"
+    <svg
+      viewBox="0 0 240 168"
+      className="h-full w-full"
+      role="img"
+      aria-label={label}
+      preserveAspectRatio="xMidYMid meet"
+    >
+      {projection.utterances.map((u) => {
+        const speaker = projection.speakers.find((s) => s.speaker === u.speaker)
+        return (
+          <circle
+            key={u.id}
+            cx={toX(u.x)}
+            cy={toY(u.y)}
+            r={2.6}
+            fill={`var(--s${((speaker?.colorIndex ?? 0) % 8) + 1})`}
+            fillOpacity={0.5}
+          />
+        )
+      })}
+      {projection.speakers.map((s) => (
+        <circle
+          key={s.speaker}
+          cx={toX(s.x)}
+          cy={toY(s.y)}
+          r={6}
+          fill={`var(--s${(s.colorIndex % 8) + 1})`}
+          fillOpacity={s.underdetermined ? 0 : 1}
+          stroke={`var(--s${(s.colorIndex % 8) + 1})`}
+          strokeWidth={1.4}
+          strokeDasharray={s.underdetermined ? '3 2.5' : undefined}
         />
-
-        {/* Below the editor: the format help while there is nothing to read,
-            and what the parser found once there is. The preview matters more
-            than it looks — a transcript the parser splits differently than the
-            reader expects is the failure that costs eight seconds and an API
-            call to discover. */}
-        <div className="mt-3 min-h-[52px]">
-          {empty ? (
-            <div>
-              <div className="eyebrow mb-1.5">{t('formatsLabel', lang)}</div>
-              <ul className="flex flex-wrap gap-1.5 text-[12px] text-[var(--body)]">
-                {TRANSCRIPT_FORMATS[lang].map((f) => (
-                  <li
-                    key={f}
-                    className="rounded-[4px] bg-[var(--panel-2)] px-2 py-1"
-                  >
-                    {f}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ) : detected.speakers.length === 0 ? (
-            <p className="text-[12.5px] leading-[1.6] text-[var(--body)]">
-              {t('noSpeakersYet', lang)}
-            </p>
-          ) : (
-            <div>
-              <div className="eyebrow mb-1.5">
-                {t('detectedLabel', lang)}{' '}
-                <span className="readout normal-case tracking-normal">
-                  {detected.speakers.length}
-                </span>
-              </div>
-              <ul className="flex flex-wrap items-baseline gap-x-3 gap-y-1 text-[13px]">
-                {detected.speakers.map((name) => {
-                  const isModeratorName = detected.moderators.includes(name)
-                  return (
-                    <li
-                      key={name}
-                      className={
-                        isModeratorName
-                          ? 'text-[var(--muted)]'
-                          : 'text-[var(--ink)]'
-                      }
-                    >
-                      {name}
-                      {isModeratorName && (
-                        <span className="ml-1 text-[11.5px] text-[var(--muted)]">
-                          — {t('moderatorExcluded', lang)}
-                        </span>
-                      )}
-                    </li>
-                  )
-                })}
-              </ul>
-            </div>
-          )}
-        </div>
-
-        <div className="mt-3 flex flex-wrap items-center gap-3">
-          <button
-            type="button"
-            onClick={onSubmit}
-            disabled={loading || empty}
-            className="rounded-[6px] px-3.5 py-2 text-[13px] font-medium transition-opacity disabled:opacity-40"
-            style={{ background: 'var(--signal)', color: 'var(--on-signal)' }}
-          >
-            {loading ? t('analyzing', lang) : t('buildMap', lang)}
-          </button>
-          {onCancel && !loading && (
-            <button
-              type="button"
-              onClick={onCancel}
-              className="ml-auto text-[12.5px] text-[var(--muted)] underline decoration-[var(--line-strong)] underline-offset-[3px] transition-colors hover:text-[var(--ink)]"
-            >
-              {t('cancel', lang)}
-            </button>
-          )}
-        </div>
-
-        {error && <div className="mt-3"><Caveat>{error}</Caveat></div>}
-      </div>
-    </div>
+      ))}
+    </svg>
   )
 }

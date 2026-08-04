@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { IBM_Plex_Mono, IBM_Plex_Sans_KR } from 'next/font/google'
+import { PreferencesProvider } from '@/components/Preferences'
 import './globals.css'
 
 /**
@@ -16,7 +17,7 @@ import './globals.css'
  */
 const plexKr = IBM_Plex_Sans_KR({
   subsets: ['latin'],
-  weight: ['400', '500', '600'],
+  weight: ['300', '400', '500', '600'],
   variable: '--font-plex-kr',
   display: 'swap',
   // Hangul arrives as several hundred unicode-range faces the browser fetches
@@ -34,17 +35,24 @@ const plexMono = IBM_Plex_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'Value Constellation',
+  title: 'Value Constellation — 회의록에서 입장 지도로',
   description:
     'Map where participants stand — and what they said — from a meeting transcript.',
 }
 
 /**
- * Applies the stored theme before first paint. Without this the page renders
- * light and then flips, which on a dark-theme instrument is a flash of white
- * straight into the reader's eyes.
+ * Applies the stored theme and language before first paint.
+ *
+ * Without this the page renders light and in Korean and then flips, which on a
+ * dark-theme instrument is a flash of white straight into the reader's eyes,
+ * and for an English reader is a paragraph they cannot read appearing first.
  */
-const THEME_SCRIPT = `try{var t=localStorage.getItem('vc-theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.classList.add('dark')}catch(e){}`
+const BOOT = `try{
+var t=localStorage.getItem('vc-theme');
+if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.classList.add('dark');
+var l=localStorage.getItem('vc-lang');
+if(l==='ko'||l==='en'){document.documentElement.setAttribute('lang',l);document.documentElement.setAttribute('data-lang',l)}
+}catch(e){}`
 
 export default function RootLayout({
   children,
@@ -52,11 +60,17 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="ko" className={`${plexKr.variable} ${plexMono.variable}`}>
+    <html
+      lang="ko"
+      data-lang="ko"
+      className={`${plexKr.variable} ${plexMono.variable}`}
+    >
       <head>
-        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+        <script dangerouslySetInnerHTML={{ __html: BOOT }} />
       </head>
-      <body>{children}</body>
+      <body>
+        <PreferencesProvider>{children}</PreferencesProvider>
+      </body>
     </html>
   )
 }

@@ -1,6 +1,5 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
 import { SCENARIOS } from '@/data/scenarios'
 import { t, type Lang } from '@/lib/i18n'
 
@@ -12,7 +11,14 @@ import { t, type Lang } from '@/lib/i18n'
  * the mono face because everything else that names a measurement on this page
  * is too.
  */
-export function Wordmark({ lang }: { lang: Lang }) {
+export function Wordmark({
+  lang,
+  compact = false,
+}: {
+  lang: Lang
+  /** Drops the tagline, for the top bar where the page states it anyway. */
+  compact?: boolean
+}) {
   return (
     <div>
       <div className="flex items-center gap-3">
@@ -41,9 +47,11 @@ export function Wordmark({ lang }: { lang: Lang }) {
           Constellation
         </h1>
       </div>
-      <p className="mt-3 text-[13px] leading-[1.65] text-[var(--muted)]">
-        {t('tagline', lang)}
-      </p>
+      {!compact && (
+        <p className="mt-3 text-[13px] leading-[1.65] text-[var(--muted)]">
+          {t('tagline', lang)}
+        </p>
+      )}
     </div>
   )
 }
@@ -208,95 +216,5 @@ export function StageList({ current, lang }: { current: Stage; lang: Lang }) {
         )
       })}
     </ol>
-  )
-}
-
-/**
- * Language switch.
- *
- * A `KOR · ENG` text pair rather than a globe icon (which reads as region or
- * currency) or `한/A` (asymmetric, and 한 is a character not a language name).
- * This switches interface chrome only — transcript content stays in the language
- * it was spoken in, because a participant's words are the evidence behind their
- * position.
- */
-export function LangToggle({
-  lang,
-  onChange,
-}: {
-  lang: Lang
-  onChange: (l: Lang) => void
-}) {
-  return (
-    <div className="readout flex items-center gap-1 text-[10.5px] tracking-[0.1em]">
-      {(['ko', 'en'] as const).map((l, i) => (
-        <span key={l} className="flex items-center gap-1">
-          {i > 0 && <span className="text-[var(--faint)]">·</span>}
-          <button
-            type="button"
-            onClick={() => onChange(l)}
-            aria-pressed={lang === l}
-            className="px-0.5 transition-colors"
-            style={{
-              color: lang === l ? 'var(--ink)' : 'var(--muted)',
-              fontWeight: lang === l ? 500 : 400,
-            }}
-          >
-            {l === 'ko' ? 'KOR' : 'ENG'}
-          </button>
-        </span>
-      ))}
-    </div>
-  )
-}
-
-/**
- * Theme switch.
- *
- * Persisted, because which theme is comfortable depends on the room rather
- * than on the visit. The initial value is applied before first paint by a
- * script in the document head; this only has to keep up afterwards.
- */
-export function ThemeToggle({ lang }: { lang: Lang }) {
-  const [dark, setDark] = useState(false)
-
-  useEffect(() => {
-    setDark(document.documentElement.classList.contains('dark'))
-  }, [])
-
-  const toggle = useCallback(() => {
-    const next = !document.documentElement.classList.contains('dark')
-    document.documentElement.classList.toggle('dark', next)
-    try {
-      localStorage.setItem('vc-theme', next ? 'dark' : 'light')
-    } catch {
-      // A blocked storage API is not a reason to refuse the switch.
-    }
-    setDark(next)
-  }, [])
-
-  return (
-    <button
-      type="button"
-      onClick={toggle}
-      title={dark ? t('toLight', lang) : t('toDark', lang)}
-      aria-label={dark ? t('toLight', lang) : t('toDark', lang)}
-      className="rounded-[5px] p-1 text-[var(--muted)] transition-colors hover:text-[var(--ink)]"
-    >
-      <svg width={14} height={14} viewBox="0 0 14 14" aria-hidden>
-        <circle
-          cx={7}
-          cy={7}
-          r={4}
-          fill="currentColor"
-          fillOpacity={dark ? 0 : 1}
-          stroke="currentColor"
-          strokeWidth={1.2}
-        />
-        {/* Half-filled disc: the same mark in both states, so the control does
-            not appear to change identity when pressed. */}
-        {dark && <path d="M7 3a4 4 0 0 0 0 8Z" fill="currentColor" />}
-      </svg>
-    </button>
   )
 }

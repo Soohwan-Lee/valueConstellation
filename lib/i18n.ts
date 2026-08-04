@@ -131,6 +131,7 @@ export const STRINGS = {
     ko: '참여자를 선택하면 나머지와의 거리를 지도에 긋습니다.',
     en: 'Select a participant to draw their distance to everyone else.',
   },
+  backToOverview: { ko: '소개로 돌아가기', en: 'Overview' },
   pasteTitle: { ko: '회의록 붙여넣기', en: 'Paste a transcript' },
   customSource: { ko: '붙여넣은 회의록', en: 'Pasted transcript' },
   cancel: { ko: '취소', en: 'Cancel' },
