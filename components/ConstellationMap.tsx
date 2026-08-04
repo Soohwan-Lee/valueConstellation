@@ -10,6 +10,7 @@ import type {
 } from '@/lib/types'
 import type { SpeakerPair } from '@/lib/pairs'
 import { blobPath, blobPolygon, polygonArea, type Point } from '@/lib/blob'
+import { buildScales, VIEW_H, VIEW_W } from '@/lib/frame'
 import { shapePath, speakerColor, speakerShape } from '@/lib/colors'
 import { kindLabel, type Lang } from '@/lib/i18n'
 
@@ -36,10 +37,6 @@ interface Props {
   settleKey: string
 }
 
-const PADDING = 64
-const VIEW_W = 900
-const VIEW_H = 620
-
 /** Opacity for utterances belonging to a filtered-out speaker. */
 const DIMMED = 0.1
 
@@ -49,7 +46,7 @@ const SETTLE_WINDOW = 420
 /** Duration of a layout change, shared by points and regions. */
 const MOVE_MS = 560
 
-/** Breathing room around the outermost statement, in viewBox units. */
+/** Smallest reach around one statement, in viewBox units. */
 const REGION_PAD = 22
 /** Floor, so a speaker whose statements nearly coincide still reads as one. */
 const REGION_MIN_RADIUS = 26
@@ -531,55 +528,4 @@ function Tooltip({
       </p>
     </div>
   )
-}
-
-/**
- * Maps projected coordinates into the viewBox.
- *
- * A single scale factor is used for both axes so that distances are not
- * distorted differently in x and y — stretching one axis to fill the frame
- * would make some pairs look closer than they are.
- */
-function buildScales(projection: Projection) {
-  const xs: number[] = []
-  const ys: number[] = []
-  for (const u of projection.utterances) {
-    xs.push(u.x)
-    ys.push(u.y)
-  }
-  // Only the marks themselves set the extent. Regions are built in screen
-  // units after this runs, and the frame padding is sized to hold them.
-  for (const s of projection.speakers) {
-    xs.push(s.x)
-    ys.push(s.y)
-  }
-
-  // Math.min() of an empty list is Infinity, and a span of -Infinity is truthy,
-  // so `|| 1` would not catch it — the result would be NaN geometry.
-  const finite = (v: number, fallback: number) =>
-    Number.isFinite(v) ? v : fallback
-
-  const minX = finite(Math.min(...xs), 0)
-  const maxX = finite(Math.max(...xs), 1)
-  const minY = finite(Math.min(...ys), 0)
-  const maxY = finite(Math.max(...ys), 1)
-
-  const rawSpanX = maxX - minX
-  const rawSpanY = maxY - minY
-  const spanX = Number.isFinite(rawSpanX) && rawSpanX > 0 ? rawSpanX : 1
-  const spanY = Number.isFinite(rawSpanY) && rawSpanY > 0 ? rawSpanY : 1
-  const usableW = VIEW_W - PADDING * 2
-  const usableH = VIEW_H - PADDING * 2
-
-  const scale = Math.min(usableW / spanX, usableH / spanY)
-
-  // Centre the content in whichever direction has slack.
-  const offsetX = (usableW - spanX * scale) / 2
-  const offsetY = (usableH - spanY * scale) / 2
-
-  return {
-    toX: (v: number) => PADDING + offsetX + (v - minX) * scale,
-    // SVG y grows downward; invert so the map reads like a chart.
-    toY: (v: number) => VIEW_H - PADDING - offsetY - (v - minY) * scale,
-  }
 }

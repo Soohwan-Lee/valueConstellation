@@ -25,16 +25,49 @@ export type Point = [number, number]
 export interface BlobOptions {
   /** Angular resolution. */
   sectors?: number
-  /** Breathing room outside the outermost point, in screen units. */
+  /** Smallest reach around a statement, in screen units. */
   pad?: number
   /** Floor for a speaker whose points nearly coincide. */
   minRadius?: number
 }
 
-/** Raises each sector's immediate neighbours, so a lone point still reads as a
- *  lobe rather than as a spike between two empty sectors. */
-const DILATE = 1
-const SMOOTH_PASSES = 2
+/**
+ * How far the region reaches around each statement.
+ *
+ * This is what makes the outline a territory instead of a starfish. Taking the
+ * furthest point per sector gives every statement a needle of its own: three
+ * scattered statements produce three spikes with nothing between them, which
+ * looks like a defect and reads as more precision than three points support.
+ * A disk around each statement, unioned, gives lobes that merge where
+ * statements cluster and part where they genuinely diverge.
+ *
+ * Two bounds set the size, and the smaller wins:
+ *
+ * SPREAD — a share of how far this speaker's statements sit from their centre,
+ * so the region stays in proportion to the ground they actually covered.
+ *
+ * NEIGHBOUR — a share of the typical gap between one statement and the next.
+ * Above half that gap, adjacent statements merge, which is what makes a
+ * territory read as continuous; far above it, two distinct clusters fuse into
+ * one shape spanning ground nobody occupied. The spread bound alone cannot see
+ * this, because two tight clusters far apart have a large mean radius and a
+ * tiny real extent.
+ */
+const SPREAD_RATIO = 0.62
+const NEIGHBOUR_RATIO = 0.6
+
+/**
+ * Width of the body joining the lobes, as a share of the reach.
+ *
+ * Three statements far apart genuinely do leave gaps between them, and the
+ * region should show that rather than filling in ground nobody occupied. But
+ * pinching the gaps down to the bare floor leaves lobes strung on a thread,
+ * which reads as a rendering fault rather than as a finding. This keeps a body
+ * between them: still visibly narrower than the lobes, still concave.
+ */
+const CORE_RATIO = 0.5
+
+const SMOOTH_PASSES = 1
 
 const TAU = Math.PI * 2
 
@@ -51,28 +84,42 @@ export function blobPolygon(
   { sectors = 36, pad = 16, minRadius = 14 }: BlobOptions = {},
 ): Point[] {
   const step = TAU / sectors
-  const radii = new Array<number>(sectors).fill(0)
 
+  // Polar coordinates of each statement, relative to the speaker's centre.
+  const polar: { distance: number; angle: number }[] = []
   for (const [x, y] of points) {
     const dx = x - center[0]
     const dy = y - center[1]
     const distance = Math.hypot(dx, dy)
     if (!Number.isFinite(distance)) continue
-    // atan2 returns (-π, π]; shift into [0, τ) so it indexes a sector.
-    const angle = (Math.atan2(dy, dx) + TAU) % TAU
-    const k = Math.min(sectors - 1, Math.floor(angle / step))
-    radii[k] = Math.max(radii[k], distance)
+    // atan2 returns (-π, π]; shift into [0, τ) to match the sector angles.
+    polar.push({ distance, angle: (Math.atan2(dy, dx) + TAU) % TAU })
   }
 
-  const dilated = radii.map((_, k) => {
-    let max = 0
-    for (let d = -DILATE; d <= DILATE; d += 1) {
-      max = Math.max(max, radii[wrap(k + d, sectors)])
-    }
-    return max
-  })
+  const meanDistance =
+    polar.length > 0
+      ? polar.reduce((sum, p) => sum + p.distance, 0) / polar.length
+      : 0
+  const reach = Math.max(
+    pad,
+    Math.min(
+      meanDistance * SPREAD_RATIO,
+      medianNearestNeighbour(points) * NEIGHBOUR_RATIO,
+    ),
+  )
 
-  let smoothed = dilated
+  // The outline is the silhouette of the union of those disks, sampled per
+  // sector: how far out the boundary sits in this direction is how far the
+  // furthest disk reaches along it.
+  const radii = new Array<number>(sectors).fill(0)
+  for (let k = 0; k < sectors; k += 1) {
+    const theta = (k + 0.5) * step
+    for (const { distance, angle } of polar) {
+      radii[k] = Math.max(radii[k], diskReach(distance, theta - angle, reach))
+    }
+  }
+
+  let smoothed = radii
   for (let pass = 0; pass < SMOOTH_PASSES; pass += 1) {
     const previous = smoothed
     smoothed = previous.map(
@@ -105,14 +152,16 @@ export function blobPolygon(
       const gap = Math.abs(angle - (k + 0.5) * step)
       required[wrap(k, sectors)] = Math.max(
         required[wrap(k, sectors)],
-        distance / Math.cos(Math.min(gap, step)),
+        // The extra unit makes containment strict rather than tangent.
+        distance / Math.cos(Math.min(gap, step)) + 1,
       )
     }
   }
 
+  const core = Math.max(minRadius, reach * CORE_RATIO)
   return smoothed.map((r, k) => {
     const angle = (k + 0.5) * step
-    const radius = Math.max(minRadius, Math.max(r, required[k]) + pad)
+    const radius = Math.max(core, r, required[k])
     return [center[0] + Math.cos(angle) * radius, center[1] + Math.sin(angle) * radius]
   })
 }
@@ -175,6 +224,44 @@ export function contains(polygon: Point[], point: Point): boolean {
     }
   }
   return inside
+}
+
+/**
+ * Median distance from a point to its closest neighbour.
+ *
+ * The median rather than the mean, so one statement sitting on its own does not
+ * decide how wide every lobe is. Infinity when there is nothing to compare, so
+ * the caller's other bound takes over.
+ */
+function medianNearestNeighbour(points: Point[]): number {
+  if (points.length < 2) return Infinity
+  const nearest: number[] = []
+  for (let i = 0; i < points.length; i += 1) {
+    let best = Infinity
+    for (let j = 0; j < points.length; j += 1) {
+      if (i === j) continue
+      const d = Math.hypot(points[i][0] - points[j][0], points[i][1] - points[j][1])
+      if (Number.isFinite(d)) best = Math.min(best, d)
+    }
+    if (Number.isFinite(best)) nearest.push(best)
+  }
+  if (nearest.length === 0) return Infinity
+  nearest.sort((a, b) => a - b)
+  return nearest[Math.floor(nearest.length / 2)]
+}
+
+/**
+ * How far a disk of radius `reach`, centred `distance` from the origin, extends
+ * along a ray `offset` radians away from it. Zero when the ray misses.
+ *
+ * This is the far intersection of the ray with the circle: the projection onto
+ * the ray plus the half-chord across it.
+ */
+function diskReach(distance: number, offset: number, reach: number): number {
+  const across = distance * Math.sin(offset)
+  if (Math.abs(across) >= reach) return 0
+  const along = distance * Math.cos(offset)
+  return Math.max(0, along + Math.sqrt(reach * reach - across * across))
 }
 
 function wrap(i: number, n: number): number {
