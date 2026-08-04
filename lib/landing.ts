@@ -118,6 +118,24 @@ export const REGION_RULE = {
       en: 'The resolution is measured once for the whole map, not per speaker, so two regions can be compared directly.',
     },
   ],
+  steps: [
+    {
+      ko: '지도 위 모든 발언에 대해, 가장 가까운 다른 발언까지의 거리를 잽니다. 그 값들의 중앙값이 이 지도의 해상도입니다.',
+      en: 'For every statement, measure the distance to the nearest other one. The median of those is the map’s resolution.',
+    },
+    {
+      ko: '각 발언이 자기 주변으로 딱 한 해상도만큼을 차지합니다. 여기서는 왼쪽 넷이 서로 닿고, 오른쪽 둘은 닿지 않습니다.',
+      en: 'Each statement claims exactly one resolution around itself. Here the four on the left touch; the two on the right do not.',
+    },
+    {
+      ko: '닿은 것끼리 합친 윤곽이 그 사람의 영역입니다. 닿지 않은 발언은 따로 남고, 그 사이 빈 곳은 아무도 서지 않은 자리입니다.',
+      en: 'The outline of everything that touches is the region. What did not touch stays separate, and the space between is ground nobody stood on.',
+    },
+  ] as [Bilingual, Bilingual, Bilingual],
+  stepsNote: {
+    ko: '위 세 그림은 실제로 지도를 그리는 코드가 그대로 계산한 것입니다. 설명을 위해 따로 그린 그림이 아닙니다.',
+    en: 'The three panels are computed by the code that draws the real thing, not redrawn for the explanation.',
+  },
   note: {
     ko: '조절 가능한 값이 없습니다. 보기 좋으라고 고른 숫자가 하나도 들어가지 않았다는 뜻이고, 그래서 이 그림이 왜 이 모양인지 항상 설명할 수 있습니다.',
     en: 'There is nothing to tune. No number in this was chosen because the picture looked better with it, which is what makes the shape explainable.',

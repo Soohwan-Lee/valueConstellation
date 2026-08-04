@@ -6,6 +6,7 @@ import { Reveal } from '@/components/Reveal'
 import { Wordmark } from '@/components/Chrome'
 import { LiveDemo } from '@/components/landing/LiveDemo'
 import { MarkFigure } from '@/components/landing/MarkFigure'
+import { RegionSteps } from '@/components/landing/RegionSteps'
 import { SCENARIOS } from '@/data/scenarios'
 import precomputed from '@/data/fixtures/precomputed.json'
 import {
@@ -117,18 +118,31 @@ export default function Overview() {
         {/* ── The one rule worth stating in full ───────────────────────────
             The region is the only mark whose shape comes from a decision
             rather than from the data directly, so the decision is published. */}
-        <Band>
-          <Reveal>
-            <div className="grid gap-10 rounded-[16px] border border-[var(--line)] bg-[var(--panel)] p-7 sm:p-11 lg:grid-cols-[1fr_0.9fr] lg:gap-16">
+        <Band id="region">
+          <SectionHead
+            eyebrow={say(REGION_RULE.eyebrow)}
+            headline={say(REGION_RULE.headline)}
+            lead={say(REGION_RULE.body)}
+          />
+
+          <Reveal delay={60}>
+            <div className="mt-12">
+              <RegionSteps
+                captions={[
+                  say(REGION_RULE.steps[0]),
+                  say(REGION_RULE.steps[1]),
+                  say(REGION_RULE.steps[2]),
+                ]}
+              />
+              <p className="mt-3 text-[12px] text-[var(--muted)]">
+                {say(REGION_RULE.stepsNote)}
+              </p>
+            </div>
+          </Reveal>
+
+          <Reveal delay={120}>
+            <div className="mt-12 grid gap-10 lg:grid-cols-[1fr_0.9fr] lg:gap-16">
               <div>
-                <p className="eyebrow">{say(REGION_RULE.eyebrow)}</p>
-                <h3 className="t-headline mt-4">{say(REGION_RULE.headline)}</h3>
-                <p className="t-body mt-5">{say(REGION_RULE.body)}</p>
-                <p className="t-body mt-4 text-[var(--muted)]">
-                  {say(REGION_RULE.rejected)}
-                </p>
-              </div>
-              <div className="lg:pt-[3.2rem]">
                 <ul className="space-y-4">
                   {REGION_RULE.consequences.map((line) => (
                     <li key={line.en} className="flex gap-3">
@@ -146,6 +160,9 @@ export default function Overview() {
                   {say(REGION_RULE.note)}
                 </p>
               </div>
+              <p className="t-body text-[var(--muted)]">
+                {say(REGION_RULE.rejected)}
+              </p>
             </div>
           </Reveal>
         </Band>
