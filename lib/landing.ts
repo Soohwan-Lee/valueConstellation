@@ -259,5 +259,6 @@ export const FOOTER = {
     ko: '연구용 프로토타입입니다. 결과를 인용하기 전에 위 한계를 먼저 읽어주세요.',
     en: 'A research prototype. Read the limits above before citing anything it produces.',
   },
+  how: { ko: '어떻게 작동하나요', en: 'How it works' },
   repo: { ko: '소스 보기', en: 'Source' },
 } satisfies Record<string, Bilingual>

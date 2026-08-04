@@ -369,12 +369,20 @@ export default function Overview() {
           <p className="max-w-[34rem] text-[12.5px] leading-[1.7] text-[var(--muted)]">
             {say(FOOTER.builtWith)}
           </p>
-          <a
-            href="https://github.com/Soohwan-Lee/valueConstellation"
-            className="readout text-[11px] uppercase tracking-[0.16em] text-[var(--muted)] transition-colors hover:text-[var(--ink)]"
-          >
-            {say(FOOTER.repo)}
-          </a>
+          <div className="flex items-center gap-5">
+            <Link
+              href="/how-it-works"
+              className="text-[12.5px] text-[var(--body)] underline decoration-[var(--line-strong)] underline-offset-[3px] transition-colors hover:text-[var(--ink)]"
+            >
+              {say(FOOTER.how)}
+            </Link>
+            <a
+              href="https://github.com/Soohwan-Lee/valueConstellation"
+              className="readout text-[11px] uppercase tracking-[0.16em] text-[var(--muted)] transition-colors hover:text-[var(--ink)]"
+            >
+              {say(FOOTER.repo)}
+            </a>
+          </div>
         </div>
       </footer>
     </div>

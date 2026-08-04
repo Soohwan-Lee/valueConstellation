@@ -377,10 +377,10 @@ export default function Studio() {
           title={t('howToRead', lang)}
           aside={
             <Link
-              href="/#marks"
+              href="/how-it-works"
               className="text-[11.5px] text-[var(--muted)] underline decoration-[var(--line-strong)] underline-offset-[3px] transition-colors hover:text-[var(--ink)]"
             >
-              {t('guideLink', lang)}
+              {t('howLink', lang)}
             </Link>
           }
         >
