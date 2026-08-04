@@ -21,7 +21,13 @@ import type {
   Utterance,
   UtteranceKind,
 } from './types.ts'
-import { applyPca, classicalMds, fitPca, type Vector } from './project.ts'
+import {
+  applyPca,
+  classicalMds,
+  fitPca,
+  fitPeopleAxes,
+  type Vector,
+} from './project.ts'
 
 /** Below this many mappable utterances, a centroid is not reported as a position. */
 export const MIN_UTTERANCES_FOR_POSITION = 3
@@ -144,6 +150,12 @@ export interface AggregateOutput {
   saturated: boolean
   /** Between-speaker distance over within-speaker spread. See speakerSeparation. */
   separation: number | null
+  /** How often a statement lands nearest its own speaker. See speakerAttribution. */
+  attribution: Attribution | null
+  /** The layout's own share is arithmetic rather than evidence. */
+  fitSaturated: boolean
+  /** The second axis fell back to within-speaker variation. See fitPeopleAxes. */
+  secondAxisFromResiduals: boolean
 }
 
 /**
@@ -153,9 +165,24 @@ export interface AggregateOutput {
 export const SATURATION_THRESHOLD = 6
 
 /**
+ * Speakers needed before the people-first layout reports a meaningful share.
+ * Three centroids define a plane exactly, so two axes hold all of them by
+ * arithmetic rather than by finding structure.
+ */
+export const MIN_SPEAKERS_FOR_FIT = 3
+
+/**
  * Separation: how far apart speakers sit relative to how far each spreads.
  *
  *   separation = mean pairwise centroid distance / mean within-speaker spread
+ *
+ * Measured in the original embedding space, never on the projected
+ * coordinates. It used to be computed on the finished map, which made it a
+ * property of the layout rather than of the meeting — PCA and MDS returned
+ * different figures for the same transcript — and would have been worse than
+ * useless once a layout existed that is chosen to show people apart. A
+ * projection picked to separate people will separate people; only the
+ * untouched vectors can say whether there was anything to separate.
  *
  * Below 1, speakers overlap more than they differ, and the centroids are not
  * distinguishing anybody — the layout is being driven by something other than
@@ -168,25 +195,18 @@ export const SATURATION_THRESHOLD = 6
  * exactly the misreading the tool exists to prevent.
  */
 export function speakerSeparation(
-  utterances: ProjectedUtterance[],
-  speakers: SpeakerProfile[],
+  vectorsBySpeaker: Map<string, Vector[]>,
+  centroids: Map<string, Vector>,
 ): number | null {
-  if (speakers.length < 2) return null
-
-  const points = new Map<string, [number, number][]>()
-  for (const u of utterances) {
-    const list = points.get(u.speaker) ?? []
-    list.push([u.x, u.y])
-    points.set(u.speaker, list)
-  }
+  const names = [...centroids.keys()]
+  if (names.length < 2) return null
 
   let withinSum = 0
   let withinCount = 0
-  for (const s of speakers) {
-    const pts = points.get(s.speaker) ?? []
-    if (pts.length < 2) continue
-    for (const [x, y] of pts) {
-      withinSum += Math.hypot(x - s.x, y - s.y)
+  for (const name of names) {
+    const centre = centroids.get(name)!
+    for (const v of vectorsBySpeaker.get(name) ?? []) {
+      withinSum += distance(v, centre)
       withinCount += 1
     }
   }
@@ -196,12 +216,9 @@ export function speakerSeparation(
 
   let betweenSum = 0
   let betweenCount = 0
-  for (let i = 0; i < speakers.length; i++) {
-    for (let j = i + 1; j < speakers.length; j++) {
-      betweenSum += Math.hypot(
-        speakers[i].x - speakers[j].x,
-        speakers[i].y - speakers[j].y,
-      )
+  for (let i = 0; i < names.length; i++) {
+    for (let j = i + 1; j < names.length; j++) {
+      betweenSum += distance(centroids.get(names[i])!, centroids.get(names[j])!)
       betweenCount += 1
     }
   }
@@ -210,8 +227,93 @@ export function speakerSeparation(
   return betweenSum / betweenCount / within
 }
 
+function distance(a: Vector, b: Vector): number {
+  let sum = 0
+  for (let i = 0; i < a.length; i++) {
+    const d = a[i] - b[i]
+    sum += d * d
+  }
+  return Math.sqrt(sum)
+}
+
 /** Below this, speaker centroids are not separating the participants. */
 export const MIN_USEFUL_SEPARATION = 1
+
+export interface Attribution {
+  /** Statements whose nearest speaker centre is their own speaker's. */
+  correct: number
+  total: number
+  /** correct / total. */
+  share: number
+  /** What guessing would get: one over the number of speakers. */
+  chance: number
+}
+
+/**
+ * How often a statement is nearest to the centre of the person who said it.
+ *
+ * The trust figure a reader can actually hold. Separation is a ratio of two
+ * distances with no natural scale — is 0.95 good? — and it turns out to sit
+ * near 1 for almost any real meeting, because a centroid is an average and
+ * averages are closer together than the things they average. This is bounded,
+ * has an obvious floor, and answers the question directly: if the map handed
+ * you a statement with the name torn off, how often would its position give the
+ * name back?
+ *
+ * Leave-one-out, because a statement that helped build its own speaker's centre
+ * is drawn toward it: including it inflates the figure by exactly the amount
+ * the statement contributed, and worst on the speakers with fewest statements,
+ * which are the ones already least reliable.
+ *
+ * Measured in embedding space like separation, and for the same reason: a
+ * layout chosen to show people apart must not be able to grade itself.
+ */
+export function speakerAttribution(
+  vectorsBySpeaker: Map<string, Vector[]>,
+): Attribution | null {
+  const names = [...vectorsBySpeaker.keys()].filter(
+    (n) => (vectorsBySpeaker.get(n) ?? []).length > 0,
+  )
+  if (names.length < 2) return null
+
+  let correct = 0
+  let total = 0
+
+  for (const owner of names) {
+    const own = vectorsBySpeaker.get(owner)!
+    for (let i = 0; i < own.length; i += 1) {
+      // The owner's centre without this statement. With only one statement
+      // there is no centre left to compare against, so it is not scored.
+      const rest = own.filter((_, k) => k !== i)
+      if (rest.length === 0) continue
+      const ownCentre = centroid(rest)
+      if (!ownCentre) continue
+
+      let best = distance(own[i], ownCentre)
+      let bestIsOwn = true
+      for (const other of names) {
+        if (other === owner) continue
+        const centre = centroid(vectorsBySpeaker.get(other)!)
+        if (!centre) continue
+        const d = distance(own[i], centre)
+        if (d < best) {
+          best = d
+          bestIsOwn = false
+        }
+      }
+      total += 1
+      if (bestIsOwn) correct += 1
+    }
+  }
+
+  if (total === 0) return null
+  return {
+    correct,
+    total,
+    share: correct / total,
+    chance: 1 / names.length,
+  }
+}
 
 /**
  * Projects utterances and speaker centroids into one shared 2D space.
@@ -250,7 +352,10 @@ export function aggregateAndProject(input: AggregateInput): AggregateOutput {
     droppedSpeakers: [],
     fittedOn: 0,
     saturated: false,
+    fitSaturated: false,
     separation: null,
+    attribution: null,
+    secondAxisFromResiduals: false,
   }
   if (mappableIdx.length < 2) return emptyResult
 
@@ -274,14 +379,42 @@ export function aggregateAndProject(input: AggregateInput): AggregateOutput {
   }
 
   const utteranceVectors = mappableIdx.map((i) => normalize(vectors[i]))
+
+  // Unit vectors grouped by who said them, for the separation measurement.
+  const vectorsBySpeaker = new Map<string, Vector[]>()
+  mappableIdx.forEach((i, k) => {
+    const list = vectorsBySpeaker.get(utterances[i].speaker) ?? []
+    list.push(utteranceVectors[k])
+    vectorsBySpeaker.set(utterances[i].speaker, list)
+  })
   const centroidSpeakers = speakerOrder.filter((s) => centroids.has(s))
 
   let utterancePoints: [number, number][] = []
   let centroidPoints: [number, number][] = []
   let explainedVariance: number | null = null
   let componentVariance: [number, number] | null = null
+  let secondAxisFromResiduals = false
 
-  if (method === 'pca') {
+  if (method === 'people') {
+    // Fitted on the speaker centroids, so the plane is the one that shows the
+    // participants apart. See fitPeopleAxes for why this cannot flatter itself.
+    const residuals = mappableIdx.map((i, k) => {
+      const centre = centroids.get(utterances[i].speaker)
+      const v = utteranceVectors[k]
+      return centre ? v.map((x, d) => x - centre[d]) : v
+    })
+    const model = fitPeopleAxes(
+      centroidSpeakers.map((s) => centroids.get(s)!),
+      centroidSpeakers.map((s) => bySpeaker.get(s)!.length),
+      residuals,
+    )
+    if (!model) return emptyResult
+    utterancePoints = utteranceVectors.map((v) => applyPca(model, v))
+    centroidPoints = centroidSpeakers.map((s) => applyPca(model, centroids.get(s)!))
+    explainedVariance = model.explainedVariance
+    componentVariance = model.componentVariance
+    secondAxisFromResiduals = model.secondAxisFromResiduals
+  } else if (method === 'pca') {
     const model = fitPca(utteranceVectors)
     if (!model) return emptyResult
     utterancePoints = utteranceVectors.map((v) => applyPca(model, v))
@@ -346,6 +479,14 @@ export function aggregateAndProject(input: AggregateInput): AggregateOutput {
     droppedSpeakers,
     fittedOn: mappableIdx.length,
     saturated: mappableIdx.length < SATURATION_THRESHOLD,
-    separation: speakerSeparation(projectedUtterances, speakers),
+    // The `people` layout is fitted to the centroids, so its share is
+    // arithmetic below four of them: three points define a plane exactly.
+    fitSaturated:
+      method === 'people'
+        ? centroidSpeakers.length <= MIN_SPEAKERS_FOR_FIT
+        : mappableIdx.length < SATURATION_THRESHOLD,
+    separation: speakerSeparation(vectorsBySpeaker, centroids),
+    attribution: speakerAttribution(vectorsBySpeaker),
+    secondAxisFromResiduals,
   }
 }

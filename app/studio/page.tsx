@@ -64,7 +64,9 @@ export default function Studio() {
   const [stage, setStage] = useState<Stage>('parse')
   const [error, setError] = useState<string | null>(null)
 
-  const [method, setMethod] = useState<ProjectionMethod>('pca')
+  // People-first by default: the question this tool exists for is who differs
+  // from whom, and the layout fitted to the statements answers a different one.
+  const [method, setMethod] = useState<ProjectionMethod>('people')
   const [renderMode, setRenderMode] = useState<SpeakerRenderMode>('both')
   const [hiddenSpeakers, setHiddenSpeakers] = useState<Set<string>>(new Set())
   const [selected, setSelected] = useState<ProjectedUtterance | null>(null)

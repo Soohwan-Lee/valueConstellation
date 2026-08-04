@@ -1,5 +1,6 @@
 import type { AxisLabels } from './axes.ts'
 import type { SpeakerNames } from './speakers.ts'
+import type { Attribution } from './aggregate.ts'
 
 /** What kind of contribution an utterance makes to the discussion. */
 export type UtteranceKind =
@@ -69,7 +70,15 @@ export interface ProjectedUtterance extends Utterance {
   y: number
 }
 
-export type ProjectionMethod = 'pca' | 'mds'
+/**
+ * How the map is laid out.
+ *
+ * `people` fits the plane to the speaker centroids, so it shows the
+ * participants apart. `pca` fits it to the statements, so the axes describe
+ * what the room talked about. `mds` preserves pairwise distance instead of
+ * finding directions at all.
+ */
+export type ProjectionMethod = 'people' | 'pca' | 'mds'
 
 /**
  * Diagnostics for one projection. `explainedVariance` is why the UI can warn
@@ -78,7 +87,16 @@ export type ProjectionMethod = 'pca' | 'mds'
  */
 export interface ProjectionMeta {
   method: ProjectionMethod
-  /** Fraction of total variance captured by the two components (PCA only). */
+  /**
+   * How much of what the layout was fitted to survived the flattening.
+   *
+   * For `pca` that is all variation among the statements, which on real
+   * transcripts runs 10-25% — most of a sentence embedding is topic and
+   * phrasing, and two dimensions cannot hold it. For `people` it is the
+   * variation *between the speakers*, which is the thing the map is about and
+   * which two dimensions hold almost all of. Null for MDS, which does not fit
+   * directions and so has nothing to report a share of.
+   */
   explainedVariance: number | null
   /** Per-axis share, when meaningful. */
   componentVariance: [number, number] | null
@@ -99,6 +117,30 @@ export interface ProjectionMeta {
    * driven by topic rather than by who is talking.
    */
   separation: number | null
+  /**
+   * How often a statement is nearest the centre of whoever said it, measured
+   * leave-one-out in embedding space.
+   *
+   * The trust figure a reader can hold: if the map handed you a statement with
+   * the name torn off, how often would its position give the name back.
+   * `chance` is what guessing would score, so the two together say whether the
+   * map knows anything at all.
+   */
+  attribution: Attribution | null
+  /**
+   * True when the layout's own share is arithmetic rather than evidence.
+   *
+   * Two axes always hold every statement exactly when there are barely any, and
+   * always hold every speaker exactly when there are three or fewer — three
+   * points define a plane. In both cases the figure is a property of counting,
+   * not of the meeting.
+   */
+  fitSaturated: boolean
+  /**
+   * With two speakers there is only one direction between them, so the second
+   * axis shows within-speaker variation instead. `people` layout only.
+   */
+  secondAxisFromResiduals: boolean
   /**
    * Names for the two axes, from the statements at each end.
    *

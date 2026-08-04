@@ -152,6 +152,93 @@ export function fitPca(vectors: Vector[]): PcaModel | null {
   }
 }
 
+/**
+ * Fits axes along the directions the *speakers* differ on, rather than the
+ * directions the statements differ on.
+ *
+ * Plain PCA maximises total variance, and in raw sentence embeddings most of
+ * that is topic and phrasing: on real transcripts two components hold 10-25% of
+ * it, and much of what they hold is not about who is speaking. That figure is
+ * the answer to a question this tool does not ask. What it asks is how far
+ * apart the people are, and the speaker labels are right there.
+ *
+ * So: take the speaker centroids, weight each by the square root of how many
+ * statements it stands on — a position built on twelve statements should pull
+ * harder than one built on three — and fit on those. The result is the plane
+ * that best shows the participants apart.
+ *
+ * The obvious danger is that a projection chosen to separate people will
+ * separate people whether or not they differ. That is why `separation` is
+ * measured in the original embedding space and never on these coordinates: the
+ * layout decides what you look at, the untouched vectors decide whether there
+ * is anything there.
+ *
+ * With two speakers there is only one direction between them, so the second
+ * axis comes from `residuals` — the statements with their own speaker's
+ * centroid removed — which is the direction people vary along *within*
+ * themselves. Stated in the interface rather than hidden, because it means the
+ * two axes are answering different questions.
+ */
+export function fitPeopleAxes(
+  centroids: Vector[],
+  weights: number[],
+  residuals: Vector[],
+): (PcaModel & { secondAxisFromResiduals: boolean }) | null {
+  if (centroids.length < 2) return null
+  const dim = centroids[0].length
+
+  // Weighted mean, so the centre sits where the statements are rather than
+  // between the speakers regardless of how much each of them said.
+  const totalWeight = weights.reduce((a, b) => a + b, 0)
+  if (!(totalWeight > 0)) return null
+  const mean = new Array<number>(dim).fill(0)
+  centroids.forEach((c, i) => {
+    for (let d = 0; d < dim; d++) mean[d] += (c[d] * weights[i]) / totalWeight
+  })
+
+  // Rows scaled by sqrt(weight): the sum of their squared lengths is then the
+  // weighted between-speaker scatter, which is what the shares below divide by.
+  const rows = centroids.map((c, i) => {
+    const k = Math.sqrt(weights[i])
+    return c.map((x, d) => (x - mean[d]) * k)
+  })
+
+  let between = 0
+  for (const row of rows) between += dot(row, row)
+  if (!Number.isFinite(between) || between < 1e-12) return null
+
+  const work = rows.map((row) => [...row])
+  const first = leadingEigenvector(work, dim, 0x9e3779b9)
+  deflate(work, first.vector)
+
+  // What is left between the centroids after the first axis. With two speakers
+  // this is zero: two points span one direction and no more.
+  let remaining = 0
+  for (const row of work) remaining += dot(row, row)
+
+  let second: { vector: Vector; eigenvalue: number }
+  let secondAxisFromResiduals = false
+  if (remaining > between * 1e-6) {
+    second = leadingEigenvector(work, dim, 0x85ebca6b)
+  } else {
+    const residualWork = residuals.map((v) => [...v])
+    if (residualWork.length < 2) return null
+    // Orthogonal to the first axis, so the two are not showing the same thing.
+    deflate(residualWork, first.vector)
+    second = leadingEigenvector(residualWork, dim, 0x85ebca6b)
+    second = { vector: second.vector, eigenvalue: 0 }
+    secondAxisFromResiduals = true
+  }
+
+  return {
+    mean,
+    components: [first.vector, second.vector],
+    componentVariance: [first.eigenvalue / between, second.eigenvalue / between],
+    explainedVariance: (first.eigenvalue + second.eigenvalue) / between,
+    secondAxisFromResiduals,
+  }
+}
+
 /** Projects a vector through a fitted PCA model. */
 export function applyPca(model: PcaModel, v: Vector): [number, number] {
   const d = v.map((x, i) => x - model.mean[i])

@@ -24,7 +24,6 @@ import { fileURLToPath } from 'node:url'
 
 import { requireOpenAiKey } from './env.ts'
 import { analyzeTranscript, type AnalysisWithDiagnostics } from '../lib/analyze.ts'
-import { MIN_USEFUL_SEPARATION } from '../lib/aggregate.ts'
 import { SCENARIOS } from '../data/scenarios.ts'
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
@@ -76,26 +75,34 @@ console.log(`\nwrote ${out}`)
 
 /** Prints what decides whether a map is worth showing. */
 function report(id: string, result: AnalysisWithDiagnostics) {
-  for (const method of ['pca', 'mds'] as const) {
+  // Attribution and separation are properties of the meeting rather than of a
+  // layout, so they are printed once rather than per method.
+  const a = result.projections.people.meta.attribution
+  const separation = result.projections.people.meta.separation
+  const verdict = !a
+    ? ''
+    : a.share >= a.chance * 2 && a.share >= 0.55
+      ? ''
+      : a.share > a.chance + 0.1
+        ? ' ← weak'
+        : ' ← does not tell them apart'
+  console.log(
+    `  attribution ${a ? `${(a.share * 100).toFixed(0)}%` : '—'}` +
+      ` (chance ${a ? `${(a.chance * 100).toFixed(0)}%` : '—'})` +
+      `  separation ${separation === null ? '—' : separation.toFixed(2)}${verdict}`,
+  )
+
+  for (const method of ['people', 'pca', 'mds'] as const) {
     const p = result.projections[method]
     const kept =
       p.meta.explainedVariance === null
         ? '   —'
         : `${(p.meta.explainedVariance * 100).toFixed(0).padStart(3)}%`
-    const separation = p.meta.separation
-    const verdict =
-      separation === null
-        ? ''
-        : separation < MIN_USEFUL_SEPARATION
-          ? ' ← does not separate anybody'
-          : separation < 1.5
-            ? ' ← weak'
-            : ''
     console.log(
-      `  ${method.toUpperCase()}  statements ${String(p.utterances.length).padStart(3)}` +
+      `  ${method.padEnd(6)} statements ${String(p.utterances.length).padStart(3)}` +
         `  speakers ${p.speakers.length}` +
-        `  kept ${kept}${p.meta.saturated ? '*' : ' '}` +
-        `  separation ${separation === null ? '—' : separation.toFixed(2)}${verdict}`,
+        `  kept ${kept}${p.meta.fitSaturated ? '*' : ' '}` +
+        `${p.meta.secondAxisFromResiduals ? '  (2nd axis from within-speaker)' : ''}`,
     )
   }
   const counts = result.counts

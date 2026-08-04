@@ -279,7 +279,7 @@ export async function analyzeTranscript(
     ? []
     : parsed.speakers.filter(isModerator)
 
-  const methods: ProjectionMethod[] = ['pca', 'mds']
+  const methods: ProjectionMethod[] = ['people', 'pca', 'mds']
   const projections = {} as AnalysisResult['projections']
   let droppedSpeakers: string[] = []
 
@@ -299,7 +299,10 @@ export async function analyzeTranscript(
         componentVariance: out.componentVariance,
         fittedOn: out.fittedOn,
         saturated: out.saturated,
+        fitSaturated: out.fitSaturated,
         separation: out.separation,
+        attribution: out.attribution,
+        secondAxisFromResiduals: out.secondAxisFromResiduals,
         axes: null,
       },
     }
@@ -326,20 +329,27 @@ export async function analyzeTranscript(
   // Last, and allowed to fail: this is a reading aid, and a map with anonymous
   // axes is the map this tool shipped with for months. Losing the labels to a
   // timeout is not a reason to lose the analysis.
-  const pca = projections.pca
-  if (!pca.meta.saturated && canLabelAxes(pca.utterances)) {
-    try {
-      const { object } = await generateObject({
-        model: openai(MODEL),
-        schema: AxisLabelsSchema,
-        system: AXIS_SYSTEM_PROMPT,
-        prompt: formatExtremesForPrompt(pca.utterances),
-      })
-      pca.meta.axes = object
-    } catch (error) {
-      console.error('axis labelling failed', error)
-    }
-  }
+  // Both linear layouts get names: their axes are directions with meaning, and
+  // they are different meanings — `people` opens along what separates the
+  // participants, `pca` along what the room as a whole differed on. MDS is left
+  // alone, since its orientation is arbitrary.
+  await Promise.all(
+    (['people', 'pca'] as const).map(async (method) => {
+      const projection = projections[method]
+      if (!canLabelAxes(projection.utterances)) return
+      try {
+        const { object } = await generateObject({
+          model: openai(MODEL),
+          schema: AxisLabelsSchema,
+          system: AXIS_SYSTEM_PROMPT,
+          prompt: formatExtremesForPrompt(projection.utterances),
+        })
+        projection.meta.axes = object
+      } catch (error) {
+        console.error(`axis labelling failed for ${method}`, error)
+      }
+    }),
+  )
 
   const speakerNames = await speakerNamesPromise
 

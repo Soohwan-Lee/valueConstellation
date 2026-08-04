@@ -11,6 +11,13 @@ import {
 import type { Utterance } from './types.ts'
 
 /** Deterministic PRNG so these tests never flake. */
+/** A random unit vector, for building synthetic embedding clouds. */
+function randomUnit(dim: number, r: () => number): number[] {
+  const v = Array.from({ length: dim }, () => r() - 0.5)
+  const len = Math.hypot(...v) || 1
+  return v.map((x) => x / len)
+}
+
 function rng(seed: number) {
   let s = seed >>> 0
   return () => {
@@ -199,37 +206,96 @@ test('few utterances are flagged saturated', () => {
 })
 
 test('separation detects speakers who do not separate', () => {
-  const spread = (speaker: string, cx: number, n: number, r: () => number) =>
-    Array.from({ length: n }, (_, k) => ({
-      ...claim(speaker, k),
-      x: cx + (r() - 0.5) * 2,
-      y: (r() - 0.5) * 2,
-    }))
+  // Measured in embedding space, so these are vectors rather than coordinates.
+  const cloud = (cx: number, n: number, r: () => number) =>
+    Array.from({ length: n }, () => [cx + (r() - 0.5) * 2, (r() - 0.5) * 2])
 
   const r = rng(3)
-  // Overlapping: centroids 0.1 apart, points scattered by +-1.
-  const overlapping = [...spread('A', 0, 20, r), ...spread('B', 0.1, 20, r)]
-  const overlapProfiles = ['A', 'B'].map((s, i) => ({
-    speaker: s,
-    colorIndex: i,
-    n: 20,
-    nExcluded: 0,
-    x: i === 0 ? 0 : 0.1,
-    y: 0,
-    ellipse: null,
-    underdetermined: false,
-  }))
-  const low = speakerSeparation(overlapping, overlapProfiles)
+  const near = new Map([
+    ['A', cloud(0, 20, r)],
+    ['B', cloud(0.1, 20, r)],
+  ])
+  const nearCentroids = new Map([
+    ['A', [0, 0]],
+    ['B', [0.1, 0]],
+  ])
+  const low = speakerSeparation(near, nearCentroids)
   assert.ok(low !== null && low < 1, `expected < 1, got ${low}`)
 
-  // Distinct: same scatter, centroids 10 apart.
-  const distinct = [...spread('A', 0, 20, r), ...spread('B', 10, 20, r)]
-  const distinctProfiles = overlapProfiles.map((p, i) => ({
-    ...p,
-    x: i === 0 ? 0 : 10,
-  }))
-  const high = speakerSeparation(distinct, distinctProfiles)
+  const far = new Map([
+    ['A', cloud(0, 20, r)],
+    ['B', cloud(10, 20, r)],
+  ])
+  const farCentroids = new Map([
+    ['A', [0, 0]],
+    ['B', [10, 0]],
+  ])
+  const high = speakerSeparation(far, farCentroids)
   assert.ok(high !== null && high > 1, `expected > 1, got ${high}`)
+})
+
+test('separation does not change when the layout does', () => {
+  // The whole point of measuring it before the projection: a layout chosen to
+  // show people apart must not be able to report that it succeeded.
+  const r = rng(11)
+  const vectors = Array.from({ length: 24 }, () => randomUnit(16, r))
+  const utterances = vectors.map((_, i) => claim(i % 3 === 0 ? 'A' : i % 3 === 1 ? 'B' : 'C', i))
+
+  const figures = (['people', 'pca', 'mds'] as const).map(
+    (method) => aggregateAndProject({ utterances, vectors, method }).separation,
+  )
+  assert.ok(figures[0] !== null)
+  for (const f of figures) {
+    assert.ok(
+      Math.abs((f ?? 0) - (figures[0] ?? 0)) < 1e-9,
+      `layouts disagree on separation: ${figures.join(', ')}`,
+    )
+  }
+})
+
+test('the people layout puts more of the between-speaker difference on screen', () => {
+  const r = rng(5)
+  // Three speakers, each clustered around their own direction, plus noise that
+  // dominates the total variance — the situation plain PCA handles badly.
+  const base = ['A', 'B', 'C'].map(() => randomUnit(24, r))
+  const vectors: number[][] = []
+  const utterances = []
+  for (let s = 0; s < 3; s += 1) {
+    for (let k = 0; k < 10; k += 1) {
+      vectors.push(base[s].map((x: number) => x + (r() - 0.5) * 1.4))
+      utterances.push(claim(['A', 'B', 'C'][s], s * 10 + k))
+    }
+  }
+
+  const people = aggregateAndProject({ utterances, vectors, method: 'people' })
+  const pca = aggregateAndProject({ utterances, vectors, method: 'pca' })
+
+  // Separation as drawn: how far the centroids sit apart relative to the
+  // scatter, measured on the finished coordinates of each layout.
+  const drawn = (out: ReturnType<typeof aggregateAndProject>) => {
+    const within =
+      out.projectedUtterances.reduce((sum, u) => {
+        const s = out.speakers.find((p) => p.speaker === u.speaker)!
+        return sum + Math.hypot(u.x - s.x, u.y - s.y)
+      }, 0) / out.projectedUtterances.length
+    let between = 0
+    let pairs = 0
+    for (let i = 0; i < out.speakers.length; i += 1) {
+      for (let j = i + 1; j < out.speakers.length; j += 1) {
+        between += Math.hypot(
+          out.speakers[i].x - out.speakers[j].x,
+          out.speakers[i].y - out.speakers[j].y,
+        )
+        pairs += 1
+      }
+    }
+    return between / pairs / within
+  }
+
+  assert.ok(
+    drawn(people) > drawn(pca),
+    `people ${drawn(people).toFixed(2)} should beat pca ${drawn(pca).toFixed(2)}`,
+  )
 })
 
 test('degenerate input returns empty rather than throwing', () => {

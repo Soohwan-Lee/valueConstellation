@@ -62,17 +62,28 @@ export const STRINGS = {
     ko: '중심 표식과 영역을 함께',
     en: 'Centroid marker together with the region',
   },
-  methodPcaHint: {
-    ko: '의견이 가장 크게 갈리는 방향부터 펼칩니다. 가로·세로 방향에 뜻이 생깁니다',
-    en: 'Opens out along the directions people differ on most, so the axes carry meaning',
+  methodPeople: { ko: '사람', en: 'People' },
+  methodPeopleHint: {
+    ko: '참여자들이 서로 가장 크게 갈리는 방향으로 펼칩니다. 누가 누구와 다른지 보려면 이 배치입니다',
+    en: 'Opens along what separates the participants most. The layout for seeing who differs from whom',
   },
+  methodPca: { ko: '이야기', en: 'Topics' },
+  methodPcaHint: {
+    ko: '회의 전체에서 이야기가 가장 크게 갈린 방향으로 펼칩니다. 무엇을 두고 논의했는지가 축이 됩니다',
+    en: 'Opens along what the room as a whole differed on, so the axes describe the discussion',
+  },
+  methodMds: { ko: '거리', en: 'Distance' },
   methodMdsHint: {
     ko: '누가 누구와 얼마나 떨어져 있는지를 최대한 그대로 옮깁니다. 거리가 더 정확합니다',
     en: 'Keeps who is how far from whom as close to the original as it can',
   },
   methodNote: {
-    ko: '같은 발언을 두 가지 방식으로 펼친 것입니다. 두 배치에서 모두 떨어져 있는 사람이라면 그 차이는 배치 탓이 아닙니다.',
-    en: 'Two ways of laying out the same statements. Anybody who sits apart in both is not an artefact of the layout.',
+    ko: '같은 발언을 세 가지로 펼친 것입니다. 위의 “사람 구분 정도”는 펼치기 전 원래 값에서 재기 때문에 배치를 바꿔도 변하지 않습니다 — 어떤 배치가 더 갈라 보이게 만드는지와, 실제로 갈라져 있는지는 다른 문제입니다.',
+    en: 'Three ways of laying out the same statements. The separation figure above is measured before any of them, so switching does not change it — how far apart a layout draws people and how far apart they are are different questions.',
+  },
+  secondAxisNote: {
+    ko: '참여자가 두 명이라 사람 사이 방향은 하나뿐입니다. 세로축은 대신 각자의 발언이 가장 크게 갈리는 방향을 보여줍니다.',
+    en: 'With two participants there is only one direction between them, so the vertical axis shows what varies within each of them instead.',
   },
   displayOptions: { ko: '표시 설정', en: 'Display options' },
   showAll: { ko: '전체 보기', en: 'Show all' },
@@ -107,8 +118,8 @@ export const STRINGS = {
     en: '**A dashed marker** means fewer than three statements, so the position is provisional.',
   },
   readAxes: {
-    ko: '축에는 이름이 없습니다. 방향 자체에 정해진 의미가 없고, 중요한 것은 **서로 간의 거리**입니다.',
-    en: 'The axes are unlabelled: the directions carry no fixed meaning. Only **relative distance** matters.',
+    ko: '**가로·세로 축**은 이 회의에서 가장 크게 갈린 두 방향입니다. 양 끝 발언을 읽고 붙인 이름이라 참고용이고, 거리를 정확히 옮기는 배치에서는 방향에 뜻이 없어 이름이 붙지 않습니다.',
+    en: '**The axes** are the two directions this meeting split on most. The names come from reading the statements at each end, so treat them as a reading aid — the distance-preserving layout has none, because its orientation is arbitrary.',
   },
   readMeasure: {
     ko: '**측정선**은 참여자를 선택하면 그어집니다. 옆의 숫자는 이 지도에서 가장 먼 쌍을 1.00으로 둔 상대 거리입니다.',
@@ -174,24 +185,33 @@ export const STRINGS = {
   // How much to trust this map, in the order a reader needs it: does it tell
   // these people apart at all, and then how much detail the flattening cost.
   verdictStrong: {
-    ko: '이 지도는 참여자를 잘 구분합니다.',
-    en: 'This map tells the participants apart clearly.',
+    ko: '이름을 가린 발언 100개를 이 지도 위에 놓으면 {pct}개는 실제 발언자에게 돌아갑니다. 아무렇게나 찍으면 {chance}개입니다.',
+    en: 'Hand this map 100 statements with the names removed and {pct} of them land nearest the person who actually said them. Guessing would get {chance}.',
   },
   verdictWeak: {
-    ko: '구분은 되지만 뚜렷하지 않습니다. 각자 자기 이야기를 하면서도 서로 비슷한 말을 많이 했다는 뜻입니다.',
-    en: 'It separates them, but not sharply — they said a lot of similar things alongside their own.',
+    ko: '이름을 가린 발언 100개 중 {pct}개가 실제 발언자에게 돌아갑니다. 아무렇게나 찍으면 {chance}개이니 우연보다는 낫지만, 크게 낫지는 않습니다 — 각자 자기 이야기를 하면서도 서로 비슷한 말을 많이 했다는 뜻입니다.',
+    en: 'Of 100 statements with the names removed, {pct} land nearest the person who said them, against {chance} for guessing. Better than chance, but not by much — they said a lot of similar things alongside their own.',
   },
   verdictNone: {
-    ko: '이 회의에서는 참여자를 구분하지 못합니다. 각자의 발언이 서로 떨어진 거리보다 더 넓게 퍼져 있어서, 평균이 모두 가운데로 모였습니다. 대개 한 회의에서 여러 안건을 함께 다룬 경우입니다 — 쟁점 하나로 좁혀서 다시 만들어 보세요.',
-    en: 'This map cannot tell the participants apart. Each person’s statements scatter wider than the people sit apart, so every average landed in the middle. That usually means one meeting covered several agenda items — narrow it to one question and try again.',
+    ko: '이 지도는 참여자를 구분하지 못합니다. 이름을 가린 발언 100개 중 {pct}개만 실제 발언자에게 돌아가는데, 아무렇게나 찍어도 {chance}개입니다. 대개 한 회의에서 여러 안건을 함께 다룬 경우로, 안건이 바뀔 때마다 발언이 딴 곳으로 튀어 평균이 모두 가운데로 모입니다 — 쟁점 하나로 좁혀서 다시 만들어 보세요.',
+    en: 'This map cannot tell the participants apart. Of 100 statements with the names removed only {pct} land nearest the person who said them, and guessing would get {chance}. That usually means one meeting covered several agenda items: every change of topic throws a person’s statements somewhere else and every average lands in the middle. Narrow it to one question and try again.',
   },
+  attributionTerm: { ko: '발언 되찾기', en: 'Statements traced back' },
   separationTerm: { ko: '사람 구분 정도', en: 'Separation' },
 
+  keptPeople: {
+    ko: '참여자들 사이의 차이 중 {pct}%가 이 평면에 남았습니다. 이 배치는 사람을 갈라 보이게 하려고 고른 것이라 이 수치는 높게 나옵니다 — 실제로 갈라져 있는지는 위의 “사람 구분 정도”가 답합니다.',
+    en: '{pct}% of the differences between the participants survived the flattening. This layout was chosen to show them apart, so the figure runs high — whether they really are apart is what the separation figure above answers.',
+  },
   keptPlain: {
-    ko: '발언들의 차이는 원래 훨씬 여러 방향으로 나 있고, 그중 {pct}%가 이 평면에 남았습니다. 이 방식에서는 보통 10~25%로 낮게 나옵니다 — 누가 가깝고 누가 먼지는 볼 수 있지만, 거리 값 자체는 대략으로 보세요.',
-    en: 'Differences between statements run in many more directions than two, and {pct}% of that survived the flattening. This method usually lands between 10 and 25% — near and far are readable, the exact distances are not.',
+    ko: '발언들의 차이는 원래 훨씬 여러 방향으로 나 있고, 그중 {pct}%가 이 평면에 남았습니다. 회의 전체를 담으려는 배치라 이 수치는 보통 10~25%로 낮게 나옵니다 — 대부분이 누가 말했는지가 아니라 무슨 주제였는지에 대한 차이이기 때문입니다.',
+    en: 'Differences between statements run in many more directions than two, and {pct}% of that survived. A layout that tries to hold the whole discussion usually lands between 10 and 25%, because most of what it is holding is topic rather than who was speaking.',
   },
   keptTerm: { ko: '평면에 남은 정도', en: 'Detail kept' },
+  keptFitSaturated: {
+    ko: '참여자가 {n}명뿐이라 이 수치는 의미가 없습니다 — 점 세 개는 어떤 평면에도 정확히 들어맞습니다.',
+    en: 'With only {n} participants this figure means nothing: three points fit a plane exactly.',
+  },
   keptSaturated: {
     ko: '발언이 {n}개뿐이라 이 수치({pct}%)는 아무 뜻이 없습니다. 점이 몇 개 없으면 어떤 평면에도 거의 그대로 들어맞기 때문입니다. 더 긴 회의록이 필요합니다.',
     en: 'With only {n} statements this figure ({pct}%) means nothing — a handful of points fits almost any plane exactly. A longer transcript is needed.',

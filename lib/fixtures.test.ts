@@ -5,7 +5,6 @@ import fixtures from '../data/fixtures/precomputed.json' with { type: 'json' }
 import { SCENARIOS } from '../data/scenarios.ts'
 import { needsTranslation } from './translate.ts'
 import { speakerLabel } from './speakers.ts'
-import { MIN_USEFUL_SEPARATION } from './aggregate.ts'
 import type { AnalysisResult } from './types.ts'
 
 /**
@@ -143,19 +142,54 @@ test('the PCA layout names its axes, and MDS does not', () => {
 })
 
 test('the examples still demonstrate what they claim to', () => {
-  // Three are meant to separate their speakers; `mixed` exists to show the
+  // Three are meant to tell their speakers apart; `mixed` exists to show the
   // failure. If a rebuild flips either way the lesson on the page is wrong.
-  const separation = (id: string) =>
-    MAPS[id].projections.pca.meta.separation ?? 0
+  //
+  // Graded on attribution rather than on separation, and against chance rather
+  // than against a fixed cut, because chance moves with the number of people in
+  // the room: getting half the statements home is strong with four
+  // participants and no better than a coin toss with two.
+  const attribution = (id: string) => {
+    const a = MAPS[id].projections.people.meta.attribution
+    assert.ok(a, `"${id}" reports no attribution`)
+    return a
+  }
 
   for (const id of ['siting', 'consensus', 'drift']) {
+    const { share, chance } = attribution(id)
     assert.ok(
-      separation(id) >= MIN_USEFUL_SEPARATION,
-      `"${id}" no longer separates its speakers (${separation(id).toFixed(2)})`,
+      share >= chance * 1.5,
+      `"${id}" no longer tells its speakers apart: ${(share * 100).toFixed(0)}%` +
+        ` of statements find their speaker, against ${(chance * 100).toFixed(0)}% by guessing`,
     )
   }
+
+  const failing = attribution('mixed')
   assert.ok(
-    separation('mixed') < MIN_USEFUL_SEPARATION,
-    'the "map fails" example now separates its speakers, so it teaches nothing',
+    failing.share <= failing.chance,
+    'the "map fails" example now tells its speakers apart, so it teaches nothing',
   )
+})
+
+test('every layout of a meeting reports the same trust figures', () => {
+  // Attribution and separation are measured in the embedding space the map is
+  // built from, never in the picture. A layout fitted to push the speakers
+  // apart would otherwise grade its own homework, and `people` is exactly that
+  // layout. Identical numbers across all three is what makes the figure a
+  // claim about the meeting rather than about the drawing.
+  for (const [id, map] of Object.entries(MAPS)) {
+    const { people, pca, mds } = map.projections
+    for (const other of [pca, mds]) {
+      assert.deepEqual(
+        other.meta.attribution,
+        people.meta.attribution,
+        `"${id}" reports different attribution for ${other.meta.method}`,
+      )
+      assert.equal(
+        other.meta.separation,
+        people.meta.separation,
+        `"${id}" reports different separation for ${other.meta.method}`,
+      )
+    }
+  }
 })

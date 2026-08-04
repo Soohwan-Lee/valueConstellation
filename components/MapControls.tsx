@@ -362,12 +362,19 @@ export function renderModeOptions(
   ]
 }
 
+/**
+ * Layouts, named for what they show rather than for the algorithm.
+ *
+ * "PCA" and "MDS" are what a reader would look up, and also what nobody
+ * choosing a view is thinking about. The technical names are on the reference
+ * page; here the label answers "what will this show me".
+ */
 export function methodOptions(
   lang: Lang,
 ): { value: ProjectionMethod; label: string; title: string }[] {
   return [
-    // Method names stay as-is: PCA and MDS are the terms a reader would look up.
-    { value: 'pca', label: 'PCA', title: t('methodPcaHint', lang) },
-    { value: 'mds', label: 'MDS', title: t('methodMdsHint', lang) },
+    { value: 'people', label: t('methodPeople', lang), title: t('methodPeopleHint', lang) },
+    { value: 'pca', label: t('methodPca', lang), title: t('methodPcaHint', lang) },
+    { value: 'mds', label: t('methodMds', lang), title: t('methodMdsHint', lang) },
   ]
 }
