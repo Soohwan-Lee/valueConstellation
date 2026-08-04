@@ -1,3 +1,8 @@
+import {
+  MIN_STATEMENTS_FOR_ATTRIBUTION,
+  MIN_UTTERANCES_FOR_POSITION,
+  MIN_USEFUL_SEPARATION,
+} from './aggregate'
 import { EMBEDDING_DIMENSIONS, EMBEDDING_MODEL, MODEL } from './models'
 import type { Bilingual } from './landing'
 
@@ -39,8 +44,8 @@ export const GROUPS: Group[] = [
   {
     title: { ko: '쓰이는 모델', en: 'Models used' },
     intro: {
-      ko: '두 번 호출합니다. 발언자 구분은 규칙 기반이라 모델을 쓰지 않습니다.',
-      en: 'Two calls. Attributing speakers is rule-based and uses no model.',
+      ko: '두 종류의 모델을 씁니다. 발언자 구분은 규칙 기반이라 모델을 쓰지 않습니다.',
+      en: 'Two models. Attributing speakers is rule-based and uses no model at all.',
     },
     entries: [
       {
@@ -55,8 +60,8 @@ export const GROUPS: Group[] = [
         term: { ko: '의미 좌표', en: 'Embedding' },
         value: `${EMBEDDING_MODEL} · ${EMBEDDING_DIMENSIONS}d`,
         body: {
-          ko: '각 주장을 1536개 숫자로 바꿉니다. 이 숫자들 사이의 거리가 지도상 거리의 근거입니다.',
-          en: 'Turns each argument into 1536 numbers. Distances between those are what every distance on the map comes from.',
+          ko: `각 주장을 ${EMBEDDING_DIMENSIONS}개 숫자로 바꿉니다. 이 숫자들 사이의 거리가 지도상 거리의 근거이고, 신뢰 수치도 평면이 아니라 이 공간에서 잽니다.`,
+          en: `Turns each argument into ${EMBEDDING_DIMENSIONS} numbers. Distances between those are what every distance on the map comes from, and where the trust figures are measured — not on the flattened picture.`,
         },
       },
       {
@@ -184,7 +189,7 @@ export const GROUPS: Group[] = [
       },
       {
         term: { ko: '사람 구분 정도', en: 'Separation' },
-        value: '1.0',
+        value: MIN_USEFUL_SEPARATION.toFixed(1),
         body: {
           ko: '사람 사이 평균 거리를 각자 발언이 퍼진 정도로 나눈 값으로, 상세 수치로만 함께 표시합니다. 1 미만이면 각자의 발언이 사람 사이 거리보다 더 넓게 퍼져 있다는 뜻입니다. 위쪽에 한계가 없어서 “얼마면 충분한가”에 답하지 못하기 때문에, 화면에서 판단을 내리는 자리는 되찾기 비율이 대신합니다.',
           en: 'Mean between-speaker distance over mean within-speaker spread, shown as a secondary readout. Below 1, each person’s statements scatter wider than the people sit apart. It has no upper bound and so cannot answer "is this enough", which is why the verdict on screen is made on attribution instead.',
@@ -192,7 +197,7 @@ export const GROUPS: Group[] = [
       },
       {
         term: { ko: '판정을 보류하는 지점', en: 'Where it declines to judge' },
-        value: '< 6 per speaker',
+        value: `< ${MIN_STATEMENTS_FOR_ATTRIBUTION} per speaker`,
         body: {
           ko: '한 사람당 발언 중앙값이 6개 미만이면 되찾기 비율로 판정하지 않고 발언 수를 대신 알립니다. 하나를 빼고 다시 재는 방식이라, 발언이 세 개뿐이면 뺀 하나가 그 사람의 중심을 자기 퍼짐의 절반만큼 밀어냅니다 — 회의와 무관한 이유로 점수가 무너집니다. 실제로 한 안건만 다룬 9발언 회의에서 되찾기는 11%(우연 33%)로 나왔지만 사람 구분 정도는 1.30이었습니다. 이때 “안건을 좁히세요”라고 안내하면 틀린 처방입니다. 그 회의는 산만한 게 아니라 짧았습니다.',
           en: 'Below a median of six statements per speaker the tool reports the count instead of a verdict. Leave-one-out removes 1/(n−1) of what builds a centroid, so at three statements the held-out point shifts its own speaker’s centre by half that speaker’s spread and the score collapses for reasons unrelated to the meeting. Measured: a 9-statement transcript on a single agenda item scored 11% against 33% chance while separation read 1.30. Telling that reader to narrow their agenda would be the wrong instruction — their meeting was short, not unfocused.',
@@ -200,7 +205,7 @@ export const GROUPS: Group[] = [
       },
       {
         term: { ko: '잠정 위치', en: 'Provisional position' },
-        value: '< 3 statements',
+        value: `< ${MIN_UTTERANCES_FOR_POSITION} statements`,
         body: {
           ko: '실질 발언이 3개 미만인 참여자는 표식을 점선으로 그립니다. 평균 낼 것이 거의 없어 위치가 쉽게 흔들리기 때문입니다.',
           en: 'Fewer than three substantive statements gets a dashed marker: there is almost nothing to average, so the position moves easily.',
