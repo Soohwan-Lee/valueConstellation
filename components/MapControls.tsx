@@ -10,6 +10,7 @@ import { counterpart, pairsWith } from '@/lib/pairs'
 import { shapePath, speakerColor, speakerShape } from '@/lib/colors'
 import { t, tf, type Lang } from '@/lib/i18n'
 import { speakerLabel, type SpeakerNames } from '@/lib/speakers'
+import { say, type SpeakerSummaries } from '@/lib/summaries'
 
 /**
  * The participant list.
@@ -34,10 +35,13 @@ export function ParticipantList({
   onHoverPair,
   lang,
   speakerNames,
+  summaries,
 }: {
   speakers: SpeakerProfile[]
   /** Every gap on the map, widest first. Drives the distances shown on select. */
   pairs: SpeakerPair[]
+  /** What each participant argued, shown inline under their name. */
+  summaries: SpeakerSummaries | null
   hidden: Set<string>
   selected: string | null
   onSelect: (speaker: string) => void
@@ -66,41 +70,62 @@ export function ParticipantList({
                 type="button"
                 onClick={() => onSelect(s.speaker)}
                 aria-pressed={isSelected}
-                className="flex min-w-0 flex-1 items-center gap-2.5 px-1.5 py-1.5 text-left"
+                className="flex min-w-0 flex-1 flex-col gap-1 px-1.5 py-1.5 text-left"
                 style={{ opacity: visible ? 1 : 0.4 }}
               >
-                <svg
-                  width={11}
-                  height={11}
-                  viewBox="-6 -6 12 12"
-                  className="shrink-0"
-                >
-                  <path
-                    d={shapePath(speakerShape(s.colorIndex), 4.6)}
-                    fill={
-                      s.underdetermined ? 'var(--panel)' : speakerColor(s.colorIndex)
-                    }
-                    stroke={speakerColor(s.colorIndex)}
-                    strokeWidth={s.underdetermined ? 1.6 : 0}
-                  />
-                </svg>
-                <span className="truncate text-[13.5px] text-[var(--ink)]">
-                  {speakerLabel(s.speaker, lang, speakerNames)}
-                </span>
-                {s.underdetermined && (
-                  <span
-                    className="readout shrink-0 text-[10px] text-[var(--muted)]"
-                    title={tf('underdeterminedHint', lang, {
-                      n: s.n,
-                      s: s.n === 1 ? '' : 's',
-                    })}
+                <span className="flex w-full items-center gap-2.5">
+                  <svg
+                    width={11}
+                    height={11}
+                    viewBox="-6 -6 12 12"
+                    className="shrink-0"
                   >
-                    ?
+                    <path
+                      d={shapePath(speakerShape(s.colorIndex), 4.6)}
+                      fill={
+                        s.underdetermined ? 'var(--panel)' : speakerColor(s.colorIndex)
+                      }
+                      stroke={speakerColor(s.colorIndex)}
+                      strokeWidth={s.underdetermined ? 1.6 : 0}
+                    />
+                  </svg>
+                  <span className="truncate text-[13.5px] text-[var(--ink)]">
+                    {speakerLabel(s.speaker, lang, speakerNames)}
+                  </span>
+                  {s.underdetermined && (
+                    <span
+                      className="readout shrink-0 text-[10px] text-[var(--muted)]"
+                      title={tf('underdeterminedHint', lang, {
+                        n: s.n,
+                        s: s.n === 1 ? '' : 's',
+                      })}
+                    >
+                      ?
+                    </span>
+                  )}
+                  <span className="readout ml-auto shrink-0 pl-2 text-[11.5px] text-[var(--muted)]">
+                    {s.n}
+                  </span>
+                </span>
+
+                {/* What this person argued, in the list rather than behind a
+                    click. The rail was a column of names and counts, which
+                    tells a reader who was in the room and nothing about it —
+                    every summary needed a separate click to reach, so nobody
+                    would ever see two of them side by side. That comparison is
+                    the entire point of the tool.
+
+                    Clamped to two lines until selected, so the list stays
+                    scannable and the full sentence is one click away. */}
+                {summaries?.[s.speaker] && (
+                  <span
+                    className={`block pl-[21px] text-[11.5px] leading-[1.5] text-[var(--muted)] ${
+                      isSelected ? '' : 'line-clamp-2'
+                    }`}
+                  >
+                    {say(summaries[s.speaker].stance, lang)}
                   </span>
                 )}
-                <span className="readout ml-auto shrink-0 pl-2 text-[11.5px] text-[var(--muted)]">
-                  {s.n}
-                </span>
               </button>
               <button
                 type="button"

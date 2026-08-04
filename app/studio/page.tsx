@@ -318,6 +318,7 @@ export default function Studio() {
                 onHoverPair={setHoveredPair}
                 lang={lang}
                 speakerNames={analysis?.speakerNames ?? null}
+                summaries={analysis?.speakerSummaries ?? null}
               />
               {!selectedSpeaker && (
                 <p className="mt-2.5 px-0.5 text-[11.5px] leading-[1.55] text-[var(--muted)]">
