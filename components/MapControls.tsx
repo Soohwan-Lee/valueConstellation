@@ -9,6 +9,7 @@ import type { SpeakerPair } from '@/lib/pairs'
 import { counterpart, pairsWith } from '@/lib/pairs'
 import { shapePath, speakerColor, speakerShape } from '@/lib/colors'
 import { t, tf, type Lang } from '@/lib/i18n'
+import { speakerLabel, type SpeakerNames } from '@/lib/speakers'
 
 /**
  * The participant list.
@@ -32,6 +33,7 @@ export function ParticipantList({
   onShowAll,
   onHoverPair,
   lang,
+  speakerNames,
 }: {
   speakers: SpeakerProfile[]
   /** Every gap on the map, widest first. Drives the distances shown on select. */
@@ -43,6 +45,7 @@ export function ParticipantList({
   onShowAll: () => void
   onHoverPair: (pair: SpeakerPair | null) => void
   lang: Lang
+  speakerNames: SpeakerNames | null
 }) {
   return (
     <div onMouseLeave={() => onHoverPair(null)}>
@@ -82,7 +85,7 @@ export function ParticipantList({
                   />
                 </svg>
                 <span className="truncate text-[13.5px] text-[var(--ink)]">
-                  {s.speaker}
+                  {speakerLabel(s.speaker, lang, speakerNames)}
                 </span>
                 {s.underdetermined && (
                   <span
@@ -130,6 +133,7 @@ export function ParticipantList({
                   speaker={s.speaker}
                   onHover={onHoverPair}
                   lang={lang}
+                  speakerNames={speakerNames}
                 />
               )}
             </li>
@@ -166,11 +170,13 @@ function DistancesFrom({
   speaker,
   onHover,
   lang,
+  speakerNames,
 }: {
   pairs: SpeakerPair[]
   speaker: string
   onHover: (pair: SpeakerPair | null) => void
   lang: Lang
+  speakerNames: SpeakerNames | null
 }) {
   const mine = [...pairsWith(pairs, speaker)].sort(
     (a, b) => a.distance - b.distance,
@@ -188,7 +194,7 @@ function DistancesFrom({
               className="flex items-baseline gap-2 rounded-[5px] py-1 pl-[21px] pr-1 transition-colors hover:bg-[var(--panel)]"
             >
               <span className="min-w-0 flex-1 truncate text-[12.5px] text-[var(--body)]">
-                {counterpart(pair, speaker).speaker}
+                {speakerLabel(counterpart(pair, speaker).speaker, lang, speakerNames)}
               </span>
               {/* A bar, so the column can be scanned without reading every
                   number. Its width is the ratio the number states. */}

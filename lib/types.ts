@@ -1,4 +1,5 @@
 import type { AxisLabels } from './axes.ts'
+import type { SpeakerNames } from './speakers.ts'
 
 /** What kind of contribution an utterance makes to the discussion. */
 export type UtteranceKind =
@@ -123,6 +124,15 @@ export interface AnalysisResult {
   counts: Record<UtteranceKind, number>
   /** Speakers dropped for having no mappable utterances. */
   droppedSpeakers: string[]
+  /**
+   * Each speaker's name written in English, keyed by the name as spoken.
+   *
+   * The interface switches language on everything else, so leaving names in one
+   * script means an English reader gets labels they cannot read on the one
+   * thing they have to read. Null when the rendering could not be produced —
+   * the original is shown, which is what every earlier map does.
+   */
+  speakerNames: SpeakerNames | null
 }
 
 /** How a speaker is drawn. Which of these is right is an empirical question. */

@@ -17,6 +17,12 @@ import {
   TranslationsSchema,
 } from './translate.ts'
 import {
+  formatSpeakersForPrompt,
+  SPEAKER_NAMES_SYSTEM_PROMPT,
+  SpeakerNamesSchema,
+  type SpeakerNames,
+} from './speakers.ts'
+import {
   AXIS_SYSTEM_PROMPT,
   AxisLabelsSchema,
   canLabelAxes,
@@ -115,6 +121,11 @@ export async function analyzeTranscript(
           : 'Only one speaker could be placed. A map needs at least two to show relative position.',
     }
   }
+
+  // Names in the other language, so the toggle reaches the one thing on the map
+  // a reader has to be able to read. Runs alongside segmentation rather than
+  // after it: it needs only the parsed speaker list, and it is small.
+  const speakerNamesPromise = renderSpeakerNames(parsed.speakers)
 
   // 2. Segment turns into argument units.
   //
@@ -330,6 +341,8 @@ export async function analyzeTranscript(
     }
   }
 
+  const speakerNames = await speakerNamesPromise
+
   const counts: Record<UtteranceKind, number> = {
     claim: 0,
     question: 0,
@@ -344,6 +357,7 @@ export async function analyzeTranscript(
       projections,
       counts,
       droppedSpeakers,
+      speakerNames,
       diagnostics: {
         turns: parsed.turns.length,
         speakers: parsed.speakers,
@@ -359,6 +373,39 @@ export async function analyzeTranscript(
         embeddingModel: EMBEDDING_MODEL,
       },
     },
+  }
+}
+
+/**
+ * Each speaker's name written in English.
+ *
+ * Never rejects: a map with names in one script is the state this shipped in
+ * for months, and is a smaller loss than no map at all. Entries the model
+ * returns for a name that was not asked about are ignored, so a hallucinated
+ * participant cannot appear in the interface.
+ */
+async function renderSpeakerNames(
+  speakers: string[],
+): Promise<SpeakerNames | null> {
+  if (speakers.length === 0) return null
+  try {
+    const { object } = await generateObject({
+      model: openai(MODEL),
+      schema: SpeakerNamesSchema,
+      system: SPEAKER_NAMES_SYSTEM_PROMPT,
+      prompt: formatSpeakersForPrompt(speakers),
+    })
+    const asked = new Set(speakers)
+    const names: SpeakerNames = {}
+    for (const entry of object.names) {
+      const source = entry.source.trim()
+      const en = entry.en.trim()
+      if (asked.has(source) && en) names[source] = en
+    }
+    return Object.keys(names).length > 0 ? names : null
+  } catch (error) {
+    console.error('speaker name rendering failed', error)
+    return null
   }
 }
 

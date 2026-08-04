@@ -94,6 +94,7 @@ export function LiveDemo({
         // studio.
         emphasised={null}
         lang={lang}
+        speakerNames={analysis.speakerNames}
         settleKey="demo"
         interaction="select"
         onSelect={(u) => {

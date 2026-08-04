@@ -8,8 +8,8 @@
           "text": "I support approving it now. Our fleet emissions have to fall 40% by 2030 and the current garage cannot charge a single electric vehicle. Every month we wait is a month the replacement buses cannot arrive.",
           "kind": "claim",
           "index": 1,
-          "x": 0.1858427782975557,
-          "y": -0.14143390702577113
+          "x": 0.18579698789860047,
+          "y": -0.14149014393389153
         },
         {
           "id": "u2",
@@ -17,8 +17,8 @@
           "text": "The site sits ninety metres from the Elmwood terraces. Those households already absorbed the ring road and the transfer station. Asking them to take the depot as well is not a fair share of anything.",
           "kind": "claim",
           "index": 2,
-          "x": -0.3579164843482836,
-          "y": 0.24855038227083706
+          "x": -0.3574497659097825,
+          "y": 0.24811789036573728
         },
         {
           "id": "u3",
@@ -26,8 +26,8 @@
           "text": "My concern is how this reached us. Two consultations were held, both on weekday afternoons, and the traffic study was published four days before this meeting. Residents had no realistic chance to read it.",
           "kind": "claim",
           "index": 3,
-          "x": -0.3684891685891807,
-          "y": -0.3872087805597028
+          "x": -0.3688287700805431,
+          "y": -0.3873205471188718
         },
         {
           "id": "u4",
@@ -35,8 +35,8 @@
           "text": "I want to look at the money. Total cost is 62 million with 19 million from the city, against a payback assumption of fifteen years. That assumption uses an energy price 18% above what we are paying today.",
           "kind": "claim",
           "index": 4,
-          "x": 0.4394523214794848,
-          "y": 0.17958864004058891
+          "x": 0.4397563813985115,
+          "y": 0.17752872977470016
         },
         {
           "id": "u5",
@@ -44,8 +44,8 @@
           "text": "I accept the price assumption is optimistic. Even at twenty years I would still approve it, because emissions targets are not the kind of commitment you defer on payback grounds.",
           "kind": "claim",
           "index": 5,
-          "x": 0.3931968205586968,
-          "y": 0.05319001904068821
+          "x": 0.39344338393586265,
+          "y": 0.05203402410537626
         },
         {
           "id": "u6",
@@ -53,8 +53,8 @@
           "text": "Deferring on payback grounds is exactly what a budget is. Nineteen million comes out of a capital programme that already cut the bridge repairs this year.",
           "kind": "claim",
           "index": 6,
-          "x": 0.3193422553185418,
-          "y": 0.009441791790188827
+          "x": 0.31930777529604787,
+          "y": 0.007930078495779484
         },
         {
           "id": "u7",
@@ -62,8 +62,8 @@
           "text": "Neither of you has mentioned the people who live there. Night movements start at four in the morning. The noise assessment models an average, and an average does not wake anybody up — individual vehicle movements do.",
           "kind": "claim",
           "index": 7,
-          "x": -0.31438679954258897,
-          "y": -0.061235178520509664
+          "x": -0.3141413790517812,
+          "y": -0.06361433771882609
         },
         {
           "id": "u8",
@@ -71,8 +71,8 @@
           "text": "The noise assessment is another document that arrived late. It was completed in November and reached this committee in March. Nobody has explained what happened in between.",
           "kind": "claim",
           "index": 8,
-          "x": -0.1486352434336687,
-          "y": -0.5021302587949503
+          "x": -0.14957832378433858,
+          "y": -0.5034090914546815
         },
         {
           "id": "u9",
@@ -80,17 +80,17 @@
           "text": "Late paperwork can be fixed. What cannot be fixed is missing the compliance review next year, which costs us the central grant that pays for a third of the fleet.",
           "kind": "claim",
           "index": 9,
-          "x": 0.2138490327237718,
-          "y": -0.21321576709281287
+          "x": 0.21331477721861425,
+          "y": -0.21433209476563364
         },
         {
           "id": "u10",
           "speaker": "Tomas",
           "text": "Then give me the grant figure. If losing it costs more than nineteen million I will change my position today. Right now I have nothing to compare against.",
-          "kind": "claim",
+          "kind": "question",
           "index": 10,
-          "x": 0.3355269364128883,
-          "y": 0.15889623749569967
+          "x": 0.33613655273056703,
+          "y": 0.15835187388587024
         },
         {
           "id": "u11",
@@ -98,8 +98,8 @@
           "text": "I would rather compare sites than numbers. The western yard is council-owned, already industrial, and has eleven homes within three hundred metres instead of two hundred.",
           "kind": "claim",
           "index": 11,
-          "x": -0.4422858634519947,
-          "y": 0.4474119581395568
+          "x": -0.44169274507659856,
+          "y": 0.44815959287363144
         },
         {
           "id": "u12",
@@ -107,8 +107,8 @@
           "text": "The western yard needs a new grid connection at eleven million and adds nine kilometres to every route. On emissions that is a step backwards, not a compromise.",
           "kind": "claim",
           "index": 12,
-          "x": -0.08868938561773955,
-          "y": 0.34685303732006506
+          "x": -0.08757143500950385,
+          "y": 0.3469283681656432
         },
         {
           "id": "u13",
@@ -116,8 +116,8 @@
           "text": "The western yard has never been tabled as an option. Voting on a single site with no comparison on the record leaves the decision open to challenge whatever we decide.",
           "kind": "claim",
           "index": 13,
-          "x": -0.3673461628372556,
-          "y": 0.07536911864203637
+          "x": -0.36690854175448817,
+          "y": 0.07726945791155208
         },
         {
           "id": "u14",
@@ -125,8 +125,8 @@
           "text": "I agree with Priya on financial grounds. Approving a single-option scheme without a comparison is what the auditor flagged on the leisure centre, and we repaid that grant.",
           "kind": "claim",
           "index": 14,
-          "x": 0.16947292430768288,
-          "y": -0.026872165194038487
+          "x": 0.16879671047376332,
+          "y": -0.026546661686742242
         },
         {
           "id": "u15",
@@ -134,8 +134,8 @@
           "text": "For residents the comparison matters less than the compensation. The current scheme covers households within four hundred metres and says nothing about the rest. The ones just outside the line are always the angriest.",
           "kind": "claim",
           "index": 15,
-          "x": -0.2982087644684873,
-          "y": 0.36478068709702066
+          "x": -0.29742191500137405,
+          "y": 0.36442051982010315
         },
         {
           "id": "u16",
@@ -143,8 +143,8 @@
           "text": "I will support widening the compensation boundary. I will not support making it a condition that delays approval past the summer.",
           "kind": "claim",
           "index": 16,
-          "x": 0.1337198294324687,
-          "y": -0.0550542431922914
+          "x": 0.13381662766048186,
+          "y": -0.053363419731760016
         },
         {
           "id": "u17",
@@ -152,8 +152,8 @@
           "text": "I am not asking for delay, I am asking for sequence. One evening consultation, the full traffic and noise studies published, a site comparison on the record, and then a vote.",
           "kind": "claim",
           "index": 17,
-          "x": -0.10603473453429327,
-          "y": -0.33293995724891473
+          "x": -0.10583643366410389,
+          "y": -0.33295503369674084
         },
         {
           "id": "u18",
@@ -161,8 +161,8 @@
           "text": "What does that sequence cost.",
           "kind": "question",
           "index": 18,
-          "x": 0.32779898119918666,
-          "y": 0.1334980940439353
+          "x": 0.32892497701641227,
+          "y": 0.13114587742147338
         },
         {
           "id": "u19",
@@ -170,8 +170,8 @@
           "text": "I do not oppose it, but a year of delay is four million in financing alone, and that is a real number against a procedural benefit I cannot price.",
           "kind": "claim",
           "index": 19,
-          "x": 0.3400241757786998,
-          "y": -0.10594317119823743
+          "x": 0.3408131302542176,
+          "y": -0.10704390230019664
         },
         {
           "id": "u20",
@@ -179,8 +179,8 @@
           "text": "Price the conflict as well. The neighbouring borough spent three years in court on a depot because nobody asked first.",
           "kind": "claim",
           "index": 20,
-          "x": -0.16657603768677615,
-          "y": 0.060236737937000434
+          "x": -0.16612535226986302,
+          "y": 0.059511807074312154
         },
         {
           "id": "u21",
@@ -188,8 +188,8 @@
           "text": "My position is to approve the site and run compensation and consultation alongside. Without a confirmed site every other discussion is hypothetical.",
           "kind": "claim",
           "index": 21,
-          "x": -0.18546005527750806,
-          "y": -0.17304422278406148
+          "x": -0.18599663037269304,
+          "y": -0.17046256524716222
         },
         {
           "id": "u22",
@@ -197,8 +197,8 @@
           "text": "With a confirmed site the consultation is theatre. You cannot consult on a decision that has already been taken.",
           "kind": "claim",
           "index": 22,
-          "x": -0.3113752636116641,
-          "y": -0.33785426133584334
+          "x": -0.3118813098065275,
+          "y": -0.3359889964328801
         },
         {
           "id": "u23",
@@ -206,8 +206,8 @@
           "text": "I can support approval on two conditions: the financial model rerun at today's energy prices, and the nineteen million identified line by line.",
           "kind": "claim",
           "index": 23,
-          "x": 0.3348575398470848,
-          "y": -0.041283436376745176
+          "x": 0.3304550835128824,
+          "y": -0.037257748472263576
         },
         {
           "id": "u24",
@@ -215,8 +215,8 @@
           "text": "I cannot support it until the western comparison exists and the compensation boundary is redrawn.",
           "kind": "claim",
           "index": 24,
-          "x": -0.03767963195662037,
-          "y": 0.3003986455062613
+          "x": -0.03712978561436746,
+          "y": 0.30238632266547244
         }
       ],
       "speakers": [
@@ -225,14 +225,14 @@
           "colorIndex": 0,
           "n": 6,
           "nExcluded": 0,
-          "x": 0.16842877535200165,
-          "y": -0.05406642883280741,
+          "x": 0.1683395168327442,
+          "y": -0.05323349372149354,
           "ellipse": {
-            "cx": 0.10874317001954088,
-            "cy": -0.030450847289030605,
-            "rx": 0.2268857470142074,
-            "ry": 0.19114979191594011,
-            "angle": 138.09422476852433
+            "cx": 0.10880061855522705,
+            "cy": -0.030114305234571318,
+            "rx": 0.22700614251029638,
+            "ry": 0.19068081443879953,
+            "angle": 138.20818044156678
           },
           "underdetermined": false
         },
@@ -241,14 +241,14 @@
           "colorIndex": 1,
           "n": 6,
           "nExcluded": 0,
-          "x": -0.3933435732167967,
-          "y": 0.32835631715891894,
+          "x": -0.39275278585026474,
+          "y": 0.32841420529963006,
           "ellipse": {
-            "cx": -0.26950893024245853,
-            "cy": 0.2266905387383611,
-            "rx": 0.19751695876164468,
-            "ry": 0.13717608035670614,
-            "angle": 109.051481097601
+            "cx": -0.26899349048729454,
+            "cy": 0.2264969658467384,
+            "rx": 0.19830880121850625,
+            "ry": 0.13757854351381077,
+            "angle": 108.43508287590413
           },
           "underdetermined": false
         },
@@ -257,14 +257,14 @@
           "colorIndex": 2,
           "n": 5,
           "nExcluded": 0,
-          "x": -0.3501365287780087,
-          "y": -0.4134679774580762,
+          "x": -0.35058739451512383,
+          "y": -0.4125657517286417,
           "ellipse": {
-            "cx": -0.26037611460121246,
-            "cy": -0.29695282785947497,
-            "rx": 0.23073833449359527,
-            "ry": 0.10113611185506716,
-            "angle": 110.51241776231015
+            "cx": -0.26060667581800023,
+            "cy": -0.29648084215832443,
+            "rx": 0.23160357228560244,
+            "ry": 0.10125853120570269,
+            "angle": 110.31024728446609
           },
           "underdetermined": false
         },
@@ -273,28 +273,50 @@
           "colorIndex": 3,
           "n": 7,
           "nExcluded": 0,
-          "x": 0.47954211475344427,
-          "y": 0.05519093767801075,
+          "x": 0.4791458386223084,
+          "y": 0.05486141216546923,
           "ellipse": {
-            "cx": 0.3237821620490813,
-            "cy": 0.04390371294305594,
-            "rx": 0.12116585303860204,
-            "ry": 0.06484959344083177,
-            "angle": 63.49478387333223
+            "cx": 0.32345580152605746,
+            "cy": 0.04344403530266012,
+            "rx": 0.12057125990309799,
+            "ry": 0.06451400252445794,
+            "angle": 62.7725968429382
           },
           "underdetermined": false
         }
       ],
       "meta": {
         "method": "pca",
-        "explainedVariance": 0.21362163617279942,
+        "explainedVariance": 0.21344030388354823,
         "componentVariance": [
-          0.12455739271412253,
-          0.08906424345867689
+          0.12439897867036856,
+          0.08904132521317969
         ],
         "fittedOn": 24,
         "saturated": false,
-        "separation": 3.2399998683069917
+        "separation": 3.236134110326227,
+        "axes": {
+          "horizontal": {
+            "low": {
+              "ko": "절차 공정성",
+              "en": "Procedural fairness"
+            },
+            "high": {
+              "ko": "재정 실사",
+              "en": "Financial scrutiny"
+            }
+          },
+          "vertical": {
+            "low": {
+              "ko": "과정 적법성",
+              "en": "Process compliance"
+            },
+            "high": {
+              "ko": "입지·영향 평가",
+              "en": "Site impact assessment"
+            }
+          }
+        }
       }
     },
     "mds": {
@@ -305,8 +327,8 @@
           "text": "I support approving it now. Our fleet emissions have to fall 40% by 2030 and the current garage cannot charge a single electric vehicle. Every month we wait is a month the replacement buses cannot arrive.",
           "kind": "claim",
           "index": 1,
-          "x": 0.13244006368058117,
-          "y": 0.1251785928085523
+          "x": 0.13242317126672293,
+          "y": 0.12536133738866675
         },
         {
           "id": "u2",
@@ -314,8 +336,8 @@
           "text": "The site sits ninety metres from the Elmwood terraces. Those households already absorbed the ring road and the transfer station. Asking them to take the depot as well is not a fair share of anything.",
           "kind": "claim",
           "index": 2,
-          "x": -0.2613147237593221,
-          "y": -0.20797633138960503
+          "x": -0.2609520862613607,
+          "y": -0.20818994527464388
         },
         {
           "id": "u3",
@@ -323,8 +345,8 @@
           "text": "My concern is how this reached us. Two consultations were held, both on weekday afternoons, and the traffic study was published four days before this meeting. Residents had no realistic chance to read it.",
           "kind": "claim",
           "index": 3,
-          "x": -0.29206978672450407,
-          "y": 0.22450370837579214
+          "x": -0.2922673931394449,
+          "y": 0.22422658557796268
         },
         {
           "id": "u4",
@@ -332,8 +354,8 @@
           "text": "I want to look at the money. Total cost is 62 million with 19 million from the city, against a payback assumption of fifteen years. That assumption uses an energy price 18% above what we are paying today.",
           "kind": "claim",
           "index": 4,
-          "x": 0.3277044649622108,
-          "y": -0.17916784288145216
+          "x": 0.32790460771903485,
+          "y": -0.17857880215548794
         },
         {
           "id": "u5",
@@ -341,8 +363,8 @@
           "text": "I accept the price assumption is optimistic. Even at twenty years I would still approve it, because emissions targets are not the kind of commitment you defer on payback grounds.",
           "kind": "claim",
           "index": 5,
-          "x": 0.2761552216035586,
-          "y": -0.03821834352882733
+          "x": 0.27628354676440486,
+          "y": -0.03770922101441063
         },
         {
           "id": "u6",
@@ -350,8 +372,8 @@
           "text": "Deferring on payback grounds is exactly what a budget is. Nineteen million comes out of a capital programme that already cut the bridge repairs this year.",
           "kind": "claim",
           "index": 6,
-          "x": 0.24142932720255889,
-          "y": -0.0017095125606194689
+          "x": 0.24131759486286145,
+          "y": -0.0009859981561481015
         },
         {
           "id": "u7",
@@ -359,8 +381,8 @@
           "text": "Neither of you has mentioned the people who live there. Night movements start at four in the morning. The noise assessment models an average, and an average does not wake anybody up — individual vehicle movements do.",
           "kind": "claim",
           "index": 7,
-          "x": -0.29345848443876,
-          "y": -0.1153119637368316
+          "x": -0.29333585696925224,
+          "y": -0.11560596598433659
         },
         {
           "id": "u8",
@@ -368,8 +390,8 @@
           "text": "The noise assessment is another document that arrived late. It was completed in November and reached this committee in March. Nobody has explained what happened in between.",
           "kind": "claim",
           "index": 8,
-          "x": -0.13964874992781925,
-          "y": 0.3101115514129801
+          "x": -0.14045174968006927,
+          "y": 0.31006370921718934
         },
         {
           "id": "u9",
@@ -377,17 +399,17 @@
           "text": "Late paperwork can be fixed. What cannot be fixed is missing the compliance review next year, which costs us the central grant that pays for a third of the fleet.",
           "kind": "claim",
           "index": 9,
-          "x": 0.17062565298342217,
-          "y": 0.18288961368349205
+          "x": 0.1701421210874967,
+          "y": 0.1834827665546455
         },
         {
           "id": "u10",
           "speaker": "Tomas",
           "text": "Then give me the grant figure. If losing it costs more than nineteen million I will change my position today. Right now I have nothing to compare against.",
-          "kind": "claim",
+          "kind": "question",
           "index": 10,
-          "x": 0.2809376198884616,
-          "y": -0.10057169712202531
+          "x": 0.28128282952271755,
+          "y": -0.0999367556251762
         },
         {
           "id": "u11",
@@ -395,8 +417,8 @@
           "text": "I would rather compare sites than numbers. The western yard is council-owned, already industrial, and has eleven homes within three hundred metres instead of two hundred.",
           "kind": "claim",
           "index": 11,
-          "x": -0.3121328447088685,
-          "y": -0.29674596025091055
+          "x": -0.31166195453171536,
+          "y": -0.2972449106337742
         },
         {
           "id": "u12",
@@ -404,8 +426,8 @@
           "text": "The western yard needs a new grid connection at eleven million and adds nine kilometres to every route. On emissions that is a step backwards, not a compromise.",
           "kind": "claim",
           "index": 12,
-          "x": -0.04494594975200761,
-          "y": -0.1948464260410594
+          "x": -0.04420846251108633,
+          "y": -0.19482761097330561
         },
         {
           "id": "u13",
@@ -413,8 +435,8 @@
           "text": "The western yard has never been tabled as an option. Voting on a single site with no comparison on the record leaves the decision open to challenge whatever we decide.",
           "kind": "claim",
           "index": 13,
-          "x": -0.2628992612494727,
-          "y": 0.043289088578456925
+          "x": -0.2625194616444197,
+          "y": 0.04299621725582706
         },
         {
           "id": "u14",
@@ -422,8 +444,8 @@
           "text": "I agree with Priya on financial grounds. Approving a single-option scheme without a comparison is what the auditor flagged on the leisure centre, and we repaid that grant.",
           "kind": "claim",
           "index": 14,
-          "x": 0.13916601144676924,
-          "y": 0.037066160566387035
+          "x": 0.138849693045503,
+          "y": 0.037280414047186246
         },
         {
           "id": "u15",
@@ -431,8 +453,8 @@
           "text": "For residents the comparison matters less than the compensation. The current scheme covers households within four hundred metres and says nothing about the rest. The ones just outside the line are always the angriest.",
           "kind": "claim",
           "index": 15,
-          "x": -0.2194470819348088,
-          "y": -0.3094840812832679
+          "x": -0.21884788378831585,
+          "y": -0.30968675389047107
         },
         {
           "id": "u16",
@@ -440,8 +462,8 @@
           "text": "I will support widening the compensation boundary. I will not support making it a condition that delays approval past the summer.",
           "kind": "claim",
           "index": 16,
-          "x": 0.09927725760492415,
-          "y": 0.0911375181940648
+          "x": 0.0993718191709059,
+          "y": 0.09123260368666317
         },
         {
           "id": "u17",
@@ -449,8 +471,8 @@
           "text": "I am not asking for delay, I am asking for sequence. One evening consultation, the full traffic and noise studies published, a site comparison on the record, and then a vote.",
           "kind": "claim",
           "index": 17,
-          "x": -0.07368493257699496,
-          "y": 0.19825985179662817
+          "x": -0.07355880779959227,
+          "y": 0.1983336376550405
         },
         {
           "id": "u18",
@@ -458,8 +480,8 @@
           "text": "What does that sequence cost.",
           "kind": "question",
           "index": 18,
-          "x": 0.30684121749723947,
-          "y": -0.15335591789985278
+          "x": 0.3074476911360507,
+          "y": -0.15255147246100564
         },
         {
           "id": "u19",
@@ -467,8 +489,8 @@
           "text": "I do not oppose it, but a year of delay is four million in financing alone, and that is a real number against a procedural benefit I cannot price.",
           "kind": "claim",
           "index": 19,
-          "x": 0.23897695774806987,
-          "y": 0.07830769514692498
+          "x": 0.23936226963725918,
+          "y": 0.07914126714541964
         },
         {
           "id": "u20",
@@ -476,8 +498,8 @@
           "text": "Price the conflict as well. The neighbouring borough spent three years in court on a depot because nobody asked first.",
           "kind": "claim",
           "index": 20,
-          "x": -0.12354838215413819,
-          "y": -0.08245174226441168
+          "x": -0.12329098375815349,
+          "y": -0.0823302779533937
         },
         {
           "id": "u21",
@@ -485,8 +507,8 @@
           "text": "My position is to approve the site and run compensation and consultation alongside. Without a confirmed site every other discussion is hypothetical.",
           "kind": "claim",
           "index": 21,
-          "x": -0.11608175286517565,
-          "y": 0.15277666875651688
+          "x": -0.11628390176672204,
+          "y": 0.152375332482096
         },
         {
           "id": "u22",
@@ -494,8 +516,8 @@
           "text": "With a confirmed site the consultation is theatre. You cannot consult on a decision that has already been taken.",
           "kind": "claim",
           "index": 22,
-          "x": -0.22130890072437373,
-          "y": 0.28713796929292124
+          "x": -0.2215674472219725,
+          "y": 0.2868085719434029
         },
         {
           "id": "u23",
@@ -503,8 +525,8 @@
           "text": "I can support approval on two conditions: the financial model rerun at today's energy prices, and the nineteen million identified line by line.",
           "kind": "claim",
           "index": 23,
-          "x": 0.2446718605501,
-          "y": 0.05286864097682746
+          "x": 0.24180861772130702,
+          "y": 0.05038846601278675
         },
         {
           "id": "u24",
@@ -512,8 +534,8 @@
           "text": "I cannot support it until the western comparison exists and the compensation boundary is redrawn.",
           "kind": "claim",
           "index": 24,
-          "x": -0.020355769917766994,
-          "y": -0.15889204535460372
+          "x": -0.019973666222126887,
+          "y": -0.15904212183423222
         }
       ],
       "speakers": [
@@ -522,14 +544,14 @@
           "colorIndex": 0,
           "n": 6,
           "nExcluded": 0,
-          "x": 0.09634605920467235,
-          "y": 0.0726251394401812,
+          "x": 0.09639636249815974,
+          "y": 0.07279770439121865,
           "ellipse": {
-            "cx": 0.08624508220921713,
-            "cy": 0.05315293731212321,
-            "rx": 0.15048994904493831,
-            "ry": 0.13685048673755948,
-            "angle": 44.41872461713134
+            "cx": 0.08628804900195368,
+            "cy": 0.0533192013540592,
+            "rx": 0.1504169163428342,
+            "ry": 0.13683062572113155,
+            "angle": 44.63444922116211
           },
           "underdetermined": false
         },
@@ -538,14 +560,14 @@
           "colorIndex": 1,
           "n": 6,
           "nExcluded": 0,
-          "x": -0.25092993328832675,
-          "y": -0.2287680279050452,
+          "x": -0.25053023560575877,
+          "y": -0.22907777851709038,
           "ellipse": {
-            "cx": -0.20504288115227742,
-            "cy": -0.1951436873799384,
-            "rx": 0.12473938465674442,
-            "ry": 0.07688807046103865,
-            "angle": 33.103392162564084
+            "cx": -0.20467707192182075,
+            "cy": -0.19534999592847524,
+            "rx": 0.12477628703777634,
+            "ry": 0.07699146661469333,
+            "angle": 33.172744548489035
           },
           "underdetermined": false
         },
@@ -554,14 +576,14 @@
           "colorIndex": 2,
           "n": 5,
           "nExcluded": 0,
-          "x": -0.22925627190524164,
-          "y": 0.2474711191768238,
+          "x": -0.22946109918869223,
+          "y": 0.24722244889631453,
           "ellipse": {
-            "cx": -0.19792232624063294,
-            "cy": 0.21266043389135572,
-            "rx": 0.11361818003227309,
-            "ry": 0.07890654396818174,
-            "angle": 57.87639383456789
+            "cx": -0.19807297189709971,
+            "cy": 0.2124857443298845,
+            "rx": 0.11351890754187276,
+            "ry": 0.0790030275333808,
+            "angle": 58.067481581324884
           },
           "underdetermined": false
         },
@@ -570,14 +592,14 @@
           "colorIndex": 3,
           "n": 7,
           "nExcluded": 0,
-          "x": 0.30651111155501315,
-          "y": -0.03612342598803702,
+          "x": 0.30632066565625876,
+          "y": -0.03594344778094286,
           "ellipse": {
-            "cx": 0.25424677989934424,
-            "cy": -0.0380803533962586,
-            "rx": 0.11627664221359856,
-            "ry": 0.0350542831676663,
-            "angle": 117.03297359613654
+            "cx": 0.25399618623496195,
+            "cy": -0.03789184017034647,
+            "rx": 0.11613577832190036,
+            "ry": 0.03467325734667634,
+            "angle": 117.42080019245066
           },
           "underdetermined": false
         }
@@ -588,17 +610,25 @@
         "componentVariance": null,
         "fittedOn": 24,
         "saturated": false,
-        "separation": 3.500989966700428
+        "separation": 3.5019538918475575,
+        "axes": null
       }
     }
   },
   "counts": {
-    "claim": 23,
-    "question": 1,
+    "claim": 22,
+    "question": 2,
     "agreement": 0,
     "procedural": 2
   },
   "droppedSpeakers": [],
+  "speakerNames": {
+    "Chair": "Chair",
+    "Dana": "Dana",
+    "Marcus": "Marcus",
+    "Priya": "Priya",
+    "Tomas": "Tomas"
+  },
   "diagnostics": {
     "turns": 25,
     "speakers": [
@@ -623,6 +653,7 @@
     "preambleLines": 0,
     "unitsDroppedAsHallucinated": 0,
     "unitsDroppedUnresolvedSpeaker": 0,
+    "translationsRepaired": 0,
     "model": "gpt-5.4-mini",
     "embeddingModel": "text-embedding-3-small"
   }

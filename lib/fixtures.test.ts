@@ -4,6 +4,7 @@ import assert from 'node:assert/strict'
 import fixtures from '../data/fixtures/precomputed.json' with { type: 'json' }
 import { SCENARIOS } from '../data/scenarios.ts'
 import { needsTranslation } from './translate.ts'
+import { speakerLabel } from './speakers.ts'
 import { MIN_USEFUL_SEPARATION } from './aggregate.ts'
 import type { AnalysisResult } from './types.ts'
 
@@ -67,6 +68,38 @@ test('every Korean statement has an English translation', () => {
       )
     }
   }
+})
+
+test('every placed speaker has a name in both languages', () => {
+  // The language toggle switches everything else on the page. A map whose
+  // names stay in one script gives an English reader an interface they can read
+  // wrapped around the four labels they cannot.
+  for (const [id, map] of Object.entries(MAPS)) {
+    const names = map.speakerNames
+    assert.ok(names, `"${id}" has no English speaker names`)
+    for (const speaker of map.projections.pca.speakers) {
+      const en = names[speaker.speaker]
+      assert.ok(en?.trim(), `"${id}" has no English name for ${speaker.speaker}`)
+      assert.ok(
+        !/[가-힣]/.test(en),
+        `"${id}" left Hangul in the English name for ${speaker.speaker}: ${en}`,
+      )
+      assert.equal(
+        speakerLabel(speaker.speaker, 'ko', names),
+        speaker.speaker,
+        'the Korean label is always the name as spoken',
+      )
+      assert.equal(speakerLabel(speaker.speaker, 'en', names), en)
+    }
+  }
+})
+
+test('a map with no rendered names falls back to the originals', () => {
+  // Every fixture built before the field existed is in this state, as is any
+  // analysis whose naming call failed.
+  assert.equal(speakerLabel('김철수', 'en', null), '김철수')
+  assert.equal(speakerLabel('김철수', 'en', {}), '김철수')
+  assert.equal(speakerLabel('김철수', 'en', { 김철수: '   ' }), '김철수')
 })
 
 test('every example is large enough for its own figures to mean anything', () => {

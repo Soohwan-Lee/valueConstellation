@@ -20,6 +20,7 @@ import { buildScales, PADDING, VIEW_H, VIEW_W } from '@/lib/frame'
 import type { AxisPole } from '@/lib/axes'
 import { shapePath, speakerColor, speakerShape } from '@/lib/colors'
 import { kindLabel, type Lang } from '@/lib/i18n'
+import { speakerLabel, type SpeakerNames } from '@/lib/speakers'
 
 interface Props {
   projection: Projection
@@ -35,6 +36,8 @@ interface Props {
   onSelect: (utterance: ProjectedUtterance | null) => void
   onSelectSpeaker: (speaker: string) => void
   lang: Lang
+  /** English renderings of the speaker names, for the language toggle. */
+  speakerNames: SpeakerNames | null
   /**
    * `full` adds zoom and pan. `select` leaves them off, for a map embedded in a
    * scrolling page: d3-zoom binds wheel and touch, so a map that zooms would
@@ -80,6 +83,7 @@ export function ConstellationMap({
   onSelect,
   onSelectSpeaker,
   lang,
+  speakerNames,
   settleKey,
   interaction = 'full',
 }: Props) {
@@ -189,7 +193,7 @@ export function ConstellationMap({
         // so the label states what is on it and the rail carries the same
         // information as focusable controls.
         aria-label={`${projection.utterances.length} statements from ${projection.speakers.length} participants: ${projection.speakers
-          .map((s) => `${s.speaker} (${s.n})`)
+          .map((s) => `${speakerLabel(s.speaker, lang, speakerNames)} (${s.n})`)
           .join(', ')}`}
         onClick={() => onSelect(null)}
       >
@@ -391,7 +395,7 @@ export function ConstellationMap({
                       strokeLinejoin="round"
                       style={{ paintOrder: 'stroke' }}
                     >
-                      {s.speaker}
+                      {speakerLabel(s.speaker, lang, speakerNames)}
                       {s.underdetermined && (
                         <tspan
                           fill="var(--muted)"
@@ -440,6 +444,7 @@ export function ConstellationMap({
           y={toY(hovered.y) * transform.k + transform.y}
           preferEnglish={lang === 'en'}
           lang={lang}
+          speakerNames={speakerNames}
         />
       )}
     </div>
@@ -585,12 +590,14 @@ function Tooltip({
   y,
   preferEnglish,
   lang,
+  speakerNames,
 }: {
   utterance: ProjectedUtterance
   x: number
   y: number
   preferEnglish: boolean
   lang: Lang
+  speakerNames: SpeakerNames | null
 }) {
   // Flip toward the centre near the right edge so the card stays on screen.
   const flip = x > VIEW_W * 0.62
@@ -607,7 +614,7 @@ function Tooltip({
     >
       <div className="mb-1.5 flex items-baseline gap-2">
         <span className="text-[12px] font-medium text-[var(--ink)]">
-          {utterance.speaker}
+          {speakerLabel(utterance.speaker, lang, speakerNames)}
         </span>
         <span className="eyebrow">{kindLabel(utterance.kind, lang)}</span>
       </div>

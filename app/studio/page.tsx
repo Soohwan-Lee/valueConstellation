@@ -312,6 +312,7 @@ export default function Studio() {
                 onShowAll={() => setHiddenSpeakers(new Set())}
                 onHoverPair={setHoveredPair}
                 lang={lang}
+                speakerNames={analysis?.speakerNames ?? null}
               />
               {!selectedSpeaker && (
                 <p className="mt-2.5 px-0.5 text-[11.5px] leading-[1.55] text-[var(--muted)]">
@@ -430,6 +431,7 @@ export default function Studio() {
                   measure={measure}
                   emphasised={hoveredPair}
                   lang={lang}
+                  speakerNames={analysis?.speakerNames ?? null}
                   settleKey={String(analysisSerial)}
                   onSelect={(u) => {
                     setSelected(u)
@@ -446,6 +448,7 @@ export default function Studio() {
                       selectedUtterance={selected}
                       selectedSpeaker={selectedSpeaker}
                       lang={lang}
+                      speakerNames={analysis?.speakerNames ?? null}
                       onSelectUtterance={(u) => {
                         setSelected(u)
                         setSelectedSpeaker(null)
