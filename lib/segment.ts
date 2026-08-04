@@ -62,7 +62,7 @@ An argument unit is one claim together with the reasons and implications that be
    - "procedural" — agenda, timing, turn-taking, logistics. Not about the substance.
 6. Drop filler that carries nothing: "음", "어", "저기", throat-clearing.
 7. Output every unit in transcript order.
-8. For "textEn": give a faithful English translation of the unit when the source is not English. Translate, do not summarise or soften — hedging and force must survive. Set it to null when the source is already English.
+8. For "textEn": give a faithful English translation of the unit when the source is not English. Translate, do not summarise or soften — hedging and force must survive. Set it to null when the source is already English. Translate EVERY word: a "textEn" containing any Korean character is wrong, including for terms that feel untranslatable — render 기준 as "the standard", 조건 as "the condition", and so on.
 
 Be conservative about splitting. A long turn developing one argument is ONE unit.
 

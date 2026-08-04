@@ -107,6 +107,26 @@ function report(id: string, result: AnalysisWithDiagnostics) {
       `  assent ${counts.agreement}  procedural ${counts.procedural}` +
       `  dropped ${result.diagnostics.unitsDroppedAsHallucinated}`,
   )
+
+  // The English rendering occasionally keeps a Korean word the model decided
+  // was untranslatable. It is rare — one statement in ninety on the last full
+  // rebuild — and harmless in the interface, where the original sits beside it.
+  // Reported rather than corrected: whoever regenerates should see how often it
+  // happens, and rerunning the scenario is the fix.
+  const utterances = result.projections.pca.utterances
+  const untranslated = utterances.filter(
+    (u) => u.textEn && /[가-힣]/.test(u.textEn),
+  )
+  const missing = utterances.filter((u) => !u.textEn)
+  if (untranslated.length > 0 || missing.length > 0) {
+    console.log(
+      `        translations: ${untranslated.length} with Korean left in, ` +
+        `${missing.length} missing, of ${utterances.length}`,
+    )
+    for (const u of untranslated) {
+      console.log(`          ${u.textEn?.match(/[가-힣]+/g)?.join(' ')}`)
+    }
+  }
   void id
 }
 

@@ -1,0 +1,126 @@
+import { test } from 'node:test'
+import assert from 'node:assert/strict'
+
+import fixtures from '../data/fixtures/precomputed.json' with { type: 'json' }
+import { SCENARIOS } from '../data/scenarios.ts'
+import { needsTranslation } from './translate.ts'
+import { MIN_USEFUL_SEPARATION } from './aggregate.ts'
+import type { AnalysisResult } from './types.ts'
+
+/**
+ * The committed examples are the first thing anybody sees, on both pages, and
+ * they are generated output rather than hand-written data — so the invariants
+ * the interface assumes about them are worth pinning here. A rebuild that
+ * quietly drops a scenario, loses half the translations, or produces a map too
+ * small for its own figures to mean anything should fail the suite rather than
+ * ship.
+ *
+ * No model is called: this reads what is already in the repository.
+ */
+
+const MAPS = fixtures as unknown as Record<string, AnalysisResult>
+
+test('every scenario the picker offers has a map behind it', () => {
+  // The overview's example tabs and the studio's source menu both list
+  // SCENARIOS and index into the fixtures by id. A scenario without a fixture
+  // silently falls through to an empty composer.
+  for (const scenario of SCENARIOS) {
+    const map = MAPS[scenario.id]
+    assert.ok(map, `no fixture for scenario "${scenario.id}"`)
+    assert.ok(
+      map.projections.pca.speakers.length >= 2,
+      `"${scenario.id}" has fewer than two placed speakers`,
+    )
+    assert.ok(map.projections.mds, `"${scenario.id}" is missing the MDS layout`)
+  }
+})
+
+test('no fixture is left behind by a renamed scenario', () => {
+  const known = new Set(SCENARIOS.map((s) => s.id))
+  for (const id of Object.keys(MAPS)) {
+    assert.ok(known.has(id), `fixture "${id}" has no scenario`)
+  }
+})
+
+test('every scenario carries the text the interface renders', () => {
+  for (const scenario of SCENARIOS) {
+    for (const field of ['title', 'teaser', 'lookFor'] as const) {
+      for (const lang of ['ko', 'en'] as const) {
+        assert.ok(
+          scenario[field][lang].trim().length > 0,
+          `"${scenario.id}" has an empty ${field}.${lang}`,
+        )
+      }
+    }
+  }
+})
+
+test('every Korean statement has an English translation', () => {
+  // Segmentation is unreliable about this on its own — one rebuild returned a
+  // whole batch of fourteen with the field null — which is why the pipeline has
+  // a repair pass. This is the check that the repair is working.
+  for (const [id, map] of Object.entries(MAPS)) {
+    for (const u of map.projections.pca.utterances) {
+      assert.ok(
+        !needsTranslation(u.text, u.textEn),
+        `"${id}" statement ${u.id} is untranslated: ${u.text.slice(0, 40)}`,
+      )
+    }
+  }
+})
+
+test('every example is large enough for its own figures to mean anything', () => {
+  for (const [id, map] of Object.entries(MAPS)) {
+    const pca = map.projections.pca
+    assert.ok(
+      !pca.meta.saturated,
+      `"${id}" has too few statements for the kept-detail figure to mean anything`,
+    )
+    assert.ok(
+      pca.utterances.length >= 15,
+      `"${id}" has only ${pca.utterances.length} statements`,
+    )
+  }
+})
+
+test('the PCA layout names its axes, and MDS does not', () => {
+  for (const [id, map] of Object.entries(MAPS)) {
+    const axes = map.projections.pca.meta.axes
+    assert.ok(axes, `"${id}" has no axis names`)
+    for (const axis of [axes.horizontal, axes.vertical]) {
+      for (const pole of [axis.low, axis.high]) {
+        assert.ok(pole.ko.trim() && pole.en.trim(), `"${id}" has an empty pole`)
+        // A pole named after a participant would make the axis a person.
+        for (const speaker of map.projections.pca.speakers) {
+          assert.ok(
+            !pole.ko.includes(speaker.speaker),
+            `"${id}" names an axis after ${speaker.speaker}`,
+          )
+        }
+      }
+    }
+    assert.equal(
+      map.projections.mds.meta.axes,
+      null,
+      `"${id}" named the MDS axes, whose orientation is arbitrary`,
+    )
+  }
+})
+
+test('the examples still demonstrate what they claim to', () => {
+  // Three are meant to separate their speakers; `mixed` exists to show the
+  // failure. If a rebuild flips either way the lesson on the page is wrong.
+  const separation = (id: string) =>
+    MAPS[id].projections.pca.meta.separation ?? 0
+
+  for (const id of ['siting', 'consensus', 'drift']) {
+    assert.ok(
+      separation(id) >= MIN_USEFUL_SEPARATION,
+      `"${id}" no longer separates its speakers (${separation(id).toFixed(2)})`,
+    )
+  }
+  assert.ok(
+    separation('mixed') < MIN_USEFUL_SEPARATION,
+    'the "map fails" example now separates its speakers, so it teaches nothing',
+  )
+})

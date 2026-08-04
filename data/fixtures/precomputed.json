@@ -4,254 +4,254 @@
       "pca": {
         "utterances": [
           {
-            "id": "u2",
+            "id": "u1",
             "speaker": "김철수",
             "text": "저는 이 사업을 예정대로 추진해야 한다고 봅니다. 우리 시 온실가스 감축 목표가 2030년까지 40퍼센트인데 지금 진도로는 22퍼센트에서 멈춥니다. 이 발전단지 하나가 그 격차의 절반을 메웁니다.",
-            "textEn": "I think this project should be pushed ahead as scheduled. Our city's greenhouse gas reduction target is 40 percent by 2030, but at the current pace it is stuck at 22 percent. This power complex alone fills half of that gap.",
+            "textEn": "I think we should proceed with this project as planned. Our city's greenhouse gas reduction target is 40 percent by 2030, but at the current pace we are stuck at 22 percent. This one power complex fills half of that gap.",
             "kind": "claim",
-            "index": 2,
-            "x": -0.22800712380819205,
-            "y": 0.05502359687560752
+            "index": 1,
+            "x": -0.22825815603702806,
+            "y": 0.055394131317076045
           },
           {
-            "id": "u3",
+            "id": "u2",
             "speaker": "이영희",
             "text": "목표 자체에는 이견이 없습니다. 다만 그 목표를 어느 동네가 부담하느냐가 문제입니다. 후보지 세 곳이 전부 북부에 몰려 있고, 북부는 이미 소각장과 변전소를 받았습니다.",
             "textEn": "I have no disagreement with the goal itself. However, the problem is which neighborhood bears that goal. All three candidate sites are concentrated in the north, and the north has already taken the incinerator and the substation.",
             "kind": "claim",
+            "index": 2,
+            "x": 0.1556879776274978,
+            "y": 0.3832720885718542
+          },
+          {
+            "id": "u3",
+            "speaker": "박민수",
+            "text": "저는 결정 내용보다 결정 과정을 먼저 짚고 싶습니다. 주민 설명회가 두 차례 열렸는데 두 번 다 평일 오후 두 시였습니다. 실제로 일하는 주민은 올 수 없는 시간입니다.",
+            "textEn": "I would like to point out the decision process before the decision content. Two resident briefing sessions were held, and both were at 2 p.m. on a weekday. It is a time when residents who actually work cannot come.",
+            "kind": "claim",
             "index": 3,
-            "x": 0.15588016181063838,
-            "y": 0.3826885076547625
+            "x": 0.39308055001924386,
+            "y": -0.22965880701603214
           },
           {
             "id": "u4",
-            "speaker": "박민수",
-            "text": "저는 결정 내용보다 결정 과정을 먼저 짚고 싶습니다. 주민 설명회가 두 차례 열렸는데 두 번 다 평일 오후 두 시였습니다. 실제로 일하는 주민은 올 수 없는 시간입니다.",
-            "textEn": "I want to point out the decision-making process before the decision itself. Two resident briefing sessions were held, and both were at 2 p.m. on weekdays. It is a time when residents who actually work cannot come.",
+            "speaker": "최지은",
+            "text": "재정 쪽을 보겠습니다. 총사업비 천이백사십억 중 시 부담이 삼백팔십억이고 회수 기간을 15년으로 잡았습니다. 이 추정에 쓰인 전력 판매 단가 가정이 현재 시장가보다 18퍼센트 높습니다.",
+            "textEn": "Let us look at the financial side. Of the total project cost of 124 billion, the city's burden is 38 billion, and the payback period has been set at 15 years. The assumption for the power sales price used in this estimate is 18 percent higher than the current market price.",
             "kind": "claim",
             "index": 4,
-            "x": 0.39251142401193784,
-            "y": -0.23126642481360374
+            "x": -0.2648236835818181,
+            "y": 0.00871271599607625
           },
           {
             "id": "u5",
-            "speaker": "최지은",
-            "text": "재정 쪽을 보겠습니다. 총사업비 천이백사십억 중 시 부담이 삼백팔십억이고 회수 기간을 15년으로 잡았습니다. 이 추정에 쓰인 전력 판매 단가 가정이 현재 시장가보다 18퍼센트 높습니다.",
-            "textEn": "Let us look at the financial side. Out of the total project cost of 124 billion won, the city's share is 38 billion won, and the payback period is set at 15 years. The assumption for the electricity sales price used in this estimate is 18 percent higher than the current market price.",
+            "speaker": "김철수",
+            "text": "단가 가정이 낙관적이라는 지적은 받아들입니다. 그런데 회수 기간이 20년이 되더라도 저는 추진이 맞다고 봅니다. 기후 대응은 회수 기간으로 판단할 사업이 아닙니다.",
+            "textEn": "I accept the point that the price assumption is optimistic. But even if the payback period becomes 20 years, I still think proceeding is right. Climate response is not a project to be judged by the payback period.",
             "kind": "claim",
             "index": 5,
-            "x": -0.26465718390236953,
-            "y": 0.00937357831604944
+            "x": -0.19457330974484055,
+            "y": -0.2802128398293874
           },
           {
             "id": "u6",
-            "speaker": "김철수",
-            "text": "단가 가정이 낙관적이라는 지적은 받아들입니다. 그런데 회수 기간이 20년이 되더라도 저는 추진이 맞다고 봅니다. 기후 대응은 회수 기간으로 판단할 사업이 아닙니다.",
-            "textEn": "I accept the point that the unit price assumption is optimistic. But even if the payback period becomes 20 years, I still think proceeding is right. Climate response is not a project to be judged by payback period.",
+            "speaker": "최지은",
+            "text": "회수 기간으로 판단할 사업이 아니라는 말씀은 곧 다른 사업 예산을 줄여도 된다는 뜻입니다. 올해 노인 돌봄 예산이 이미 12퍼센트 삭감됐습니다. 그 자리에서 삼백팔십억을 꺼내야 합니다.",
+            "textEn": "Saying it is not a project to be judged by the payback period means that we can reduce other project budgets. This year's elderly care budget has already been cut by 12 percent. We have to take out 38 billion from that place.",
             "kind": "claim",
             "index": 6,
-            "x": -0.1948660582124053,
-            "y": -0.2797489399918382
+            "x": -0.3457752808546333,
+            "y": -0.13146057763429822
           },
           {
             "id": "u7",
-            "speaker": "최지은",
-            "text": "회수 기간으로 판단할 사업이 아니라는 말씀은 곧 다른 사업 예산을 줄여도 된다는 뜻입니다. 올해 노인 돌봄 예산이 이미 12퍼센트 삭감됐습니다. 그 자리에서 삼백팔십억을 꺼내야 합니다.",
-            "textEn": "Saying it is not a project to be judged by payback period means that we can cut other project budgets. This year, the elderly care budget has already been cut by 12 percent. We have to take out 38 billion won from that spot.",
+            "speaker": "이영희",
+            "text": "저는 두 분 논의가 주민을 빼놓고 진행된다는 점이 걱정입니다. 후보 3지구는 마을에서 직선거리 육백 미터입니다. 저주파 소음 민원이 이미 인근 풍력에서 나온 상태입니다.",
+            "textEn": "I am worried that the discussion between the two of you is proceeding without the residents. Candidate district 3 is 600 meters in a straight line from the village. Complaints about low-frequency noise have already come from the nearby wind power facility.",
             "kind": "claim",
             "index": 7,
-            "x": -0.3462232206274018,
-            "y": -0.1300907748890088
+            "x": 0.08921439228140926,
+            "y": 0.14412416320192092
           },
           {
             "id": "u8",
-            "speaker": "이영희",
-            "text": "저는 두 분 논의가 주민을 빼놓고 진행된다는 점이 걱정입니다. 후보 3지구는 마을에서 직선거리 육백 미터입니다. 저주파 소음 민원이 이미 인근 풍력에서 나온 상태입니다.",
-            "textEn": "I am concerned that the discussion between the two of you is proceeding while leaving out residents. Candidate district 3 is 600 meters in a straight line from the village. Complaints about low-frequency noise have already come from the nearby wind power facility.",
+            "speaker": "박민수",
+            "text": "그 민원 기록이 공개되지 않은 것도 문제입니다. 환경영향평가 초안이 작년 11월에 나왔는데 시의회에는 올해 3월에 왔습니다. 넉 달 동안 무엇을 검토했는지 설명이 없습니다.",
+            "textEn": "The fact that those complaint records were not disclosed is also a problem. The draft environmental impact assessment came out in November of last year, but it reached the city council in March of this year. There is no explanation of what was reviewed during those four months.",
             "kind": "claim",
             "index": 8,
-            "x": 0.08884333265769516,
-            "y": 0.1442493566321931
+            "x": -0.17074402708866787,
+            "y": -0.33955183130674366
           },
           {
             "id": "u9",
-            "speaker": "박민수",
-            "text": "그 민원 기록이 공개되지 않은 것도 문제입니다. 환경영향평가 초안이 작년 11월에 나왔는데 시의회에는 올해 3월에 왔습니다. 넉 달 동안 무엇을 검토했는지 설명이 없습니다.",
-            "textEn": "The fact that those complaint records were not made public is also a problem. The draft environmental impact assessment came out last November, but it came to the city council this March. There is no explanation of what was reviewed during those four months.",
+            "speaker": "김철수",
+            "text": "자료 공개는 개선하면 되는 문제입니다. 다만 이 논의가 반복되는 동안 국가 감축 목표 이행 점검이 내년으로 다가옵니다. 미달하면 국비 보조가 삭감됩니다.",
+            "textEn": "Disclosure of materials is a problem that can be improved. However, while this discussion is repeated, the review of implementation of the national reduction target is approaching next year. If we fall short, the national subsidy will be cut.",
             "kind": "claim",
             "index": 9,
-            "x": -0.1715894924253985,
-            "y": -0.3396953559752393
+            "x": -0.23382949414688242,
+            "y": -0.20593628144562331
           },
           {
             "id": "u10",
-            "speaker": "김철수",
-            "text": "자료 공개는 개선하면 되는 문제입니다. 다만 이 논의가 반복되는 동안 국가 감축 목표 이행 점검이 내년으로 다가옵니다. 미달하면 국비 보조가 삭감됩니다.",
-            "textEn": "Disclosure of materials is a problem that can be improved. However, while this discussion keeps repeating, the national check on implementation of reduction targets is approaching next year. If we fall short, national subsidies will be cut.",
+            "speaker": "최지은",
+            "text": "국비 보조 삭감분이 얼마인지 숫자로 주십시오. 그 숫자가 삼백팔십억보다 크면 저도 추진 쪽으로 판단을 바꿀 수 있습니다. 지금은 비교할 자료가 없습니다.",
+            "textEn": "Please give me the number for how much the national subsidy will be cut. If that number is larger than 38 billion, I can also change my judgment toward proceeding. Right now, there is no material to compare.",
             "kind": "claim",
             "index": 10,
-            "x": -0.23442718326908737,
-            "y": -0.20594654863264886
+            "x": -0.17662791981770568,
+            "y": 0.23680781264807427
           },
           {
             "id": "u11",
-            "speaker": "최지은",
-            "text": "국비 보조 삭감분이 얼마인지 숫자로 주십시오. 그 숫자가 삼백팔십억보다 크면 저도 추진 쪽으로 판단을 바꿀 수 있습니다. 지금은 비교할 자료가 없습니다.",
-            "textEn": "Please give me the number for how much the national subsidy cut would be. If that number is larger than 38 billion won, I can change my judgment toward proceeding as well. Right now, there is no data to compare.",
+            "speaker": "이영희",
+            "text": "숫자 문제로만 가면 결국 북부가 또 부담합니다. 저는 부지를 서부 폐염전으로 옮기는 대안을 검토해 달라고 요청드립니다. 발전량은 12퍼센트 줄지만 거주 가구가 사분의 일입니다.",
+            "textEn": "If we go only by numbers, in the end the north will bear the burden again. I ask that you review the alternative of moving the site to the western salt field. Power generation decreases by 12 percent, but the number of households living there is one quarter.",
             "kind": "claim",
             "index": 11,
-            "x": -0.1761498505342095,
-            "y": 0.236116140342247
+            "x": -0.12485062230712901,
+            "y": 0.39800106781243766
           },
           {
             "id": "u12",
-            "speaker": "이영희",
-            "text": "숫자 문제로만 가면 결국 북부가 또 부담합니다. 저는 부지를 서부 폐염전으로 옮기는 대안을 검토해 달라고 요청드립니다. 발전량은 12퍼센트 줄지만 거주 가구가 사분의 일입니다.",
-            "textEn": "If we only go by numbers, in the end the north bears the burden again. I ask that you consider an alternative to move the site to the western abandoned salt field. Power generation would drop by 12 percent, but the number of households is one quarter.",
+            "speaker": "김철수",
+            "text": "서부 폐염전은 계통 연계 비용이 별도로 이백십억 듭니다. 발전량 감소까지 합치면 감축 기여분이 삼분의 이로 떨어집니다. 기후 관점에서는 후퇴입니다.",
+            "textEn": "The western salt field requires an additional 21 billion in grid connection costs. If you include the reduction in power generation, the reduction contribution falls to two-thirds. From a climate perspective, it is a retreat.",
             "kind": "claim",
             "index": 12,
-            "x": -0.12404982516143341,
-            "y": 0.39802967581885723
+            "x": -0.13727198998410192,
+            "y": 0.31045976221855925
           },
           {
             "id": "u13",
-            "speaker": "김철수",
-            "text": "서부 폐염전은 계통 연계 비용이 별도로 이백십억 듭니다. 발전량 감소까지 합치면 감축 기여분이 삼분의 이로 떨어집니다. 기후 관점에서는 후퇴입니다.",
-            "textEn": "The western abandoned salt field would require an additional 21 billion won in grid connection costs. If you add the reduction in power generation, the reduction contribution falls to two-thirds. From a climate perspective, that is a setback.",
+            "speaker": "박민수",
+            "text": "그 대안 검토 자체가 공식 안건으로 오른 적이 없습니다. 대안이 있는데 비교표조차 없이 한 곳만 올라온 상태에서 표결하면, 나중에 어떤 결론이 나와도 정당성 시비가 남습니다.",
+            "textEn": "The review of that alternative itself has never been raised as an official agenda item. If we vote with only one site having been submitted, without even a comparison table even though there is an alternative, then whatever conclusion comes later will still leave room for disputes over legitimacy.",
             "kind": "claim",
             "index": 13,
-            "x": -0.1365199774112667,
-            "y": 0.310971145086631
+            "x": 0.2443019551636052,
+            "y": -0.04862289414384664
           },
           {
             "id": "u14",
-            "speaker": "박민수",
-            "text": "그 대안 검토 자체가 공식 안건으로 오른 적이 없습니다. 대안이 있는데 비교표조차 없이 한 곳만 올라온 상태에서 표결하면, 나중에 어떤 결론이 나와도 정당성 시비가 남습니다.",
-            "textEn": "That alternative review itself has never been raised as an official agenda item. If you vote with only one site on the table without even a comparison chart when there is an alternative, legitimacy disputes will remain no matter what conclusion is reached later.",
+            "speaker": "최지은",
+            "text": "저는 박 위원 말씀에 재정 이유로 동의합니다. 대안 비교 없이 단일안을 통과시키면 감사 지적 사항이 됩니다. 작년 하수처리장 건이 같은 사유로 환수됐습니다.",
+            "textEn": "I agree with Member Park for financial reasons. If we pass a single proposal without comparing alternatives, it becomes an audit finding. Last year's wastewater treatment plant case was recovered for the same reason.",
             "kind": "claim",
             "index": 14,
-            "x": 0.24486986055342252,
-            "y": -0.049134873036950584
+            "x": -0.03902463631929369,
+            "y": -0.1499313214184794
           },
           {
             "id": "u15",
-            "speaker": "최지은",
-            "text": "저는 박 위원 말씀에 재정 이유로 동의합니다. 대안 비교 없이 단일안을 통과시키면 감사 지적 사항이 됩니다. 작년 하수처리장 건이 같은 사유로 환수됐습니다.",
-            "textEn": "I agree with Commissioner Park for fiscal reasons. If a single proposal is passed without comparing alternatives, it becomes an audit issue. Last year's wastewater treatment plant case was clawed back for the same reason.",
+            "speaker": "이영희",
+            "text": "주민 입장에서는 비교표보다 보상 기준이 먼저입니다. 지금 안에는 반경 일 킬로미터 이내 가구 지원만 있고 그 밖은 아무 언급이 없습니다. 경계선 바로 밖 가구가 제일 크게 반발합니다.",
+            "textEn": "From the residents’ standpoint, the compensation criteria come before the comparison table. Right now, inside it there is only support for households within a radius of one kilometer, and there is no mention of anything beyond that. The households just outside the boundary are the ones who react the most strongly.",
             "kind": "claim",
             "index": 15,
-            "x": -0.03946880363878561,
-            "y": -0.14958566417755953
+            "x": 0.1115867219592112,
+            "y": 0.34360079432110147
           },
           {
             "id": "u16",
-            "speaker": "이영희",
-            "text": "주민 입장에서는 비교표보다 보상 기준이 먼저입니다. 지금 안에는 반경 일 킬로미터 이내 가구 지원만 있고 그 밖은 아무 언급이 없습니다. 경계선 바로 밖 가구가 제일 크게 반발합니다.",
-            "textEn": "From the residents' perspective, compensation criteria come before the comparison table. In the current draft, there is only support for households within a one-kilometer radius, and there is no mention of those outside it. Households just beyond the boundary are the ones who oppose it the most.",
+            "speaker": "김철수",
+            "text": "보상 범위 확대는 저도 찬성합니다. 그 부분은 수정안으로 반영하겠습니다. 다만 그것이 사업 자체를 미루는 조건이 되어서는 안 된다고 봅니다.",
+            "textEn": "I also agree with expanding the scope of compensation. I will reflect that part in the amendment. However, I do not think that should become a condition for delaying the project itself.",
             "kind": "claim",
             "index": 16,
-            "x": 0.11252716854633486,
-            "y": 0.34244678196862494
+            "x": -0.06383979626926917,
+            "y": 0.16033984503017534
           },
           {
             "id": "u17",
-            "speaker": "김철수",
-            "text": "보상 범위 확대는 저도 찬성합니다. 그 부분은 수정안으로 반영하겠습니다. 다만 그것이 사업 자체를 미루는 조건이 되어서는 안 된다고 봅니다.",
-            "textEn": "I also support expanding the compensation scope. I will reflect that part in the amendment. However, I do not think that should become a condition for delaying the project itself.",
+            "speaker": "박민수",
+            "text": "저는 미루자는 것이 아니라 순서를 지키자는 것입니다. 설명회를 저녁 시간에 한 차례 더 열고, 평가 자료를 전부 공개하고, 대안 비교표를 만든 다음에 표결하자는 것입니다.",
+            "textEn": "I am not saying to postpone it; I am saying to follow the proper order. Let’s hold one more briefing session in the evening, disclose all the evaluation materials, make the alternative comparison table, and then vote.",
             "kind": "claim",
             "index": 17,
-            "x": -0.0630978981257145,
-            "y": 0.16027474555791546
+            "x": 0.42254835808591396,
+            "y": -0.11596638039289987
           },
           {
             "id": "u18",
-            "speaker": "박민수",
-            "text": "저는 미루자는 것이 아니라 순서를 지키자는 것입니다. 설명회를 저녁 시간에 한 차례 더 열고, 평가 자료를 전부 공개하고, 대안 비교표를 만든 다음에 표결하자는 것입니다.",
-            "textEn": "I am not saying to delay it, but to follow the proper order. I am saying we should hold one more briefing session in the evening, disclose all the evaluation materials, make the alternative comparison table, and then vote.",
-            "kind": "claim",
+            "speaker": "최지은",
+            "text": "그 절차를 밟는 데 얼마가 듭니까. 저는 절차 자체를 반대하지 않지만, 지연에 따르는 금융 비용도 예산입니다. 착공이 일 년 늦으면 이자만 사십억입니다.",
+            "textEn": "How much does it cost to go through that procedure? I do not oppose the procedure itself, but the financial cost that comes with delay is also part of the budget. If groundbreaking is delayed by one year, the interest alone is 4 billion won.",
+            "kind": "question",
             "index": 18,
-            "x": 0.4221633061468604,
-            "y": -0.11811484853875773
+            "x": -0.06523563200131341,
+            "y": -0.1730701737702007
           },
           {
             "id": "u19",
-            "speaker": "최지은",
-            "text": "그 절차를 밟는 데 얼마가 듭니까. 저는 절차 자체를 반대하지 않지만, 지연에 따르는 금융 비용도 예산입니다. 착공이 일 년 늦으면 이자만 사십억입니다.",
-            "textEn": "How much does following that procedure cost? I am not opposed to the procedure itself, but the financial cost of delay is also part of the budget. If groundbreaking is delayed by one year, interest alone is 4 billion won.",
+            "speaker": "이영희",
+            "text": "그 사십억과 주민 갈등 비용을 같이 놓고 봐야 합니다. 인근 군에서는 소송으로 삼 년이 걸렸습니다. 수용성 없이 밀면 결국 더 비쌉니다.",
+            "textEn": "That 4 billion won and the cost of conflict with residents have to be considered together. In a nearby county, litigation took three years. If you push ahead without acceptability, it ends up costing more.",
             "kind": "claim",
             "index": 19,
-            "x": -0.06561110034104309,
-            "y": -0.17248635711571078
+            "x": -0.350611237060807,
+            "y": -0.1303230556872659
           },
           {
             "id": "u20",
-            "speaker": "이영희",
-            "text": "그 사십억과 주민 갈등 비용을 같이 놓고 봐야 합니다. 인근 군에서는 소송으로 삼 년이 걸렸습니다. 수용성 없이 밀면 결국 더 비쌉니다.",
-            "textEn": "That 4 billion and the cost of conflict with residents have to be considered together. In a nearby county, a lawsuit took three years. If you push ahead without acceptance, it ends up costing more.",
+            "speaker": "김철수",
+            "text": "저는 그래서 보상과 절차를 병행하되 부지는 확정하자는 입장입니다. 부지가 안 정해지면 다른 논의가 전부 가정이 됩니다.",
+            "textEn": "So my position is that we should proceed with compensation and procedure in parallel, while fixing the site. If the site is not decided, all the other discussions become hypothetical.",
             "kind": "claim",
             "index": 20,
-            "x": -0.3511977880490733,
-            "y": -0.12921892791121403
+            "x": 0.05388209587331611,
+            "y": 0.15313375198674423
           },
           {
             "id": "u21",
-            "speaker": "김철수",
-            "text": "저는 그래서 보상과 절차를 병행하되 부지는 확정하자는 입장입니다. 부지가 안 정해지면 다른 논의가 전부 가정이 됩니다.",
-            "textEn": "That is why my position is to proceed with compensation and procedure in parallel while fixing the site. If the site is not decided, all other discussions become hypothetical.",
+            "speaker": "박민수",
+            "text": "부지를 먼저 정하면 절차는 형식이 됩니다. 이미 정해진 결론을 설명하는 자리가 설명회는 아닙니다.",
+            "textEn": "If you decide the site first, the procedure becomes a formality. A briefing session is not a place to explain a conclusion that has already been decided.",
             "kind": "claim",
             "index": 21,
-            "x": 0.05333462518168134,
-            "y": 0.1554742777299739
+            "x": 0.5424232490801918,
+            "y": -0.02300608292486393
           },
           {
             "id": "u22",
-            "speaker": "박민수",
-            "text": "부지를 먼저 정하면 절차는 형식이 됩니다. 이미 정해진 결론을 설명하는 자리가 설명회는 아닙니다.",
-            "textEn": "If the site is decided first, the procedure becomes a formality. A briefing session is not a place to explain a conclusion that has already been decided.",
+            "speaker": "최지은",
+            "text": "저는 두 조건이면 찬성할 수 있습니다. 전력 단가 가정을 현재 시장가로 다시 계산한 재무 추정, 그리고 삼백팔십억의 재원 항목을 명시한 조서입니다.",
+            "textEn": "I can agree if there are two conditions. A financial estimate that recalculates the power unit price assumptions at the current market price, and a document that specifies the funding items for 38 billion won.",
             "kind": "claim",
             "index": 22,
-            "x": 0.5427421060177414,
-            "y": -0.02412665739436054
+            "x": -0.04712257936875266,
+            "y": 0.06909124262951669
           },
           {
             "id": "u23",
-            "speaker": "최지은",
-            "text": "저는 두 조건이면 찬성할 수 있습니다. 전력 단가 가정을 현재 시장가로 다시 계산한 재무 추정, 그리고 삼백팔십억의 재원 항목을 명시한 조서입니다.",
-            "textEn": "I can support it if there are two conditions. A financial estimate that recalculates the power rate assumptions using the current market price, and a document that specifies the funding items for 38 billion won.",
-            "kind": "claim",
-            "index": 23,
-            "x": -0.04578393432940594,
-            "y": 0.06905393901025686
-          },
-          {
-            "id": "u24",
             "speaker": "이영희",
             "text": "저는 서부 대안 비교표와 보상 경계 재설정, 이 두 가지가 나오기 전에는 찬성하기 어렵습니다.",
-            "textEn": "I find it hard to support it before the western alternative comparison table and the reset of the compensation boundary are produced, these two things.",
+            "textEn": "I find it difficult to agree before the western alternative comparison table and the reset of the compensation boundary come out.",
             "kind": "claim",
-            "index": 24,
-            "x": 0.20910590387597644,
-            "y": 0.2841120441418033
+            "index": 23,
+            "x": 0.20780612295475126,
+            "y": 0.28320435203691835
           },
           {
-            "id": "u26",
+            "id": "u25",
             "speaker": "김철수",
             "text": "자료 준비 기간이 한 달을 넘기지 않도록만 부탁드립니다.",
             "textEn": "I only ask that the material preparation period not exceed one month.",
             "kind": "claim",
-            "index": 26,
-            "x": -0.20861281691864111,
-            "y": -0.294795336766799
+            "index": 25,
+            "x": -0.20756060586182193,
+            "y": -0.2949761112462363
           },
           {
-            "id": "u27",
+            "id": "u26",
             "speaker": "박민수",
             "text": "저녁 설명회 일정은 그 전에 공지되어야 합니다.",
-            "textEn": "The evening briefing schedule must be announced before then.",
+            "textEn": "The evening briefing schedule must be announced before that.",
             "kind": "claim",
-            "index": 27,
-            "x": 0.4282843679521404,
-            "y": -0.42360307989123075
+            "index": 26,
+            "x": 0.4296175473989245,
+            "y": -0.4234253709545758
           }
         ],
         "speakers": [
@@ -260,14 +260,14 @@
             "colorIndex": 0,
             "n": 7,
             "nExcluded": 0,
-            "x": -0.2544652408950477,
-            "y": -0.011528111917745724,
+            "x": -0.2543058056395012,
+            "y": -0.012269697786792757,
             "ellipse": {
-              "cx": -0.14459949036623224,
-              "cy": -0.01410672287730831,
-              "rx": 0.2527453203298738,
-              "ry": 0.08168071977463723,
-              "angle": 73.55607227150398
+              "cx": -0.14449303659580398,
+              "cy": -0.014542534566956018,
+              "rx": 0.25230543937520666,
+              "ry": 0.08217542786078466,
+              "angle": 73.70614426374635
             },
             "underdetermined": false
           },
@@ -276,14 +276,14 @@
             "colorIndex": 1,
             "n": 6,
             "nExcluded": 0,
-            "x": 0.0036509597171357822,
-            "y": 0.36776124656819026,
+            "x": 0.0031034303143192533,
+            "y": 0.36755019210812473,
             "ellipse": {
-              "cx": 0.01518482561335635,
-              "cy": 0.23705123971750452,
-              "rx": 0.2682665942295679,
-              "ry": 0.11773069678125898,
-              "angle": 42.758303917044515
+              "cx": 0.014805559242488922,
+              "cy": 0.23697990170949446,
+              "rx": 0.26823167785746344,
+              "ry": 0.1180339319300964,
+              "angle": 42.95732861722581
             },
             "underdetermined": false
           },
@@ -292,14 +292,14 @@
             "colorIndex": 2,
             "n": 6,
             "nExcluded": 0,
-            "x": 0.4476392564174933,
-            "y": -0.288449345103041,
+            "x": 0.44821573388201813,
+            "y": -0.2870479315592143,
             "ellipse": {
-              "cx": 0.309830262042784,
-              "cy": -0.1976568732750238,
-              "rx": 0.2652006481145026,
-              "ry": 0.14346900672205887,
-              "angle": 19.58094082823691
+              "cx": 0.3102046054432019,
+              "cy": -0.196705227789827,
+              "rx": 0.26509905120522126,
+              "ry": 0.1438425163750789,
+              "angle": 19.657998577497086
             },
             "underdetermined": false
           },
@@ -308,47 +308,47 @@
             "colorIndex": 3,
             "n": 6,
             "nExcluded": 0,
-            "x": -0.24343894519522233,
-            "y": -0.024979700558859758,
+            "x": -0.24362916534523402,
+            "y": -0.025552115077997792,
             "ellipse": {
-              "cx": -0.15631568222886924,
-              "cy": -0.02293652308562097,
-              "rx": 0.15964540057186227,
-              "ry": 0.1275635699720278,
-              "angle": 98.1752356851788
+              "cx": -0.15643495532391946,
+              "cy": -0.023308383591551855,
+              "rx": 0.1602145941699233,
+              "ry": 0.12735468726671706,
+              "angle": 98.20037753342889
             },
             "underdetermined": false
           }
         ],
         "meta": {
           "method": "pca",
-          "explainedVariance": 0.17262058396042532,
+          "explainedVariance": 0.17258985255895348,
           "componentVariance": [
-            0.09147715274321513,
-            0.08114343121721018
+            0.09146041592916528,
+            0.08112943662978822
           ],
           "fittedOn": 25,
           "saturated": false,
-          "separation": 2.2418651148168025,
+          "separation": 2.240431759110547,
           "axes": {
             "horizontal": {
               "low": {
-                "ko": "재정·목표 압박",
-                "en": "Fiscal and target pressure"
+                "ko": "사업 타당성 논쟁",
+                "en": "Project feasibility"
               },
               "high": {
                 "ko": "절차 정당성",
-                "en": "Procedural legitimacy"
+                "en": "Process legitimacy"
               }
             },
             "vertical": {
               "low": {
-                "ko": "일정·정보공개",
+                "ko": "일정·자료 요청",
                 "en": "Scheduling and disclosure"
               },
               "high": {
-                "ko": "부담 분산 요구",
-                "en": "Burden sharing demand"
+                "ko": "지역 부담 형평",
+                "en": "Local burden equity"
               }
             }
           }
@@ -357,254 +357,254 @@
       "mds": {
         "utterances": [
           {
-            "id": "u2",
+            "id": "u1",
             "speaker": "김철수",
             "text": "저는 이 사업을 예정대로 추진해야 한다고 봅니다. 우리 시 온실가스 감축 목표가 2030년까지 40퍼센트인데 지금 진도로는 22퍼센트에서 멈춥니다. 이 발전단지 하나가 그 격차의 절반을 메웁니다.",
-            "textEn": "I think this project should be pushed ahead as scheduled. Our city's greenhouse gas reduction target is 40 percent by 2030, but at the current pace it is stuck at 22 percent. This power complex alone fills half of that gap.",
+            "textEn": "I think we should proceed with this project as planned. Our city's greenhouse gas reduction target is 40 percent by 2030, but at the current pace we are stuck at 22 percent. This one power complex fills half of that gap.",
             "kind": "claim",
-            "index": 2,
-            "x": 0.1746155338193333,
-            "y": 0.042393580492058776
+            "index": 1,
+            "x": 0.1746659786290393,
+            "y": 0.04206420359840216
           },
           {
-            "id": "u3",
+            "id": "u2",
             "speaker": "이영희",
             "text": "목표 자체에는 이견이 없습니다. 다만 그 목표를 어느 동네가 부담하느냐가 문제입니다. 후보지 세 곳이 전부 북부에 몰려 있고, 북부는 이미 소각장과 변전소를 받았습니다.",
             "textEn": "I have no disagreement with the goal itself. However, the problem is which neighborhood bears that goal. All three candidate sites are concentrated in the north, and the north has already taken the incinerator and the substation.",
             "kind": "claim",
+            "index": 2,
+            "x": -0.06976901599730065,
+            "y": -0.36218036568631823
+          },
+          {
+            "id": "u3",
+            "speaker": "박민수",
+            "text": "저는 결정 내용보다 결정 과정을 먼저 짚고 싶습니다. 주민 설명회가 두 차례 열렸는데 두 번 다 평일 오후 두 시였습니다. 실제로 일하는 주민은 올 수 없는 시간입니다.",
+            "textEn": "I would like to point out the decision process before the decision content. Two resident briefing sessions were held, and both were at 2 p.m. on a weekday. It is a time when residents who actually work cannot come.",
+            "kind": "claim",
             "index": 3,
-            "x": -0.06963978508009916,
-            "y": -0.3617968697341446
+            "x": -0.3169285100543387,
+            "y": 0.05042466893785391
           },
           {
             "id": "u4",
-            "speaker": "박민수",
-            "text": "저는 결정 내용보다 결정 과정을 먼저 짚고 싶습니다. 주민 설명회가 두 차례 열렸는데 두 번 다 평일 오후 두 시였습니다. 실제로 일하는 주민은 올 수 없는 시간입니다.",
-            "textEn": "I want to point out the decision-making process before the decision itself. Two resident briefing sessions were held, and both were at 2 p.m. on weekdays. It is a time when residents who actually work cannot come.",
+            "speaker": "최지은",
+            "text": "재정 쪽을 보겠습니다. 총사업비 천이백사십억 중 시 부담이 삼백팔십억이고 회수 기간을 15년으로 잡았습니다. 이 추정에 쓰인 전력 판매 단가 가정이 현재 시장가보다 18퍼센트 높습니다.",
+            "textEn": "Let us look at the financial side. Of the total project cost of 124 billion, the city's burden is 38 billion, and the payback period has been set at 15 years. The assumption for the power sales price used in this estimate is 18 percent higher than the current market price.",
             "kind": "claim",
             "index": 4,
-            "x": -0.3169693337960929,
-            "y": 0.05123470188794843
+            "x": 0.18466176305655874,
+            "y": 0.06236361195983321
           },
           {
             "id": "u5",
-            "speaker": "최지은",
-            "text": "재정 쪽을 보겠습니다. 총사업비 천이백사십억 중 시 부담이 삼백팔십억이고 회수 기간을 15년으로 잡았습니다. 이 추정에 쓰인 전력 판매 단가 가정이 현재 시장가보다 18퍼센트 높습니다.",
-            "textEn": "Let us look at the financial side. Out of the total project cost of 124 billion won, the city's share is 38 billion won, and the payback period is set at 15 years. The assumption for the electricity sales price used in this estimate is 18 percent higher than the current market price.",
+            "speaker": "김철수",
+            "text": "단가 가정이 낙관적이라는 지적은 받아들입니다. 그런데 회수 기간이 20년이 되더라도 저는 추진이 맞다고 봅니다. 기후 대응은 회수 기간으로 판단할 사업이 아닙니다.",
+            "textEn": "I accept the point that the price assumption is optimistic. But even if the payback period becomes 20 years, I still think proceeding is right. Climate response is not a project to be judged by the payback period.",
             "kind": "claim",
             "index": 5,
-            "x": 0.1846794647440306,
-            "y": 0.06215878009937681
+            "x": 0.1037960492828652,
+            "y": 0.25817050453882673
           },
           {
             "id": "u6",
-            "speaker": "김철수",
-            "text": "단가 가정이 낙관적이라는 지적은 받아들입니다. 그런데 회수 기간이 20년이 되더라도 저는 추진이 맞다고 봅니다. 기후 대응은 회수 기간으로 판단할 사업이 아닙니다.",
-            "textEn": "I accept the point that the unit price assumption is optimistic. But even if the payback period becomes 20 years, I still think proceeding is right. Climate response is not a project to be judged by payback period.",
+            "speaker": "최지은",
+            "text": "회수 기간으로 판단할 사업이 아니라는 말씀은 곧 다른 사업 예산을 줄여도 된다는 뜻입니다. 올해 노인 돌봄 예산이 이미 12퍼센트 삭감됐습니다. 그 자리에서 삼백팔십억을 꺼내야 합니다.",
+            "textEn": "Saying it is not a project to be judged by the payback period means that we can reduce other project budgets. This year's elderly care budget has already been cut by 12 percent. We have to take out 38 billion from that place.",
             "kind": "claim",
             "index": 6,
-            "x": 0.10383195452130886,
-            "y": 0.25802575568339847
+            "x": 0.22396263837239425,
+            "y": 0.13723620359818253
           },
           {
             "id": "u7",
-            "speaker": "최지은",
-            "text": "회수 기간으로 판단할 사업이 아니라는 말씀은 곧 다른 사업 예산을 줄여도 된다는 뜻입니다. 올해 노인 돌봄 예산이 이미 12퍼센트 삭감됐습니다. 그 자리에서 삼백팔십억을 꺼내야 합니다.",
-            "textEn": "Saying it is not a project to be judged by payback period means that we can cut other project budgets. This year, the elderly care budget has already been cut by 12 percent. We have to take out 38 billion won from that spot.",
+            "speaker": "이영희",
+            "text": "저는 두 분 논의가 주민을 빼놓고 진행된다는 점이 걱정입니다. 후보 3지구는 마을에서 직선거리 육백 미터입니다. 저주파 소음 민원이 이미 인근 풍력에서 나온 상태입니다.",
+            "textEn": "I am worried that the discussion between the two of you is proceeding without the residents. Candidate district 3 is 600 meters in a straight line from the village. Complaints about low-frequency noise have already come from the nearby wind power facility.",
             "kind": "claim",
             "index": 7,
-            "x": 0.22424190391827636,
-            "y": 0.13675676019020505
+            "x": -0.052319420949548154,
+            "y": -0.1976747349372767
           },
           {
             "id": "u8",
-            "speaker": "이영희",
-            "text": "저는 두 분 논의가 주민을 빼놓고 진행된다는 점이 걱정입니다. 후보 3지구는 마을에서 직선거리 육백 미터입니다. 저주파 소음 민원이 이미 인근 풍력에서 나온 상태입니다.",
-            "textEn": "I am concerned that the discussion between the two of you is proceeding while leaving out residents. Candidate district 3 is 600 meters in a straight line from the village. Complaints about low-frequency noise have already come from the nearby wind power facility.",
+            "speaker": "박민수",
+            "text": "그 민원 기록이 공개되지 않은 것도 문제입니다. 환경영향평가 초안이 작년 11월에 나왔는데 시의회에는 올해 3월에 왔습니다. 넉 달 동안 무엇을 검토했는지 설명이 없습니다.",
+            "textEn": "The fact that those complaint records were not disclosed is also a problem. The draft environmental impact assessment came out in November of last year, but it reached the city council in March of this year. There is no explanation of what was reviewed during those four months.",
             "kind": "claim",
             "index": 8,
-            "x": -0.0519716972127484,
-            "y": -0.19753379395614334
+            "x": 0.014987199803795821,
+            "y": 0.21991180975562172
           },
           {
             "id": "u9",
-            "speaker": "박민수",
-            "text": "그 민원 기록이 공개되지 않은 것도 문제입니다. 환경영향평가 초안이 작년 11월에 나왔는데 시의회에는 올해 3월에 왔습니다. 넉 달 동안 무엇을 검토했는지 설명이 없습니다.",
-            "textEn": "The fact that those complaint records were not made public is also a problem. The draft environmental impact assessment came out last November, but it came to the city council this March. There is no explanation of what was reviewed during those four months.",
+            "speaker": "김철수",
+            "text": "자료 공개는 개선하면 되는 문제입니다. 다만 이 논의가 반복되는 동안 국가 감축 목표 이행 점검이 내년으로 다가옵니다. 미달하면 국비 보조가 삭감됩니다.",
+            "textEn": "Disclosure of materials is a problem that can be improved. However, while this discussion is repeated, the review of implementation of the national reduction target is approaching next year. If we fall short, the national subsidy will be cut.",
             "kind": "claim",
             "index": 9,
-            "x": 0.01536273009977029,
-            "y": 0.2203774807679492
+            "x": 0.11841872329225839,
+            "y": 0.1547632198156968
           },
           {
             "id": "u10",
-            "speaker": "김철수",
-            "text": "자료 공개는 개선하면 되는 문제입니다. 다만 이 논의가 반복되는 동안 국가 감축 목표 이행 점검이 내년으로 다가옵니다. 미달하면 국비 보조가 삭감됩니다.",
-            "textEn": "Disclosure of materials is a problem that can be improved. However, while this discussion keeps repeating, the national check on implementation of reduction targets is approaching next year. If we fall short, national subsidies will be cut.",
+            "speaker": "최지은",
+            "text": "국비 보조 삭감분이 얼마인지 숫자로 주십시오. 그 숫자가 삼백팔십억보다 크면 저도 추진 쪽으로 판단을 바꿀 수 있습니다. 지금은 비교할 자료가 없습니다.",
+            "textEn": "Please give me the number for how much the national subsidy will be cut. If that number is larger than 38 billion, I can also change my judgment toward proceeding. Right now, there is no material to compare.",
             "kind": "claim",
             "index": 10,
-            "x": 0.11877302301810366,
-            "y": 0.15497779518479382
+            "x": 0.16369646546837116,
+            "y": -0.10840053378152231
           },
           {
             "id": "u11",
-            "speaker": "최지은",
-            "text": "국비 보조 삭감분이 얼마인지 숫자로 주십시오. 그 숫자가 삼백팔십억보다 크면 저도 추진 쪽으로 판단을 바꿀 수 있습니다. 지금은 비교할 자료가 없습니다.",
-            "textEn": "Please give me the number for how much the national subsidy cut would be. If that number is larger than 38 billion won, I can change my judgment toward proceeding as well. Right now, there is no data to compare.",
+            "speaker": "이영희",
+            "text": "숫자 문제로만 가면 결국 북부가 또 부담합니다. 저는 부지를 서부 폐염전으로 옮기는 대안을 검토해 달라고 요청드립니다. 발전량은 12퍼센트 줄지만 거주 가구가 사분의 일입니다.",
+            "textEn": "If we go only by numbers, in the end the north will bear the burden again. I ask that you review the alternative of moving the site to the western salt field. Power generation decreases by 12 percent, but the number of households living there is one quarter.",
             "kind": "claim",
             "index": 11,
-            "x": 0.1634996594336132,
-            "y": -0.10817629443691933
+            "x": 0.13625158171811277,
+            "y": -0.2465514818409962
           },
           {
             "id": "u12",
-            "speaker": "이영희",
-            "text": "숫자 문제로만 가면 결국 북부가 또 부담합니다. 저는 부지를 서부 폐염전으로 옮기는 대안을 검토해 달라고 요청드립니다. 발전량은 12퍼센트 줄지만 거주 가구가 사분의 일입니다.",
-            "textEn": "If we only go by numbers, in the end the north bears the burden again. I ask that you consider an alternative to move the site to the western abandoned salt field. Power generation would drop by 12 percent, but the number of households is one quarter.",
+            "speaker": "김철수",
+            "text": "서부 폐염전은 계통 연계 비용이 별도로 이백십억 듭니다. 발전량 감소까지 합치면 감축 기여분이 삼분의 이로 떨어집니다. 기후 관점에서는 후퇴입니다.",
+            "textEn": "The western salt field requires an additional 21 billion in grid connection costs. If you include the reduction in power generation, the reduction contribution falls to two-thirds. From a climate perspective, it is a retreat.",
             "kind": "claim",
             "index": 12,
-            "x": 0.13601283687023552,
-            "y": -0.24641165575117172
+            "x": 0.16057993901222795,
+            "y": -0.1369435893639066
           },
           {
             "id": "u13",
-            "speaker": "김철수",
-            "text": "서부 폐염전은 계통 연계 비용이 별도로 이백십억 듭니다. 발전량 감소까지 합치면 감축 기여분이 삼분의 이로 떨어집니다. 기후 관점에서는 후퇴입니다.",
-            "textEn": "The western abandoned salt field would require an additional 21 billion won in grid connection costs. If you add the reduction in power generation, the reduction contribution falls to two-thirds. From a climate perspective, that is a setback.",
+            "speaker": "박민수",
+            "text": "그 대안 검토 자체가 공식 안건으로 오른 적이 없습니다. 대안이 있는데 비교표조차 없이 한 곳만 올라온 상태에서 표결하면, 나중에 어떤 결론이 나와도 정당성 시비가 남습니다.",
+            "textEn": "The review of that alternative itself has never been raised as an official agenda item. If we vote with only one site having been submitted, without even a comparison table even though there is an alternative, then whatever conclusion comes later will still leave room for disputes over legitimacy.",
             "kind": "claim",
             "index": 13,
-            "x": 0.16034786151198016,
-            "y": -0.1373042339787603
+            "x": -0.20287937191091712,
+            "y": -0.01609631092197049
           },
           {
             "id": "u14",
-            "speaker": "박민수",
-            "text": "그 대안 검토 자체가 공식 안건으로 오른 적이 없습니다. 대안이 있는데 비교표조차 없이 한 곳만 올라온 상태에서 표결하면, 나중에 어떤 결론이 나와도 정당성 시비가 남습니다.",
-            "textEn": "That alternative review itself has never been raised as an official agenda item. If you vote with only one site on the table without even a comparison chart when there is an alternative, legitimacy disputes will remain no matter what conclusion is reached later.",
+            "speaker": "최지은",
+            "text": "저는 박 위원 말씀에 재정 이유로 동의합니다. 대안 비교 없이 단일안을 통과시키면 감사 지적 사항이 됩니다. 작년 하수처리장 건이 같은 사유로 환수됐습니다.",
+            "textEn": "I agree with Member Park for financial reasons. If we pass a single proposal without comparing alternatives, it becomes an audit finding. Last year's wastewater treatment plant case was recovered for the same reason.",
             "kind": "claim",
             "index": 14,
-            "x": -0.20327629450081144,
-            "y": -0.01622933931278815
+            "x": 0.005053161460155828,
+            "y": 0.08876532802169147
           },
           {
             "id": "u15",
-            "speaker": "최지은",
-            "text": "저는 박 위원 말씀에 재정 이유로 동의합니다. 대안 비교 없이 단일안을 통과시키면 감사 지적 사항이 됩니다. 작년 하수처리장 건이 같은 사유로 환수됐습니다.",
-            "textEn": "I agree with Commissioner Park for fiscal reasons. If a single proposal is passed without comparing alternatives, it becomes an audit issue. Last year's wastewater treatment plant case was clawed back for the same reason.",
+            "speaker": "이영희",
+            "text": "주민 입장에서는 비교표보다 보상 기준이 먼저입니다. 지금 안에는 반경 일 킬로미터 이내 가구 지원만 있고 그 밖은 아무 언급이 없습니다. 경계선 바로 밖 가구가 제일 크게 반발합니다.",
+            "textEn": "From the residents’ standpoint, the compensation criteria come before the comparison table. Right now, inside it there is only support for households within a radius of one kilometer, and there is no mention of anything beyond that. The households just outside the boundary are the ones who react the most strongly.",
             "kind": "claim",
             "index": 15,
-            "x": 0.005178778037185348,
-            "y": 0.08870104207545783
+            "x": -0.019790361759114455,
+            "y": -0.3214712130834584
           },
           {
             "id": "u16",
-            "speaker": "이영희",
-            "text": "주민 입장에서는 비교표보다 보상 기준이 먼저입니다. 지금 안에는 반경 일 킬로미터 이내 가구 지원만 있고 그 밖은 아무 언급이 없습니다. 경계선 바로 밖 가구가 제일 크게 반발합니다.",
-            "textEn": "From the residents' perspective, compensation criteria come before the comparison table. In the current draft, there is only support for households within a one-kilometer radius, and there is no mention of those outside it. Households just beyond the boundary are the ones who oppose it the most.",
+            "speaker": "김철수",
+            "text": "보상 범위 확대는 저도 찬성합니다. 그 부분은 수정안으로 반영하겠습니다. 다만 그것이 사업 자체를 미루는 조건이 되어서는 안 된다고 봅니다.",
+            "textEn": "I also agree with expanding the scope of compensation. I will reflect that part in the amendment. However, I do not think that should become a condition for delaying the project itself.",
             "kind": "claim",
             "index": 16,
-            "x": -0.020356002594882013,
-            "y": -0.32111694113440625
+            "x": 0.10758977692921771,
+            "y": -0.045432708275754324
           },
           {
             "id": "u17",
-            "speaker": "김철수",
-            "text": "보상 범위 확대는 저도 찬성합니다. 그 부분은 수정안으로 반영하겠습니다. 다만 그것이 사업 자체를 미루는 조건이 되어서는 안 된다고 봅니다.",
-            "textEn": "I also support expanding the compensation scope. I will reflect that part in the amendment. However, I do not think that should become a condition for delaying the project itself.",
+            "speaker": "박민수",
+            "text": "저는 미루자는 것이 아니라 순서를 지키자는 것입니다. 설명회를 저녁 시간에 한 차례 더 열고, 평가 자료를 전부 공개하고, 대안 비교표를 만든 다음에 표결하자는 것입니다.",
+            "textEn": "I am not saying to postpone it; I am saying to follow the proper order. Let’s hold one more briefing session in the evening, disclose all the evaluation materials, make the alternative comparison table, and then vote.",
             "kind": "claim",
             "index": 17,
-            "x": 0.10723769459047904,
-            "y": -0.04565352492509119
+            "x": -0.3279980005152649,
+            "y": 0.017049768014330818
           },
           {
             "id": "u18",
-            "speaker": "박민수",
-            "text": "저는 미루자는 것이 아니라 순서를 지키자는 것입니다. 설명회를 저녁 시간에 한 차례 더 열고, 평가 자료를 전부 공개하고, 대안 비교표를 만든 다음에 표결하자는 것입니다.",
-            "textEn": "I am not saying to delay it, but to follow the proper order. I am saying we should hold one more briefing session in the evening, disclose all the evaluation materials, make the alternative comparison table, and then vote.",
-            "kind": "claim",
+            "speaker": "최지은",
+            "text": "그 절차를 밟는 데 얼마가 듭니까. 저는 절차 자체를 반대하지 않지만, 지연에 따르는 금융 비용도 예산입니다. 착공이 일 년 늦으면 이자만 사십억입니다.",
+            "textEn": "How much does it cost to go through that procedure? I do not oppose the procedure itself, but the financial cost that comes with delay is also part of the budget. If groundbreaking is delayed by one year, the interest alone is 4 billion won.",
+            "kind": "question",
             "index": 18,
-            "x": -0.3280604140112269,
-            "y": 0.01804995980935458
+            "x": 0.033223879989553576,
+            "y": 0.1743570704293131
           },
           {
             "id": "u19",
-            "speaker": "최지은",
-            "text": "그 절차를 밟는 데 얼마가 듭니까. 저는 절차 자체를 반대하지 않지만, 지연에 따르는 금융 비용도 예산입니다. 착공이 일 년 늦으면 이자만 사십억입니다.",
-            "textEn": "How much does following that procedure cost? I am not opposed to the procedure itself, but the financial cost of delay is also part of the budget. If groundbreaking is delayed by one year, interest alone is 4 billion won.",
+            "speaker": "이영희",
+            "text": "그 사십억과 주민 갈등 비용을 같이 놓고 봐야 합니다. 인근 군에서는 소송으로 삼 년이 걸렸습니다. 수용성 없이 밀면 결국 더 비쌉니다.",
+            "textEn": "That 4 billion won and the cost of conflict with residents have to be considered together. In a nearby county, litigation took three years. If you push ahead without acceptability, it ends up costing more.",
             "kind": "claim",
             "index": 19,
-            "x": 0.033390459348236236,
-            "y": 0.17401680417921833
+            "x": 0.22453329816225026,
+            "y": 0.06972123226103721
           },
           {
             "id": "u20",
-            "speaker": "이영희",
-            "text": "그 사십억과 주민 갈등 비용을 같이 놓고 봐야 합니다. 인근 군에서는 소송으로 삼 년이 걸렸습니다. 수용성 없이 밀면 결국 더 비쌉니다.",
-            "textEn": "That 4 billion and the cost of conflict with residents have to be considered together. In a nearby county, a lawsuit took three years. If you push ahead without acceptance, it ends up costing more.",
+            "speaker": "김철수",
+            "text": "저는 그래서 보상과 절차를 병행하되 부지는 확정하자는 입장입니다. 부지가 안 정해지면 다른 논의가 전부 가정이 됩니다.",
+            "textEn": "So my position is that we should proceed with compensation and procedure in parallel, while fixing the site. If the site is not decided, all the other discussions become hypothetical.",
             "kind": "claim",
             "index": 20,
-            "x": 0.22481933262024195,
-            "y": 0.06956966125242467
+            "x": 0.02117158344552485,
+            "y": -0.05649868087748449
           },
           {
             "id": "u21",
-            "speaker": "김철수",
-            "text": "저는 그래서 보상과 절차를 병행하되 부지는 확정하자는 입장입니다. 부지가 안 정해지면 다른 논의가 전부 가정이 됩니다.",
-            "textEn": "That is why my position is to proceed with compensation and procedure in parallel while fixing the site. If the site is not decided, all other discussions become hypothetical.",
+            "speaker": "박민수",
+            "text": "부지를 먼저 정하면 절차는 형식이 됩니다. 이미 정해진 결론을 설명하는 자리가 설명회는 아닙니다.",
+            "textEn": "If you decide the site first, the procedure becomes a formality. A briefing session is not a place to explain a conclusion that has already been decided.",
             "kind": "claim",
             "index": 21,
-            "x": 0.021861120773431494,
-            "y": -0.05785187713399316
+            "x": -0.39321826074594785,
+            "y": -0.03323649206429252
           },
           {
             "id": "u22",
-            "speaker": "박민수",
-            "text": "부지를 먼저 정하면 절차는 형식이 됩니다. 이미 정해진 결론을 설명하는 자리가 설명회는 아닙니다.",
-            "textEn": "If the site is decided first, the procedure becomes a formality. A briefing session is not a place to explain a conclusion that has already been decided.",
+            "speaker": "최지은",
+            "text": "저는 두 조건이면 찬성할 수 있습니다. 전력 단가 가정을 현재 시장가로 다시 계산한 재무 추정, 그리고 삼백팔십억의 재원 항목을 명시한 조서입니다.",
+            "textEn": "I can agree if there are two conditions. A financial estimate that recalculates the power unit price assumptions at the current market price, and a document that specifies the funding items for 38 billion won.",
             "kind": "claim",
             "index": 22,
-            "x": -0.3935688525807486,
-            "y": -0.03309688688193501
+            "x": 0.06155438546496864,
+            "y": 0.020027664739848742
           },
           {
             "id": "u23",
-            "speaker": "최지은",
-            "text": "저는 두 조건이면 찬성할 수 있습니다. 전력 단가 가정을 현재 시장가로 다시 계산한 재무 추정, 그리고 삼백팔십억의 재원 항목을 명시한 조서입니다.",
-            "textEn": "I can support it if there are two conditions. A financial estimate that recalculates the power rate assumptions using the current market price, and a document that specifies the funding items for 38 billion won.",
-            "kind": "claim",
-            "index": 23,
-            "x": 0.06068247253431697,
-            "y": 0.020077776882334093
-          },
-          {
-            "id": "u24",
             "speaker": "이영희",
             "text": "저는 서부 대안 비교표와 보상 경계 재설정, 이 두 가지가 나오기 전에는 찬성하기 어렵습니다.",
-            "textEn": "I find it hard to support it before the western alternative comparison table and the reset of the compensation boundary are produced, these two things.",
+            "textEn": "I find it difficult to agree before the western alternative comparison table and the reset of the compensation boundary come out.",
             "kind": "claim",
-            "index": 24,
-            "x": -0.08215089845482215,
-            "y": -0.2323085704922977
+            "index": 23,
+            "x": -0.08146657406243114,
+            "y": -0.23118652813907853
           },
           {
-            "id": "u26",
+            "id": "u25",
             "speaker": "김철수",
             "text": "자료 준비 기간이 한 달을 넘기지 않도록만 부탁드립니다.",
             "textEn": "I only ask that the material preparation period not exceed one month.",
             "kind": "claim",
-            "index": 26,
-            "x": 0.10967968127889328,
-            "y": 0.22373184115676362
+            "index": 25,
+            "x": 0.10909570013323817,
+            "y": 0.22338372316306052
           },
           {
-            "id": "u27",
+            "id": "u26",
             "speaker": "박민수",
             "text": "저녁 설명회 일정은 그 전에 공지되어야 합니다.",
-            "textEn": "The evening briefing schedule must be announced before then.",
+            "textEn": "The evening briefing schedule must be announced before that.",
             "kind": "claim",
-            "index": 27,
-            "x": -0.39227454430116954,
-            "y": 0.25089820446680705
+            "index": 26,
+            "x": -0.3930008036441653,
+            "y": 0.2508922390686996
           }
         ],
         "speakers": [
@@ -613,14 +613,14 @@
             "colorIndex": 0,
             "n": 7,
             "nExcluded": 0,
-            "x": 0.16256433649085722,
-            "y": 0.08098161451040727,
+            "x": 0.16239421207669147,
+            "y": 0.08123313054926046,
             "ellipse": {
-              "cx": 0.11376383850193282,
-              "cy": 0.06261704806845288,
-              "rx": 0.1523659805067755,
-              "ry": 0.04915213854444921,
-              "angle": 90.41408895270706
+              "cx": 0.11361682153205307,
+              "cy": 0.06278666751412011,
+              "rx": 0.1520411010844459,
+              "ry": 0.04940296387471833,
+              "angle": 90.53979371775242
             },
             "underdetermined": false
           },
@@ -629,14 +629,14 @@
             "colorIndex": 1,
             "n": 6,
             "nExcluded": 0,
-            "x": 0.04272659710105552,
-            "y": -0.2743840977417439,
+            "x": 0.04287857070951051,
+            "y": -0.274268953015108,
             "ellipse": {
-              "cx": 0.022785631024654293,
-              "cy": -0.21493302830262317,
-              "rx": 0.18582423475476662,
-              "ry": 0.06836682746412996,
-              "angle": 51.7282689377982
+              "cx": 0.022906584518661437,
+              "cy": -0.2148905152376818,
+              "rx": 0.1857687544847959,
+              "ry": 0.06861009482703463,
+              "angle": 51.82328212695657
             },
             "underdetermined": false
           },
@@ -645,14 +645,14 @@
             "colorIndex": 2,
             "n": 6,
             "nExcluded": 0,
-            "x": -0.32971889962523254,
-            "y": 0.10594551058306338,
+            "x": -0.3297737007638387,
+            "y": 0.1054663337875141,
             "ellipse": {
-              "cx": -0.26979778484837985,
-              "cy": 0.08187235345622268,
-              "rx": 0.1660121640855011,
-              "ry": 0.10907630193269588,
-              "angle": 26.98042748326157
+              "cx": -0.2698396245111397,
+              "cy": 0.08149094713170718,
+              "rx": 0.16584942166079505,
+              "ry": 0.10929879787306454,
+              "angle": 26.903829149892076
             },
             "underdetermined": false
           },
@@ -661,14 +661,14 @@
             "colorIndex": 3,
             "n": 6,
             "nExcluded": 0,
-            "x": 0.1384812814464864,
-            "y": 0.07396681625783443,
+            "x": 0.13862911339613238,
+            "y": 0.07411087974799277,
             "ellipse": {
-              "cx": 0.11194545633594315,
-              "cy": 0.062255811498278794,
-              "rx": 0.10579978658851953,
-              "ry": 0.08289131948977256,
-              "angle": 122.97236363246434
+              "cx": 0.11202538230200033,
+              "cy": 0.06239155749455779,
+              "rx": 0.10600708592324598,
+              "ry": 0.0828089952523544,
+              "angle": 122.69229593743584
             },
             "underdetermined": false
           }
@@ -679,16 +679,16 @@
           "componentVariance": null,
           "fittedOn": 25,
           "saturated": false,
-          "separation": 2.549720335731128,
+          "separation": 2.5489494249141256,
           "axes": null
         }
       }
     },
     "counts": {
-      "claim": 25,
-      "question": 0,
+      "claim": 24,
+      "question": 1,
       "agreement": 0,
-      "procedural": 3
+      "procedural": 2
     },
     "droppedSpeakers": [],
     "diagnostics": {
@@ -715,6 +715,7 @@
       "preambleLines": 0,
       "unitsDroppedAsHallucinated": 0,
       "unitsDroppedUnresolvedSpeaker": 0,
+      "translationsRepaired": 0,
       "model": "gpt-5.4-mini",
       "embeddingModel": "text-embedding-3-small"
     }
@@ -727,221 +728,221 @@
             "id": "u2",
             "speaker": "정하늘",
             "text": "저는 재건축에 찬성합니다. 작년 진단에서 내진성능이 기준치의 절반으로 나왔습니다. 이 상태로 사고가 나면 관리 주체의 과실이 그대로 인정됩니다.",
-            "textEn": "I am in favor of rebuilding. Last year’s inspection found that the seismic performance was half of the standard. If an accident happens in this state, the managing entity’s negligence will be recognized as is.",
+            "textEn": "I am in favor of reconstruction. In last year's inspection, the seismic performance came out at half of the standard. If an accident happens in this state, the negligence of the managing body will be acknowledged as it is.",
             "kind": "claim",
             "index": 2,
-            "x": 0.2220548611993166,
-            "y": 0.3692684350413731
+            "x": 0.22217205315525534,
+            "y": 0.36906199133045
           },
           {
             "id": "u3",
             "speaker": "한지훈",
             "text": "저도 찬성입니다. 근거는 회수 기간입니다. 냉난방 연료비가 연 사억인데 신축하면 일억 이천으로 떨어지고, 십이 년이면 공사비가 회수됩니다.",
-            "textEn": "I also am in favor. The basis is the payback period. Heating and cooling fuel costs are four hundred million won a year, but if we build anew it drops to one hundred twenty million, and in twelve years the construction cost is recovered.",
+            "textEn": "I am also in favor. The basis is the payback period. The heating and cooling fuel cost is four hundred million a year, but if we build anew it drops to one hundred twenty million, and in twelve years the construction cost is recovered.",
             "kind": "claim",
             "index": 3,
-            "x": 0.4417366059704317,
-            "y": -0.09504201436778308
+            "x": 0.4417410094519906,
+            "y": -0.0951367050792478
           },
           {
             "id": "u4",
             "speaker": "오세라",
             "text": "저 역시 찬성합니다. 저는 민원실에서 벌어지는 일을 봅니다. 창구 앞 대기줄이 복도까지 나오고, 유모차와 휠체어가 지나갈 폭이 남지 않습니다.",
-            "textEn": "I also am in favor. I see what happens in the civil complaints office. The line in front of the counters comes out into the hallway, and there is no width left for strollers and wheelchairs to pass.",
+            "textEn": "I am also in favor. I see what is happening in the civil service office. The waiting line in front of the counter comes out into the hallway, and there is no width left for strollers and wheelchairs to pass.",
             "kind": "claim",
             "index": 4,
-            "x": 0.512627961567712,
-            "y": 0.06722068511389405
+            "x": 0.5127016267204797,
+            "y": 0.06696260798122279
           },
           {
             "id": "u5",
             "speaker": "정하늘",
             "text": "진단 등급이 나온 뒤에도 사용을 계속한 기록이 남아 있습니다. 인근 지자체 판례에서 이 기록이 배상 책임의 핵심 근거가 됐습니다.",
-            "textEn": "There remains a record that use continued even after the inspection grade was issued. In a nearby local government precedent, this record became the key basis for liability for compensation.",
+            "textEn": "There is a record that use continued even after the inspection grade came out. In a precedent from a nearby local government, this record became the key basis for compensation liability.",
             "kind": "claim",
             "index": 5,
-            "x": -0.34563963801091246,
-            "y": 0.0906478178578291
+            "x": -0.3454193938446187,
+            "y": 0.09068764072391607
           },
           {
             "id": "u6",
             "speaker": "한지훈",
             "text": "저는 국비 조건을 먼저 확정해야 한다고 봅니다. 에너지 효율 일등급 설계면 국비 삼십 퍼센트가 들어옵니다. 그 조건 하나가 시 부담을 백육십억 줄입니다.",
-            "textEn": "I think we should first determine the conditions for national funding. If it is a design with top-grade energy efficiency, thirty percent national funding comes in. That one condition reduces the city’s burden by sixteen billion won.",
+            "textEn": "I think we should first determine the national subsidy condition. If it is a top-grade energy efficiency design, thirty percent in national funds comes in. That one condition reduces the city's burden by sixteen billion won.",
             "kind": "claim",
             "index": 6,
-            "x": -0.2205957480131827,
-            "y": 0.10107736207135108
+            "x": -0.22035298125970781,
+            "y": 0.10062513802912441
           },
           {
             "id": "u7",
             "speaker": "오세라",
             "text": "민원실이 삼층에 있는 것도 문제입니다. 거동이 불편한 어르신이 엘리베이터 한 대를 십 분씩 기다립니다. 그 열 분이 매일 같은 시간에 오십니다.",
-            "textEn": "That the civil complaints office is on the third floor is also a problem. An elderly person with limited mobility waits ten minutes for a single elevator. Those ten minutes come every day at the same time.",
+            "textEn": "The civil service office being on the third floor is also a problem. An elderly person with difficulty moving waits ten minutes for one elevator. Those ten minutes come at the same time every day.",
             "kind": "claim",
             "index": 7,
-            "x": 0.07983674015803839,
-            "y": -0.5140705571199764
+            "x": 0.07980516697639707,
+            "y": -0.5141702346428285
           },
           {
             "id": "u8",
             "speaker": "정하늘",
             "text": "저는 안전진단 결과 공개 이후의 법적 시한도 봐야 한다고 봅니다. 보강 계획 제출 기한이 이미 지났습니다. 이행 강제금 부과 대상입니다.",
-            "textEn": "I think we also need to look at the legal deadline after the safety inspection results were disclosed. The deadline for submitting the reinforcement plan has already passed. It is subject to an enforcement fine.",
+            "textEn": "I also think we need to look at the legal deadline after the safety inspection results were disclosed. The deadline for submitting the reinforcement plan has already passed. It is subject to imposition of an enforcement fine.",
             "kind": "claim",
             "index": 8,
-            "x": -0.3994426540129179,
-            "y": 0.09575230103939444
+            "x": -0.399386875658355,
+            "y": 0.09584717550410803
           },
           {
             "id": "u9",
             "speaker": "한지훈",
             "text": "이행 강제금은 연 이천만 원 수준입니다. 저는 그보다 착공 지연에 따르는 금융 비용이 큽니다. 일 년 늦으면 이자만 사십억입니다.",
-            "textEn": "The enforcement fine is around 20 million won per year. I think the financial costs from delaying groundbreaking are larger than that. If it is delayed by one year, the interest alone is four billion won.",
+            "textEn": "The enforcement fine is at the level of 20 million won a year. I think the financial costs that accompany a delay in groundbreaking are bigger than that. If it is one year late, the interest alone is four billion won.",
             "kind": "claim",
             "index": 9,
-            "x": -0.06724395395770988,
-            "y": -0.43351101924705715
+            "x": -0.06729874848828506,
+            "y": -0.43368945463834935
           },
           {
             "id": "u10",
             "speaker": "오세라",
             "text": "저는 창구 배치를 일층으로 내리는 것이 이 사업의 핵심이라고 봅니다. 어떤 건물을 짓든 어르신이 삼층까지 올라가야 한다면 바뀐 것이 없습니다.",
-            "textEn": "I think moving the counter arrangement down to the first floor is the core of this project. No matter what building we build, if elderly people still have to go up to the third floor, nothing has changed.",
+            "textEn": "I think lowering the counter layout to the first floor is the core of this project. No matter what building we make, if elderly people have to go up to the third floor, nothing has changed.",
             "kind": "claim",
             "index": 10,
-            "x": 0.08473370642545866,
-            "y": 0.10018247418014285
+            "x": 0.0848910509873901,
+            "y": 0.09982822507912477
           },
           {
             "id": "u11",
             "speaker": "정하늘",
             "text": "소송이 제기되면 설계 단계 기록까지 전부 증거가 됩니다. 저는 그래서 의사결정 문서를 지금부터 정리해 두자고 요청드립니다.",
-            "textEn": "If a lawsuit is filed, even the records from the design stage become evidence in full. So I ask that we organize the decision-making documents from now on.",
+            "textEn": "If a lawsuit is filed, even the records from the design stage all become evidence. So I request that we organize the decision-making documents from now on.",
             "kind": "claim",
             "index": 11,
-            "x": -0.2126213855299692,
-            "y": 0.35475687881928325
+            "x": -0.21255604468562408,
+            "y": 0.35481974360691965
           },
           {
             "id": "u12",
             "speaker": "한지훈",
             "text": "저는 총사업비 상한을 의결서에 명시하자는 입장입니다. 상한이 없으면 설계 변경마다 용역비가 일억 오천씩 붙습니다.",
-            "textEn": "I am of the position that the total project cost ceiling should be specified in the resolution. If there is no ceiling, each design change adds 150 million won in service fees.",
+            "textEn": "I am of the position that we should specify the total project cost ceiling in the resolution. If there is no ceiling, for every design change, 150 million won in service fees gets added.",
             "kind": "claim",
             "index": 12,
-            "x": -0.18630398041241436,
-            "y": 0.31148137414192034
+            "x": -0.18622594990287183,
+            "y": 0.31147097118501527
           },
           {
             "id": "u13",
             "speaker": "오세라",
             "text": "저는 공사 기간 중 민원실 운영 계획이 먼저 나와야 한다고 봅니다. 이 년 동안 어디서 서류를 떼는지가 시민에게는 제일 큰 문제입니다.",
-            "textEn": "I think an operation plan for the civil complaints office during the construction period should come first. For two years, where citizens obtain documents is the biggest issue for them.",
+            "textEn": "I think the civil service office operation plan during the construction period must come first. Where citizens obtain documents for two years is the biggest issue for citizens.",
             "kind": "claim",
             "index": 13,
-            "x": 0.03828645885264571,
-            "y": -0.2500398212214771
+            "x": 0.038299557525715865,
+            "y": -0.25021165286745817
           },
           {
             "id": "u14",
             "speaker": "정하늘",
             "text": "임시청사도 안전 기준을 통과한 건물이어야 합니다. 임시라는 이유로 기준을 낮추면 책임이 그대로 남습니다.",
-            "textEn": "The temporary government building must also be a building that has passed safety standards. If we lower the standards because it is temporary, responsibility remains as is.",
+            "textEn": "The temporary government building must also be a building that passes safety standards. If we lower the standards because it is temporary, the responsibility remains as it is.",
             "kind": "claim",
             "index": 14,
-            "x": -0.37048651754721706,
-            "y": 0.03201574497620871
+            "x": -0.37043127136848447,
+            "y": 0.03224286510634458
           },
           {
             "id": "u15",
             "speaker": "한지훈",
             "text": "임시청사는 외곽이 답입니다. 임대료가 도심의 육십 퍼센트고, 이 년이면 차액만 이십억입니다.",
-            "textEn": "An outlying area is the answer for the temporary government building. The rent is 60 percent of the downtown area, and over two years the difference alone is 2 billion won.",
+            "textEn": "The temporary government building should be on the outskirts. The rent is sixty percent of downtown, and over two years the difference alone is two billion won.",
             "kind": "claim",
             "index": 15,
-            "x": -0.22273174430507905,
-            "y": -0.3575076238261572
+            "x": -0.22294306505658745,
+            "y": -0.3573599540638967
           },
           {
             "id": "u16",
             "speaker": "오세라",
             "text": "외곽으로 나가면 어르신들이 버스를 두 번 갈아탑니다. 지금 민원실 이용자의 사십 퍼센트가 육십오 세 이상입니다.",
-            "textEn": "If it goes out to the outskirts, the elderly have to transfer buses twice. Forty percent of the civil service office users right now are 65 or older.",
+            "textEn": "If they go out to the outskirts, the elderly have to transfer buses twice. Forty percent of the people using the civil service office right now are sixty-five years old or older.",
             "kind": "claim",
             "index": 16,
-            "x": -0.08801615499092609,
-            "y": -0.5377054165264767
+            "x": -0.08828635566427472,
+            "y": -0.5377469309820719
           },
           {
             "id": "u17",
             "speaker": "정하늘",
             "text": "저는 배상 위험이 남는 한 어떤 대안도 조건부라고 봅니다. 진단 등급이 해소되는 시점이 기준입니다.",
-            "textEn": "I think that as long as compensation risk remains, any alternative is conditional. The point in time when the diagnostic grade is resolved is the 기준.",
+            "textEn": "I think that as long as liability risk remains, any alternative is conditional. The point at which the diagnostic grade is resolved is the standard.",
             "kind": "claim",
             "index": 17,
-            "x": -0.18406567623569717,
-            "y": 0.19494649873095427
+            "x": -0.18401391622711727,
+            "y": 0.19490009131546013
           },
           {
             "id": "u18",
             "speaker": "한지훈",
             "text": "저는 상한선과 국비 요건, 이 두 가지가 의결서에 들어가는 것을 조건으로 찬성합니다.",
-            "textEn": "I support it on the condition that the upper limit and the national funding requirement, these two things, are included in the resolution document.",
+            "textEn": "I am in favor on the condition that the cap and the national funding requirement, these two things, are included in the resolution document.",
             "kind": "claim",
             "index": 18,
-            "x": 0.24847689160914396,
-            "y": 0.21647617388555163
+            "x": 0.24820093648432393,
+            "y": 0.21640289340392652
           },
           {
             "id": "u19",
             "speaker": "오세라",
             "text": "저는 일층 민원실과 공사 기간 중 대체 창구 계획이 명시되는 것을 조건으로 찬성합니다.",
-            "textEn": "I support it on the condition that the first-floor civil service office and the plan for a substitute window during the construction period are clearly stated.",
+            "textEn": "I am in favor on the condition that the first-floor civil service office and the alternative counter plan during the construction period are explicitly stated.",
             "kind": "claim",
             "index": 19,
-            "x": 0.345282298546784,
-            "y": 0.2034332466045104
+            "x": 0.34546060121217254,
+            "y": 0.20325241464462698
           },
           {
             "id": "u20",
             "speaker": "정하늘",
             "text": "저는 이행 강제금 통지 전 착공, 그리고 임시청사 안전 확인을 조건으로 찬성합니다.",
-            "textEn": "I support it on the condition of commencement before notification of the enforcement fine, and confirmation of the temporary building’s safety.",
+            "textEn": "I am in favor on the condition of starting construction before notice of the enforcement fine, and confirming the safety of the temporary building.",
             "kind": "claim",
             "index": 20,
-            "x": -0.11808004588121843,
-            "y": 0.022084190396218194
+            "x": -0.11792072878089226,
+            "y": 0.0221213389744461
           },
           {
             "id": "u22",
             "speaker": "정하늘",
             "text": "조건이 다르면 같은 찬성이 아닙니다. 법적 시한이 빠진 원안이면 재검토를 요청합니다.",
-            "textEn": "If the conditions are different, it is not the same approval. If it is the original draft with the legal deadline omitted, I request reconsideration.",
+            "textEn": "If the conditions are different, it is not the same approval. If the original proposal lacks the legal deadline, I request reconsideration.",
             "kind": "claim",
             "index": 22,
-            "x": 0.04223864944193472,
-            "y": 0.06860984808797976
+            "x": 0.04185919745025206,
+            "y": 0.07008963791187031
           },
           {
             "id": "u23",
             "speaker": "오세라",
             "text": "저도 같습니다. 민원 동선이 지금과 같다면 제가 찬성한 안이 아닙니다.",
-            "textEn": "I feel the same. If the civil complaint flow is the same as it is now, it is not the proposal I approved.",
+            "textEn": "I am the same. If the civil service flow is the same as now, it is not the proposal I approved.",
             "kind": "claim",
             "index": 23,
-            "x": 0.5053562875283045,
-            "y": -0.07187745046685876
+            "x": 0.5052557439214711,
+            "y": -0.0719329603414066
           },
           {
             "id": "u24",
             "speaker": "한지훈",
             "text": "상한선 없이 통과되면 사업비가 두 배로 갑니다. 그 경우 저는 반대로 돌아섭니다.",
-            "textEn": "If it passes without an upper limit, the project cost will double. In that case, I will turn against it.",
+            "textEn": "If it passes without a cap, the project cost goes up twofold. In that case, I will turn against it.",
             "kind": "claim",
             "index": 24,
-            "x": -0.10540296240252496,
-            "y": 0.03180087182917556
+            "x": -0.1055516129486295,
+            "y": 0.03193515781870428
           }
         ],
         "speakers": [
@@ -950,14 +951,14 @@
             "colorIndex": 0,
             "n": 8,
             "nExcluded": 0,
-            "x": -0.2369935054755938,
-            "y": 0.27361285521331646,
+            "x": -0.2369038704098054,
+            "y": 0.2739350762274925,
             "ellipse": {
-              "cx": -0.17075530082208512,
-              "cy": 0.15351021436865508,
-              "rx": 0.22967109584960133,
-              "ry": 0.11538903434689476,
-              "angle": 22.98634399564847
+              "cx": -0.17071212249494808,
+              "cy": 0.15372131055918933,
+              "rx": 0.22964564329508952,
+              "ry": 0.11507907049314785,
+              "angle": 22.997413220171126
             },
             "underdetermined": false
           },
@@ -966,14 +967,14 @@
             "colorIndex": 1,
             "n": 7,
             "nExcluded": 0,
-            "x": -0.007510881264387733,
-            "y": 0.0019833870605678707,
+            "x": -0.007564479360090988,
+            "y": 0.0018769906396803855,
             "ellipse": {
-              "cx": -0.01600927021590505,
-              "cy": -0.032174982216142685,
-              "rx": 0.28463333122015244,
-              "ry": 0.2550274922923766,
-              "angle": 67.99656745916253
+              "cx": -0.016061487388538163,
+              "cy": -0.032250279049246204,
+              "rx": 0.28461933222459496,
+              "ry": 0.2549660808956612,
+              "angle": 67.9792616685562
             },
             "underdetermined": false
           },
@@ -982,47 +983,47 @@
             "colorIndex": 2,
             "n": 7,
             "nExcluded": 0,
-            "x": 0.3349077799479326,
-            "y": -0.1664927348319727,
+            "x": 0.334927098373497,
+            "y": -0.1667282120507821,
             "ellipse": {
-              "cx": 0.21115818544114529,
-              "cy": -0.14326526277660595,
-              "rx": 0.35135473802860545,
-              "ry": 0.15312898951745743,
-              "angle": 53.99448379847954
+              "cx": 0.21116105595419313,
+              "cy": -0.1434312187326844,
+              "rx": 0.35137239192593084,
+              "ry": 0.15302743647923503,
+              "angle": 53.96887263825908
             },
             "underdetermined": false
           }
         ],
         "meta": {
           "method": "pca",
-          "explainedVariance": 0.21635585369346766,
+          "explainedVariance": 0.21634769728968434,
           "componentVariance": [
-            0.1132378824022483,
-            0.10311797129121934
+            0.11321990433961812,
+            0.1031277929500662
           ],
           "fittedOn": 22,
           "saturated": false,
-          "separation": 1.5558874886957776,
+          "separation": 1.5567717205161227,
           "axes": {
             "horizontal": {
               "low": {
-                "ko": "법적·비용 관리",
-                "en": "Legal cost control"
+                "ko": "안전·비용 조건",
+                "en": "Safety and cost conditions"
               },
               "high": {
-                "ko": "민원 동선 개선",
-                "en": "Service flow access"
+                "ko": "민원동선 실용성",
+                "en": "User flow practicality"
               }
             },
             "vertical": {
               "low": {
-                "ko": "교통·운영 부담",
-                "en": "Access and operations"
+                "ko": "이용편의 부담",
+                "en": "Access burden"
               },
               "high": {
-                "ko": "책임·의결 조건",
-                "en": "Liability and conditions"
+                "ko": "책임·증빙 관리",
+                "en": "Liability and records"
               }
             }
           }
@@ -1034,221 +1035,221 @@
             "id": "u2",
             "speaker": "정하늘",
             "text": "저는 재건축에 찬성합니다. 작년 진단에서 내진성능이 기준치의 절반으로 나왔습니다. 이 상태로 사고가 나면 관리 주체의 과실이 그대로 인정됩니다.",
-            "textEn": "I am in favor of rebuilding. Last year’s inspection found that the seismic performance was half of the standard. If an accident happens in this state, the managing entity’s negligence will be recognized as is.",
+            "textEn": "I am in favor of reconstruction. In last year's inspection, the seismic performance came out at half of the standard. If an accident happens in this state, the negligence of the managing body will be acknowledged as it is.",
             "kind": "claim",
             "index": 2,
-            "x": 0.017950744822122392,
-            "y": -0.3181872617169963
+            "x": 0.018191479524350258,
+            "y": -0.3180954395874657
           },
           {
             "id": "u3",
             "speaker": "한지훈",
             "text": "저도 찬성입니다. 근거는 회수 기간입니다. 냉난방 연료비가 연 사억인데 신축하면 일억 이천으로 떨어지고, 십이 년이면 공사비가 회수됩니다.",
-            "textEn": "I also am in favor. The basis is the payback period. Heating and cooling fuel costs are four hundred million won a year, but if we build anew it drops to one hundred twenty million, and in twelve years the construction cost is recovered.",
+            "textEn": "I am also in favor. The basis is the payback period. The heating and cooling fuel cost is four hundred million a year, but if we build anew it drops to one hundred twenty million, and in twelve years the construction cost is recovered.",
             "kind": "claim",
             "index": 3,
-            "x": -0.27315345041174444,
-            "y": -0.12012151184910576
+            "x": -0.27308635787276136,
+            "y": -0.12033479394667458
           },
           {
             "id": "u4",
             "speaker": "오세라",
             "text": "저 역시 찬성합니다. 저는 민원실에서 벌어지는 일을 봅니다. 창구 앞 대기줄이 복도까지 나오고, 유모차와 휠체어가 지나갈 폭이 남지 않습니다.",
-            "textEn": "I also am in favor. I see what happens in the civil complaints office. The line in front of the counters comes out into the hallway, and there is no width left for strollers and wheelchairs to pass.",
+            "textEn": "I am also in favor. I see what is happening in the civil service office. The waiting line in front of the counter comes out into the hallway, and there is no width left for strollers and wheelchairs to pass.",
             "kind": "claim",
             "index": 4,
-            "x": -0.29229062827347896,
-            "y": -0.21752427463969778
+            "x": -0.2921389990340775,
+            "y": -0.21775482651920475
           },
           {
             "id": "u5",
             "speaker": "정하늘",
             "text": "진단 등급이 나온 뒤에도 사용을 계속한 기록이 남아 있습니다. 인근 지자체 판례에서 이 기록이 배상 책임의 핵심 근거가 됐습니다.",
-            "textEn": "There remains a record that use continued even after the inspection grade was issued. In a nearby local government precedent, this record became the key basis for liability for compensation.",
+            "textEn": "There is a record that use continued even after the inspection grade came out. In a precedent from a nearby local government, this record became the key basis for compensation liability.",
             "kind": "claim",
             "index": 5,
-            "x": 0.2849399135496789,
-            "y": 0.05939363127344144
+            "x": 0.28472868283229924,
+            "y": 0.05954826830834033
           },
           {
             "id": "u6",
             "speaker": "한지훈",
             "text": "저는 국비 조건을 먼저 확정해야 한다고 봅니다. 에너지 효율 일등급 설계면 국비 삼십 퍼센트가 들어옵니다. 그 조건 하나가 시 부담을 백육십억 줄입니다.",
-            "textEn": "I think we should first determine the conditions for national funding. If it is a design with top-grade energy efficiency, thirty percent national funding comes in. That one condition reduces the city’s burden by sixteen billion won.",
+            "textEn": "I think we should first determine the national subsidy condition. If it is a top-grade energy efficiency design, thirty percent in national funds comes in. That one condition reduces the city's burden by sixteen billion won.",
             "kind": "claim",
             "index": 6,
-            "x": 0.15265145471096334,
-            "y": 0.04020143147575585
+            "x": 0.15229868858209572,
+            "y": 0.040616248414228305
           },
           {
             "id": "u7",
             "speaker": "오세라",
             "text": "민원실이 삼층에 있는 것도 문제입니다. 거동이 불편한 어르신이 엘리베이터 한 대를 십 분씩 기다립니다. 그 열 분이 매일 같은 시간에 오십니다.",
-            "textEn": "That the civil complaints office is on the third floor is also a problem. An elderly person with limited mobility waits ten minutes for a single elevator. Those ten minutes come every day at the same time.",
+            "textEn": "The civil service office being on the third floor is also a problem. An elderly person with difficulty moving waits ten minutes for one elevator. Those ten minutes come at the same time every day.",
             "kind": "claim",
             "index": 7,
-            "x": -0.2704042221974185,
-            "y": 0.28950010887538846
+            "x": -0.2707169672276987,
+            "y": 0.28916586415924445
           },
           {
             "id": "u8",
             "speaker": "정하늘",
             "text": "저는 안전진단 결과 공개 이후의 법적 시한도 봐야 한다고 봅니다. 보강 계획 제출 기한이 이미 지났습니다. 이행 강제금 부과 대상입니다.",
-            "textEn": "I think we also need to look at the legal deadline after the safety inspection results were disclosed. The deadline for submitting the reinforcement plan has already passed. It is subject to an enforcement fine.",
+            "textEn": "I also think we need to look at the legal deadline after the safety inspection results were disclosed. The deadline for submitting the reinforcement plan has already passed. It is subject to imposition of an enforcement fine.",
             "kind": "claim",
             "index": 8,
-            "x": 0.2932992266870008,
-            "y": 0.08406578264517398
+            "x": 0.293202739840205,
+            "y": 0.08434965348404937
           },
           {
             "id": "u9",
             "speaker": "한지훈",
             "text": "이행 강제금은 연 이천만 원 수준입니다. 저는 그보다 착공 지연에 따르는 금융 비용이 큽니다. 일 년 늦으면 이자만 사십억입니다.",
-            "textEn": "The enforcement fine is around 20 million won per year. I think the financial costs from delaying groundbreaking are larger than that. If it is delayed by one year, the interest alone is four billion won.",
+            "textEn": "The enforcement fine is at the level of 20 million won a year. I think the financial costs that accompany a delay in groundbreaking are bigger than that. If it is one year late, the interest alone is four billion won.",
             "kind": "claim",
             "index": 9,
-            "x": -0.09075696368551565,
-            "y": 0.28918602547253963
+            "x": -0.09109766110951645,
+            "y": 0.28924180869685295
           },
           {
             "id": "u10",
             "speaker": "오세라",
             "text": "저는 창구 배치를 일층으로 내리는 것이 이 사업의 핵심이라고 봅니다. 어떤 건물을 짓든 어르신이 삼층까지 올라가야 한다면 바뀐 것이 없습니다.",
-            "textEn": "I think moving the counter arrangement down to the first floor is the core of this project. No matter what building we build, if elderly people still have to go up to the third floor, nothing has changed.",
+            "textEn": "I think lowering the counter layout to the first floor is the core of this project. No matter what building we make, if elderly people have to go up to the third floor, nothing has changed.",
             "kind": "claim",
             "index": 10,
-            "x": -0.05908673094395687,
-            "y": -0.08319894537203892
+            "x": -0.05914064156342418,
+            "y": -0.08316086122507746
           },
           {
             "id": "u11",
             "speaker": "정하늘",
             "text": "소송이 제기되면 설계 단계 기록까지 전부 증거가 됩니다. 저는 그래서 의사결정 문서를 지금부터 정리해 두자고 요청드립니다.",
-            "textEn": "If a lawsuit is filed, even the records from the design stage become evidence in full. So I ask that we organize the decision-making documents from now on.",
+            "textEn": "If a lawsuit is filed, even the records from the design stage all become evidence. So I request that we organize the decision-making documents from now on.",
             "kind": "claim",
             "index": 11,
-            "x": 0.2561919342224236,
-            "y": -0.1579951752056986
+            "x": 0.25636569467347187,
+            "y": -0.15779353470140572
           },
           {
             "id": "u12",
             "speaker": "한지훈",
             "text": "저는 총사업비 상한을 의결서에 명시하자는 입장입니다. 상한이 없으면 설계 변경마다 용역비가 일억 오천씩 붙습니다.",
-            "textEn": "I am of the position that the total project cost ceiling should be specified in the resolution. If there is no ceiling, each design change adds 150 million won in service fees.",
+            "textEn": "I am of the position that we should specify the total project cost ceiling in the resolution. If there is no ceiling, for every design change, 150 million won in service fees gets added.",
             "kind": "claim",
             "index": 12,
-            "x": 0.19470574312647926,
-            "y": -0.11273880413656523
+            "x": 0.19483042440792264,
+            "y": -0.11252813953191718
           },
           {
             "id": "u13",
             "speaker": "오세라",
             "text": "저는 공사 기간 중 민원실 운영 계획이 먼저 나와야 한다고 봅니다. 이 년 동안 어디서 서류를 떼는지가 시민에게는 제일 큰 문제입니다.",
-            "textEn": "I think an operation plan for the civil complaints office during the construction period should come first. For two years, where citizens obtain documents is the biggest issue for them.",
+            "textEn": "I think the civil service office operation plan during the construction period must come first. Where citizens obtain documents for two years is the biggest issue for citizens.",
             "kind": "claim",
             "index": 13,
-            "x": -0.13965022295540994,
-            "y": 0.1431769247657818
+            "x": -0.1398180239876508,
+            "y": 0.14305776197656458
           },
           {
             "id": "u14",
             "speaker": "정하늘",
             "text": "임시청사도 안전 기준을 통과한 건물이어야 합니다. 임시라는 이유로 기준을 낮추면 책임이 그대로 남습니다.",
-            "textEn": "The temporary government building must also be a building that has passed safety standards. If we lower the standards because it is temporary, responsibility remains as is.",
+            "textEn": "The temporary government building must also be a building that passes safety standards. If we lower the standards because it is temporary, the responsibility remains as it is.",
             "kind": "claim",
             "index": 14,
-            "x": 0.2703841104094102,
-            "y": 0.10714680476323887
+            "x": 0.27024043561178196,
+            "y": 0.1072852562335892
           },
           {
             "id": "u15",
             "speaker": "한지훈",
             "text": "임시청사는 외곽이 답입니다. 임대료가 도심의 육십 퍼센트고, 이 년이면 차액만 이십억입니다.",
-            "textEn": "An outlying area is the answer for the temporary government building. The rent is 60 percent of the downtown area, and over two years the difference alone is 2 billion won.",
+            "textEn": "The temporary government building should be on the outskirts. The rent is sixty percent of downtown, and over two years the difference alone is two billion won.",
             "kind": "claim",
             "index": 15,
-            "x": 0.062288310965262335,
-            "y": 0.3004217096729841
+            "x": 0.062080213471020246,
+            "y": 0.3005414524784007
           },
           {
             "id": "u16",
             "speaker": "오세라",
             "text": "외곽으로 나가면 어르신들이 버스를 두 번 갈아탑니다. 지금 민원실 이용자의 사십 퍼센트가 육십오 세 이상입니다.",
-            "textEn": "If it goes out to the outskirts, the elderly have to transfer buses twice. Forty percent of the civil service office users right now are 65 or older.",
+            "textEn": "If they go out to the outskirts, the elderly have to transfer buses twice. Forty percent of the people using the civil service office right now are sixty-five years old or older.",
             "kind": "claim",
             "index": 16,
-            "x": -0.18490353947126717,
-            "y": 0.3995654501165322
+            "x": -0.18517919502040164,
+            "y": 0.39943596149079497
           },
           {
             "id": "u17",
             "speaker": "정하늘",
             "text": "저는 배상 위험이 남는 한 어떤 대안도 조건부라고 봅니다. 진단 등급이 해소되는 시점이 기준입니다.",
-            "textEn": "I think that as long as compensation risk remains, any alternative is conditional. The point in time when the diagnostic grade is resolved is the 기준.",
+            "textEn": "I think that as long as liability risk remains, any alternative is conditional. The point at which the diagnostic grade is resolved is the standard.",
             "kind": "claim",
             "index": 17,
-            "x": 0.17022003096525154,
-            "y": -0.04508726632098255
+            "x": 0.1702808253981779,
+            "y": -0.04491074626525574
           },
           {
             "id": "u18",
             "speaker": "한지훈",
             "text": "저는 상한선과 국비 요건, 이 두 가지가 의결서에 들어가는 것을 조건으로 찬성합니다.",
-            "textEn": "I support it on the condition that the upper limit and the national funding requirement, these two things, are included in the resolution document.",
+            "textEn": "I am in favor on the condition that the cap and the national funding requirement, these two things, are included in the resolution document.",
             "kind": "claim",
             "index": 18,
-            "x": -0.06352670124309165,
-            "y": -0.2125649225047242
+            "x": -0.06318134807011062,
+            "y": -0.21242961621384457
           },
           {
             "id": "u19",
             "speaker": "오세라",
             "text": "저는 일층 민원실과 공사 기간 중 대체 창구 계획이 명시되는 것을 조건으로 찬성합니다.",
-            "textEn": "I support it on the condition that the first-floor civil service office and the plan for a substitute window during the construction period are clearly stated.",
+            "textEn": "I am in favor on the condition that the first-floor civil service office and the alternative counter plan during the construction period are explicitly stated.",
             "kind": "claim",
             "index": 19,
-            "x": -0.13699903310320172,
-            "y": -0.23591877728839997
+            "x": -0.136828027215228,
+            "y": -0.23607385947271992
           },
           {
             "id": "u20",
             "speaker": "정하늘",
             "text": "저는 이행 강제금 통지 전 착공, 그리고 임시청사 안전 확인을 조건으로 찬성합니다.",
-            "textEn": "I support it on the condition of commencement before notification of the enforcement fine, and confirmation of the temporary building’s safety.",
+            "textEn": "I am in favor on the condition of starting construction before notice of the enforcement fine, and confirming the safety of the temporary building.",
             "kind": "claim",
             "index": 20,
-            "x": 0.1012451614084283,
-            "y": 0.016899203414752498
+            "x": 0.10109791225307395,
+            "y": 0.016992378890404416
           },
           {
             "id": "u22",
             "speaker": "정하늘",
             "text": "조건이 다르면 같은 찬성이 아닙니다. 법적 시한이 빠진 원안이면 재검토를 요청합니다.",
-            "textEn": "If the conditions are different, it is not the same approval. If it is the original draft with the legal deadline omitted, I request reconsideration.",
+            "textEn": "If the conditions are different, it is not the same approval. If the original proposal lacks the legal deadline, I request reconsideration.",
             "kind": "claim",
             "index": 22,
-            "x": 0.04221977900770299,
-            "y": -0.08007714504947927
+            "x": 0.04280311831873876,
+            "y": -0.08073096945679252
           },
           {
             "id": "u23",
             "speaker": "오세라",
             "text": "저도 같습니다. 민원 동선이 지금과 같다면 제가 찬성한 안이 아닙니다.",
-            "textEn": "I feel the same. If the civil complaint flow is the same as it is now, it is not the proposal I approved.",
+            "textEn": "I am the same. If the civil service flow is the same as now, it is not the proposal I approved.",
             "kind": "claim",
             "index": 23,
-            "x": -0.347610668700351,
-            "y": -0.1462303465630337
+            "x": -0.34737859213860595,
+            "y": -0.14655035316739898
           },
           {
             "id": "u24",
             "speaker": "한지훈",
             "text": "상한선 없이 통과되면 사업비가 두 배로 갑니다. 그 경우 저는 반대로 돌아섭니다.",
-            "textEn": "If it passes without an upper limit, the project cost will double. In that case, I will turn against it.",
+            "textEn": "If it passes without a cap, the project cost goes up twofold. In that case, I will turn against it.",
             "kind": "claim",
             "index": 24,
-            "x": 0.046445200550496966,
-            "y": 0.0349143332702573
+            "x": 0.04657311680440911,
+            "y": 0.03495681316094216
           }
         ],
         "speakers": [
@@ -1257,14 +1258,14 @@
             "colorIndex": 0,
             "n": 8,
             "nExcluded": 0,
-            "x": 0.21695490645507118,
-            "y": -0.07194250460937726,
+            "x": 0.21704735426901803,
+            "y": -0.07185518513480232,
             "ellipse": {
-              "cx": 0.17955636263400232,
-              "cy": -0.04173017827456875,
-              "rx": 0.16726753845345763,
-              "ry": 0.0723035054820962,
-              "angle": 54.856301443749004
+              "cx": 0.1796138610565124,
+              "cy": -0.04166939163681706,
+              "rx": 0.1672459563102124,
+              "ry": 0.07218065515969849,
+              "angle": 54.925747209344685
             },
             "underdetermined": false
           },
@@ -1273,14 +1274,14 @@
             "colorIndex": 1,
             "n": 7,
             "nExcluded": 0,
-            "x": 0.003741976804630322,
-            "y": 0.02308979840544837,
+            "x": 0.0037076194796118456,
+            "y": 0.02322783067579527,
             "ellipse": {
-              "cx": 0.00409337057326431,
-              "cy": 0.03132832305730596,
-              "rx": 0.2033608572063066,
-              "ry": 0.1570847338368617,
-              "angle": 75.87034228521327
+              "cx": 0.004059582316151326,
+              "cy": 0.03143768186542683,
+              "rx": 0.20335363350832145,
+              "ry": 0.15706728607055223,
+              "angle": 75.94005843710141
             },
             "underdetermined": false
           },
@@ -1289,14 +1290,14 @@
             "colorIndex": 2,
             "n": 7,
             "nExcluded": 0,
-            "x": -0.2548563326994857,
-            "y": 0.014025731104804559,
+            "x": -0.25488249222670034,
+            "y": 0.013799027253351961,
             "ellipse": {
-              "cx": -0.2044207208064406,
-              "cy": 0.0213385914135046,
-              "rx": 0.25572118883491096,
-              "ry": 0.10207606621744815,
-              "angle": 88.2575760603084
+              "cx": -0.20445720659815522,
+              "cy": 0.021159955320314693,
+              "rx": 0.2557107796662379,
+              "ry": 0.10202573346647809,
+              "angle": 88.30107589575339
             },
             "underdetermined": false
           }
@@ -1307,7 +1308,7 @@
           "componentVariance": null,
           "fittedOn": 22,
           "saturated": false,
-          "separation": 1.5488675670665122,
+          "separation": 1.5494362914115452,
           "axes": null
         }
       }
@@ -1341,6 +1342,7 @@
       "preambleLines": 0,
       "unitsDroppedAsHallucinated": 0,
       "unitsDroppedUnresolvedSpeaker": 0,
+      "translationsRepaired": 0,
       "model": "gpt-5.4-mini",
       "embeddingModel": "text-embedding-3-small"
     }
@@ -1353,191 +1355,191 @@
             "id": "u1",
             "speaker": "윤태경",
             "text": "저는 이 문제를 아이들 안전 하나로만 보고 싶습니다. 최근 삼 년간 이 구간에서 어린이 교통사고가 일곱 건 났고 그중 두 건이 중상입니다. 다른 고려 사항보다 이 숫자가 먼저입니다.",
-            "textEn": "I want to look at this issue only as the safety of children. In the past three years, there were seven child traffic accidents in this section, and two of them were serious injuries. This number comes before other considerations.",
+            "textEn": "I want to see this issue only in terms of children's safety. In the past three years, there were seven child traffic accidents in this section, and two of them were serious injuries. This number comes before other considerations.",
             "kind": "claim",
             "index": 1,
-            "x": 0.26556681095781676,
-            "y": 0.21729691277150723
+            "x": 0.26667837855476606,
+            "y": 0.19261634561317692
           },
           {
             "id": "u2",
             "speaker": "서나윤",
-            "text": "저도 안전이 출발점이라고 봅니다. 특히 학교 정문 앞 삼십 미터 구간은 인도 폭이 구십 센티라 두 명이 나란히 걸을 수 없습니다.",
-            "textEn": "I also think safety is the starting point. In particular, the thirty-meter section in front of the school main gate has a sidewalk width of ninety centimeters, so two people cannot walk side by side.",
+            "text": "동의합니다. 저도 안전이 출발점이라고 봅니다. 특히 학교 정문 앞 삼십 미터 구간은 인도 폭이 구십 센티라 두 명이 나란히 걸을 수 없습니다.",
+            "textEn": "I agree. I also see safety as the starting point. In particular, in the thirty-meter section in front of the school main gate, the sidewalk width is ninety centimeters, so two people cannot walk side by side.",
             "kind": "claim",
             "index": 2,
-            "x": 0.11588132143869398,
-            "y": 0.2307297645341509
+            "x": 0.16382487241230886,
+            "y": 0.21164738071951134
           },
           {
             "id": "u3",
             "speaker": "윤태경",
             "text": "그래서 저는 통학 시간대 차량 전면 통제를 제안합니다. 오전 여덟 시부터 아홉 시까지 한 시간이면 사고 위험의 대부분이 사라집니다.",
-            "textEn": "So I propose a full vehicle restriction during the commuting time. If it is one hour from 8 a.m. to 9 a.m., most of the accident risk disappears.",
+            "textEn": "So I propose a complete vehicle restriction during the commuting time. If it is one hour from eight in the morning to nine, most of the accident risk disappears.",
             "kind": "claim",
             "index": 3,
-            "x": 0.21824495448648315,
-            "y": 0.14152680390462055
+            "x": 0.2178378748297294,
+            "y": 0.1535127567312725
           },
           {
             "id": "u4",
             "speaker": "서나윤",
             "text": "전면 통제는 저도 효과가 크다고 봅니다. 다만 그 구간이 인근 상가 유일한 진입로입니다. 아침 납품 차량이 그 시간에 집중됩니다.",
-            "textEn": "I also think full restriction is highly effective. However, that section is the only access road for the nearby commercial district. Delivery vehicles in the morning are concentrated at that time.",
+            "textEn": "I also think a complete restriction is highly effective. However, that section is the only access road to the nearby shopping area. Morning delivery vehicles concentrate at that time.",
             "kind": "claim",
             "index": 4,
-            "x": -0.16829369752998838,
-            "y": 0.11281906323334126
+            "x": -0.17161189844382269,
+            "y": 0.13802893759329374
           },
           {
             "id": "u5",
             "speaker": "윤태경",
             "text": "납품 시간은 조정할 수 있습니다. 아이 안전과 납품 편의를 같은 저울에 올릴 수는 없다고 생각합니다.",
-            "textEn": "Delivery times can be adjusted. I do not think children's safety and delivery convenience can be put on the same scale.",
+            "textEn": "Delivery times can be adjusted. I do not think children's safety and delivery convenience can be placed on the same scale.",
             "kind": "claim",
             "index": 5,
-            "x": 0.042741111219596714,
-            "y": 0.228717542839002
+            "x": 0.044002560157539054,
+            "y": 0.2245569361323879
           },
           {
             "id": "u6",
             "speaker": "서나윤",
             "text": "저울에 올리자는 것이 아니라 실행 가능성을 말씀드리는 것입니다. 작년에 옆 동에서 같은 통제를 했다가 두 달 만에 철회했습니다. 단속 인력이 없어서 지켜지지 않았습니다.",
-            "textEn": "I am not saying to put them on a scale; I am talking about feasibility. Last year, the same restriction was implemented in the neighboring district and then withdrawn after two months. It was not observed because there were no enforcement personnel.",
+            "textEn": "I am not saying to put them on a scale; I am talking about feasibility. Last year, the neighboring district implemented the same restriction and withdrew it after two months. It was not obeyed because there were no enforcement personnel.",
             "kind": "claim",
             "index": 6,
-            "x": -0.21649006264887855,
-            "y": 0.0879194834555628
+            "x": -0.21804605874387675,
+            "y": 0.10602290684298143
           },
           {
             "id": "u7",
             "speaker": "윤태경",
             "text": "그 사례에서도 사고는 계속 났습니다. 철회 이후 넉 달 동안 경상 두 건이 더 기록됐습니다. 저는 사고 기록이 남는 한 통제를 유지해야 한다고 봅니다.",
-            "textEn": "Accidents kept happening even in that case. Two more minor injuries were recorded during the four months after the withdrawal. I think the restriction should be maintained as long as accident records remain.",
+            "textEn": "Even in that case, accidents kept happening. During the four months after the withdrawal, two more minor injuries were recorded. I think the restriction should be maintained as long as accident records continue.",
             "kind": "claim",
             "index": 7,
-            "x": 0.21318382033964908,
-            "y": 0.036942923358777
+            "x": 0.2084322954750399,
+            "y": 0.056864973322435536
           },
           {
             "id": "u8",
             "speaker": "서나윤",
             "text": "볼라드는 응급차량 진입도 막습니다. 소방서 협의가 선행되어야 하고 그 협의가 통상 넉 달 걸립니다.",
-            "textEn": "Bollards also block emergency vehicle access. Consultation with the fire station must come first, and that consultation usually takes four months.",
+            "textEn": "Bollards also block emergency vehicle entry. Consultation with the fire department must come first, and that consultation usually takes four months.",
             "kind": "claim",
             "index": 8,
-            "x": -0.21336033898753654,
-            "y": 0.24944630396485484
+            "x": -0.2144052764317943,
+            "y": 0.2696865680654853
           },
           {
             "id": "u9",
             "speaker": "윤태경",
             "text": "협의가 늦어지는 동안에도 등교 시간은 매일 옵니다. 저는 사고가 난 그 구간부터 즉시 막아야 한다고 봅니다.",
-            "textEn": "Even while consultation is delayed, school commuting time comes every day. I think we should block the section where the accidents occurred immediately.",
+            "textEn": "Even while consultation is delayed, school commute time comes every day. I think that section where accidents occurred must be blocked immediately.",
             "kind": "claim",
             "index": 9,
-            "x": 0.3012277184617099,
-            "y": -0.0824092701371271
+            "x": 0.29480763179118785,
+            "y": -0.06791679497312442
           },
           {
             "id": "u10",
             "speaker": "서나윤",
             "text": "그 학부모 봉사가 문제입니다. 지금도 녹색어머니회 참여율이 정원의 사십 퍼센트입니다. 맞벌이 가구가 늘어서 아침에 나올 수 있는 사람이 없습니다.",
-            "textEn": "That parent volunteer system is the problem. Even now, participation in the Green Mothers' Association is at forty percent of capacity. Because dual-income households have increased, there is no one who can come out in the morning.",
+            "textEn": "That parent volunteer system is the problem. Even now, the participation rate in the Green Mothers' Association is forty percent of the quota. Since dual-income households have increased, there is no one who can come out in the morning.",
             "kind": "claim",
             "index": 10,
-            "x": -0.06713881429229364,
-            "y": 0.41194554756824153
+            "x": -0.06683635760701141,
+            "y": 0.39025346945375755
           },
           {
             "id": "u11",
             "speaker": "윤태경",
             "text": "사고 일곱 건 중 다섯 건이 오전 여덟 시에서 아홉 시 사이였습니다. 그 한 시간을 지키지 못하면 나머지 대책은 의미가 없습니다.",
-            "textEn": "Five out of the seven accidents occurred between 8 a.m. and 9 a.m. If we cannot protect that one hour, the remaining measures are meaningless.",
+            "textEn": "Five of the seven accidents occurred between eight in the morning and nine in the morning. If we cannot protect that one hour, the other measures are meaningless.",
             "kind": "claim",
             "index": 11,
-            "x": 0.4506896364978625,
-            "y": 0.0016718914913478413
+            "x": 0.44718733341101957,
+            "y": -0.005074374091811777
           },
           {
             "id": "u12",
             "speaker": "서나윤",
             "text": "유급 전환은 저도 방향에는 찬성입니다. 그런데 여기서부터는 조금 다른 이야기를 드리고 싶습니다. 이 사업이 교통과, 교육지원과, 자치행정과 세 부서에 걸쳐 있습니다.",
-            "textEn": "I also agree with the direction of converting it to paid work. But from here, I want to talk about something a little different. This project spans three departments: the Transportation Department, the Education Support Department, and the Autonomous Administration Department.",
+            "textEn": "I also agree with the direction of converting it to paid work. But from here I want to tell a slightly different story. This project spans three departments: the transportation department, the education support department, and the autonomous administration department.",
             "kind": "claim",
             "index": 12,
-            "x": -0.24169565157977901,
-            "y": 0.22938006450343523
+            "x": -0.2403194872453988,
+            "y": 0.2341341008445773
           },
           {
             "id": "u13",
             "speaker": "서나윤",
             "text": "지금 통학로 예산이 세 부서에 나뉘어 있어서 볼라드는 교통과, 안전요원은 자치행정과, 홍보물은 교육지원과가 각각 집행합니다. 같은 구간에 대한 결정이 세 번 따로 납니다.",
-            "textEn": "Right now, the commuting-route budget is divided among three departments, so bollards are handled by the Transportation Department, safety personnel by the Autonomous Administration Department, and promotional materials by the Education Support Department. Decisions about the same section are made separately three times.",
+            "textEn": "Right now the walking-route budget is split across three departments, so bollards are executed by the transportation department, safety personnel by the autonomous administration department, and publicity materials by the education support department. Decisions about the same section are made separately three times.",
             "kind": "claim",
             "index": 13,
-            "x": -0.2708206664573335,
-            "y": 0.1992414531512552
+            "x": -0.26723998355251627,
+            "y": 0.18420390625230443
           },
           {
             "id": "u14",
             "speaker": "윤태경",
             "text": "저는 사고 지점 분포를 먼저 봐야 한다고 봅니다. 일곱 건 중 여섯 건이 정문에서 백 미터 안입니다. 대책의 우선순위는 그 숫자가 정합니다.",
-            "textEn": "I think we need to look at the distribution of accident locations first. Six out of the seven cases were within 100 meters of the main gate. Those numbers determine the priority of the measures.",
+            "textEn": "I think we should look at the distribution of accident locations first. Six of the seven cases were within one hundred meters of the main gate. That number determines the priority of the measures.",
             "kind": "claim",
             "index": 14,
-            "x": 0.4635927987082553,
-            "y": -0.2160712264292305
+            "x": 0.4615500560622965,
+            "y": -0.23554540217018555
           },
           {
             "id": "u15",
             "speaker": "서나윤",
             "text": "저는 반대로 봅니다. 기준을 아무리 잘 정해도 집행 창구가 셋이면 현장에서는 아무것도 바뀌지 않습니다. 작년 통학로 개선 예산 집행률이 오십일 퍼센트였던 이유가 그것입니다.",
-            "textEn": "I see it the opposite way. No matter how well the standards are set, if there are three execution windows, nothing will change on the ground. That is why last year’s budget execution rate for school-route improvements was fifty-one percent.",
+            "textEn": "I see it the other way around. No matter how well the standards are set, if there are three execution windows, nothing changes on the ground. That is why last year's execution rate of the school route improvement budget was fifty-one percent.",
             "kind": "claim",
             "index": 15,
-            "x": -0.3071388556648233,
-            "y": -0.23783296933252976
+            "x": -0.31395254764116076,
+            "y": -0.2453177351911695
           },
           {
             "id": "u16",
             "speaker": "서나윤",
             "text": "통합 전담 창구를 하나 만들고 통학로 관련 예산을 그 창구로 모으는 조직 개편이 먼저라고 생각합니다. 그래야 다음 회의에서 결정한 것이 실제로 집행됩니다.",
-            "textEn": "I think an organizational reform that creates one integrated dedicated window and gathers the school-route-related budget into that window comes first. Only then will what is decided at the next meeting actually be executed.",
+            "textEn": "I think an organizational reform that creates one integrated dedicated window and gathers the budget related to school routes into that window should come first. Only then will what is decided at the next meeting actually be carried out.",
             "kind": "claim",
             "index": 16,
-            "x": -0.4433100700098887,
-            "y": -0.11732625532184175
+            "x": -0.4417827049382765,
+            "y": -0.09723327596776142
           },
           {
             "id": "u17",
             "speaker": "윤태경",
             "text": "조직 개편에 걸리는 일 년 동안에도 사고 발생률은 그대로입니다. 지난 삼 년 평균이 연 두 건이니 그 기간에 두 건이 더 납니다.",
-            "textEn": "During the one year it takes for organizational reform, the accident rate stays the same. The average over the past three years is two cases per year, so two more will happen during that period.",
+            "textEn": "Even during the year it takes for the organizational reform, the accident incidence rate remains the same. The average over the past three years is two cases per year, so there will be two more cases during that period.",
             "kind": "claim",
             "index": 17,
-            "x": 0.37560213031435497,
-            "y": -0.11548396078593816
+            "x": 0.36795793142451355,
+            "y": -0.11475149424020104
           },
           {
             "id": "u18",
             "speaker": "서나윤",
             "text": "개편 없이 예산만 늘리면 그 예산도 오십일 퍼센트만 쓰입니다. 저는 집행 구조를 고치는 것이 결국 더 빠른 길이라고 봅니다.",
-            "textEn": "If you only increase the budget without reform, only fifty-one percent of that budget will be used too. I think fixing the execution structure is ultimately the faster path.",
+            "textEn": "If you only increase the budget without reform, that budget will also only be used fifty-one percent. I think fixing the execution structure is ultimately the faster path.",
             "kind": "claim",
             "index": 18,
-            "x": -0.3179352403686486,
-            "y": -0.4536895602980347
+            "x": -0.3271811941719398,
+            "y": -0.46037119530125054
           },
           {
             "id": "u19",
             "speaker": "서나윤",
             "text": "인사 부서와 협의해서 전담 팀 정원 두 명만 확보해도 창구 통합은 가능합니다. 조직 개편 전체를 기다릴 필요는 없습니다.",
-            "textEn": "If we coordinate with the HR department and secure just two dedicated team positions, integrating the window is possible. There is no need to wait for the entire organizational reform.",
+            "textEn": "If we coordinate with the personnel department and secure just two dedicated team positions, integrating the windows is possible. There is no need to wait for the entire organizational reform.",
             "kind": "claim",
             "index": 19,
-            "x": -0.26031086271425774,
-            "y": 0.19608055068031924
+            "x": -0.258538101179369,
+            "y": 0.1941614098435422
           },
           {
             "id": "u20",
@@ -1546,18 +1548,18 @@
             "textEn": "I think the thirty meters in front of the main gate, where six accidents have concentrated, should be fixed this month. Regardless of the rest of the discussion, the statistics for that section are clear.",
             "kind": "claim",
             "index": 20,
-            "x": 0.3767133352018208,
-            "y": -0.18493122914933163
+            "x": 0.3773295882978065,
+            "y": -0.19611881083226143
           },
           {
             "id": "u21",
             "speaker": "서나윤",
             "text": "정문 앞 삼십 미터는 저도 즉시 시행에 동의합니다. 그 구간만은 단일 부서 사업으로 떼어낼 수 있습니다.",
-            "textEn": "I also agree to immediate implementation for the thirty meters in front of the main gate. That section alone can be separated out as a single-department project.",
+            "textEn": "I also agree to immediate implementation for the thirty meters in front of the main gate. That section alone can be separated as a single-department project.",
             "kind": "claim",
             "index": 21,
-            "x": -0.11691964842010445,
-            "y": -0.14612770671866168
+            "x": -0.11491237622103646,
+            "y": -0.1458189018187941
           },
           {
             "id": "u23",
@@ -1566,8 +1568,8 @@
             "textEn": "When dealing with the remaining sections, please put the budget execution structure on the agenda first.",
             "kind": "claim",
             "index": 23,
-            "x": -0.20430632911761099,
-            "y": -0.482515098294294
+            "x": -0.21104658465944892,
+            "y": -0.4926780730157188
           },
           {
             "id": "u24",
@@ -1576,8 +1578,8 @@
             "textEn": "I will start by putting the accident statistics first at the next meeting as well.",
             "kind": "claim",
             "index": 24,
-            "x": 0.004276600164901947,
-            "y": -0.30733102898942477
+            "x": -0.0037359515805586645,
+            "y": -0.29486363381244596
           }
         ],
         "speakers": [
@@ -1586,14 +1588,14 @@
             "colorIndex": 0,
             "n": 10,
             "nExcluded": 1,
-            "x": 0.43123567618510183,
-            "y": -0.06939376852738864,
+            "x": 0.4270609030609068,
+            "y": -0.06939244758847672,
             "ellipse": {
-              "cx": 0.27118389163524514,
-              "cy": -0.028007064112579742,
-              "rx": 0.19331220626530063,
-              "ry": 0.1468304482931348,
-              "angle": 116.22025297047307
+              "cx": 0.268204769842334,
+              "cy": -0.028671949832075726,
+              "rx": 0.19396401309677005,
+              "ry": 0.14472837579920642,
+              "angle": 118.32974285551946
             },
             "underdetermined": false
           },
@@ -1602,28 +1604,28 @@
             "colorIndex": 1,
             "n": 13,
             "nExcluded": 0,
-            "x": -0.36079881778034595,
-            "y": 0.009695314686916633,
+            "x": -0.3563550841530754,
+            "y": 0.011745458532217356,
             "ellipse": {
-              "cx": -0.20860299356557305,
-              "cy": 0.0215438954712153,
-              "rx": 0.2896733542111102,
-              "ry": 0.12027043055478047,
-              "angle": 76.37456472986487
+              "cx": -0.20631136141718023,
+              "cy": 0.02205534602467377,
+              "rx": 0.29121073781828377,
+              "ry": 0.13027057839115358,
+              "angle": 75.38396419901909
             },
             "underdetermined": false
           }
         ],
         "meta": {
           "method": "pca",
-          "explainedVariance": 0.18779101579956822,
+          "explainedVariance": 0.1885047684778771,
           "componentVariance": [
-            0.10815840152485827,
-            0.07963261427470998
+            0.10869962384860686,
+            0.07980514462927024
           ],
           "fittedOn": 23,
           "saturated": false,
-          "separation": 2.8421369810293804,
+          "separation": 2.7993802763893427,
           "axes": {
             "horizontal": {
               "low": {
@@ -1631,18 +1633,18 @@
                 "en": "Execution structure reform"
               },
               "high": {
-                "ko": "사고 데이터 우선",
-                "en": "Accident data priority"
+                "ko": "즉시 사고 대응",
+                "en": "Immediate incident response"
               }
             },
             "vertical": {
               "low": {
-                "ko": "통계·집행 중심",
-                "en": "Stats and execution"
+                "ko": "통계 기반 우선순위",
+                "en": "Data-driven priority"
               },
               "high": {
-                "ko": "현장 제약 우선",
-                "en": "On-site constraints"
+                "ko": "현장 제약 고려",
+                "en": "Practical constraints"
               }
             }
           }
@@ -1654,191 +1656,191 @@
             "id": "u1",
             "speaker": "윤태경",
             "text": "저는 이 문제를 아이들 안전 하나로만 보고 싶습니다. 최근 삼 년간 이 구간에서 어린이 교통사고가 일곱 건 났고 그중 두 건이 중상입니다. 다른 고려 사항보다 이 숫자가 먼저입니다.",
-            "textEn": "I want to look at this issue only as the safety of children. In the past three years, there were seven child traffic accidents in this section, and two of them were serious injuries. This number comes before other considerations.",
+            "textEn": "I want to see this issue only in terms of children's safety. In the past three years, there were seven child traffic accidents in this section, and two of them were serious injuries. This number comes before other considerations.",
             "kind": "claim",
             "index": 1,
-            "x": 0.1853844736348991,
-            "y": 0.2038815289463092
+            "x": 0.1873520001831286,
+            "y": 0.18635007691585828
           },
           {
             "id": "u2",
             "speaker": "서나윤",
-            "text": "저도 안전이 출발점이라고 봅니다. 특히 학교 정문 앞 삼십 미터 구간은 인도 폭이 구십 센티라 두 명이 나란히 걸을 수 없습니다.",
-            "textEn": "I also think safety is the starting point. In particular, the thirty-meter section in front of the school main gate has a sidewalk width of ninety centimeters, so two people cannot walk side by side.",
+            "text": "동의합니다. 저도 안전이 출발점이라고 봅니다. 특히 학교 정문 앞 삼십 미터 구간은 인도 폭이 구십 센티라 두 명이 나란히 걸을 수 없습니다.",
+            "textEn": "I agree. I also see safety as the starting point. In particular, in the thirty-meter section in front of the school main gate, the sidewalk width is ninety centimeters, so two people cannot walk side by side.",
             "kind": "claim",
             "index": 2,
-            "x": 0.04456346477328196,
-            "y": 0.19958612851429988
+            "x": 0.08123907541681209,
+            "y": 0.17056685092771598
           },
           {
             "id": "u3",
             "speaker": "윤태경",
             "text": "그래서 저는 통학 시간대 차량 전면 통제를 제안합니다. 오전 여덟 시부터 아홉 시까지 한 시간이면 사고 위험의 대부분이 사라집니다.",
-            "textEn": "So I propose a full vehicle restriction during the commuting time. If it is one hour from 8 a.m. to 9 a.m., most of the accident risk disappears.",
+            "textEn": "So I propose a complete vehicle restriction during the commuting time. If it is one hour from eight in the morning to nine, most of the accident risk disappears.",
             "kind": "claim",
             "index": 3,
-            "x": 0.1646294084010092,
-            "y": 0.05788479417254303
+            "x": 0.16347174020691033,
+            "y": 0.07433464298788445
           },
           {
             "id": "u4",
             "speaker": "서나윤",
             "text": "전면 통제는 저도 효과가 크다고 봅니다. 다만 그 구간이 인근 상가 유일한 진입로입니다. 아침 납품 차량이 그 시간에 집중됩니다.",
-            "textEn": "I also think full restriction is highly effective. However, that section is the only access road for the nearby commercial district. Delivery vehicles in the morning are concentrated at that time.",
+            "textEn": "I also think a complete restriction is highly effective. However, that section is the only access road to the nearby shopping area. Morning delivery vehicles concentrate at that time.",
             "kind": "claim",
             "index": 4,
-            "x": -0.13071899637770484,
-            "y": 0.037715896463953576
+            "x": -0.13484755049983677,
+            "y": 0.07160942213916664
           },
           {
             "id": "u5",
             "speaker": "윤태경",
             "text": "납품 시간은 조정할 수 있습니다. 아이 안전과 납품 편의를 같은 저울에 올릴 수는 없다고 생각합니다.",
-            "textEn": "Delivery times can be adjusted. I do not think children's safety and delivery convenience can be put on the same scale.",
+            "textEn": "Delivery times can be adjusted. I do not think children's safety and delivery convenience can be placed on the same scale.",
             "kind": "claim",
             "index": 5,
-            "x": 0.031111573256987955,
-            "y": 0.3208542747257747
+            "x": 0.031243695507769568,
+            "y": 0.33108506212603256
           },
           {
             "id": "u6",
             "speaker": "서나윤",
             "text": "저울에 올리자는 것이 아니라 실행 가능성을 말씀드리는 것입니다. 작년에 옆 동에서 같은 통제를 했다가 두 달 만에 철회했습니다. 단속 인력이 없어서 지켜지지 않았습니다.",
-            "textEn": "I am not saying to put them on a scale; I am talking about feasibility. Last year, the same restriction was implemented in the neighboring district and then withdrawn after two months. It was not observed because there were no enforcement personnel.",
+            "textEn": "I am not saying to put them on a scale; I am talking about feasibility. Last year, the neighboring district implemented the same restriction and withdrew it after two months. It was not obeyed because there were no enforcement personnel.",
             "kind": "claim",
             "index": 6,
-            "x": -0.16634826365414868,
-            "y": 0.03721759045383901
+            "x": -0.16892697611792024,
+            "y": 0.06297753294564941
           },
           {
             "id": "u7",
             "speaker": "윤태경",
             "text": "그 사례에서도 사고는 계속 났습니다. 철회 이후 넉 달 동안 경상 두 건이 더 기록됐습니다. 저는 사고 기록이 남는 한 통제를 유지해야 한다고 봅니다.",
-            "textEn": "Accidents kept happening even in that case. Two more minor injuries were recorded during the four months after the withdrawal. I think the restriction should be maintained as long as accident records remain.",
+            "textEn": "Even in that case, accidents kept happening. During the four months after the withdrawal, two more minor injuries were recorded. I think the restriction should be maintained as long as accident records continue.",
             "kind": "claim",
             "index": 7,
-            "x": 0.16819728821842758,
-            "y": -0.14045470569207416
+            "x": 0.16465896211655937,
+            "y": -0.11879113844375656
           },
           {
             "id": "u8",
             "speaker": "서나윤",
             "text": "볼라드는 응급차량 진입도 막습니다. 소방서 협의가 선행되어야 하고 그 협의가 통상 넉 달 걸립니다.",
-            "textEn": "Bollards also block emergency vehicle access. Consultation with the fire station must come first, and that consultation usually takes four months.",
+            "textEn": "Bollards also block emergency vehicle entry. Consultation with the fire department must come first, and that consultation usually takes four months.",
             "kind": "claim",
             "index": 8,
-            "x": -0.17786683672686712,
-            "y": 0.013080222485148155
+            "x": -0.17992841447616992,
+            "y": 0.037577349234009426
           },
           {
             "id": "u9",
             "speaker": "윤태경",
             "text": "협의가 늦어지는 동안에도 등교 시간은 매일 옵니다. 저는 사고가 난 그 구간부터 즉시 막아야 한다고 봅니다.",
-            "textEn": "Even while consultation is delayed, school commuting time comes every day. I think we should block the section where the accidents occurred immediately.",
+            "textEn": "Even while consultation is delayed, school commute time comes every day. I think that section where accidents occurred must be blocked immediately.",
             "kind": "claim",
             "index": 9,
-            "x": 0.24019744805188653,
-            "y": -0.10934380298216978
+            "x": 0.23562651011118452,
+            "y": -0.0932067268181668
           },
           {
             "id": "u10",
             "speaker": "서나윤",
             "text": "그 학부모 봉사가 문제입니다. 지금도 녹색어머니회 참여율이 정원의 사십 퍼센트입니다. 맞벌이 가구가 늘어서 아침에 나올 수 있는 사람이 없습니다.",
-            "textEn": "That parent volunteer system is the problem. Even now, participation in the Green Mothers' Association is at forty percent of capacity. Because dual-income households have increased, there is no one who can come out in the morning.",
+            "textEn": "That parent volunteer system is the problem. Even now, the participation rate in the Green Mothers' Association is forty percent of the quota. Since dual-income households have increased, there is no one who can come out in the morning.",
             "kind": "claim",
             "index": 10,
-            "x": -0.09202178255263209,
-            "y": 0.3294500509501654
+            "x": -0.09086710745017056,
+            "y": 0.31984251300340405
           },
           {
             "id": "u11",
             "speaker": "윤태경",
             "text": "사고 일곱 건 중 다섯 건이 오전 여덟 시에서 아홉 시 사이였습니다. 그 한 시간을 지키지 못하면 나머지 대책은 의미가 없습니다.",
-            "textEn": "Five out of the seven accidents occurred between 8 a.m. and 9 a.m. If we cannot protect that one hour, the remaining measures are meaningless.",
+            "textEn": "Five of the seven accidents occurred between eight in the morning and nine in the morning. If we cannot protect that one hour, the other measures are meaningless.",
             "kind": "claim",
             "index": 11,
-            "x": 0.3427109762476556,
-            "y": 0.14420497531354293
+            "x": 0.34035251178251513,
+            "y": 0.14572404269611203
           },
           {
             "id": "u12",
             "speaker": "서나윤",
             "text": "유급 전환은 저도 방향에는 찬성입니다. 그런데 여기서부터는 조금 다른 이야기를 드리고 싶습니다. 이 사업이 교통과, 교육지원과, 자치행정과 세 부서에 걸쳐 있습니다.",
-            "textEn": "I also agree with the direction of converting it to paid work. But from here, I want to talk about something a little different. This project spans three departments: the Transportation Department, the Education Support Department, and the Autonomous Administration Department.",
+            "textEn": "I also agree with the direction of converting it to paid work. But from here I want to tell a slightly different story. This project spans three departments: the transportation department, the education support department, and the autonomous administration department.",
             "kind": "claim",
             "index": 12,
-            "x": -0.21636955543426117,
-            "y": 0.07555104874446447
+            "x": -0.21698582430315572,
+            "y": 0.0847047294593824
           },
           {
             "id": "u13",
             "speaker": "서나윤",
             "text": "지금 통학로 예산이 세 부서에 나뉘어 있어서 볼라드는 교통과, 안전요원은 자치행정과, 홍보물은 교육지원과가 각각 집행합니다. 같은 구간에 대한 결정이 세 번 따로 납니다.",
-            "textEn": "Right now, the commuting-route budget is divided among three departments, so bollards are handled by the Transportation Department, safety personnel by the Autonomous Administration Department, and promotional materials by the Education Support Department. Decisions about the same section are made separately three times.",
+            "textEn": "Right now the walking-route budget is split across three departments, so bollards are executed by the transportation department, safety personnel by the autonomous administration department, and publicity materials by the education support department. Decisions about the same section are made separately three times.",
             "kind": "claim",
             "index": 13,
-            "x": -0.2256250050771653,
-            "y": 0.15059146417863065
+            "x": -0.2237739543057449,
+            "y": 0.13565655330980303
           },
           {
             "id": "u14",
             "speaker": "윤태경",
             "text": "저는 사고 지점 분포를 먼저 봐야 한다고 봅니다. 일곱 건 중 여섯 건이 정문에서 백 미터 안입니다. 대책의 우선순위는 그 숫자가 정합니다.",
-            "textEn": "I think we need to look at the distribution of accident locations first. Six out of the seven cases were within 100 meters of the main gate. Those numbers determine the priority of the measures.",
+            "textEn": "I think we should look at the distribution of accident locations first. Six of the seven cases were within one hundred meters of the main gate. That number determines the priority of the measures.",
             "kind": "claim",
             "index": 14,
-            "x": 0.35269693817328257,
-            "y": -0.15501073983677421
+            "x": 0.35353063041825517,
+            "y": -0.18655477271340667
           },
           {
             "id": "u15",
             "speaker": "서나윤",
             "text": "저는 반대로 봅니다. 기준을 아무리 잘 정해도 집행 창구가 셋이면 현장에서는 아무것도 바뀌지 않습니다. 작년 통학로 개선 예산 집행률이 오십일 퍼센트였던 이유가 그것입니다.",
-            "textEn": "I see it the opposite way. No matter how well the standards are set, if there are three execution windows, nothing will change on the ground. That is why last year’s budget execution rate for school-route improvements was fifty-one percent.",
+            "textEn": "I see it the other way around. No matter how well the standards are set, if there are three execution windows, nothing changes on the ground. That is why last year's execution rate of the school route improvement budget was fifty-one percent.",
             "kind": "claim",
             "index": 15,
-            "x": -0.21038518048591348,
-            "y": -0.10633246169037358
+            "x": -0.214212341320686,
+            "y": -0.11748625760364742
           },
           {
             "id": "u16",
             "speaker": "서나윤",
             "text": "통합 전담 창구를 하나 만들고 통학로 관련 예산을 그 창구로 모으는 조직 개편이 먼저라고 생각합니다. 그래야 다음 회의에서 결정한 것이 실제로 집행됩니다.",
-            "textEn": "I think an organizational reform that creates one integrated dedicated window and gathers the school-route-related budget into that window comes first. Only then will what is decided at the next meeting actually be executed.",
+            "textEn": "I think an organizational reform that creates one integrated dedicated window and gathers the budget related to school routes into that window should come first. Only then will what is decided at the next meeting actually be carried out.",
             "kind": "claim",
             "index": 16,
-            "x": -0.3326210983232775,
-            "y": -0.242202425286415
+            "x": -0.33376099881014776,
+            "y": -0.23563594163157395
           },
           {
             "id": "u17",
             "speaker": "윤태경",
             "text": "조직 개편에 걸리는 일 년 동안에도 사고 발생률은 그대로입니다. 지난 삼 년 평균이 연 두 건이니 그 기간에 두 건이 더 납니다.",
-            "textEn": "During the one year it takes for organizational reform, the accident rate stays the same. The average over the past three years is two cases per year, so two more will happen during that period.",
+            "textEn": "Even during the year it takes for the organizational reform, the accident incidence rate remains the same. The average over the past three years is two cases per year, so there will be two more cases during that period.",
             "kind": "claim",
             "index": 17,
-            "x": 0.3119706200695803,
-            "y": -0.08795850635776523
+            "x": 0.3071564579676829,
+            "y": -0.0822873317176994
           },
           {
             "id": "u18",
             "speaker": "서나윤",
             "text": "개편 없이 예산만 늘리면 그 예산도 오십일 퍼센트만 쓰입니다. 저는 집행 구조를 고치는 것이 결국 더 빠른 길이라고 봅니다.",
-            "textEn": "If you only increase the budget without reform, only fifty-one percent of that budget will be used too. I think fixing the execution structure is ultimately the faster path.",
+            "textEn": "If you only increase the budget without reform, that budget will also only be used fifty-one percent. I think fixing the execution structure is ultimately the faster path.",
             "kind": "claim",
             "index": 18,
-            "x": -0.20563005100012563,
-            "y": -0.12439865525235436
+            "x": -0.21133492516810432,
+            "y": -0.13442884570331226
           },
           {
             "id": "u19",
             "speaker": "서나윤",
             "text": "인사 부서와 협의해서 전담 팀 정원 두 명만 확보해도 창구 통합은 가능합니다. 조직 개편 전체를 기다릴 필요는 없습니다.",
-            "textEn": "If we coordinate with the HR department and secure just two dedicated team positions, integrating the window is possible. There is no need to wait for the entire organizational reform.",
+            "textEn": "If we coordinate with the personnel department and secure just two dedicated team positions, integrating the windows is possible. There is no need to wait for the entire organizational reform.",
             "kind": "claim",
             "index": 19,
-            "x": -0.2172323967204556,
-            "y": 0.00607208852015016
+            "x": -0.21618218273199472,
+            "y": -0.000988497866155867
           },
           {
             "id": "u20",
@@ -1847,18 +1849,18 @@
             "textEn": "I think the thirty meters in front of the main gate, where six accidents have concentrated, should be fixed this month. Regardless of the rest of the discussion, the statistics for that section are clear.",
             "kind": "claim",
             "index": 20,
-            "x": 0.2684139461786507,
-            "y": -0.03263001989718738
+            "x": 0.2688990549108795,
+            "y": -0.04890101678757116
           },
           {
             "id": "u21",
             "speaker": "서나윤",
             "text": "정문 앞 삼십 미터는 저도 즉시 시행에 동의합니다. 그 구간만은 단일 부서 사업으로 떼어낼 수 있습니다.",
-            "textEn": "I also agree to immediate implementation for the thirty meters in front of the main gate. That section alone can be separated out as a single-department project.",
+            "textEn": "I also agree to immediate implementation for the thirty meters in front of the main gate. That section alone can be separated as a single-department project.",
             "kind": "claim",
             "index": 21,
-            "x": -0.09754233347223376,
-            "y": -0.08414384576415712
+            "x": -0.09676724790270713,
+            "y": -0.09196615133485157
           },
           {
             "id": "u23",
@@ -1867,8 +1869,8 @@
             "textEn": "When dealing with the remaining sections, please put the budget execution structure on the agenda first.",
             "kind": "claim",
             "index": 23,
-            "x": -0.11950457400256397,
-            "y": -0.09972234147826217
+            "x": -0.12334923380564236,
+            "y": -0.11558320164137563
           },
           {
             "id": "u24",
@@ -1877,8 +1879,8 @@
             "textEn": "I will start by putting the accident statistics first at the next meeting as well.",
             "kind": "claim",
             "index": 24,
-            "x": 0.03652244479458169,
-            "y": -0.38825692145664825
+            "x": 0.03155717444402466,
+            "y": -0.38979551099795845
           }
         ],
         "speakers": [
@@ -1887,14 +1889,14 @@
             "colorIndex": 0,
             "n": 10,
             "nExcluded": 1,
-            "x": 0.2752060075172749,
-            "y": -0.030118738904532222,
+            "x": 0.2730857115730515,
+            "y": -0.02896362113363893,
             "ellipse": {
-              "cx": 0.21018351170269614,
-              "cy": -0.018682912306444917,
-              "rx": 0.20567850915520347,
-              "ry": 0.11493866306713355,
-              "angle": 91.95816508405115
+              "cx": 0.208384873764891,
+              "cy": -0.018204267275267163,
+              "rx": 0.20740529613861788,
+              "ry": 0.11498986061109302,
+              "angle": 92.83765137607767
             },
             "underdetermined": false
           },
@@ -1903,14 +1905,14 @@
             "colorIndex": 1,
             "n": 13,
             "nExcluded": 0,
-            "x": -0.2297385154901692,
-            "y": 0.02448310112989365,
+            "x": -0.22723676774649357,
+            "y": 0.024160238648096147,
             "ellipse": {
-              "cx": -0.16517712377338978,
-              "cy": 0.01480498160300686,
-              "rx": 0.1631114167666877,
-              "ry": 0.06963195423483608,
-              "angle": 66.996226099186
+              "cx": -0.16382289857503604,
+              "cy": 0.014372773479862629,
+              "rx": 0.162947692273105,
+              "ry": 0.07684326189398169,
+              "angle": 64.89032035035723
             },
             "underdetermined": false
           }
@@ -1921,7 +1923,7 @@
           "componentVariance": null,
           "fittedOn": 23,
           "saturated": false,
-          "separation": 3.006891379747279,
+          "separation": 2.940777296487667,
           "axes": null
         }
       }
@@ -1951,8 +1953,9 @@
       },
       "continuationLines": 0,
       "preambleLines": 0,
-      "unitsDroppedAsHallucinated": 1,
+      "unitsDroppedAsHallucinated": 0,
       "unitsDroppedUnresolvedSpeaker": 0,
+      "translationsRepaired": 0,
       "model": "gpt-5.4-mini",
       "embeddingModel": "text-embedding-3-small"
     }
@@ -1965,211 +1968,211 @@
             "id": "u1",
             "speaker": "강도현",
             "text": "주차장 요금은 인상해야 합니다. 현재 시간당 육백 원은 인근 시의 절반이고 그래서 하루 종일 세워두는 차가 많아 회전율이 떨어집니다.",
-            "textEn": "Parking fees should be raised. The current six hundred won per hour is half of the neighboring city's, and so there are many cars left parked all day, which lowers turnover.",
+            "textEn": "Parking lot fees should be raised. The current six hundred won per hour is half of the neighboring city’s, and so there are many cars left parked all day, which lowers turnover.",
             "kind": "claim",
             "index": 1,
-            "x": -0.10409370469535062,
-            "y": -0.4038668337804557
+            "x": -0.10394334702312429,
+            "y": -0.4039923560096189
           },
           {
             "id": "u2",
             "speaker": "문서영",
             "text": "저는 요금 인상에 반대합니다. 전통시장 이용객이 그 주차장을 씁니다. 요금이 오르면 시장 매출이 먼저 타격을 받습니다.",
-            "textEn": "I oppose a fee increase. Traditional market customers use that parking lot. If the fee goes up, the market's sales will be hit first.",
+            "textEn": "I oppose a fee increase. Traditional market customers use that parking lot. If the fee goes up, the market’s sales will be hit first.",
             "kind": "claim",
             "index": 2,
-            "x": -0.28494559527932234,
-            "y": -0.303160627017184
+            "x": -0.28424980423548846,
+            "y": -0.30351755522545376
           },
           {
             "id": "u3",
             "speaker": "임재현",
             "text": "저는 시간대별 차등이 맞다고 봅니다. 낮에는 올리고 저녁에는 유지하면 회전율과 상권을 같이 잡을 수 있습니다.",
-            "textEn": "I think time-based differentiation is right. If we raise it during the day and keep it unchanged in the evening, we can secure both turnover and the local business district.",
+            "textEn": "I think time-based differentiation is right. If you raise it during the day and keep it as is in the evening, you can secure both turnover and the local commercial district together.",
             "kind": "claim",
             "index": 3,
-            "x": 0.12831458916307795,
-            "y": -0.43996967571812284
+            "x": 0.1282394814063363,
+            "y": -0.4400127060255622
           },
           {
             "id": "u4",
             "speaker": "강도현",
             "text": "차등 요금은 정산 시스템 교체가 필요합니다. 그 비용이 요금 인상분보다 큽니다.",
-            "textEn": "Differential fees require replacing the settlement system. That cost is greater than the increase in fees.",
+            "textEn": "Differential pricing requires replacing the settlement system. That cost is greater than the increased fee revenue.",
             "kind": "claim",
             "index": 4,
-            "x": -0.23193798344380193,
-            "y": -0.31685373238859155
+            "x": -0.23201310427701438,
+            "y": -0.3168824176637814
           },
           {
             "id": "u5",
             "speaker": "문서영",
             "text": "시스템 교체 비용이 든다면 더더욱 지금 요금을 유지해야 합니다. 시장 상인 서명이 이미 팔백 명 넘게 들어왔습니다.",
-            "textEn": "If there is a system replacement cost, then all the more we should maintain the current fee. Signatures from market merchants have already exceeded eight hundred.",
+            "textEn": "If system replacement costs money, then all the more we should maintain the current fee. Signatures from market merchants have already exceeded eight hundred.",
             "kind": "claim",
             "index": 5,
-            "x": -0.28402811434786723,
-            "y": -0.10459154731593504
+            "x": -0.28390903382119753,
+            "y": -0.10403890744649531
           },
           {
             "id": "u6",
             "speaker": "임재현",
             "text": "서명 숫자로 요금을 정하면 어떤 요금도 못 올립니다. 저는 원가 기준으로 판단해야 한다고 봅니다.",
-            "textEn": "If you set parking fees by the number of signatures, you cannot raise any fee. I think we should judge based on cost.",
+            "textEn": "If you determine fees by the number of signatures, you cannot raise any fee at all. I think it should be judged on a cost basis.",
             "kind": "claim",
             "index": 6,
-            "x": -0.1089231703343887,
-            "y": -0.17686784387332252
+            "x": -0.10869414514028239,
+            "y": -0.17651798771210858
           },
           {
             "id": "u8",
             "speaker": "문서영",
             "text": "급식 식재료는 지역 농산물 비율을 지금 삼십 퍼센트에서 육십 퍼센트로 올려야 합니다. 지역 농가 소득이 직접 늘어나는 몇 안 되는 정책입니다.",
-            "textEn": "For school meal ingredients, the share of local agricultural products should be raised from the current thirty percent to sixty percent. It is one of the few policies that directly increases local farm income.",
+            "textEn": "For school meal ingredients, the proportion of local agricultural products should be raised from the current thirty percent to sixty percent. It is one of the few policies that directly increases the income of local farms.",
             "kind": "claim",
             "index": 8,
-            "x": -0.4779577022666361,
-            "y": 0.27110690512884245
+            "x": -0.4779762997701861,
+            "y": 0.2707310494623565
           },
           {
             "id": "u9",
             "speaker": "강도현",
             "text": "저는 비율을 못 박는 방식에 반대합니다. 지역 농산물 단가가 시장가보다 이십이 퍼센트 높습니다. 같은 예산으로 아이들이 먹는 양이 줄어듭니다.",
-            "textEn": "I oppose fixing the ratio. The unit price of local agricultural products is twenty-two percent higher than the market price. With the same budget, the amount children eat will decrease.",
+            "textEn": "I oppose the method of fixing the ratio. The unit price of local agricultural products is twenty-two percent higher than market price. With the same budget, the amount the children eat will decrease.",
             "kind": "claim",
             "index": 9,
-            "x": -0.4789965372705187,
-            "y": 0.21111090151079365
+            "x": -0.4790907338359766,
+            "y": 0.21060505266844975
           },
           {
             "id": "u10",
             "speaker": "임재현",
             "text": "저는 비율보다 품목별로 봐야 한다고 봅니다. 쌀과 김치는 지역으로 가고 수급이 불안한 품목은 시장에서 사는 것이 현실적입니다.",
-            "textEn": "I think we should look at it by item rather than by ratio. It is realistic for rice and kimchi to be local, and for items with unstable supply to be bought from the market.",
+            "textEn": "I think we should look at it by item rather than by ratio. It is realistic for rice and kimchi to come from local sources, and for items with unstable supply and demand to be bought on the market.",
             "kind": "claim",
             "index": 10,
-            "x": -0.37096278762025,
-            "y": 0.17152111833188474
+            "x": -0.3710833511338286,
+            "y": 0.1712523359281303
           },
           {
             "id": "u11",
             "speaker": "문서영",
             "text": "품목별로 열어두면 결국 싼 쪽으로만 갑니다. 비율을 명시해야 실효가 있습니다.",
-            "textEn": "If you leave it open by item, in the end it will only go toward the cheaper side. The effect is real only if the ratio is specified.",
+            "textEn": "If you leave it open by item, in the end it will only go toward the cheaper side. Specifying a ratio is necessary for it to be effective.",
             "kind": "claim",
             "index": 11,
-            "x": -0.21228823367341157,
-            "y": 0.14238187311882752
+            "x": -0.21238545314759935,
+            "y": 0.14245618309178562
           },
           {
             "id": "u12",
             "speaker": "강도현",
             "text": "명시하면 흉작에 대응이 안 됩니다. 작년 배추 파동 때 인근 시가 그 조항 때문에 급식을 두 차례 중단했습니다.",
-            "textEn": "If it is specified, it cannot respond to a poor harvest. During last year's cabbage crisis, the neighboring city suspended school meals twice because of that clause.",
+            "textEn": "If you specify it, you cannot respond to crop failures. During last year’s napa cabbage crisis, the neighboring city suspended meals twice because of that clause.",
             "kind": "claim",
             "index": 12,
-            "x": 0.11243677165405086,
-            "y": 0.30217047467012287
+            "x": 0.11232701141199807,
+            "y": 0.3022901585288785
           },
           {
             "id": "u13",
             "speaker": "임재현",
             "text": "예외 조항을 두면 되는 문제입니다. 저는 육십 퍼센트 목표에 흉작 예외를 붙이는 안을 제안합니다.",
-            "textEn": "It is a matter that can be solved by having an exception clause. I propose an option that attaches a poor-harvest exception to the sixty percent target.",
+            "textEn": "It is a matter that can be solved by having an exception clause. I propose an plan that attaches a crop-failure exception to the sixty percent target.",
             "kind": "claim",
             "index": 13,
-            "x": -0.11558762390282576,
-            "y": -0.03850103913241422
+            "x": -0.11574346652705031,
+            "y": -0.03844680479841678
           },
           {
             "id": "u15",
             "speaker": "강도현",
             "text": "저는 야간 연장에 찬성합니다. 직장인이 이용할 수 있는 시간이 지금은 사실상 없습니다.",
-            "textEn": "I am in favor of extending the evening hours. Working people basically have no time available to use it right now.",
+            "textEn": "I am in favor of extending the night hours. The time when office workers can use it is, in fact, virtually nonexistent right now.",
             "kind": "claim",
             "index": 15,
-            "x": 0.42990479835045015,
-            "y": -0.018885633168673043
+            "x": 0.4298013994079093,
+            "y": -0.019024055751958903
           },
           {
             "id": "u16",
             "speaker": "임재현",
             "text": "저는 연장에 신중합니다. 야간 이용자 수가 시간당 평균 네 명이라는 작년 시범운영 결과가 있습니다. 인건비 대비 효율이 낮습니다.",
-            "textEn": "I am cautious about extending it. There is last year’s pilot operation result that the number of nighttime users averaged four per hour. The efficiency relative to labor costs is low.",
+            "textEn": "I am cautious about the extension. There is last year’s pilot operation result that the number of nighttime users was an average of four per hour. The efficiency relative to labor costs is low.",
             "kind": "claim",
             "index": 16,
-            "x": 0.3796176834262608,
-            "y": 0.05440823515632948
+            "x": 0.37966120346005794,
+            "y": 0.05441695723934007
           },
           {
             "id": "u17",
             "speaker": "문서영",
             "text": "저는 연장에 찬성하되 요일을 제한하자는 쪽입니다. 화요일과 목요일만 밤 열 시까지 하면 인건비는 절반입니다.",
-            "textEn": "I am in favor of extending it, but I am on the side of limiting the days of the week. If we only do Tuesdays and Thursdays until 10 p.m., labor costs are cut in half.",
+            "textEn": "I am in favor of the extension, but I am on the side of limiting the days. If we make it only until 10 p.m. on Tuesdays and Thursdays, the labor cost is half.",
             "kind": "claim",
             "index": 17,
-            "x": 0.4236756056663298,
-            "y": -0.06499913042416641
+            "x": 0.4235628123157602,
+            "y": -0.06522257103459957
           },
           {
             "id": "u18",
             "speaker": "강도현",
             "text": "요일 제한은 이용 습관을 만들지 못합니다. 매일 열려 있어야 사람이 옵니다.",
-            "textEn": "Limiting the days of the week cannot create usage habits. It has to be open every day for people to come.",
+            "textEn": "A day-of-week restriction cannot create usage habits. It has to be open every day for people to come.",
             "kind": "claim",
             "index": 18,
-            "x": 0.3698217495680141,
-            "y": -0.1001785267700197
+            "x": 0.36987995308683297,
+            "y": -0.10006018239332948
           },
           {
             "id": "u19",
             "speaker": "임재현",
             "text": "시범운영 네 명은 매일 열었을 때 나온 숫자입니다. 습관 문제로만 볼 수는 없습니다.",
-            "textEn": "The four people in the pilot operation is a number that came out when it was open every day. It cannot be seen only as a habit issue.",
+            "textEn": "The four from the pilot operation are the number that came out when it was open every day. It cannot be seen only as a habit problem.",
             "kind": "claim",
             "index": 19,
-            "x": 0.3805965461751266,
-            "y": 0.15781092046844478
+            "x": 0.38066488949137217,
+            "y": 0.15809376865835273
           },
           {
             "id": "u20",
             "speaker": "문서영",
             "text": "그렇다면 홍보가 부족했던 것 아닙니까. 시범운영 당시 안내가 도서관 게시판에만 붙었습니다.",
-            "textEn": "Then wasn’t the promotion insufficient? During the pilot operation, the notices were only posted on the library bulletin board.",
+            "textEn": "Then wasn’t the publicity insufficient? During the pilot operation, the notice was only posted on the library bulletin board.",
             "kind": "claim",
             "index": 20,
-            "x": 0.14195982536502036,
-            "y": 0.6058360861003476
+            "x": 0.14178568054247617,
+            "y": 0.6059496264029922
           },
           {
             "id": "u21",
             "speaker": "강도현",
             "text": "홍보를 늘리려면 또 예산입니다. 저는 야간 연장을 하되 무인 대출기로 인건비를 줄이는 안을 제안합니다.",
-            "textEn": "Increasing promotion is another budget issue. I propose extending the evening hours while reducing labor costs with an unmanned lending machine.",
+            "textEn": "If we increase publicity, that is again a budget. I propose a plan to extend the night hours while reducing labor costs with an unmanned lending machine.",
             "kind": "claim",
             "index": 21,
-            "x": 0.12947612789059873,
-            "y": 0.23210869844664875
+            "x": 0.12925464309585166,
+            "y": 0.23234979912251946
           },
           {
             "id": "u22",
             "speaker": "임재현",
             "text": "무인 대출기는 초기 비용이 팔천만 원입니다. 시간당 네 명을 위해 쓸 금액인지 따져봐야 합니다.",
-            "textEn": "The unmanned lending machine has an initial cost of 80 million won. We need to consider whether this is an amount worth spending for four people per hour.",
+            "textEn": "The unmanned lending machine has an initial cost of 80 million won. We have to weigh whether it is an amount to spend for four people per hour.",
             "kind": "claim",
             "index": 22,
-            "x": 0.034412896383036316,
-            "y": 0.06817138309704997
+            "x": 0.03447983292054421,
+            "y": 0.06846278260152773
           },
           {
             "id": "u23",
             "speaker": "문서영",
             "text": "저는 요일 제한부터 시작해서 이용자가 늘면 확대하는 단계적 접근이 맞다고 봅니다.",
-            "textEn": "I think a gradual approach, starting with limiting the days and then expanding if users increase, is the right one.",
+            "textEn": "I think a phased approach of starting with day-of-week restrictions and then expanding if users increase is right.",
             "kind": "claim",
             "index": 23,
-            "x": 0.13950485919240851,
-            "y": -0.24875200644040882
+            "x": 0.13943183177261073,
+            "y": -0.24889216964300856
           }
         ],
         "speakers": [
@@ -2178,14 +2181,14 @@
             "colorIndex": 0,
             "n": 7,
             "nExcluded": 0,
-            "x": 0.04431124130681414,
-            "y": -0.06267970069797067,
+            "x": 0.04421459725890688,
+            "y": -0.06279567304815248,
             "ellipse": {
-              "cx": 0.032373031721920374,
-              "cy": -0.01348495021145352,
-              "rx": 0.3278596848265587,
-              "ry": 0.2754227957472214,
-              "angle": 11.252460094781874
+              "cx": 0.032316545980925246,
+              "cy": -0.01353057164269155,
+              "rx": 0.327872930799013,
+              "ry": 0.2754236964577383,
+              "angle": 11.298619925782022
             },
             "underdetermined": false
           },
@@ -2194,14 +2197,14 @@
             "colorIndex": 1,
             "n": 7,
             "nExcluded": 0,
-            "x": -0.1462924137793466,
-            "y": 0.02500804532934367,
+            "x": -0.14619122038801138,
+            "y": 0.02487519896335433,
             "ellipse": {
-              "cx": -0.07915419362049694,
-              "cy": 0.04254593616433189,
-              "rx": 0.32112111267356896,
-              "ry": 0.3185924101296195,
-              "angle": 65.83438832850675
+              "cx": -0.07910575233480346,
+              "cy": 0.04249509365822531,
+              "rx": 0.32107664407792397,
+              "ry": 0.31855069125634616,
+              "angle": 68.78178082674505
             },
             "underdetermined": false
           },
@@ -2210,47 +2213,47 @@
             "colorIndex": 2,
             "n": 7,
             "nExcluded": 0,
-            "x": 0.06890720906609171,
-            "y": -0.09160403802313175,
+            "x": 0.06891260340302094,
+            "y": -0.09148389575089544,
             "ellipse": {
-              "cx": 0.04678116189857675,
-              "cy": -0.029060985952878666,
-              "rx": 0.27514072189493693,
-              "ry": 0.21690011916941884,
-              "angle": 178.7372853335544
+              "cx": 0.046789206353878475,
+              "cy": -0.02896452201553382,
+              "rx": 0.2751815588272219,
+              "ry": 0.2168975082652611,
+              "angle": 178.78383782307176
             },
             "underdetermined": false
           }
         ],
         "meta": {
           "method": "pca",
-          "explainedVariance": 0.21755543342881167,
+          "explainedVariance": 0.21754952670184474,
           "componentVariance": [
-            0.12215034637399902,
-            0.09540508705481264
+            0.12212636530086408,
+            0.09542316140098066
           ],
           "fittedOn": 21,
           "saturated": false,
-          "separation": 0.4532271873045947,
+          "separation": 0.4527631902418046,
           "axes": {
             "horizontal": {
               "low": {
-                "ko": "예산·요금 부담",
-                "en": "Cost burden"
+                "ko": "예산·효율 우선",
+                "en": "Budget efficiency"
               },
               "high": {
-                "ko": "이용 확대",
-                "en": "Usage expansion"
+                "ko": "이용 확대·접근성",
+                "en": "Access expansion"
               }
             },
             "vertical": {
               "low": {
-                "ko": "운영 효율",
-                "en": "Operational efficiency"
+                "ko": "운영·정산 현실",
+                "en": "Operational practicality"
               },
               "high": {
-                "ko": "공공 지원",
-                "en": "Public support"
+                "ko": "정책 목적·공공성",
+                "en": "Policy purpose"
               }
             }
           }
@@ -2262,211 +2265,211 @@
             "id": "u1",
             "speaker": "강도현",
             "text": "주차장 요금은 인상해야 합니다. 현재 시간당 육백 원은 인근 시의 절반이고 그래서 하루 종일 세워두는 차가 많아 회전율이 떨어집니다.",
-            "textEn": "Parking fees should be raised. The current six hundred won per hour is half of the neighboring city's, and so there are many cars left parked all day, which lowers turnover.",
+            "textEn": "Parking lot fees should be raised. The current six hundred won per hour is half of the neighboring city’s, and so there are many cars left parked all day, which lowers turnover.",
             "kind": "claim",
             "index": 1,
-            "x": -0.05757614320534589,
-            "y": -0.2382967879534085
+            "x": -0.05740825420595084,
+            "y": -0.23836828509557773
           },
           {
             "id": "u2",
             "speaker": "문서영",
             "text": "저는 요금 인상에 반대합니다. 전통시장 이용객이 그 주차장을 씁니다. 요금이 오르면 시장 매출이 먼저 타격을 받습니다.",
-            "textEn": "I oppose a fee increase. Traditional market customers use that parking lot. If the fee goes up, the market's sales will be hit first.",
+            "textEn": "I oppose a fee increase. Traditional market customers use that parking lot. If the fee goes up, the market’s sales will be hit first.",
             "kind": "claim",
             "index": 2,
-            "x": -0.1991658748942765,
-            "y": -0.199580348744986
+            "x": -0.1985066961938646,
+            "y": -0.19972029466983768
           },
           {
             "id": "u3",
             "speaker": "임재현",
             "text": "저는 시간대별 차등이 맞다고 봅니다. 낮에는 올리고 저녁에는 유지하면 회전율과 상권을 같이 잡을 수 있습니다.",
-            "textEn": "I think time-based differentiation is right. If we raise it during the day and keep it unchanged in the evening, we can secure both turnover and the local business district.",
+            "textEn": "I think time-based differentiation is right. If you raise it during the day and keep it as is in the evening, you can secure both turnover and the local commercial district together.",
             "kind": "claim",
             "index": 3,
-            "x": 0.11329124040549954,
-            "y": -0.3511063661019272
+            "x": 0.11327346199333307,
+            "y": -0.35097855288414376
           },
           {
             "id": "u4",
             "speaker": "강도현",
             "text": "차등 요금은 정산 시스템 교체가 필요합니다. 그 비용이 요금 인상분보다 큽니다.",
-            "textEn": "Differential fees require replacing the settlement system. That cost is greater than the increase in fees.",
+            "textEn": "Differential pricing requires replacing the settlement system. That cost is greater than the increased fee revenue.",
             "kind": "claim",
             "index": 4,
-            "x": -0.15997623436462283,
-            "y": -0.1572861168417713
+            "x": -0.16000651159809293,
+            "y": -0.15751650432084255
           },
           {
             "id": "u5",
             "speaker": "문서영",
             "text": "시스템 교체 비용이 든다면 더더욱 지금 요금을 유지해야 합니다. 시장 상인 서명이 이미 팔백 명 넘게 들어왔습니다.",
-            "textEn": "If there is a system replacement cost, then all the more we should maintain the current fee. Signatures from market merchants have already exceeded eight hundred.",
+            "textEn": "If system replacement costs money, then all the more we should maintain the current fee. Signatures from market merchants have already exceeded eight hundred.",
             "kind": "claim",
             "index": 5,
-            "x": -0.2178398430158891,
-            "y": 0.00706195953692505
+            "x": -0.21775492766797477,
+            "y": 0.007196560376210401
           },
           {
             "id": "u6",
             "speaker": "임재현",
             "text": "서명 숫자로 요금을 정하면 어떤 요금도 못 올립니다. 저는 원가 기준으로 판단해야 한다고 봅니다.",
-            "textEn": "If you set parking fees by the number of signatures, you cannot raise any fee. I think we should judge based on cost.",
+            "textEn": "If you determine fees by the number of signatures, you cannot raise any fee at all. I think it should be judged on a cost basis.",
             "kind": "claim",
             "index": 6,
-            "x": -0.06736655023359979,
-            "y": -0.10394803274348415
+            "x": -0.06718279546901779,
+            "y": -0.10387435536762996
           },
           {
             "id": "u8",
             "speaker": "문서영",
             "text": "급식 식재료는 지역 농산물 비율을 지금 삼십 퍼센트에서 육십 퍼센트로 올려야 합니다. 지역 농가 소득이 직접 늘어나는 몇 안 되는 정책입니다.",
-            "textEn": "For school meal ingredients, the share of local agricultural products should be raised from the current thirty percent to sixty percent. It is one of the few policies that directly increases local farm income.",
+            "textEn": "For school meal ingredients, the proportion of local agricultural products should be raised from the current thirty percent to sixty percent. It is one of the few policies that directly increases the income of local farms.",
             "kind": "claim",
             "index": 8,
-            "x": -0.3860851583475127,
-            "y": 0.13087222151750358
+            "x": -0.3861202266933437,
+            "y": 0.13067086779795106
           },
           {
             "id": "u9",
             "speaker": "강도현",
             "text": "저는 비율을 못 박는 방식에 반대합니다. 지역 농산물 단가가 시장가보다 이십이 퍼센트 높습니다. 같은 예산으로 아이들이 먹는 양이 줄어듭니다.",
-            "textEn": "I oppose fixing the ratio. The unit price of local agricultural products is twenty-two percent higher than the market price. With the same budget, the amount children eat will decrease.",
+            "textEn": "I oppose the method of fixing the ratio. The unit price of local agricultural products is twenty-two percent higher than market price. With the same budget, the amount the children eat will decrease.",
             "kind": "claim",
             "index": 9,
-            "x": -0.3543490132888116,
-            "y": 0.07379291182614359
+            "x": -0.3544135156227907,
+            "y": 0.07358641248648924
           },
           {
             "id": "u10",
             "speaker": "임재현",
             "text": "저는 비율보다 품목별로 봐야 한다고 봅니다. 쌀과 김치는 지역으로 가고 수급이 불안한 품목은 시장에서 사는 것이 현실적입니다.",
-            "textEn": "I think we should look at it by item rather than by ratio. It is realistic for rice and kimchi to be local, and for items with unstable supply to be bought from the market.",
+            "textEn": "I think we should look at it by item rather than by ratio. It is realistic for rice and kimchi to come from local sources, and for items with unstable supply and demand to be bought on the market.",
             "kind": "claim",
             "index": 10,
-            "x": -0.268685286291268,
-            "y": 0.04365313105107756
+            "x": -0.26875934540008584,
+            "y": 0.043642915997013705
           },
           {
             "id": "u11",
             "speaker": "문서영",
             "text": "품목별로 열어두면 결국 싼 쪽으로만 갑니다. 비율을 명시해야 실효가 있습니다.",
-            "textEn": "If you leave it open by item, in the end it will only go toward the cheaper side. The effect is real only if the ratio is specified.",
+            "textEn": "If you leave it open by item, in the end it will only go toward the cheaper side. Specifying a ratio is necessary for it to be effective.",
             "kind": "claim",
             "index": 11,
-            "x": -0.16658000665274977,
-            "y": 0.06311993884492198
+            "x": -0.16666347757137126,
+            "y": 0.06319099711305089
           },
           {
             "id": "u12",
             "speaker": "강도현",
             "text": "명시하면 흉작에 대응이 안 됩니다. 작년 배추 파동 때 인근 시가 그 조항 때문에 급식을 두 차례 중단했습니다.",
-            "textEn": "If it is specified, it cannot respond to a poor harvest. During last year's cabbage crisis, the neighboring city suspended school meals twice because of that clause.",
+            "textEn": "If you specify it, you cannot respond to crop failures. During last year’s napa cabbage crisis, the neighboring city suspended meals twice because of that clause.",
             "kind": "claim",
             "index": 12,
-            "x": 0.07813115495787157,
-            "y": 0.23290704924197686
+            "x": 0.07800184870280785,
+            "y": 0.23292229342684903
           },
           {
             "id": "u13",
             "speaker": "임재현",
             "text": "예외 조항을 두면 되는 문제입니다. 저는 육십 퍼센트 목표에 흉작 예외를 붙이는 안을 제안합니다.",
-            "textEn": "It is a matter that can be solved by having an exception clause. I propose an option that attaches a poor-harvest exception to the sixty percent target.",
+            "textEn": "It is a matter that can be solved by having an exception clause. I propose an plan that attaches a crop-failure exception to the sixty percent target.",
             "kind": "claim",
             "index": 13,
-            "x": -0.09576957333431342,
-            "y": -0.06156493156637089
+            "x": -0.0958982657510298,
+            "y": -0.06156852706028363
           },
           {
             "id": "u15",
             "speaker": "강도현",
             "text": "저는 야간 연장에 찬성합니다. 직장인이 이용할 수 있는 시간이 지금은 사실상 없습니다.",
-            "textEn": "I am in favor of extending the evening hours. Working people basically have no time available to use it right now.",
+            "textEn": "I am in favor of extending the night hours. The time when office workers can use it is, in fact, virtually nonexistent right now.",
             "kind": "claim",
             "index": 15,
-            "x": 0.3197904363864518,
-            "y": -0.03564157330643419
+            "x": 0.3196819538803449,
+            "y": -0.035578377083333654
           },
           {
             "id": "u16",
             "speaker": "임재현",
             "text": "저는 연장에 신중합니다. 야간 이용자 수가 시간당 평균 네 명이라는 작년 시범운영 결과가 있습니다. 인건비 대비 효율이 낮습니다.",
-            "textEn": "I am cautious about extending it. There is last year’s pilot operation result that the number of nighttime users averaged four per hour. The efficiency relative to labor costs is low.",
+            "textEn": "I am cautious about the extension. There is last year’s pilot operation result that the number of nighttime users was an average of four per hour. The efficiency relative to labor costs is low.",
             "kind": "claim",
             "index": 16,
-            "x": 0.2790156655187718,
-            "y": 0.039758989584132556
+            "x": 0.2790343962302949,
+            "y": 0.03985644353671247
           },
           {
             "id": "u17",
             "speaker": "문서영",
             "text": "저는 연장에 찬성하되 요일을 제한하자는 쪽입니다. 화요일과 목요일만 밤 열 시까지 하면 인건비는 절반입니다.",
-            "textEn": "I am in favor of extending it, but I am on the side of limiting the days of the week. If we only do Tuesdays and Thursdays until 10 p.m., labor costs are cut in half.",
+            "textEn": "I am in favor of the extension, but I am on the side of limiting the days. If we make it only until 10 p.m. on Tuesdays and Thursdays, the labor cost is half.",
             "kind": "claim",
             "index": 17,
-            "x": 0.30473292572715277,
-            "y": -0.07806754781197223
+            "x": 0.3046320945558325,
+            "y": -0.0780351794616763
           },
           {
             "id": "u18",
             "speaker": "강도현",
             "text": "요일 제한은 이용 습관을 만들지 못합니다. 매일 열려 있어야 사람이 옵니다.",
-            "textEn": "Limiting the days of the week cannot create usage habits. It has to be open every day for people to come.",
+            "textEn": "A day-of-week restriction cannot create usage habits. It has to be open every day for people to come.",
             "kind": "claim",
             "index": 18,
-            "x": 0.28759106348981717,
-            "y": -0.08842276223546025
+            "x": 0.28762260987434335,
+            "y": -0.08827007130826287
           },
           {
             "id": "u19",
             "speaker": "임재현",
             "text": "시범운영 네 명은 매일 열었을 때 나온 숫자입니다. 습관 문제로만 볼 수는 없습니다.",
-            "textEn": "The four people in the pilot operation is a number that came out when it was open every day. It cannot be seen only as a habit issue.",
+            "textEn": "The four from the pilot operation are the number that came out when it was open every day. It cannot be seen only as a habit problem.",
             "kind": "claim",
             "index": 19,
-            "x": 0.29638090032179953,
-            "y": 0.15211208354683647
+            "x": 0.29639073143613487,
+            "y": 0.15227933548234693
           },
           {
             "id": "u20",
             "speaker": "문서영",
             "text": "그렇다면 홍보가 부족했던 것 아닙니까. 시범운영 당시 안내가 도서관 게시판에만 붙었습니다.",
-            "textEn": "Then wasn’t the promotion insufficient? During the pilot operation, the notices were only posted on the library bulletin board.",
+            "textEn": "Then wasn’t the publicity insufficient? During the pilot operation, the notice was only posted on the library bulletin board.",
             "kind": "claim",
             "index": 20,
-            "x": 0.08191603273505099,
-            "y": 0.5169887777223632
+            "x": 0.08168900096183795,
+            "y": 0.5169826590441927
           },
           {
             "id": "u21",
             "speaker": "강도현",
             "text": "홍보를 늘리려면 또 예산입니다. 저는 야간 연장을 하되 무인 대출기로 인건비를 줄이는 안을 제안합니다.",
-            "textEn": "Increasing promotion is another budget issue. I propose extending the evening hours while reducing labor costs with an unmanned lending machine.",
+            "textEn": "If we increase publicity, that is again a budget. I propose a plan to extend the night hours while reducing labor costs with an unmanned lending machine.",
             "kind": "claim",
             "index": 21,
-            "x": 0.08980317812386787,
-            "y": 0.19413251643822899
+            "x": 0.08960420863287354,
+            "y": 0.19420884503298175
           },
           {
             "id": "u22",
             "speaker": "임재현",
             "text": "무인 대출기는 초기 비용이 팔천만 원입니다. 시간당 네 명을 위해 쓸 금액인지 따져봐야 합니다.",
-            "textEn": "The unmanned lending machine has an initial cost of 80 million won. We need to consider whether this is an amount worth spending for four people per hour.",
+            "textEn": "The unmanned lending machine has an initial cost of 80 million won. We have to weigh whether it is an amount to spend for four people per hour.",
             "kind": "claim",
             "index": 22,
-            "x": 0.03442859617168462,
-            "y": 0.1054967055517308
+            "x": 0.034485156616952166,
+            "y": 0.1054497856618683
           },
           {
             "id": "u23",
             "speaker": "문서영",
             "text": "저는 요일 제한부터 시작해서 이용자가 늘면 확대하는 단계적 접근이 맞다고 봅니다.",
-            "textEn": "I think a gradual approach, starting with limiting the days and then expanding if users increase, is the right one.",
+            "textEn": "I think a phased approach of starting with day-of-week restrictions and then expanding if users increase is right.",
             "kind": "claim",
             "index": 23,
-            "x": 0.1011087584191656,
-            "y": -0.21205532851955725
+            "x": 0.1010725620696544,
+            "y": -0.21213101787602356
           }
         ],
         "speakers": [
@@ -2475,14 +2478,14 @@
             "colorIndex": 0,
             "n": 7,
             "nExcluded": 0,
-            "x": 0.03286476226428346,
-            "y": -0.01730957947552442,
+            "x": 0.0328164298244832,
+            "y": -0.01735992659976856,
             "ellipse": {
-              "cx": 0.029059206014175464,
-              "cy": -0.002687823261532115,
-              "rx": 0.2410435827949904,
-              "ry": 0.17655607520001426,
-              "angle": 4.30114313605007
+              "cx": 0.02901176280907645,
+              "cy": -0.0027165266945281064,
+              "rx": 0.24103029656085856,
+              "ry": 0.17658772145284748,
+              "angle": 4.333966924885083
             },
             "underdetermined": false
           },
@@ -2491,14 +2494,14 @@
             "colorIndex": 1,
             "n": 7,
             "nExcluded": 0,
-            "x": -0.09897198195016253,
-            "y": 0.03659530464951224,
+            "x": -0.09891361692326063,
+            "y": 0.03654414130218714,
             "ellipse": {
-              "cx": -0.06884473800415122,
-              "cy": 0.03261995322074261,
-              "rx": 0.24993326104840746,
-              "ry": 0.23721828630191893,
-              "angle": 106.26385448032693
+              "cx": -0.06880738150560421,
+              "cy": 0.032593513189123936,
+              "rx": 0.24997496564512273,
+              "ry": 0.23708042635203716,
+              "angle": 106.369867136603
             },
             "underdetermined": false
           },
@@ -2507,14 +2510,14 @@
             "colorIndex": 2,
             "n": 7,
             "nExcluded": 0,
-            "x": 0.05331095105713621,
-            "y": -0.053212214210458686,
+            "x": 0.05332317831789137,
+            "y": -0.053130165530472846,
             "ellipse": {
-              "cx": 0.041613570365510624,
-              "cy": -0.02508548866828641,
-              "rx": 0.20912699606189605,
-              "ry": 0.16447248413459292,
-              "angle": 17.361567027962828
+              "cx": 0.04162047709379737,
+              "cy": -0.025027564947730847,
+              "rx": 0.20916090971032716,
+              "ry": 0.16443719109015625,
+              "angle": 17.381085187636742
             },
             "underdetermined": false
           }
@@ -2525,7 +2528,7 @@
           "componentVariance": null,
           "fittedOn": 21,
           "saturated": false,
-          "separation": 0.4548543032810811,
+          "separation": 0.45450747031139643,
           "axes": null
         }
       }
@@ -2559,6 +2562,7 @@
       "preambleLines": 0,
       "unitsDroppedAsHallucinated": 0,
       "unitsDroppedUnresolvedSpeaker": 0,
+      "translationsRepaired": 0,
       "model": "gpt-5.4-mini",
       "embeddingModel": "text-embedding-3-small"
     }

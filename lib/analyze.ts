@@ -11,6 +11,12 @@ import {
 } from './segment.ts'
 import { aggregateAndProject } from './aggregate.ts'
 import {
+  formatForTranslation,
+  needsTranslation,
+  TRANSLATION_SYSTEM_PROMPT,
+  TranslationsSchema,
+} from './translate.ts'
+import {
   AXIS_SYSTEM_PROMPT,
   AxisLabelsSchema,
   canLabelAxes,
@@ -207,6 +213,34 @@ export async function analyzeTranscript(
     index: i,
   }))
 
+  // Fill in translations segmentation left out. See lib/translate.ts: whether a
+  // unit needs one is decided by the script it is written in, not by the model.
+  const gaps = utterances.filter((u) => needsTranslation(u.text, u.textEn))
+  let translationsRepaired = 0
+  if (gaps.length > 0) {
+    try {
+      const { object } = await generateObject({
+        model: openai(MODEL),
+        schema: TranslationsSchema,
+        system: TRANSLATION_SYSTEM_PROMPT,
+        prompt: formatForTranslation(gaps.map((u) => u.text)),
+      })
+      // A short or misaligned array is worse than none: it would attach one
+      // statement's translation to another. Only a length match is used.
+      if (object.translations.length === gaps.length) {
+        gaps.forEach((u, i) => {
+          const translated = object.translations[i]?.trim()
+          if (translated) {
+            u.textEn = translated
+            translationsRepaired += 1
+          }
+        })
+      }
+    } catch (error) {
+      console.error('translation repair failed', error)
+    }
+  }
+
   // 3. Embed. Only units that can carry a position need vectors.
   const embeddable = utterances.filter(
     (u) => u.kind === 'claim' || u.kind === 'question',
@@ -320,6 +354,7 @@ export async function analyzeTranscript(
         preambleLines: parsed.preambleLines,
         unitsDroppedAsHallucinated: hallucinatedCount,
         unitsDroppedUnresolvedSpeaker: unresolvedSpeakerUnits,
+        translationsRepaired,
         model: MODEL,
         embeddingModel: EMBEDDING_MODEL,
       },
