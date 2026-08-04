@@ -19,15 +19,24 @@ export const STRINGS = {
     ko: '회의록을 붙여넣으면 참여자별 입장 지도를 만듭니다. 먼저 예시를 열어보세요.',
     en: 'Paste a meeting transcript to map where participants stand. Start with an example.',
   },
-  examplesLabel: { ko: '예시', en: 'Examples' },
   orPasteOwn: { ko: '직접 붙여넣기', en: 'Paste your own' },
   transcriptLabel: {
-    ko: '회의록 — 한 줄에 한 발언 (김철수: …, [김철수] …, ◯ 김철수 위원 …)',
-    en: 'Transcript — one speaker per line (Alice: …, [Alice] …, Kim: …)',
+    ko: '한 줄에 한 발언씩, 앞에 누가 말했는지 적어주세요.',
+    en: 'One statement per line, each prefixed with who said it.',
+  },
+  formatsLabel: { ko: '이런 형식을 인식합니다', en: 'Recognised formats' },
+  loadSample: { ko: '예시 회의록 넣기', en: 'Load an example' },
+  detectedLabel: { ko: '감지된 참여자', en: 'Detected' },
+  noSpeakersYet: {
+    ko: '아직 발언자를 찾지 못했습니다. 위 형식 중 하나로 줄을 시작해 보세요.',
+    en: 'No speakers found yet. Start each line in one of the formats above.',
+  },
+  moderatorExcluded: {
+    ko: '진행자로 보고 지도에서 제외합니다',
+    en: 'read as facilitator, left off the map',
   },
   buildMap: { ko: '지도 만들기', en: 'Build map' },
   analyzing: { ko: '분석 중…', en: 'Analyzing…' },
-  back: { ko: '← 예시로 돌아가기', en: '← Back to examples' },
 
   // Loading stages
   stageParse: { ko: '발언자 구분', en: 'Attributing speakers' },
@@ -62,13 +71,8 @@ export const STRINGS = {
     en: 'Metric MDS on cosine distance; preserves pairwise distance',
   },
   displayOptions: { ko: '표시 설정', en: 'Display options' },
-  // Korean has no plural marker, so `{s}` appears only in the English form.
-  speakersDetected: {
-    ko: '{n}명 감지',
-    en: '{n} speaker{s} detected',
-  },
-  newTranscript: { ko: '새 회의록', en: 'New transcript' },
   showAll: { ko: '전체 보기', en: 'Show all' },
+  // Korean has no plural marker, so `{s}` appears only in the English form.
   underdeterminedHint: {
     ko: '실질 발언이 {n}개뿐이라 위치가 확정적이지 않습니다',
     en: 'Only {n} substantive statement{s}, so the position is provisional',
@@ -143,10 +147,6 @@ export const STRINGS = {
   kindProcedural: { ko: '진행', en: 'Procedural' },
 
   // Detail panel
-  selectPrompt: {
-    ko: '점을 클릭하면 그 발언의 원문이, 표식을 클릭하면 그 사람의 발언 전체가 나옵니다.',
-    en: 'Click a point to read the statement behind it, or a speaker marker to see everything they said.',
-  },
   translation: { ko: '번역', en: 'Translation' },
   original: { ko: '원문', en: 'Original' },
   utterances: { ko: '발언', en: 'Statements' },
