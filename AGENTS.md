@@ -62,8 +62,10 @@ When fixing a defect in parsing, projection, regions or distances, add the input
 that produced it.
 
 The properties worth pinning are the ones that break silently: PCA linearity,
-rejection of non-finite input, region coverage, and the degenerate cases where a
-divisor can be zero.
+rejection of non-finite input, region coverage, the degenerate cases where a
+divisor can be zero, and that every layout of a meeting reports the same trust
+figures — the default one is fitted to separate speakers and must not be able to
+grade itself on having done so.
 
 ## Git And Security
 

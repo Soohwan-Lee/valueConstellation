@@ -23,6 +23,7 @@ app/studio/page.tsx       the tool: console rail, plate, inspector
 app/how-it-works/page.tsx reference: models, thresholds, data handling
 app/api/analyze/route.ts  request handling only
 lib/analyze.ts            the pipeline, shared with the fixture builders
+lib/models.ts             the two model names; no imports, so clients can read them
 lib/                      all logic, no React, no server-only imports
 components/               presentation; components/landing/ is overview-only
 data/                     example transcripts and a precomputed fixture
@@ -60,11 +61,25 @@ Requires Node 22.6+ for native type stripping in the test runner.
 
 **Honesty over polish.** This tool draws conclusions about real people from
 sparse data. When a figure is not evidence, say so on the map rather than in a
-tooltip: saturated fits, separation below 1, positions from fewer than three
-statements, and speakers who could not be placed are all surfaced already. Do not
-add a progress bar for a server that reports no progress, and do not print an
-absolute projected distance — they mean nothing across two maps, so every
-distance on the page is a share of the widest gap.
+tooltip: saturated fits, attribution at or below chance, transcripts too thin to
+judge at all, positions from fewer than three statements, and speakers who could
+not be placed are all surfaced already. Do not add a progress bar for a server
+that reports no progress, and do not print an absolute projected distance — they
+mean nothing across two maps, so every distance on the page is a share of the
+widest gap.
+
+**A layout may not grade itself.** Attribution and separation are computed in
+embedding space, before any projection, and all three layouts report identical
+numbers — `lib/fixtures.test.ts` pins this. The default layout is fitted to push
+the speakers apart, so measuring "the speakers are far apart" on its output would
+be circular; it read more than twice as high when it was measured there. Any new
+diagnostic goes in `lib/aggregate.ts` alongside these, not in a component with
+access to coordinates.
+
+**A summary must be checkable.** Per-speaker summaries come from the transcript,
+never from the coordinates, so they read the same under every layout. They carry
+the ids of the statements they rest on, an id the speaker did not say is dropped
+rather than shown, and the interface marks those statements in the list.
 
 **Colour means a person.** The eight speaker hues are the only saturated colour
 in the interface. Buttons, selection, focus and warnings are ink on paper, and
