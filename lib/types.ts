@@ -1,3 +1,5 @@
+import type { AxisLabels } from './axes.ts'
+
 /** What kind of contribution an utterance makes to the discussion. */
 export type UtteranceKind =
   /** A substantive position, usually with reasons or implications. */
@@ -96,6 +98,16 @@ export interface ProjectionMeta {
    * driven by topic rather than by who is talking.
    */
   separation: number | null
+  /**
+   * Names for the two axes, from the statements at each end.
+   *
+   * Only ever present for PCA, whose axes are by construction the directions
+   * the statements differ on most. MDS orientation is arbitrary — rotate the
+   * picture and nothing is lost — so naming those directions would be inventing
+   * meaning. Null also when there were too few statements for the ends to be
+   * different from each other.
+   */
+  axes: AxisLabels | null
 }
 
 export interface Projection {

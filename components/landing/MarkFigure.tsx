@@ -197,6 +197,34 @@ const FIGURES: Record<MarkEntry['figure'], React.ReactNode> = {
     </g>
   ),
 
+  axes: (
+    <g>
+      <line x1={16} y1={54} x2={144} y2={54} stroke="var(--line-strong)" strokeWidth={1} strokeDasharray="2 5" />
+      <line x1={80} y1={16} x2={80} y2={92} stroke="var(--line-strong)" strokeWidth={1} strokeDasharray="2 5" />
+      {[
+        [48, 38],
+        [62, 66],
+        [104, 44],
+        [118, 70],
+        [92, 30],
+      ].map(([cx, cy], i) => (
+        <circle key={i} cx={cx} cy={cy} r={3} fill={ACCENT} fillOpacity={0.5} />
+      ))}
+      <text x={14} y={50} className="text-[8px]" fill="var(--muted)">
+        cost
+      </text>
+      <text x={146} y={50} textAnchor="end" className="text-[8px]" fill="var(--muted)">
+        process
+      </text>
+      <text x={80} y={14} textAnchor="middle" className="text-[8px]" fill="var(--muted)">
+        who pays
+      </text>
+      <text x={80} y={102} textAnchor="middle" className="text-[8px]" fill="var(--muted)">
+        timing
+      </text>
+    </g>
+  ),
+
   provisional: (
     <g>
       <circle cx={54} cy={58} r={9} fill={ACCENT} stroke="var(--plate)" strokeWidth={1.2} />

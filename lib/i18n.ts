@@ -120,6 +120,7 @@ export const STRINGS = {
   legendDot: { ko: '발언 하나', en: 'One statement' },
   legendRegion: { ko: '발언이 퍼진 범위', en: 'Where they ranged' },
   legendMeasure: { ko: '사이 거리 — 참여자를 클릭', en: 'Gap — click a participant' },
+  legendAxis: { ko: '가장 크게 갈린 두 방향', en: 'The two biggest splits' },
 
   // Console rail
   sourceLabel: { ko: '자료', en: 'Source' },

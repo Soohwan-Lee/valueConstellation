@@ -92,6 +92,14 @@ export const GROUPS: Group[] = [
         },
       },
       {
+        term: { ko: '축 이름', en: 'Axis names' },
+        value: 'gpt-5.4-mini · PCA only',
+        body: {
+          ko: '각 축의 양 끝에서 가장 멀리 나간 발언 다섯 개씩을 모델에 보여주고, 그 끝의 발언들이 공통으로 무엇을 말하는지 2~5단어로 이름 붙이게 합니다. 화자 이름은 넘기지 않습니다 — 축이 사람 이름을 갖게 되면 모두가 한 참여자를 기준으로 측정된 것처럼 보이기 때문입니다. MDS에는 붙이지 않습니다. 이 호출이 실패해도 지도는 이름 없이 그대로 나옵니다.',
+          en: 'The five statements furthest along each end of each axis are shown to the model, which names what they have in common in 2-5 words. Speaker names are withheld: an axis named after a person would make everybody appear to be measured against that participant. Not done for MDS. If the call fails the map is drawn without names.',
+        },
+      },
+      {
         term: { ko: '사람의 위치', en: 'A person’s position' },
         value: '',
         body: {

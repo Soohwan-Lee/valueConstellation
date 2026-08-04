@@ -16,7 +16,8 @@ import {
   ringsArea,
   type Point,
 } from '@/lib/blob'
-import { buildScales, VIEW_H, VIEW_W } from '@/lib/frame'
+import { buildScales, PADDING, VIEW_H, VIEW_W } from '@/lib/frame'
+import type { AxisPole } from '@/lib/axes'
 import { shapePath, speakerColor, speakerShape } from '@/lib/colors'
 import { kindLabel, type Lang } from '@/lib/i18n'
 
@@ -169,6 +170,8 @@ export function ConstellationMap({
 
   const lines = emphasised ? [emphasised] : measure
 
+  const axes = projection.meta.axes
+
   return (
     <div className="relative h-full w-full">
       <svg
@@ -217,6 +220,33 @@ export function ConstellationMap({
             opacity={0.55}
             pointerEvents="none"
           />
+
+          {/* The axes, drawn only when they have names.
+              PCA puts them along the two directions the statements differ on
+              most, so they are worth seeing. MDS orientation is arbitrary, and
+              a cross drawn on it would invite a reading that does not exist. */}
+          {axes && (
+            <g pointerEvents="none">
+              <line
+                x1={PADDING * 0.6}
+                y1={VIEW_H / 2}
+                x2={VIEW_W - PADDING * 0.6}
+                y2={VIEW_H / 2}
+                stroke="var(--line-strong)"
+                strokeWidth={inv}
+                strokeDasharray={`${2 * inv} ${5 * inv}`}
+              />
+              <line
+                x1={VIEW_W / 2}
+                y1={PADDING * 0.6}
+                x2={VIEW_W / 2}
+                y2={VIEW_H - PADDING * 0.6}
+                stroke="var(--line-strong)"
+                strokeWidth={inv}
+                strokeDasharray={`${2 * inv} ${5 * inv}`}
+              />
+            </g>
+          )}
 
           <g key={settleKey}>
             {/* Speaker regions sit beneath the points they summarise, largest
@@ -379,6 +409,18 @@ export function ConstellationMap({
         </g>
       </svg>
 
+      {/* Axis names sit outside the zoom group, pinned to the frame edges: they
+          label the whole direction, not a place in it, so they must not slide
+          away when the map is panned. */}
+      {axes && (
+        <div className="pointer-events-none absolute inset-0">
+          <AxisName className="left-3 top-1/2 -translate-y-1/2 text-left" pole={axes.horizontal.low} lang={lang} />
+          <AxisName className="right-3 top-1/2 -translate-y-1/2 text-right" pole={axes.horizontal.high} lang={lang} />
+          <AxisName className="left-1/2 top-2 -translate-x-1/2 text-center" pole={axes.vertical.high} lang={lang} />
+          <AxisName className="bottom-2 left-1/2 -translate-x-1/2 text-center" pole={axes.vertical.low} lang={lang} />
+        </div>
+      )}
+
       {transform.k > 1.01 && (
         <button
           type="button"
@@ -401,6 +443,31 @@ export function ConstellationMap({
         />
       )}
     </div>
+  )
+}
+
+/**
+ * One end of one axis.
+ *
+ * Set quietly. These are a reading aid produced by a model looking at the
+ * statements at that end, not a measurement, and type loud enough to compete
+ * with the marks would give them an authority they have not earned.
+ */
+function AxisName({
+  pole,
+  lang,
+  className,
+}: {
+  pole: AxisPole
+  lang: Lang
+  className: string
+}) {
+  return (
+    <span
+      className={`absolute max-w-[34%] text-[11px] font-medium leading-[1.4] tracking-[0.06em] text-[var(--muted)] ${className}`}
+    >
+      {pole[lang]}
+    </span>
   )
 }
 

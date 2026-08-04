@@ -10,6 +10,12 @@ import {
   type SegmentedUtterance,
 } from './segment.ts'
 import { aggregateAndProject } from './aggregate.ts'
+import {
+  AXIS_SYSTEM_PROMPT,
+  AxisLabelsSchema,
+  canLabelAxes,
+  formatExtremesForPrompt,
+} from './axes.ts'
 import type {
   AnalysisResult,
   ProjectionMethod,
@@ -83,6 +89,24 @@ export async function analyzeTranscript(
       status: 422,
       error:
         'No speaker-attributed lines found. Expected lines like "김철수: ..." or "[김철수] ...".',
+    }
+  }
+
+  // A map of one person shows no relative position, which is the entire point.
+  // Checked here rather than after projection: it used to be caught at the end,
+  // which meant a single-speaker transcript paid for segmentation and embedding
+  // before being told it could never produce a map.
+  const mappableSpeakers = includeModerators
+    ? parsed.speakers
+    : parsed.speakers.filter((s) => !isModerator(s))
+  if (mappableSpeakers.length < 2) {
+    return {
+      ok: false,
+      status: 422,
+      error:
+        mappableSpeakers.length === 0
+          ? 'No speaker could be placed. The transcript may contain only facilitator speech.'
+          : 'Only one speaker could be placed. A map needs at least two to show relative position.',
     }
   }
 
@@ -231,6 +255,7 @@ export async function analyzeTranscript(
         fittedOn: out.fittedOn,
         saturated: out.saturated,
         separation: out.separation,
+        axes: null,
       },
     }
     // Method-independent, so either pass yields the same set.
@@ -248,6 +273,26 @@ export async function analyzeTranscript(
         placed === 0
           ? 'No speaker could be placed. The transcript may contain only assent or procedural talk.'
           : 'Only one speaker could be placed. A map needs at least two to show relative position.',
+    }
+  }
+
+  // 5. Name the two PCA axes from the statements at their ends.
+  //
+  // Last, and allowed to fail: this is a reading aid, and a map with anonymous
+  // axes is the map this tool shipped with for months. Losing the labels to a
+  // timeout is not a reason to lose the analysis.
+  const pca = projections.pca
+  if (!pca.meta.saturated && canLabelAxes(pca.utterances)) {
+    try {
+      const { object } = await generateObject({
+        model: openai(MODEL),
+        schema: AxisLabelsSchema,
+        system: AXIS_SYSTEM_PROMPT,
+        prompt: formatExtremesForPrompt(pca.utterances),
+      })
+      pca.meta.axes = object
+    } catch (error) {
+      console.error('axis labelling failed', error)
     }
   }
 

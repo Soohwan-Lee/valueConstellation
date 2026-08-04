@@ -13,7 +13,7 @@ export type Bilingual = Record<Lang, string>
 
 export interface MarkEntry {
   /** Which figure to draw beside it. */
-  figure: 'dot' | 'marker' | 'region' | 'measure' | 'provisional'
+  figure: 'dot' | 'marker' | 'region' | 'measure' | 'provisional' | 'axes'
   title: Bilingual
   body: Bilingual
 }
@@ -63,8 +63,8 @@ export const MARKS_SECTION = {
     en: 'Every mark on the map means one thing.',
   },
   lead: {
-    ko: '다섯 가지만 알면 됩니다. 축에는 이름이 없습니다 — 위아래·좌우 방향 자체에는 뜻이 없고, 오직 서로 간의 거리만 읽으면 됩니다.',
-    en: 'Five things to know. The axes are unlabelled on purpose: up and across carry no meaning, and only the distance between marks is meant to be read.',
+    ko: '여섯 가지만 알면 됩니다. 하나씩 그림과 함께 보시면 됩니다.',
+    en: 'Six things to know, each with the figure the map actually draws.',
   },
 } satisfies Record<string, Bilingual>
 
@@ -99,6 +99,14 @@ export const MARKS: MarkEntry[] = [
     body: {
       ko: '참여자를 클릭하면 나머지 전원과의 거리가 그어집니다. 숫자는 이 지도에서 가장 먼 두 사람을 1.00으로 둔 상대값입니다 — 지도가 다르면 비교할 수 없는 값이라 절대 거리는 표시하지 않습니다.',
       en: 'Click a participant and the gap to everyone else is drawn. The number is relative to the widest gap on that map, which is 1.00 — absolute distances mean nothing between two maps, so none are shown.',
+    },
+  },
+  {
+    figure: 'axes',
+    title: { ko: '축 — 가장 크게 갈린 두 방향', en: 'Axes — the two biggest splits' },
+    body: {
+      ko: '가로와 세로는 이 회의에서 의견이 가장 크게 갈린 두 방향입니다. 축 양 끝의 발언을 읽고 이름을 붙여둔 것이라, 이름은 참고용이고 근거가 되는 발언은 클릭 한 번 거리에 있습니다. MDS 배치에서는 방향이 임의로 정해지므로 이름을 붙이지 않습니다.',
+      en: 'Across and up are the two directions this room differed on most. The names come from reading the statements at each end, so treat them as a reading aid — the statements themselves are one click away. The MDS layout gets none: its orientation is arbitrary.',
     },
   },
   {
