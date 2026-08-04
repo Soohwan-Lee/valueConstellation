@@ -47,3 +47,35 @@ export function pairsWith(
 export function counterpart(pair: SpeakerPair, speaker: string): SpeakerProfile {
   return pair.a.speaker === speaker ? pair.b : pair.a
 }
+
+/**
+ * The widest gap on the map, which is the unit every other distance is quoted
+ * in. Zero when there is nothing to compare — one speaker, or everyone stacked
+ * on the same point — and callers must then report nothing rather than divide.
+ */
+export function widestGap(pairs: SpeakerPair[]): number {
+  return pairs.length > 0 ? pairs[0].distance : 0
+}
+
+/**
+ * `distance` as a share of the widest gap, or null when there is no scale to
+ * express it against. Reporting a raw projected distance would invite
+ * comparison between two maps, which the projection cannot support.
+ */
+export function asShare(distance: number, unit: number): number | null {
+  if (!(unit > 0) || !Number.isFinite(distance)) return null
+  return distance / unit
+}
+
+/** Mean distance from `center`, in projected units. */
+export function meanRadius(
+  points: { x: number; y: number }[],
+  center: { x: number; y: number },
+): number {
+  if (points.length === 0) return 0
+  const total = points.reduce(
+    (sum, p) => sum + Math.hypot(p.x - center.x, p.y - center.y),
+    0,
+  )
+  return total / points.length
+}

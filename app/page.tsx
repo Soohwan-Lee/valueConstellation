@@ -408,6 +408,7 @@ export default function Home() {
                   <div className="absolute inset-x-3 bottom-3 max-h-[70%] sm:inset-x-auto sm:bottom-3 sm:right-3 sm:top-3 sm:w-[330px]">
                     <DetailPanel
                       projection={projection}
+                      pairs={pairs}
                       selectedUtterance={selected}
                       selectedSpeaker={selectedSpeaker}
                       lang={lang}
