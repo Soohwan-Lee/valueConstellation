@@ -17,6 +17,7 @@ const KEY = 'vc-pending-transcript'
 
 /** Stores a transcript for the studio to pick up. Returns false if it could not. */
 export function stageTranscript(text: string): boolean {
+  if (typeof window === 'undefined') return false
   try {
     sessionStorage.setItem(KEY, text)
     return true
@@ -29,6 +30,7 @@ export function stageTranscript(text: string): boolean {
 
 /** Reads and clears a staged transcript. */
 export function takeStagedTranscript(): string | null {
+  if (typeof window === 'undefined') return null
   try {
     const text = sessionStorage.getItem(KEY)
     if (text) sessionStorage.removeItem(KEY)
