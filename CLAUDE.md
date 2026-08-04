@@ -21,7 +21,7 @@ app/page.tsx              overview: live demo, reading guide, region rule, examp
 app/studio/page.tsx       the tool: console rail, plate, composer, inspector
 app/how-it-works/page.tsx reference: models, thresholds, data handling
 app/api/analyze/route.ts  request handling only
-lib/analyze.ts            the pipeline, shared with the fixture builder
+lib/analyze.ts            the pipeline, shared with the fixture builders
 lib/                      all logic, no React, no server-only imports
 components/               presentation; components/landing/ is overview-only
 data/                     example transcripts and a precomputed fixture
