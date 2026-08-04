@@ -125,7 +125,7 @@ export function regionRings(points: Point[], reach: number): Point[][] {
   const usable = points.filter(
     ([x, y]) => Number.isFinite(x) && Number.isFinite(y),
   )
-  if (usable.length === 0 || !(reach > 0)) return []
+  if (usable.length === 0 || !(reach > 0) || !Number.isFinite(reach)) return []
 
   const cell = Math.max(1, reach * CELL_RATIO)
   // Influence beyond three reaches is under 1e-4 and is skipped below, so the

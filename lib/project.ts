@@ -254,6 +254,11 @@ export function applyPca(model: PcaModel, v: Vector): [number, number] {
 export function classicalMds(vectors: Vector[]): [number, number][] | null {
   const n = vectors.length
   if (n < 2) return null
+  const dim = vectors[0]?.length ?? 0
+  if (dim === 0) return null
+  if (vectors.some((v) => !v || v.length !== dim || v.some((x) => !Number.isFinite(x)))) {
+    return null
+  }
 
   // Cosine distance matrix.
   const norms = vectors.map((v) => norm(v) || 1)
