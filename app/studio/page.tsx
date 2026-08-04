@@ -9,12 +9,14 @@ import { SourceMenu } from '@/components/studio/SourceMenu'
 import { GuideButton } from '@/components/studio/GuideButton'
 import { LangSwitch, ThemeSwitch, usePreferences } from '@/components/Preferences'
 import {
+  ChoiceList,
   MarkLegend,
   methodOptions,
   ParticipantList,
   renderModeOptions,
   SegmentedControl,
 } from '@/components/MapControls'
+import { MethodFooter } from '@/components/studio/MethodFooter'
 import { SCENARIOS, getScenario } from '@/data/scenarios'
 import { Composer } from '@/components/Composer'
 import { takeStagedTranscript } from '@/lib/handoff'
@@ -323,26 +325,41 @@ export default function Studio() {
               )}
             </Section>
 
-            {/* Closed on arrival. Which layout to use is a question nobody has
-                before they know what the map shows, and an open panel of
-                switches suggests the picture is arbitrary. */}
-            <Disclosure title={t('displayOptions', lang)}>
-              <div className="space-y-2.5">
-                <SegmentedControl
-                  label={t('speakersLabel', lang)}
-                  value={renderMode}
-                  options={renderModeOptions(lang)}
-                  onChange={setRenderMode}
-                />
-                <SegmentedControl
-                  label={t('layoutLabel', lang)}
-                  value={method}
-                  options={methodOptions(lang)}
-                  onChange={setMethod}
-                />
-              </div>
-              <p className="mt-3 text-[11.5px] leading-[1.6] text-[var(--muted)]">
+            {/* Open, and second only to the participants.
+                This was a closed disclosure holding three words with their
+                reasons in tooltips, on the theory that nobody arrives wanting
+                to choose a layout. True — but they do arrive wanting to know
+                what they are looking at, and "this is one of three ways to
+                lay out the same statements" is part of the answer. Hidden, the
+                option read as a setting; shown with its reasons, it reads as
+                what it is: the same room seen three ways. */}
+            <Section title={t('layoutLabel', lang)}>
+              <ChoiceList
+                name="layout"
+                value={method}
+                options={methodOptions(lang)}
+                onChange={setMethod}
+              />
+              <p className="mt-2.5 px-0.5 text-[11.5px] leading-[1.6] text-[var(--muted)]">
                 {t('methodNote', lang)}
+              </p>
+            </Section>
+
+            {/* Still closed. How a person is drawn changes the picture without
+                changing what it says, which is the definition of a preference
+                rather than a reading. */}
+            <Disclosure title={t('displayOptions', lang)}>
+              <SegmentedControl
+                label={t('speakersLabel', lang)}
+                value={renderMode}
+                options={renderModeOptions(lang)}
+                onChange={setRenderMode}
+              />
+              <p className="mt-2.5 text-[11.5px] leading-[1.6] text-[var(--muted)]">
+                {t(
+                  renderMode === 'point' ? 'modePointHint' : 'modeRegionHint',
+                  lang,
+                )}
               </p>
               {shapeNotice && (
                 <p className="mt-2 text-[11.5px] leading-[1.55] text-[var(--muted)]">
@@ -353,6 +370,13 @@ export default function Studio() {
                 </p>
               )}
             </Disclosure>
+
+            {/* The last thing in the rail, and deliberately unremarkable: what
+                model read the transcript, what turned it into positions, why
+                the regions are shaped the way they are. Nobody needs it to use
+                the map and the people who want it will not find it anywhere
+                else — so it is present, in full, and out of the way. */}
+            <MethodFooter lang={lang} />
           </>
         )}
       </aside>

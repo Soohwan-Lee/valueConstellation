@@ -1,3 +1,4 @@
+import { EMBEDDING_DIMENSIONS, EMBEDDING_MODEL, MODEL } from './models'
 import type { Bilingual } from './landing'
 
 /**
@@ -44,7 +45,7 @@ export const GROUPS: Group[] = [
     entries: [
       {
         term: { ko: '주장 단위 분리', en: 'Segmentation' },
-        value: 'gpt-5.4-mini',
+        value: MODEL,
         body: {
           ko: '한 사람의 발언을 주장 단위로 나눕니다. 한 번에 15개 턴씩, 최대 8개 요청을 동시에 보냅니다. 결과는 원문 순서로 다시 이어 붙입니다.',
           en: 'Splits a turn into argument units. Fifteen turns per call, up to eight calls in flight, reassembled in transcript order.',
@@ -52,7 +53,7 @@ export const GROUPS: Group[] = [
       },
       {
         term: { ko: '의미 좌표', en: 'Embedding' },
-        value: 'text-embedding-3-small · 1536d',
+        value: `${EMBEDDING_MODEL} · ${EMBEDDING_DIMENSIONS}d`,
         body: {
           ko: '각 주장을 1536개 숫자로 바꿉니다. 이 숫자들 사이의 거리가 지도상 거리의 근거입니다.',
           en: 'Turns each argument into 1536 numbers. Distances between those are what every distance on the map comes from.',
@@ -71,16 +72,24 @@ export const GROUPS: Group[] = [
   {
     title: { ko: '평면으로 펼치는 방법', en: 'Flattening to two dimensions' },
     intro: {
-      ko: '1536개 방향을 종이 한 장에 옮기는 방법은 하나가 아닙니다. 두 가지를 모두 계산해 두고 전환할 수 있게 했습니다.',
-      en: '1536 directions do not fit on a page one way, so both are computed and you can switch.',
+      ko: `${EMBEDDING_DIMENSIONS}개 방향을 종이 한 장에 옮기는 방법은 하나가 아닙니다. 세 가지를 모두 계산해 두고 전환할 수 있게 했습니다. 어느 것을 골라도 아래의 신뢰 수치는 변하지 않습니다.`,
+      en: `${EMBEDDING_DIMENSIONS} directions do not fit on a page one way, so all three are computed and you can switch. The trust figures below read the same whichever you pick.`,
     },
     entries: [
+      {
+        term: { ko: '사람 배치', en: 'People layout' },
+        value: 'centroid PCA · √n weighted',
+        body: {
+          ko: '기본값입니다. 발언이 아니라 사람의 중심점들에 평면을 맞춥니다 — 지도가 답하려는 질문이 “누가 누구와 다른가”이기 때문입니다. 발언 수의 제곱근으로 가중치를 줘서, 세 번 말한 사람이 마흔 번 말한 사람만큼 방향을 끌지 못하게 합니다. 사람 사이 차이 중 얼마가 남았는지가 계산되고, 실제 회의록에서는 76~100%가 남습니다. 참여자가 세 명 이하면 세 점은 언제나 한 평면에 정확히 놓이므로 이 수치는 산수의 결과일 뿐이고, 그럴 때는 그렇다고 표시합니다.',
+          en: 'The default. Fits the plane to the speaker centroids rather than to the statements, because the question the map exists for is who differs from whom. Weighted by the square root of statement count, so somebody who spoke three times does not steer the direction as hard as somebody who spoke forty. How much of the *between-speaker* difference survived is computable and runs 76-100% on real transcripts. With three or fewer participants that figure is arithmetic — three points always lie in a plane exactly — and is marked as such.',
+        },
+      },
       {
         term: { ko: 'PCA', en: 'PCA' },
         value: 'power iteration',
         body: {
-          ko: '발언들이 가장 크게 갈리는 방향 두 개를 찾아 그 방향으로 펼칩니다. 가로·세로에 뜻이 생기고, 원래 차이 중 얼마가 남았는지도 계산됩니다. 실제 회의록에서는 보통 10~25%가 남습니다.',
-          en: 'Finds the two directions statements differ on most and opens out along them. The axes carry meaning, and how much of the original difference survived is computable — on real transcripts, usually 10 to 25%.',
+          ko: '발언들이 가장 크게 갈리는 방향 두 개를 찾아 그 방향으로 펼칩니다. 가로·세로에 뜻이 생겨서, 회의가 무엇을 두고 갈렸는지 읽을 때 씁니다. 남는 비율은 보통 10~25%인데, 이것이 낮다고 지도가 나쁜 것은 아닙니다 — PCA는 발언 전체의 차이를 최대로 남기려 하고, 문장 임베딩에서 그 차이의 대부분은 주제와 표현 방식입니다. 즉 PCA가 가장 열심히 지키는 것이 이 지도가 보려는 것과 다릅니다.',
+          en: 'Finds the two directions the statements differ on most and opens out along them, so the axes describe what the room argued about. The share kept is usually 10 to 25%, and that is not a verdict on the map: PCA maximises variance among *all* statements, and most of a sentence embedding is topic and phrasing. What PCA works hardest to keep is not what this map is for.',
         },
       },
       {
@@ -93,18 +102,26 @@ export const GROUPS: Group[] = [
       },
       {
         term: { ko: '축 이름', en: 'Axis names' },
-        value: 'gpt-5.4-mini · PCA only',
+        value: `${MODEL} · 사람·이야기 배치`,
         body: {
-          ko: '각 축의 양 끝에서 가장 멀리 나간 발언 다섯 개씩을 모델에 보여주고, 그 끝의 발언들이 공통으로 무엇을 말하는지 2~5단어로 이름 붙이게 합니다. 화자 이름은 넘기지 않습니다 — 축이 사람 이름을 갖게 되면 모두가 한 참여자를 기준으로 측정된 것처럼 보이기 때문입니다. MDS에는 붙이지 않습니다. 이 호출이 실패해도 지도는 이름 없이 그대로 나옵니다.',
-          en: 'The five statements furthest along each end of each axis are shown to the model, which names what they have in common in 2-5 words. Speaker names are withheld: an axis named after a person would make everybody appear to be measured against that participant. Not done for MDS. If the call fails the map is drawn without names.',
+          ko: '각 축의 양 끝에서 가장 멀리 나간 발언 다섯 개씩을 모델에 보여주고, 그 끝의 발언들이 공통으로 무엇을 말하는지 2~5단어로 이름 붙이게 합니다. 화자 이름은 넘기지 않습니다 — 축이 사람 이름을 갖게 되면 모두가 한 참여자를 기준으로 측정된 것처럼 보이기 때문입니다. 사람·이야기 배치 두 가지에만 붙입니다. MDS는 회전시켜도 잃는 것이 없는 배치라, 그 방향에 이름을 붙이는 것은 없는 뜻을 지어내는 일입니다. 이 호출이 실패해도 지도는 이름 없이 그대로 나옵니다.',
+          en: 'The five statements furthest along each end of each axis are shown to the model, which names what they have in common in 2-5 words. Speaker names are withheld: an axis named after a person would make everybody appear to be measured against that participant. Done for the people and topics layouts only — MDS loses nothing under rotation, so naming its directions would be inventing meaning. If the call fails the map is drawn without names.',
         },
       },
       {
         term: { ko: '사람의 위치', en: 'A person’s position' },
         value: '',
         body: {
-          ko: '평면 좌표를 평균 내지 않습니다. 1536차원 공간에서 그 사람의 발언을 평균 낸 뒤 그 점을 평면으로 옮깁니다. 둘은 선형 투영에서만 일치하고, PCA가 기본값인 이유가 이것입니다. MDS는 새 점을 나중에 넣을 수 없어서, 사람의 중심을 발언과 함께 한 번에 계산합니다.',
-          en: 'Never averaged from 2D coordinates. A speaker is averaged in the 1536-dimensional space and that point is then projected. The two agree only for a linear map, which is why PCA is the default; MDS has no out-of-sample extension, so centroids are embedded jointly with the statements.',
+          ko: `평면 좌표를 평균 내지 않습니다. ${EMBEDDING_DIMENSIONS}차원 공간에서 그 사람의 발언을 평균 낸 뒤 그 점을 평면으로 옮깁니다. 둘은 선형 투영에서만 일치하고, 기본 배치가 선형인 이유가 이것입니다. MDS는 새 점을 나중에 넣을 수 없어서, 사람의 중심을 발언과 함께 한 번에 계산합니다.`,
+          en: `Never averaged from 2D coordinates. A speaker is averaged in the ${EMBEDDING_DIMENSIONS}-dimensional space and that point is then projected. The two agree only for a linear map, which is why the default layout is linear; MDS has no out-of-sample extension, so centroids are embedded jointly with the statements.`,
+        },
+      },
+      {
+        term: { ko: '사람별 요약', en: 'Per-speaker summaries' },
+        value: MODEL,
+        body: {
+          ko: '참여자 전원의 발언을 한 번의 호출로 함께 보여주고, 각자의 주장 한 문장과 반복해서 돌아온 지점 2~4개를 쓰게 합니다. 한 사람씩 따로 부르지 않는 이유는, 그러면 서로 바꿔 놓아도 말이 되는 요약이 나오기 때문입니다. 요약이 근거로 삼은 발언 번호를 함께 받아 상세 패널에 “근거”로 표시하고, 그 사람이 하지 않은 발언을 가리키는 번호는 버립니다. 좌표가 아니라 발언에서 나오므로 배치를 바꿔도 요약은 그대로입니다.',
+          en: 'One call covering every participant, returning a one-sentence stance and 2-4 recurring concerns each. Not one call per person: summarised in isolation, the results come back interchangeable. Each carries the ids of the statements it rests on, marked in the inspector, and an id pointing at a statement that speaker did not make is dropped. Read from the transcript rather than the coordinates, so switching layout does not change it.',
         },
       },
     ],
@@ -150,11 +167,27 @@ export const GROUPS: Group[] = [
     title: { ko: '판단에 쓰이는 기준값', en: 'Thresholds the tool judges on' },
     entries: [
       {
-        term: { ko: '사람 구분 정도', en: 'Separation' },
-        value: '1.0 / 1.5',
+        term: { ko: '발언 되찾기', en: 'Statements traced back' },
+        value: '2× chance · 55%',
         body: {
-          ko: '사람 사이 평균 거리를 각자 발언이 퍼진 정도로 나눈 값입니다. 1 미만이면 “구분하지 못한다”고 지도 아래에 적고, 1.5 이상이면 “잘 구분한다”고 적습니다.',
-          en: 'Mean between-speaker distance over mean within-speaker spread. Below 1 the map says it cannot tell people apart; at 1.5 and above it says it does so clearly.',
+          ko: '지도 아래에 적히는 신뢰 수치입니다. 발언 하나를 빼고 나머지로 각 사람의 중심을 다시 구한 뒤, 뺀 발언이 실제 발언자의 중심에 가장 가까운지 봅니다. 전 발언에 대해 반복해 맞힌 비율을 냅니다. 우연히 맞을 확률(참여자가 넷이면 25%)을 함께 적는 이유는, 같은 50%라도 참여자가 넷이면 좋은 값이고 둘이면 동전 던지기와 같기 때문입니다. 우연의 2배이면서 55% 이상이면 “잘 구분한다”, 우연 + 10%p를 넘으면 “구분은 된다”, 그 아래면 “구분하지 못한다”고 적습니다.',
+          en: 'The trust figure printed under the map. Leave one statement out, recompute every centroid from the rest, and check whether the held-out statement is nearest the person who said it; repeat for all of them. Chance is printed beside it — with four participants that is 25% — because 50% is strong with four and a coin toss with two. Twice chance and at least 55% reads as telling them apart clearly; more than chance plus 10 points reads as weakly; below that, as not at all.',
+        },
+      },
+      {
+        term: { ko: '어디에서 재는가', en: 'Where it is measured' },
+        value: 'embedding space',
+        body: {
+          ko: '되찾기 비율도, 사람 구분 정도도 평면 좌표가 아니라 펼치기 전 원래 공간에서 잽니다. 기본 배치는 사람들을 최대한 갈라 놓도록 맞춰진 것이라, 그 그림 위에서 “사람들이 잘 갈라져 있다”고 재면 자기 채점이 됩니다. 실제로 평면에서 재던 때는 값이 두 배 넘게 부풀어 있었습니다. 세 배치가 같은 수치를 내는지 테스트로 고정해 두었습니다.',
+          en: 'Both figures are computed in the original space, never on the projected coordinates. The default layout is fitted to push the speakers apart, so measuring "the speakers are far apart" on that picture would be grading its own homework — when it was measured on the projection, the figure came out more than twice as high. A test pins all three layouts to identical numbers.',
+        },
+      },
+      {
+        term: { ko: '사람 구분 정도', en: 'Separation' },
+        value: '1.0',
+        body: {
+          ko: '사람 사이 평균 거리를 각자 발언이 퍼진 정도로 나눈 값으로, 상세 수치로만 함께 표시합니다. 1 미만이면 각자의 발언이 사람 사이 거리보다 더 넓게 퍼져 있다는 뜻입니다. 위쪽에 한계가 없어서 “얼마면 충분한가”에 답하지 못하기 때문에, 화면에서 판단을 내리는 자리는 되찾기 비율이 대신합니다.',
+          en: 'Mean between-speaker distance over mean within-speaker spread, shown as a secondary readout. Below 1, each person’s statements scatter wider than the people sit apart. It has no upper bound and so cannot answer "is this enough", which is why the verdict on screen is made on attribution instead.',
         },
       },
       {

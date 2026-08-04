@@ -35,6 +35,7 @@ import {
   SUMMARY_SYSTEM_PROMPT,
   type SpeakerSummaries,
 } from './summaries.ts'
+import { EMBEDDING_MODEL, MODEL } from './models.ts'
 import type {
   AnalysisResult,
   ProjectionMethod,
@@ -51,9 +52,6 @@ import type {
  * claim of the examples is that they are real output rather than pictures drawn
  * in advance.
  */
-
-export const MODEL = 'gpt-5.4-mini'
-export const EMBEDDING_MODEL = 'text-embedding-3-small'
 
 /** Guards against a paste large enough to blow the function's duration limit. */
 export const MAX_TRANSCRIPT_CHARS = 120_000

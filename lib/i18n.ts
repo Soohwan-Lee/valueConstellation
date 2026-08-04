@@ -78,14 +78,21 @@ export const STRINGS = {
     en: 'Keeps who is how far from whom as close to the original as it can',
   },
   methodNote: {
-    ko: '같은 발언을 세 가지로 펼친 것입니다. 위의 “사람 구분 정도”는 펼치기 전 원래 값에서 재기 때문에 배치를 바꿔도 변하지 않습니다 — 어떤 배치가 더 갈라 보이게 만드는지와, 실제로 갈라져 있는지는 다른 문제입니다.',
-    en: 'Three ways of laying out the same statements. The separation figure above is measured before any of them, so switching does not change it — how far apart a layout draws people and how far apart they are are different questions.',
+    ko: '같은 발언을 세 가지로 펼친 것입니다. 지도 아래의 “발언 되찾기” 수치는 펼치기 전 원래 값에서 재기 때문에 어느 배치를 골라도 똑같습니다 — 어떤 배치가 더 갈라 보이게 만드는지와, 실제로 갈라져 있는지는 다른 문제이고, 전자로 후자를 판단할 수는 없습니다.',
+    en: 'Three ways of laying out the same statements. The figure under the map is measured before any of them, so it reads the same whichever you pick — how far apart a layout draws people and how far apart they are are different questions, and the first cannot answer the second.',
   },
   secondAxisNote: {
     ko: '참여자가 두 명이라 사람 사이 방향은 하나뿐입니다. 세로축은 대신 각자의 발언이 가장 크게 갈리는 방향을 보여줍니다.',
     en: 'With two participants there is only one direction between them, so the vertical axis shows what varies within each of them instead.',
   },
   displayOptions: { ko: '표시 설정', en: 'Display options' },
+  builtWith: { ko: '이 지도를 만든 것', en: 'What made this map' },
+  builtWithRead: { ko: '읽기', en: 'Reading' },
+  builtWithPlace: { ko: '자리 잡기', en: 'Placing' },
+  builtWithMore: {
+    ko: '계산 방법과 기준값 전부 보기 →',
+    en: 'Every method and threshold →',
+  },
   showAll: { ko: '전체 보기', en: 'Show all' },
   // Korean has no plural marker, so `{s}` appears only in the English form.
   underdeterminedHint: {

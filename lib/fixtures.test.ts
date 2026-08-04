@@ -5,6 +5,7 @@ import fixtures from '../data/fixtures/precomputed.json' with { type: 'json' }
 import { SCENARIOS } from '../data/scenarios.ts'
 import { needsTranslation } from './translate.ts'
 import { speakerLabel } from './speakers.ts'
+import type { SpeakerSummary } from './summaries.ts'
 import type { AnalysisResult } from './types.ts'
 
 /**
@@ -177,7 +178,7 @@ test('every placed speaker is summarised, from statements they made', () => {
     assert.ok(summaries, `"${id}" has no speaker summaries`)
 
     for (const { speaker } of map.projections.people.speakers) {
-      const summary = summaries[speaker]
+      const summary: SpeakerSummary | undefined = summaries[speaker]
       assert.ok(summary, `"${id}" does not summarise ${speaker}`)
       assert.ok(
         summary.stance.ko.trim() && summary.stance.en.trim(),

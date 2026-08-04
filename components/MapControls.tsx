@@ -313,6 +313,72 @@ export function MarkLegend({
   )
 }
 
+/**
+ * A choice whose options need explaining, with the explanation on screen.
+ *
+ * The three layouts were a segmented control of three short words, each with
+ * its reason in a `title` tooltip. That is a choice presented as though it were
+ * cosmetic: a tooltip needs a mouse, needs a hover held long enough to trust,
+ * and is invisible to anybody who does not already suspect there is something
+ * to read. Nobody switched, because nothing said what switching would do.
+ *
+ * So the descriptions come out of the tooltips and sit under their labels. It
+ * costs vertical space in the rail and buys the option actually being usable,
+ * which was the point of offering it.
+ */
+export function ChoiceList<T extends string>({
+  value,
+  options,
+  onChange,
+  name,
+}: {
+  value: T
+  options: { value: T; label: string; description: string }[]
+  onChange: (v: T) => void
+  /** Groups the radios, so arrow keys move between them as one control. */
+  name: string
+}) {
+  return (
+    <div role="radiogroup" className="-mx-1 space-y-px">
+      {options.map((o) => {
+        const on = value === o.value
+        return (
+          <button
+            key={o.value}
+            type="button"
+            role="radio"
+            aria-checked={on}
+            name={name}
+            onClick={() => onChange(o.value)}
+            className="flex w-full items-start gap-2.5 rounded-[7px] px-2 py-2 text-left transition-colors"
+            style={{ background: on ? 'var(--panel-2)' : 'transparent' }}
+          >
+            <span
+              aria-hidden
+              className="mt-[3px] grid size-[13px] shrink-0 place-items-center rounded-full border transition-colors"
+              style={{
+                borderColor: on ? 'var(--signal)' : 'var(--line-strong)',
+                borderWidth: on ? 4 : 1,
+              }}
+            />
+            <span className="min-w-0">
+              <span
+                className="block text-[13px] leading-[1.4]"
+                style={{ color: on ? 'var(--ink)' : 'var(--body)' }}
+              >
+                {o.label}
+              </span>
+              <span className="mt-0.5 block text-[11.5px] leading-[1.5] text-[var(--muted)]">
+                {o.description}
+              </span>
+            </span>
+          </button>
+        )
+      })}
+    </div>
+  )
+}
+
 export function SegmentedControl<T extends string>({
   label,
   value,
@@ -371,10 +437,10 @@ export function renderModeOptions(
  */
 export function methodOptions(
   lang: Lang,
-): { value: ProjectionMethod; label: string; title: string }[] {
+): { value: ProjectionMethod; label: string; description: string }[] {
   return [
-    { value: 'people', label: t('methodPeople', lang), title: t('methodPeopleHint', lang) },
-    { value: 'pca', label: t('methodPca', lang), title: t('methodPcaHint', lang) },
-    { value: 'mds', label: t('methodMds', lang), title: t('methodMdsHint', lang) },
+    { value: 'people', label: t('methodPeople', lang), description: t('methodPeopleHint', lang) },
+    { value: 'pca', label: t('methodPca', lang), description: t('methodPcaHint', lang) },
+    { value: 'mds', label: t('methodMds', lang), description: t('methodMdsHint', lang) },
   ]
 }
