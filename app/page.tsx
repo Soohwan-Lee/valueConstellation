@@ -1,9 +1,9 @@
 'use client'
 
 import Link from 'next/link'
-import { LangSwitch, ThemeSwitch, usePreferences } from '@/components/Preferences'
+import { useBilingual } from '@/components/Preferences'
+import { SiteHeader } from '@/components/SiteHeader'
 import { Reveal } from '@/components/Reveal'
-import { Wordmark } from '@/components/Chrome'
 import { MarkFigure } from '@/components/landing/MarkFigure'
 import { RegionSteps } from '@/components/landing/RegionSteps'
 import { ScenarioCard } from '@/components/landing/ScenarioCard'
@@ -21,7 +21,6 @@ import {
   PIPELINE,
   PIPELINE_SECTION,
   REGION_RULE,
-  type Bilingual,
 } from '@/lib/landing'
 import type { AnalysisResult } from '@/lib/types'
 
@@ -42,27 +41,21 @@ const FIXTURES = precomputed as unknown as Record<string, AnalysisResult>
  * analysis is built, and what it cannot do.
  */
 export default function Overview() {
-  const { lang } = usePreferences()
-  const say = (b: Bilingual) => b[lang]
+  const { lang, say } = useBilingual()
 
   return (
     <div className="min-h-dvh bg-[var(--tray)]">
-      <header className="sticky top-0 z-30 border-b border-[var(--line)] bg-[color-mix(in_oklab,var(--tray)_88%,transparent)] backdrop-blur-md">
-        <div className="mx-auto flex max-w-[1240px] items-center justify-between gap-4 px-5 py-3 sm:px-8">
-          <Wordmark lang={lang} compact />
-          <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-            <LangSwitch />
-            <ThemeSwitch />
-            {/* Always one click away, from anywhere on the page. */}
-            <Link
-              href="/new"
-              className="hidden rounded-full bg-[var(--signal)] px-4 py-2 text-[13px] font-medium text-[var(--on-signal)] transition-opacity hover:opacity-88 sm:inline-block"
-            >
-              {say(OWN_TRANSCRIPT.cta)}
-            </Link>
-          </div>
-        </div>
-      </header>
+      <SiteHeader
+        action={
+          <Link
+            href="/new"
+            className="hidden rounded-full bg-[var(--signal)] px-4 py-2 text-[13px] font-medium text-[var(--on-signal)] transition-opacity hover:opacity-88 sm:inline-block"
+          >
+            {say(OWN_TRANSCRIPT.cta)}
+          </Link>
+        }
+        home={false}
+      />
 
       <main>
         {/* ── Hero ─────────────────────────────────────────────────────────

@@ -1,11 +1,10 @@
 'use client'
 
 import Link from 'next/link'
-import { LangSwitch, ThemeSwitch, usePreferences } from '@/components/Preferences'
+import { useBilingual } from '@/components/Preferences'
 import { Reveal } from '@/components/Reveal'
-import { Wordmark } from '@/components/Chrome'
+import { SiteHeader } from '@/components/SiteHeader'
 import { GROUPS, HOW_FOOT, HOW_HEAD } from '@/lib/how'
-import type { Bilingual } from '@/lib/landing'
 
 /**
  * The reference page.
@@ -18,22 +17,11 @@ import type { Bilingual } from '@/lib/landing'
  * the value it actually uses.
  */
 export default function HowItWorks() {
-  const { lang } = usePreferences()
-  const say = (b: Bilingual) => b[lang]
+  const { say } = useBilingual()
 
   return (
     <div className="min-h-dvh bg-[var(--tray)]">
-      <header className="sticky top-0 z-30 border-b border-[var(--line)] bg-[color-mix(in_oklab,var(--tray)_86%,transparent)] backdrop-blur-md">
-        <div className="mx-auto flex max-w-[960px] items-center justify-between gap-4 px-5 py-3 sm:px-8">
-          <Link href="/" className="transition-opacity hover:opacity-70">
-            <Wordmark lang={lang} compact />
-          </Link>
-          <div className="flex shrink-0 items-center gap-2">
-            <LangSwitch />
-            <ThemeSwitch />
-          </div>
-        </div>
-      </header>
+      <SiteHeader width="max-w-[960px]" />
 
       <main className="mx-auto max-w-[960px] px-5 py-16 sm:px-8 sm:py-24">
         <Link

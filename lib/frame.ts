@@ -22,14 +22,30 @@ export interface Scales {
   toY: (v: number) => number
 }
 
+/** A box to fit the map into. Defaults to the interactive plate's. */
+export interface Frame {
+  width: number
+  height: number
+  padding: number
+}
+
+const PLATE: Frame = { width: VIEW_W, height: VIEW_H, padding: PADDING }
+
 /**
- * Maps projected coordinates into the viewBox.
+ * Maps projected coordinates into a box.
  *
  * A single scale factor is used for both axes so that distances are not
  * distorted differently in x and y — stretching one axis to fill the frame
  * would make some pairs look closer than they are.
+ *
+ * Parameterised over the box because the same fit is needed at three sizes:
+ * the plate, the card previews on the overview, and the still image in the
+ * README. Three copies of it is three chances for one of them to distort.
  */
-export function buildScales(projection: Projection): Scales {
+export function buildScales(
+  projection: Projection,
+  { width, height, padding }: Frame = PLATE,
+): Scales {
   const xs: number[] = []
   const ys: number[] = []
   for (const u of projection.utterances) {
@@ -57,8 +73,8 @@ export function buildScales(projection: Projection): Scales {
   const rawSpanY = maxY - minY
   const spanX = Number.isFinite(rawSpanX) && rawSpanX > 0 ? rawSpanX : 1
   const spanY = Number.isFinite(rawSpanY) && rawSpanY > 0 ? rawSpanY : 1
-  const usableW = VIEW_W - PADDING * 2
-  const usableH = VIEW_H - PADDING * 2
+  const usableW = width - padding * 2
+  const usableH = height - padding * 2
 
   const scale = Math.min(usableW / spanX, usableH / spanY)
 
@@ -67,8 +83,8 @@ export function buildScales(projection: Projection): Scales {
   const offsetY = (usableH - spanY * scale) / 2
 
   return {
-    toX: (v: number) => PADDING + offsetX + (v - minX) * scale,
+    toX: (v: number) => padding + offsetX + (v - minX) * scale,
     // SVG y grows downward; invert so the map reads like a chart.
-    toY: (v: number) => VIEW_H - PADDING - offsetY - (v - minY) * scale,
+    toY: (v: number) => height - padding - offsetY - (v - minY) * scale,
   }
 }

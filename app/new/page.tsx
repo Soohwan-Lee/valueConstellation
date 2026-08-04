@@ -4,10 +4,10 @@ import { useCallback, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Composer } from '@/components/Composer'
-import { LangSwitch, ThemeSwitch, usePreferences } from '@/components/Preferences'
-import { Wordmark } from '@/components/Chrome'
+import { useBilingual } from '@/components/Preferences'
+import { SiteHeader } from '@/components/SiteHeader'
 import { stageTranscript } from '@/lib/handoff'
-import { NEW_PAGE, type Bilingual } from '@/lib/landing'
+import { NEW_PAGE } from '@/lib/landing'
 
 /**
  * Pasting a transcript, on its own page.
@@ -26,8 +26,7 @@ import { NEW_PAGE, type Bilingual } from '@/lib/landing'
  */
 export default function NewMap() {
   const router = useRouter()
-  const { lang } = usePreferences()
-  const say = (b: Bilingual) => b[lang]
+  const { lang, say } = useBilingual()
   const [transcript, setTranscript] = useState('')
 
   const submit = useCallback(() => {
@@ -38,17 +37,7 @@ export default function NewMap() {
 
   return (
     <div className="min-h-dvh bg-[var(--tray)]">
-      <header className="border-b border-[var(--line)]">
-        <div className="mx-auto flex max-w-[900px] items-center justify-between gap-4 px-5 py-3 sm:px-8">
-          <Link href="/" className="transition-opacity hover:opacity-70">
-            <Wordmark lang={lang} compact />
-          </Link>
-          <div className="flex shrink-0 items-center gap-2">
-            <LangSwitch />
-            <ThemeSwitch />
-          </div>
-        </div>
-      </header>
+      <SiteHeader width="max-w-[900px]" />
 
       <main className="mx-auto max-w-[900px] px-5 py-12 sm:px-8 sm:py-16">
         <Link

@@ -87,6 +87,18 @@ export function usePreferences(): Preferences {
 }
 
 /**
+ * The current language, plus the one-liner every page that renders prose was
+ * declaring for itself.
+ */
+export function useBilingual(): {
+  lang: Lang
+  say: (text: Record<Lang, string>) => string
+} {
+  const { lang } = usePreferences()
+  return { lang, say: (text) => text[lang] }
+}
+
+/**
  * Language switch.
  *
  * A two-state track with a moving thumb rather than a link that toggles: the

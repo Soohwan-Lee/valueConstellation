@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { mapResolution, regionPath, regionRings, type Point } from '@/lib/blob'
+import { buildScales } from '@/lib/frame'
 import { speakerLabel } from '@/lib/speakers'
 import type { Lang } from '@/lib/i18n'
 import type { AnalysisResult } from '@/lib/types'
@@ -39,16 +40,11 @@ export function ScenarioCard({
   index: number
 }) {
   const projection = analysis.projections.pca
-
-  const xs = projection.utterances.map((u) => u.x)
-  const ys = projection.utterances.map((u) => u.y)
-  const spanX = Math.max(...xs) - Math.min(...xs) || 1
-  const spanY = Math.max(...ys) - Math.min(...ys) || 1
-  const scale = Math.min((W - PAD * 2) / spanX, (H - PAD * 2) / spanY)
-  const offX = (W - PAD * 2 - spanX * scale) / 2
-  const offY = (H - PAD * 2 - spanY * scale) / 2
-  const toX = (v: number) => PAD + offX + (v - Math.min(...xs)) * scale
-  const toY = (v: number) => H - PAD - offY - (v - Math.min(...ys)) * scale
+  const { toX, toY } = buildScales(projection, {
+    width: W,
+    height: H,
+    padding: PAD,
+  })
 
   const bySpeaker: Point[][] = projection.speakers.map((s) =>
     projection.utterances
