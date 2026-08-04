@@ -35,7 +35,7 @@ Rules:
 /** True when this unit is not in English and has no usable translation yet. */
 export function needsTranslation(text: string, textEn?: string): boolean {
   if (!/[가-힣]/.test(text)) return false
-  if (!textEn) return true
+  if (!textEn || !textEn.trim()) return true
   if (textEn.trim() === text.trim()) return true
   return /[가-힣]/.test(textEn)
 }

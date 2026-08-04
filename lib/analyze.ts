@@ -325,10 +325,12 @@ export async function analyzeTranscript(
     ...projections.pca.speakers.map((s) => s.speaker),
     ...droppedSpeakers,
   ])
-  droppedSpeakers = [
-    ...droppedSpeakers,
-    ...mappableSpeakers.filter((s) => !placedOrDropped.has(s)),
-  ]
+  droppedSpeakers = Array.from(
+    new Set([
+      ...droppedSpeakers,
+      ...mappableSpeakers.filter((s) => !placedOrDropped.has(s)),
+    ]),
+  )
 
   // A map of one person shows no relative position, which is the entire point.
   // Better to say so than to draw a single marker and let it imply otherwise.
@@ -557,6 +559,7 @@ async function embedUtterances(
  * participant's centroid, with nothing in the output to indicate it happened.
  */
 export function nearestSpeaker(candidate: string, known: string[]): string | null {
+  if (!candidate) return null
   const c = candidate.replace(/\s+/g, '')
   if (!c) return null
 
