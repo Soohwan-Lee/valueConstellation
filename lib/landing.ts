@@ -123,7 +123,7 @@ export const REGION_RULE = {
     en: 'There is nothing to tune. No number in this was chosen because the picture looked better with it, which is what makes the shape explainable.',
   },
   rejected: {
-    ko: '흔히 쓰는 타원(공분산 타원)은 쓰지 않았습니다. 타원은 어떤 점 분포든 하나의 매끈한 타원으로 덮기 때문에, 서로 다른 두 논지를 오간 사람도 그 사이 빈 자리까지 차지한 것처럼 그립니다.',
+    ko: '흔히 쓰는 타원은 쓰지 않았습니다. 타원은 어떤 점 분포든 하나의 매끈한 타원으로 덮기 때문에, 서로 다른 두 논지를 오간 사람도 그 사이 빈 자리까지 차지한 것처럼 그립니다.',
     en: 'The usual covariance ellipse is not used. An ellipse covers any set of points with one smooth oval, so somebody who argued from two separate positions is drawn as having occupied the empty ground between them too.',
   },
 }
@@ -152,17 +152,17 @@ export const PIPELINE: { title: Bilingual; body: Bilingual }[] = [
     },
   },
   {
-    title: { ko: '의미를 좌표로', en: 'Embed the meaning' },
+    title: { ko: '뜻이 비슷한 것끼리 모으기', en: 'Group by what they mean' },
     body: {
-      ko: '각 주장을 임베딩해 의미가 비슷한 것끼리 가까워지도록 만듭니다. 사람의 위치는 이 원래 공간에서 평균을 낸 뒤 투영합니다 — 2차원 좌표를 평균 내는 것과는 다릅니다.',
-      en: 'Each argument is embedded so that similar meanings land near each other. A speaker’s position is averaged in that original space and then projected, which is not the same as averaging 2D coordinates.',
+      ko: '각 주장을 뜻을 나타내는 숫자 목록으로 바꿉니다. 비슷한 말을 한 주장끼리는 이 숫자들이 서로 가까워집니다. 사람의 위치는 이 단계에서 평균을 내고, 그 다음에 지도로 옮깁니다.',
+      en: 'Each argument becomes a long list of numbers standing for its meaning, so arguments that say similar things end up near each other. A person’s position is averaged here, before anything is flattened.',
     },
   },
   {
-    title: { ko: '2차원으로 펼치기', en: 'Lay it out in 2D' },
+    title: { ko: '평면에 펼치기', en: 'Flatten it onto a page' },
     body: {
-      ko: 'PCA 또는 MDS로 펼칩니다. 이 과정에서 얼마나 손실됐는지를 지도 아래에 그대로 적습니다. 담아내지 못한 게 많으면 거리를 참고용으로만 보라고 말합니다.',
-      en: 'PCA or metric MDS. How much was lost on the way is printed under the map, and when too much was lost it says to read the distances as approximate.',
+      ko: '그 숫자들은 방향이 아주 많아서 종이 한 장에 그대로 옮길 수 없습니다. 두 가지 방식으로 눌러 펼치고, 그 과정에서 얼마나 남았는지를 지도 아래에 적습니다.',
+      en: 'Those numbers point in far more directions than a page has, so the layout squashes them two different ways and prints how much survived underneath the map.',
     },
   },
 ]
@@ -199,15 +199,22 @@ export const LIMITS: { title: Bilingual; body: Bilingual }[] = [
   {
     title: { ko: '한 지도에는 한 쟁점만', en: 'One map wants one question' },
     body: {
-      ko: '실제 57분짜리 5당 토론에서 다섯 정당이 서로 겹쳐버렸습니다. 여러 안건을 함께 다루면 각자의 평균이 모두 가운데로 모입니다. 지도는 이 상태를 분리도로 재서, 1 미만이면 그렇다고 알려줍니다.',
-      en: 'On a real 57-minute five-party debate, all five parties landed on top of each other: covering several issues pulls every average toward the middle. The map measures that as a separation figure and says so when it falls below 1.',
+      ko: '실제 57분짜리 5당 토론에서 다섯 정당이 서로 겹쳐버렸습니다. 한 회의에서 여러 안건을 다루면 각자의 평균이 모두 가운데로 모입니다. 지도는 이 상태를 직접 재서, 사람을 구분하지 못할 때는 지도 아래에 그렇다고 적습니다. 네 번째 예시가 바로 이 경우입니다.',
+      en: 'On a real 57-minute five-party debate, all five parties landed on top of each other: covering several agenda items pulls every average toward the middle. The map measures that directly and says under itself when it cannot tell people apart. The fourth example is exactly this case.',
     },
   },
   {
-    title: { ko: '적은 발언은 위치가 아닙니다', en: 'Few statements are not a position' },
+    title: { ko: '발언이 적으면 위치가 아닙니다', en: 'Few statements are not a position' },
     body: {
-      ko: '발언이 여섯 개 미만이면 2차원 설명력 수치는 산수일 뿐 근거가 아닙니다. 점이 적으면 어떤 배치든 거의 완벽하게 들어맞기 때문입니다. 지도는 이 경우 수치를 믿지 말라고 먼저 말합니다.',
-      en: 'Below six statements the explained-variance figure is arithmetic rather than evidence — few points always fit two dimensions almost exactly — and the map says so before showing it.',
+      ko: '점이 몇 개 없으면 어떤 평면에도 거의 그대로 들어맞습니다. 그래서 발언이 여섯 개 미만인 지도는 아무리 좋아 보여도 근거가 없고, 그 사실을 지도가 먼저 말합니다. 사람별로도 발언 세 개 미만이면 표식을 점선으로 그립니다.',
+      en: 'A handful of points fits almost any plane exactly, so a map built on fewer than six statements looks convincing and shows nothing — and says so first. Per person, fewer than three statements gets a dashed marker.',
+    },
+  },
+  {
+    title: { ko: '거리 값 자체는 대략입니다', en: 'The exact distances are approximate' },
+    body: {
+      ko: '발언들의 차이는 원래 훨씬 여러 방향으로 나 있어서, 평면 한 장에 옮기면 보통 10~25%만 남습니다. 누가 가깝고 누가 먼지는 읽을 수 있지만, 0.62와 0.58의 차이는 읽지 마세요.',
+      en: 'Differences between statements run in many more directions than a page has, so flattening usually keeps 10 to 25% of them. Near and far are readable; the difference between 0.62 and 0.58 is not.',
     },
   },
 ]

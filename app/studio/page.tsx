@@ -362,8 +362,11 @@ export default function Studio() {
                   onChange={setMethod}
                 />
               </div>
+              <p className="mt-3 text-[11.5px] leading-[1.6] text-[var(--muted)]">
+                {t('methodNote', lang)}
+              </p>
               {shapeNotice && (
-                <p className="mt-3 text-[11.5px] leading-[1.55] text-[var(--muted)]">
+                <p className="mt-2 text-[11.5px] leading-[1.55] text-[var(--muted)]">
                   {tf('shapeNote', lang, {
                     n: speakerCount,
                     max: SPEAKER_SLOTS,

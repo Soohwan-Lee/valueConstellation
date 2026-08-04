@@ -39,10 +39,10 @@ export const STRINGS = {
   analyzing: { ko: '분석 중…', en: 'Analyzing…' },
 
   // Loading stages
-  stageParse: { ko: '발언자 구분', en: 'Attributing speakers' },
-  stageSegment: { ko: '주장 단위 분리', en: 'Segmenting arguments' },
-  stageEmbed: { ko: '의미 임베딩', en: 'Embedding meaning' },
-  stageProject: { ko: '2차원 배치', en: 'Projecting to 2D' },
+  stageParse: { ko: '누가 말했는지 구분하는 중', en: 'Working out who said what' },
+  stageSegment: { ko: '주장 단위로 나누는 중', en: 'Splitting into arguments' },
+  stageEmbed: { ko: '뜻이 비슷한 것끼리 모으는 중', en: 'Grouping by meaning' },
+  stageProject: { ko: '평면에 펼치는 중', en: 'Laying it out' },
 
   // Map controls
   speakersLabel: { ko: '참여자 표시', en: 'Speakers' },
@@ -63,12 +63,16 @@ export const STRINGS = {
     en: 'Centroid marker together with the region',
   },
   methodPcaHint: {
-    ko: '선형 투영. 2차원이 원래 공간을 얼마나 담는지 함께 보고합니다',
-    en: 'Linear projection; reports how much of the original space the 2D view captures',
+    ko: '의견이 가장 크게 갈리는 방향부터 펼칩니다. 가로·세로 방향에 뜻이 생깁니다',
+    en: 'Opens out along the directions people differ on most, so the axes carry meaning',
   },
   methodMdsHint: {
-    ko: '코사인 거리 기반 MDS. 쌍 간 거리를 보존합니다',
-    en: 'Metric MDS on cosine distance; preserves pairwise distance',
+    ko: '누가 누구와 얼마나 떨어져 있는지를 최대한 그대로 옮깁니다. 거리가 더 정확합니다',
+    en: 'Keeps who is how far from whom as close to the original as it can',
+  },
+  methodNote: {
+    ko: '같은 발언을 두 가지 방식으로 펼친 것입니다. 두 배치에서 모두 떨어져 있는 사람이라면 그 차이는 배치 탓이 아닙니다.',
+    en: 'Two ways of laying out the same statements. Anybody who sits apart in both is not an artefact of the layout.',
   },
   displayOptions: { ko: '표시 설정', en: 'Display options' },
   showAll: { ko: '전체 보기', en: 'Show all' },
@@ -169,26 +173,34 @@ export const STRINGS = {
     ko: '지도에 표시되지 않음 (실질 발언 없음)',
     en: 'Not placed (no substantive statements)',
   },
-  variance: {
-    ko: '2개 축이 원래 의미 공간의 분산 중 {pct}%를 담습니다.',
-    en: 'The two axes capture {pct}% of the variance in the original meaning space.',
+  // How much to trust this map, in the order a reader needs it: does it tell
+  // these people apart at all, and then how much detail the flattening cost.
+  verdictStrong: {
+    ko: '이 지도는 참여자를 잘 구분합니다.',
+    en: 'This map tells the participants apart clearly.',
   },
-  lowSeparation: {
-    ko: '참여자들이 서로 떨어진 거리보다 각자의 발언이 더 넓게 퍼져 있습니다(분리도 {sep}). 이 회의에서는 화자 위치가 참여자를 구분하지 못합니다 — 여러 쟁점을 함께 다뤄서 평균이 모두 가운데로 모인 경우입니다. 쟁점을 하나로 좁혀 다시 만들어 보세요.',
-    en: 'Each speaker\'s statements scatter wider than the speakers sit apart (separation {sep}). Here the centroids are not distinguishing anybody — the discussion covered several issues, so averaging pulled everyone to the middle. Try a transcript narrowed to one question.',
+  verdictWeak: {
+    ko: '구분은 되지만 뚜렷하지 않습니다. 각자 자기 이야기를 하면서도 서로 비슷한 말을 많이 했다는 뜻입니다.',
+    en: 'It separates them, but not sharply — they said a lot of similar things alongside their own.',
   },
-  separationLabel: { ko: '분리도', en: 'Separation' },
-  varianceSaturated: {
-    ko: '발언이 {n}개뿐이라 이 수치({pct}%)는 의미가 없습니다 — 점이 적으면 2차원에 거의 그대로 들어맞습니다. 더 긴 회의록이 필요합니다.',
-    en: 'With only {n} statements this figure ({pct}%) carries no information — few points always fit two dimensions almost exactly. A longer transcript is needed.',
+  verdictNone: {
+    ko: '이 회의에서는 참여자를 구분하지 못합니다. 각자의 발언이 서로 떨어진 거리보다 더 넓게 퍼져 있어서, 평균이 모두 가운데로 모였습니다. 대개 한 회의에서 여러 안건을 함께 다룬 경우입니다 — 쟁점 하나로 좁혀서 다시 만들어 보세요.',
+    en: 'This map cannot tell the participants apart. Each person’s statements scatter wider than the people sit apart, so every average landed in the middle. That usually means one meeting covered several agenda items — narrow it to one question and try again.',
   },
-  varianceWeak: {
-    ko: '나머지는 2차원에 담기지 않았으므로 거리는 참고용으로만 보세요.',
-    en: 'The rest does not fit in two dimensions, so read distances as approximate.',
+  separationTerm: { ko: '사람 구분 정도', en: 'Separation' },
+
+  keptPlain: {
+    ko: '발언들의 차이는 원래 훨씬 여러 방향으로 나 있고, 그중 {pct}%가 이 평면에 남았습니다. 이 방식에서는 보통 10~25%로 낮게 나옵니다 — 누가 가깝고 누가 먼지는 볼 수 있지만, 거리 값 자체는 대략으로 보세요.',
+    en: 'Differences between statements run in many more directions than two, and {pct}% of that survived the flattening. This method usually lands between 10 and 25% — near and far are readable, the exact distances are not.',
   },
-  mdsNote: {
-    ko: 'MDS는 쌍 간 거리를 보존하지만 분산 설명력 지표가 없습니다.',
-    en: 'MDS preserves pairwise distances but has no explained-variance measure.',
+  keptTerm: { ko: '평면에 남은 정도', en: 'Detail kept' },
+  keptSaturated: {
+    ko: '발언이 {n}개뿐이라 이 수치({pct}%)는 아무 뜻이 없습니다. 점이 몇 개 없으면 어떤 평면에도 거의 그대로 들어맞기 때문입니다. 더 긴 회의록이 필요합니다.',
+    en: 'With only {n} statements this figure ({pct}%) means nothing — a handful of points fits almost any plane exactly. A longer transcript is needed.',
+  },
+  keptMds: {
+    ko: '이 배치는 사람 사이 거리를 최대한 그대로 옮기는 방식이라, 얼마나 남았는지를 나타내는 수치가 없습니다.',
+    en: 'This layout preserves the distances between people as closely as it can, so there is no figure for how much was kept.',
   },
   shapeNote: {
     ko: '참여자가 {n}명으로 구분 가능한 색({max}개)을 넘어, 표식 모양으로 구분합니다.',
