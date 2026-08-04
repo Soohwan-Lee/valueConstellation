@@ -16,9 +16,12 @@ this codebase exist because a specific misreading was observed.
 ## Architecture
 
 ```text
-app/page.tsx              overview: live demo, reading guide, examples, limits
+app/page.tsx              overview: live demo, reading guide, region rule, examples,
+                          limits, and a working composer
 app/studio/page.tsx       the tool: console rail, plate, composer, inspector
-app/api/analyze/route.ts  the only server work: segment → embed → project
+app/how-it-works/page.tsx reference: models, thresholds, data handling
+app/api/analyze/route.ts  request handling only
+lib/analyze.ts            the pipeline, shared with the fixture builder
 lib/                      all logic, no React, no server-only imports
 components/               presentation; components/landing/ is overview-only
 data/                     example transcripts and a precomputed fixture
@@ -44,7 +47,9 @@ npm run dev        # http://localhost:3000
 npm run build      # production build; also typechecks
 npm test           # node --test over lib/*.test.ts, no model calls
 npm run typecheck  # tsc --noEmit
-npm run hero       # regenerate docs/hero.svg after changing map geometry
+npm run hero       # redraw docs/hero.svg after changing map geometry
+npm run hero:data  # re-analyse the English hero transcript (costs an API call)
+npm run fixtures   # rebuild the four examples through the pipeline (costs money)
 ```
 
 Requires Node 22.6+ for native type stripping in the test runner.
@@ -75,7 +80,8 @@ original, not in place of it. The overview's prose lives in `lib/landing.ts`
 instead, so forty control labels do not end up buried inside an essay.
 
 **Nothing on the map is tuned.** The region's shape follows from one measured
-quantity — the median nearest-neighbour distance over every statement — and the
+quantity — the median distance from a statement to the nearest other one by the
+same person, pooled across speakers — and the
 overview publishes that rule to the reader. A constant chosen because the
 picture looked better with it cannot be defended to somebody who disagrees with
 what the picture says about them, so if a shape needs fixing, change what is

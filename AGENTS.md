@@ -6,7 +6,7 @@ Value Constellation maps where participants in a meeting stand relative to each
 other, from the transcript. One Next.js 16 app, TypeScript throughout.
 
 ```text
-app/          `/` explains, `/studio` works, `api/analyze` is the only server work
+app/          `/` explains, `/studio` works, `/how-it-works` is the reference
 lib/          all logic — no React, no Node-only imports
 components/   presentation; components/landing/ is overview-only
 data/         example transcripts, precomputed fixture
@@ -30,7 +30,8 @@ npm run dev        # http://localhost:3000
 npm run build      # production build; also typechecks
 npm test           # node --test over lib/*.test.ts
 npm run typecheck  # tsc --noEmit
-npm run hero       # regenerate docs/hero.svg after changing map geometry
+npm run hero       # redraw docs/hero.svg after changing map geometry
+npm run fixtures   # rebuild the examples through the pipeline (costs money)
 ```
 
 Node 22.6+ is required for native type stripping. `OPENAI_API_KEY` goes in
