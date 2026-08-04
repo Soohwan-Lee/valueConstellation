@@ -165,6 +165,13 @@ export const STRINGS = {
   translation: { ko: '번역', en: 'Translation' },
   original: { ko: '원문', en: 'Original' },
   utterances: { ko: '발언', en: 'Statements' },
+  stanceHeading: { ko: '이 사람의 주장', en: 'What they argued' },
+  themesHeading: { ko: '반복해서 돌아온 지점', en: 'Kept coming back to' },
+  anchorTag: { ko: '근거', en: 'Basis' },
+  summaryOrigin: {
+    ko: '발언 내용을 읽어 정리한 요약입니다. 지도 좌표가 아니라 실제 발언에서 나왔으므로, 배치를 바꿔도 이 요약은 그대로입니다. 아래 “근거” 표시가 붙은 발언이 근거입니다.',
+    en: 'Read from what this person said, not from where they sit — switch the layout and this summary does not change. The statements marked “Basis” below are what it rests on.',
+  },
   mapped: { ko: '지도에 표시', en: 'Mapped' },
   assentProcedural: { ko: '단순 동의 / 진행 발언', en: 'Assent / procedural' },
   offsetLabel: { ko: '이 사람 중심에서', en: 'From their centre' },

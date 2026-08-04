@@ -1,5 +1,6 @@
 import type { AxisLabels } from './axes.ts'
 import type { SpeakerNames } from './speakers.ts'
+import type { SpeakerSummaries } from './summaries.ts'
 import type { Attribution } from './aggregate.ts'
 
 /** What kind of contribution an utterance makes to the discussion. */
@@ -175,6 +176,14 @@ export interface AnalysisResult {
    * the original is shown, which is what every earlier map does.
    */
   speakerNames: SpeakerNames | null
+  /**
+   * What each participant argued, keyed by the name as spoken.
+   *
+   * Read from the statements rather than from the map, so it says the same
+   * thing whichever layout is on screen. Null when the model could not be
+   * reached or when nobody said enough for a position to be readable.
+   */
+  speakerSummaries: SpeakerSummaries | null
 }
 
 /** How a speaker is drawn. Which of these is right is an empirical question. */

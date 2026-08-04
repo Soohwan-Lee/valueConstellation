@@ -9,7 +9,7 @@ import {
   filterHallucinated,
   type SegmentedUtterance,
 } from './segment.ts'
-import { aggregateAndProject } from './aggregate.ts'
+import { aggregateAndProject, isMappable } from './aggregate.ts'
 import {
   formatForTranslation,
   needsTranslation,
@@ -28,6 +28,13 @@ import {
   canLabelAxes,
   formatExtremesForPrompt,
 } from './axes.ts'
+import {
+  canSummarise,
+  formatStatementsForPrompt,
+  SpeakerSummariesSchema,
+  SUMMARY_SYSTEM_PROMPT,
+  type SpeakerSummaries,
+} from './summaries.ts'
 import type {
   AnalysisResult,
   ProjectionMethod,
@@ -333,23 +340,38 @@ export async function analyzeTranscript(
   // they are different meanings — `people` opens along what separates the
   // participants, `pca` along what the room as a whole differed on. MDS is left
   // alone, since its orientation is arbitrary.
-  await Promise.all(
-    (['people', 'pca'] as const).map(async (method) => {
-      const projection = projections[method]
-      if (!canLabelAxes(projection.utterances)) return
-      try {
-        const { object } = await generateObject({
-          model: openai(MODEL),
-          schema: AxisLabelsSchema,
-          system: AXIS_SYSTEM_PROMPT,
-          prompt: formatExtremesForPrompt(projection.utterances),
-        })
-        projection.meta.axes = object
-      } catch (error) {
-        console.error(`axis labelling failed for ${method}`, error)
-      }
-    }),
+  // 6. Say what each participant argued.
+  //
+  // Runs beside the axis naming rather than after it, since neither needs the
+  // other, and is drawn from the statements rather than from the coordinates —
+  // see lib/summaries.ts for why that distinction is the point.
+  const placedSpeakers = new Set(
+    projections.pca.speakers.map((s) => s.speaker),
   )
+  const mappable = utterances.filter(
+    (u) => isMappable(u) && placedSpeakers.has(u.speaker),
+  )
+
+  const [, speakerSummaries] = await Promise.all([
+    Promise.all(
+      (['people', 'pca'] as const).map(async (method) => {
+        const projection = projections[method]
+        if (!canLabelAxes(projection.utterances)) return
+        try {
+          const { object } = await generateObject({
+            model: openai(MODEL),
+            schema: AxisLabelsSchema,
+            system: AXIS_SYSTEM_PROMPT,
+            prompt: formatExtremesForPrompt(projection.utterances),
+          })
+          projection.meta.axes = object
+        } catch (error) {
+          console.error(`axis labelling failed for ${method}`, error)
+        }
+      }),
+    ),
+    summariseSpeakers(mappable),
+  ])
 
   const speakerNames = await speakerNamesPromise
 
@@ -368,6 +390,7 @@ export async function analyzeTranscript(
       counts,
       droppedSpeakers,
       speakerNames,
+      speakerSummaries,
       diagnostics: {
         turns: parsed.turns.length,
         speakers: parsed.speakers,
@@ -383,6 +406,52 @@ export async function analyzeTranscript(
         embeddingModel: EMBEDDING_MODEL,
       },
     },
+  }
+}
+
+/**
+ * What each participant argued, keyed by speaker.
+ *
+ * Never rejects, for the same reason the axis names do not: this is a reading
+ * aid over a map that stands without it. A summary lost to a timeout costs a
+ * paragraph; a rejected analysis costs the map.
+ *
+ * Anything the model returns that cannot be checked against the transcript is
+ * dropped rather than shown — a summary for a speaker who was not asked about,
+ * or anchored to a statement that speaker did not make. The anchors exist so a
+ * reader can verify the summary, which they cannot do if the anchors are wrong.
+ */
+async function summariseSpeakers(
+  utterances: Utterance[],
+): Promise<SpeakerSummaries | null> {
+  if (!canSummarise(utterances)) return null
+  try {
+    const { object } = await generateObject({
+      model: openai(MODEL),
+      schema: SpeakerSummariesSchema,
+      system: SUMMARY_SYSTEM_PROMPT,
+      prompt: formatStatementsForPrompt(utterances),
+    })
+
+    const idsBySpeaker = new Map<string, Set<string>>()
+    for (const u of utterances) {
+      const ids = idsBySpeaker.get(u.speaker)
+      if (ids) ids.add(u.id)
+      else idsBySpeaker.set(u.speaker, new Set([u.id]))
+    }
+
+    const summaries: SpeakerSummaries = {}
+    for (const entry of object.summaries) {
+      const speaker = entry.speaker.trim()
+      const own = idsBySpeaker.get(speaker)
+      if (!own || !entry.stance.ko.trim()) continue
+      const anchors = entry.anchors.filter((id) => own.has(id))
+      summaries[speaker] = { ...entry, speaker, anchors }
+    }
+    return Object.keys(summaries).length > 0 ? summaries : null
+  } catch (error) {
+    console.error('speaker summaries failed', error)
+    return null
   }
 }
 

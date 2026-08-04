@@ -460,6 +460,7 @@ export default function Studio() {
                     selectedSpeaker={selectedSpeaker}
                     lang={lang}
                     speakerNames={analysis?.speakerNames ?? null}
+                    summaries={analysis?.speakerSummaries ?? null}
                     onSelectUtterance={(u) => {
                       setSelected(u)
                       setSelectedSpeaker(null)

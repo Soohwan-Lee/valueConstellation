@@ -105,6 +105,22 @@ function report(id: string, result: AnalysisWithDiagnostics) {
         `${p.meta.secondAxisFromResiduals ? '  (2nd axis from within-speaker)' : ''}`,
     )
   }
+  // Printed in full rather than counted. These are the sentences a reader will
+  // take as the answer, and whether two of them could be swapped is a judgement
+  // nobody can make from a tally.
+  const summaries = result.speakerSummaries
+  if (!summaries) {
+    console.log('        summaries: none')
+  } else {
+    for (const [speaker, s] of Object.entries(summaries)) {
+      console.log(`        ${speaker}: ${s.stance.ko}`)
+      console.log(
+        `          ${s.themes.map((t) => t.ko).join(' · ')}` +
+          `  [${s.anchors.join(' ')}]`,
+      )
+    }
+  }
+
   const counts = result.counts
   console.log(
     `        claims ${counts.claim}  questions ${counts.question}` +

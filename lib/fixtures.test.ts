@@ -171,6 +171,57 @@ test('the examples still demonstrate what they claim to', () => {
   )
 })
 
+test('every placed speaker is summarised, from statements they made', () => {
+  for (const [id, map] of Object.entries(MAPS)) {
+    const summaries = map.speakerSummaries
+    assert.ok(summaries, `"${id}" has no speaker summaries`)
+
+    for (const { speaker } of map.projections.people.speakers) {
+      const summary = summaries[speaker]
+      assert.ok(summary, `"${id}" does not summarise ${speaker}`)
+      assert.ok(
+        summary.stance.ko.trim() && summary.stance.en.trim(),
+        `"${id}" has an empty stance for ${speaker}`,
+      )
+      assert.ok(
+        summary.themes.length > 0,
+        `"${id}" gives ${speaker} no themes`,
+      )
+
+      // The anchors are what makes the summary checkable. One pointing at
+      // somebody else's statement would show a reader the wrong evidence.
+      const own = new Set(
+        map.projections.people.utterances
+          .filter((u) => u.speaker === speaker)
+          .map((u) => u.id),
+      )
+      assert.ok(summary.anchors.length > 0, `"${id}": ${speaker} has no anchors`)
+      for (const anchor of summary.anchors) {
+        assert.ok(
+          own.has(anchor),
+          `"${id}": ${speaker}'s summary cites ${anchor}, which they did not say`,
+        )
+      }
+    }
+  }
+})
+
+test('no two speakers in a meeting get the same summary', () => {
+  // The failure this guards against is a model writing one plausible paragraph
+  // per meeting and varying the wording. A map whose whole claim is that these
+  // people differ cannot hand out interchangeable descriptions of them.
+  for (const [id, map] of Object.entries(MAPS)) {
+    const stances = Object.values(map.speakerSummaries ?? {}).map((s) =>
+      s.stance.ko.trim(),
+    )
+    assert.equal(
+      new Set(stances).size,
+      stances.length,
+      `"${id}" gives two speakers the same stance`,
+    )
+  }
+})
+
 test('every layout of a meeting reports the same trust figures', () => {
   // Attribution and separation are measured in the embedding space the map is
   // built from, never in the picture. A layout fitted to push the speakers
