@@ -3,18 +3,12 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { ConstellationMap } from '@/components/ConstellationMap'
 import { Caveat, DetailPanel, ProjectionNotice } from '@/components/DetailPanel'
-import { HowToRead } from '@/components/HowToRead'
 import Link from 'next/link'
-import {
-  Section,
-  SourcePicker,
-  StageList,
-  Wordmark,
-  type Stage,
-} from '@/components/Chrome'
+import { Disclosure, Section, StageList, type Stage } from '@/components/Chrome'
+import { SourceMenu } from '@/components/studio/SourceMenu'
+import { GuideButton } from '@/components/studio/GuideButton'
 import { LangSwitch, ThemeSwitch, usePreferences } from '@/components/Preferences'
 import {
-  DistanceList,
   MarkLegend,
   methodOptions,
   ParticipantList,
@@ -254,33 +248,36 @@ export default function Studio() {
 
   const lookFor = scenarioId ? getScenario(scenarioId)?.lookFor[lang] : null
 
-  const sourceTitle = scenarioId
-    ? (getScenario(scenarioId)?.title[lang] ?? '')
-    : t('customSource', lang)
-
   const hasMap = !loading && !pasting && projection && speakerCount > 0
 
+  const openComposer = useCallback(() => {
+    setPasting(true)
+    setScenarioId(null)
+    setTranscript('')
+    setError(null)
+  }, [])
+
+  // One row rather than a block. The studio is a working surface: the wordmark
+  // and tagline belong on the page that introduces the tool, not above the
+  // controls of the tool itself.
   const identity = (
-    <div className="space-y-4 px-5 pb-5 pt-5">
-      <div className="flex items-center justify-between gap-3">
-        <Link
-          href="/"
-          className="group flex items-center gap-2 text-[12.5px] text-[var(--muted)] transition-colors hover:text-[var(--ink)]"
+    <div className="flex items-center justify-between gap-3 px-5 py-3.5">
+      <Link
+        href="/"
+        className="group flex items-center gap-2 text-[12.5px] text-[var(--muted)] transition-colors hover:text-[var(--ink)]"
+      >
+        <span
+          aria-hidden
+          className="readout inline-block transition-transform group-hover:-translate-x-0.5"
         >
-          <span
-            aria-hidden
-            className="readout inline-block transition-transform group-hover:-translate-x-0.5"
-          >
-            ←
-          </span>
-          {t('backToOverview', lang)}
-        </Link>
-        <div className="flex shrink-0 items-center gap-2">
-          <LangSwitch />
-          <ThemeSwitch />
-        </div>
+          ←
+        </span>
+        {t('backToOverview', lang)}
+      </Link>
+      <div className="flex shrink-0 items-center gap-2">
+        <LangSwitch />
+        <ThemeSwitch />
       </div>
-      <Wordmark lang={lang} />
     </div>
   )
 
@@ -299,32 +296,21 @@ export default function Studio() {
       <aside className="scroll-quiet order-2 bg-[var(--panel)] lg:order-1 lg:h-full lg:w-[336px] lg:shrink-0 lg:overflow-y-auto lg:border-r lg:border-[var(--line)]">
         <div className="hidden lg:block">{identity}</div>
 
-        <Section title={t('sourceLabel', lang)}>
-          <SourcePicker
-            activeId={scenarioId}
-            pasting={pasting}
-            lang={lang}
-            onPick={pickScenario}
-            onPaste={() => {
-              setPasting(true)
-              setScenarioId(null)
-              setTranscript('')
-              setError(null)
-            }}
-            disabled={loading}
-          />
-        </Section>
-
         {hasMap && (
           <>
+            {/* The one thing somebody is here to do: look at a person. Nothing
+                above it, and the distances to everyone else unfold inside the
+                row when one is chosen. */}
             <Section title={t('participantsLabel', lang)}>
               <ParticipantList
                 speakers={projection.speakers}
+                pairs={visiblePairs}
                 hidden={hiddenSpeakers}
                 selected={selectedSpeaker}
                 onSelect={selectSpeaker}
                 onToggleVisible={toggleVisible}
                 onShowAll={() => setHiddenSpeakers(new Set())}
+                onHoverPair={setHoveredPair}
                 lang={lang}
               />
               {!selectedSpeaker && (
@@ -334,18 +320,10 @@ export default function Studio() {
               )}
             </Section>
 
-            {visiblePairs.length > 0 && (
-              <Section title={t('distanceLabel', lang)}>
-                <DistanceList
-                  pairs={selectedSpeaker ? measure : visiblePairs}
-                  selected={selectedSpeaker}
-                  onHover={setHoveredPair}
-                  lang={lang}
-                />
-              </Section>
-            )}
-
-            <Section title={t('displayOptions', lang)}>
+            {/* Closed on arrival. Which layout to use is a question nobody has
+                before they know what the map shows, and an open panel of
+                switches suggests the picture is arbitrary. */}
+            <Disclosure title={t('displayOptions', lang)}>
               <div className="space-y-2.5">
                 <SegmentedControl
                   label={t('speakersLabel', lang)}
@@ -371,23 +349,9 @@ export default function Studio() {
                   })}
                 </p>
               )}
-            </Section>
+            </Disclosure>
           </>
         )}
-
-        <Section
-          title={t('howToRead', lang)}
-          aside={
-            <Link
-              href="/how-it-works"
-              className="text-[11.5px] text-[var(--muted)] underline decoration-[var(--line-strong)] underline-offset-[3px] transition-colors hover:text-[var(--ink)]"
-            >
-              {t('howLink', lang)}
-            </Link>
-          }
-        >
-          <HowToRead lang={lang} />
-        </Section>
       </aside>
 
       {/* The plate. */}
@@ -426,21 +390,34 @@ export default function Studio() {
               {/* Title and legend at the top, provenance and caveats at the
                   bottom: what the marks mean has to be read before the map,
                   and how far to trust it after. */}
-              <header className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-b border-[var(--line)] px-4 py-3">
-                <h2 className="t-title">{sourceTitle}</h2>
-                <MarkLegend
-                  showRegions={renderMode !== 'point'}
-                  showPoints={renderMode !== 'region'}
-                  lang={lang}
-                />
+              <header className="border-b border-[var(--line)] px-4 py-3">
+                <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+                  <SourceMenu
+                    activeId={scenarioId}
+                    pasting={pasting}
+                    lang={lang}
+                    onPick={pickScenario}
+                    onPaste={openComposer}
+                    disabled={loading}
+                  />
+                  <GuideButton lang={lang} />
+                </div>
                 {/* What to look for in this particular map. Carried over from
                     the overview so somebody who arrived by picking an example
                     is not left to work out why that one was worth opening. */}
                 {lookFor && (
-                  <p className="w-full border-t border-[var(--line)] pt-3 text-[12.5px] leading-[1.7] text-[var(--body)]">
+                  <p className="mt-3 text-[12.5px] leading-[1.7] text-[var(--body)]">
                     {lookFor}
                   </p>
                 )}
+                <div className="mt-3">
+                  <MarkLegend
+                    showRegions={renderMode !== 'point'}
+                    showPoints={renderMode !== 'region'}
+                    hasAxes={projection.meta.axes !== null}
+                    lang={lang}
+                  />
+                </div>
               </header>
 
               <div className="relative min-h-0 flex-1">

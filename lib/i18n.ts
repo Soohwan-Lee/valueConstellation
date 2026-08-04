@@ -130,9 +130,6 @@ export const STRINGS = {
     ko: '이 지도에서 가장 먼 두 사람을 1.00으로 둔 상대 거리입니다.',
     en: 'Relative to the widest gap on this map, which is 1.00.',
   },
-  widestGap: { ko: '가장 멀다', en: 'Widest' },
-  closestGap: { ko: '가장 가깝다', en: 'Closest' },
-  distanceFrom: { ko: '{name} 기준', en: 'From {name}' },
   measureHint: {
     ko: '참여자를 선택하면 나머지와의 거리를 지도에 긋습니다.',
     en: 'Select a participant to draw their distance to everyone else.',

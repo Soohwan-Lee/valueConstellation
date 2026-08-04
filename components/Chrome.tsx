@@ -1,6 +1,5 @@
 'use client'
 
-import { SCENARIOS } from '@/data/scenarios'
 import { t, type Lang } from '@/lib/i18n'
 
 /**
@@ -78,86 +77,32 @@ export function Section({
 }
 
 /**
- * Source picker.
+ * A rail block that stays shut until asked.
  *
- * Examples are listed rather than hidden in a dropdown: each one produces a
- * visibly different map, so the list is the fastest way to learn what the tool
- * can and cannot show. Each label names the shape of the result, not the topic.
+ * The open/closed state is the difference between a console somebody can read
+ * and one they have to survey. Anything in here should be a question that only
+ * arises after the map has been understood.
  */
-export function SourcePicker({
-  activeId,
-  pasting,
-  lang,
-  onPick,
-  onPaste,
-  disabled,
+export function Disclosure({
+  title,
+  children,
 }: {
-  activeId: string | null
-  pasting: boolean
-  lang: Lang
-  onPick: (id: string) => void
-  onPaste: () => void
-  disabled?: boolean
+  title: string
+  children: React.ReactNode
 }) {
   return (
-    <ul className="-mx-1.5 space-y-px">
-      {SCENARIOS.map((s) => {
-        const active = !pasting && activeId === s.id
-        return (
-          <li key={s.id}>
-            <button
-              type="button"
-              disabled={disabled}
-              onClick={() => onPick(s.id)}
-              aria-pressed={active}
-              className="w-full rounded-[6px] px-1.5 py-1.5 text-left transition-colors disabled:opacity-50"
-              style={{ background: active ? 'var(--panel-2)' : 'transparent' }}
-            >
-              <span className="flex items-center gap-2">
-                <span
-                  aria-hidden
-                  className="h-[3px] w-[3px] shrink-0 rounded-full"
-                  style={{
-                    background: active ? 'var(--ink)' : 'var(--faint)',
-                  }}
-                />
-                <span
-                  className="text-[13.5px]"
-                  style={{ color: active ? 'var(--ink)' : 'var(--body)' }}
-                >
-                  {s.title[lang]}
-                </span>
-              </span>
-              <span className="mt-0.5 block pl-[11px] text-[11.5px] leading-[1.5] text-[var(--muted)]">
-                {s.teaser[lang]}
-              </span>
-            </button>
-          </li>
-        )
-      })}
-      {/* Given its own weight rather than a fourth row in the list: pasting a
-          transcript is what this tool is for, and a control that looks like one
-          more example reads as one more example. */}
-      <li className="px-1.5 pt-3">
-        <button
-          type="button"
-          disabled={disabled}
-          onClick={onPaste}
-          aria-pressed={pasting}
-          className="flex w-full items-center justify-center gap-2 rounded-[8px] border border-dashed px-3 py-2.5 text-[13.5px] font-medium transition-colors disabled:opacity-50"
-          style={{
-            borderColor: pasting ? 'transparent' : 'var(--line-strong)',
-            background: pasting ? 'var(--signal)' : 'transparent',
-            color: pasting ? 'var(--on-signal)' : 'var(--ink)',
-          }}
+    <details className="group border-t border-[var(--line)]">
+      <summary className="flex cursor-pointer list-none items-center gap-2 px-5 py-3.5 transition-colors hover:bg-[var(--panel-2)]">
+        <span
+          aria-hidden
+          className="readout text-[9px] text-[var(--faint)] transition-transform group-open:rotate-90"
         >
-          <span aria-hidden className="readout text-[14px] leading-none">
-            +
-          </span>
-          {t('orPasteOwn', lang)}
-        </button>
-      </li>
-    </ul>
+          ▶
+        </span>
+        <span className="eyebrow">{title}</span>
+      </summary>
+      <div className="px-5 pb-4">{children}</div>
+    </details>
   )
 }
 

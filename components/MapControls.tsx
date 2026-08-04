@@ -6,7 +6,7 @@ import type {
   SpeakerRenderMode,
 } from '@/lib/types'
 import type { SpeakerPair } from '@/lib/pairs'
-import { counterpart } from '@/lib/pairs'
+import { counterpart, pairsWith } from '@/lib/pairs'
 import { shapePath, speakerColor, speakerShape } from '@/lib/colors'
 import { t, tf, type Lang } from '@/lib/i18n'
 
@@ -24,23 +24,28 @@ import { t, tf, type Lang } from '@/lib/i18n'
  */
 export function ParticipantList({
   speakers,
+  pairs,
   hidden,
   selected,
   onSelect,
   onToggleVisible,
   onShowAll,
+  onHoverPair,
   lang,
 }: {
   speakers: SpeakerProfile[]
+  /** Every gap on the map, widest first. Drives the distances shown on select. */
+  pairs: SpeakerPair[]
   hidden: Set<string>
   selected: string | null
   onSelect: (speaker: string) => void
   onToggleVisible: (speaker: string) => void
   onShowAll: () => void
+  onHoverPair: (pair: SpeakerPair | null) => void
   lang: Lang
 }) {
   return (
-    <div>
+    <div onMouseLeave={() => onHoverPair(null)}>
       <ul className="-mx-1.5 space-y-px">
         {speakers.map((s) => {
           const visible = !hidden.has(s.speaker)
@@ -48,11 +53,12 @@ export function ParticipantList({
           return (
             <li
               key={s.speaker}
-              className="group flex items-center rounded-[6px] transition-colors"
+              className="group rounded-[6px] transition-colors"
               style={{
                 background: isSelected ? 'var(--panel-2)' : 'transparent',
               }}
             >
+              <div className="flex items-center">
               <button
                 type="button"
                 onClick={() => onSelect(s.speaker)}
@@ -111,6 +117,21 @@ export function ParticipantList({
                   />
                 </svg>
               </button>
+              </div>
+
+              {/* Distances live inside the row of the person they are measured
+                  from, rather than in a section of their own. They only mean
+                  anything once somebody is selected, and a permanently visible
+                  list of pairs is a second thing to learn for an answer nobody
+                  asked for yet. */}
+              {isSelected && (
+                <DistancesFrom
+                  pairs={pairs}
+                  speaker={s.speaker}
+                  onHover={onHoverPair}
+                  lang={lang}
+                />
+              )}
             </li>
           )
         })}
@@ -129,80 +150,62 @@ export function ParticipantList({
 }
 
 /**
- * The measured gaps.
+ * The gaps from one selected participant to everybody else, nearest first.
  *
- * With nobody selected this is the map's headline in two rows — who is
- * furthest apart, who is closest — because that is the question a facilitator
- * opens the tool with. Selecting somebody turns it into their own distance
- * table, nearest first.
+ * Sits inside that person's row rather than in a section of its own. A
+ * permanently visible table of pairs is a second thing to learn, positioned
+ * above the controls somebody is actually using, answering a question they have
+ * not asked yet — and it only means anything once a participant is chosen.
+ *
+ * Quoted as a share of the widest gap on the map: projected units mean nothing
+ * between two maps, so an absolute figure would invite exactly the comparison
+ * the method cannot support. Hovering a row draws that one line.
  */
-export function DistanceList({
+function DistancesFrom({
   pairs,
-  selected,
+  speaker,
   onHover,
   lang,
 }: {
   pairs: SpeakerPair[]
-  selected: string | null
+  speaker: string
   onHover: (pair: SpeakerPair | null) => void
   lang: Lang
 }) {
-  if (pairs.length === 0) return null
-
-  const rows: { pair: SpeakerPair; label: string; caption?: string }[] = selected
-    ? [...pairs]
-        .sort((a, b) => a.distance - b.distance)
-        .map((p) => ({ pair: p, label: counterpart(p, selected).speaker }))
-    : [
-        {
-          pair: pairs[0],
-          label: `${pairs[0].a.speaker} ↔ ${pairs[0].b.speaker}`,
-          caption: t('widestGap', lang),
-        },
-        ...(pairs.length > 1
-          ? [
-              {
-                pair: pairs[pairs.length - 1],
-                label: `${pairs[pairs.length - 1].a.speaker} ↔ ${pairs[pairs.length - 1].b.speaker}`,
-                caption: t('closestGap', lang),
-              },
-            ]
-          : []),
-      ]
+  const mine = [...pairsWith(pairs, speaker)].sort(
+    (a, b) => a.distance - b.distance,
+  )
+  if (mine.length === 0) return null
 
   return (
-    <div onMouseLeave={() => onHover(null)}>
-      <ul className="-mx-1.5">
-        {rows.map(({ pair, label, caption }) => (
+    <div className="px-1.5 pb-2.5 pt-0.5">
+      <div className="eyebrow mb-1.5 pl-[21px]">{t('distanceLabel', lang)}</div>
+      <ul className="space-y-px">
+        {mine.map((pair) => (
           <li key={`${pair.a.speaker}-${pair.b.speaker}`}>
             <div
               onMouseEnter={() => onHover(pair)}
-              className="flex items-baseline gap-2 rounded-[6px] px-1.5 py-1.5 transition-colors hover:bg-[var(--panel-2)]"
+              className="flex items-baseline gap-2 rounded-[5px] py-1 pl-[21px] pr-1 transition-colors hover:bg-[var(--panel)]"
             >
-              {caption && (
-                <span className="eyebrow w-[52px] shrink-0">{caption}</span>
-              )}
-              <span className="min-w-0 flex-1 truncate text-[13px] text-[var(--body)]">
-                {label}
+              <span className="min-w-0 flex-1 truncate text-[12.5px] text-[var(--body)]">
+                {counterpart(pair, speaker).speaker}
               </span>
               {/* A bar, so the column can be scanned without reading every
                   number. Its width is the ratio the number states. */}
               <span
                 aria-hidden
                 className="h-px shrink-0 bg-[var(--line-strong)]"
-                style={{ width: `${Math.max(3, pair.relative * 44)}px` }}
+                style={{ width: `${Math.max(3, pair.relative * 40)}px` }}
               />
-              <span className="readout w-[34px] shrink-0 text-right text-[11.5px] text-[var(--ink)]">
+              <span className="readout w-[30px] shrink-0 text-right text-[11px] text-[var(--ink)]">
                 {pair.relative.toFixed(2)}
               </span>
             </div>
           </li>
         ))}
       </ul>
-      <p className="mt-2 px-0.5 text-[11.5px] leading-[1.55] text-[var(--muted)]">
-        {selected
-          ? tf('distanceFrom', lang, { name: selected })
-          : t('distanceNote', lang)}
+      <p className="mt-1.5 pl-[21px] text-[11px] leading-[1.55] text-[var(--muted)]">
+        {t('distanceNote', lang)}
       </p>
     </div>
   )
@@ -224,13 +227,29 @@ export function DistanceList({
 export function MarkLegend({
   showRegions,
   showPoints,
+  hasAxes,
   lang,
 }: {
   showRegions: boolean
   showPoints: boolean
+  /** True when the layout named its axes, which only PCA does. */
+  hasAxes: boolean
   lang: Lang
 }) {
   const items: { key: string; glyph: React.ReactNode; label: string }[] = []
+
+  if (hasAxes) {
+    items.push({
+      key: 'axes',
+      glyph: (
+        <>
+          <line x1={1} y1={7} x2={13} y2={7} stroke="var(--line-strong)" strokeWidth={1} strokeDasharray="2 3" />
+          <line x1={7} y1={1} x2={7} y2={13} stroke="var(--line-strong)" strokeWidth={1} strokeDasharray="2 3" />
+        </>
+      ),
+      label: t('legendAxis', lang),
+    })
+  }
 
   if (showPoints) {
     items.push({
