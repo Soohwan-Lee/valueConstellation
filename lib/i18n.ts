@@ -46,12 +46,12 @@ export const STRINGS = {
     en: 'One marker per speaker at their centroid',
   },
   modeRegionHint: {
-    ko: '참여자의 발언이 퍼진 범위를 타원으로',
-    en: 'An ellipse covering the spread of that speaker’s statements',
+    ko: '그 사람의 발언을 감싸는 영역으로',
+    en: 'A region wrapping where that speaker’s statements fell',
   },
   modeBothHint: {
-    ko: '중심 표식과 퍼짐 타원을 함께',
-    en: 'Centroid marker together with the spread ellipse',
+    ko: '중심 표식과 영역을 함께',
+    en: 'Centroid marker together with the region',
   },
   methodPcaHint: {
     ko: '선형 투영. 2차원이 원래 공간을 얼마나 담는지 함께 보고합니다',
@@ -81,9 +81,9 @@ export const STRINGS = {
     ko: '**표식**은 그 사람의 발언 전체를 요약한 위치입니다.',
     en: '**A marker** is the average position of everything that speaker said.',
   },
-  readEllipse: {
-    ko: '**타원**은 발언이 흩어진 범위입니다. 넓으면 여러 관점을 오갔고, 좁으면 한 관점으로 일관했습니다.',
-    en: '**The ellipse** is how spread out their statements were. Wide means they ranged across framings; narrow means they stayed on one.',
+  readRegion: {
+    ko: '**영역**은 그 사람의 발언이 실제로 퍼진 자리를 감쌉니다. 넓으면 여러 관점을 오갔고, 좁으면 한 관점으로 일관했습니다. 갈래가 둘로 나뉘면 서로 다른 두 논지를 오간 것입니다.',
+    en: '**The region** wraps where that speaker\'s statements actually fell. Wide means they ranged across framings, narrow means they stayed on one, and two lobes mean they argued from two separate positions.',
   },
   readDot: {
     ko: '**작은 점**은 개별 발언입니다. 클릭하면 원문이 나옵니다.',

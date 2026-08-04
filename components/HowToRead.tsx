@@ -15,7 +15,7 @@ import { boldSegments, t, type Lang } from '@/lib/i18n'
 export function HowToRead({ lang }: { lang: Lang }) {
   const bullets = [
     'readMarker',
-    'readEllipse',
+    'readRegion',
     'readDot',
     'readMeasure',
     'readDashed',

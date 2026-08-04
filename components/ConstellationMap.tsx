@@ -9,6 +9,7 @@ import type {
   SpeakerRenderMode,
 } from '@/lib/types'
 import type { SpeakerPair } from '@/lib/pairs'
+import { blobPath, blobPolygon, polygonArea, type Point } from '@/lib/blob'
 import { shapePath, speakerColor, speakerShape } from '@/lib/colors'
 import { kindLabel, type Lang } from '@/lib/i18n'
 
@@ -45,6 +46,14 @@ const DIMMED = 0.1
 /** Total window over which marks settle in, in ms. */
 const SETTLE_WINDOW = 420
 
+/** Duration of a layout change, shared by points and regions. */
+const MOVE_MS = 560
+
+/** Breathing room around the outermost statement, in viewBox units. */
+const REGION_PAD = 22
+/** Floor, so a speaker whose statements nearly coincide still reads as one. */
+const REGION_MIN_RADIUS = 26
+
 const MOVE =
   'motion-safe:[transition:cx_560ms_cubic-bezier(0.32,0.72,0,1),cy_560ms_cubic-bezier(0.32,0.72,0,1)]'
 
@@ -65,10 +74,28 @@ export function ConstellationMap({
   const svgRef = useRef<SVGSVGElement>(null)
   const [transform, setTransform] = useState({ k: 1, x: 0, y: 0 })
 
-  const { toX, toY, scaleLen } = useMemo(
-    () => buildScales(projection),
-    [projection],
-  )
+  const { toX, toY } = useMemo(() => buildScales(projection), [projection])
+
+  /**
+   * Speaker regions, in screen units.
+   *
+   * Built here rather than server-side because they describe a particular
+   * layout: the same speaker occupies a different shape under PCA than under
+   * MDS, and the region has to follow the points the reader is looking at.
+   */
+  const regions = useMemo(() => {
+    const byArea = projection.speakers.map((s) => {
+      const points: Point[] = projection.utterances
+        .filter((u) => u.speaker === s.speaker)
+        .map((u) => [toX(u.x), toY(u.y)])
+      const polygon = blobPolygon(points, [toX(s.x), toY(s.y)], {
+        pad: REGION_PAD,
+        minRadius: REGION_MIN_RADIUS,
+      })
+      return { speaker: s, polygon, area: polygonArea(polygon) }
+    })
+    return byArea.sort((a, b) => b.area - a.area)
+  }, [projection, toX, toY])
 
   // Zoom and pan. Marks are counter-scaled below so that magnifying the layout
   // separates crowded points without inflating the points themselves.
@@ -162,32 +189,18 @@ export function ConstellationMap({
           />
 
           <g key={settleKey}>
-            {/* Speaker regions sit beneath the points they summarise. */}
+            {/* Speaker regions sit beneath the points they summarise, largest
+                first so a tight region is never buried under a wide one. */}
             {showRegions &&
-              projection.speakers.map((s) => {
-                if (!s.ellipse) return null
-                const active = isActive(s.speaker)
-                const rx = Math.max(10, scaleLen(s.ellipse.rx))
-                const ry = Math.max(10, scaleLen(s.ellipse.ry))
-                return (
-                  <ellipse
-                    key={`region-${s.speaker}`}
-                    cx={toX(s.ellipse.cx)}
-                    cy={toY(s.ellipse.cy)}
-                    rx={rx}
-                    ry={ry}
-                    transform={`rotate(${-s.ellipse.angle} ${toX(s.ellipse.cx)} ${toY(s.ellipse.cy)})`}
-                    fill={speakerColor(s.colorIndex)}
-                    fillOpacity={active ? 0.1 : 0.025}
-                    stroke={speakerColor(s.colorIndex)}
-                    strokeOpacity={active ? 0.34 : 0.07}
-                    strokeWidth={inv}
-                    strokeDasharray={`${4 * inv} ${3 * inv}`}
-                    pointerEvents="none"
-                    className="motion-safe:[transition:cx_560ms_cubic-bezier(0.32,0.72,0,1),cy_560ms_cubic-bezier(0.32,0.72,0,1),rx_560ms_cubic-bezier(0.32,0.72,0,1),ry_560ms_cubic-bezier(0.32,0.72,0,1)]"
-                  />
-                )
-              })}
+              regions.map(({ speaker, polygon }) => (
+                <Region
+                  key={`region-${speaker.speaker}`}
+                  polygon={polygon}
+                  color={speakerColor(speaker.colorIndex)}
+                  active={isActive(speaker.speaker)}
+                  inv={inv}
+                />
+              ))}
 
             {/* Utterances. */}
             {projection.utterances.map((u, i) => {
@@ -343,6 +356,75 @@ export function ConstellationMap({
 }
 
 /**
+ * A speaker's region.
+ *
+ * The shape animates between layouts rather than cutting, because switching
+ * PCA to MDS is meant to read as the same statements being rearranged. CSS
+ * cannot interpolate a path, so this walks the vertices itself — every region
+ * has the same vertex count in the same angular order, which makes that a
+ * straight lerp. Interrupting mid-flight resumes from what is on screen, not
+ * from the previous target.
+ */
+function Region({
+  polygon,
+  color,
+  active,
+  inv,
+}: {
+  polygon: Point[]
+  color: string
+  active: boolean
+  inv: number
+}) {
+  const [shown, setShown] = useState(polygon)
+  const shownRef = useRef(polygon)
+  const frameRef = useRef(0)
+
+  useEffect(() => {
+    const from = shownRef.current
+    const reduced =
+      typeof matchMedia === 'function' &&
+      matchMedia('(prefers-reduced-motion: reduce)').matches
+
+    if (reduced || from.length !== polygon.length) {
+      shownRef.current = polygon
+      setShown(polygon)
+      return
+    }
+
+    const started = performance.now()
+    const tick = (now: number) => {
+      const t = Math.min(1, (now - started) / MOVE_MS)
+      // The same easing the points use, so nothing arrives out of step.
+      const e = 1 - Math.pow(1 - t, 3)
+      const next: Point[] = polygon.map((p, i) => [
+        from[i][0] + (p[0] - from[i][0]) * e,
+        from[i][1] + (p[1] - from[i][1]) * e,
+      ])
+      shownRef.current = next
+      setShown(next)
+      if (t < 1) frameRef.current = requestAnimationFrame(tick)
+    }
+    frameRef.current = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(frameRef.current)
+  }, [polygon])
+
+  return (
+    <path
+      d={blobPath(shown)}
+      fill={color}
+      fillOpacity={active ? 0.09 : 0.02}
+      stroke={color}
+      strokeOpacity={active ? 0.32 : 0.06}
+      strokeWidth={inv}
+      strokeDasharray={`${5 * inv} ${4 * inv}`}
+      strokeLinejoin="round"
+      pointerEvents="none"
+    />
+  )
+}
+
+/**
  * One measured gap.
  *
  * The number is a share of the widest gap on the same map, never a raw
@@ -453,13 +535,11 @@ function buildScales(projection: Projection) {
     xs.push(u.x)
     ys.push(u.y)
   }
+  // Only the marks themselves set the extent. Regions are built in screen
+  // units after this runs, and the frame padding is sized to hold them.
   for (const s of projection.speakers) {
     xs.push(s.x)
     ys.push(s.y)
-    if (s.ellipse) {
-      xs.push(s.ellipse.cx - s.ellipse.rx, s.ellipse.cx + s.ellipse.rx)
-      ys.push(s.ellipse.cy - s.ellipse.ry, s.ellipse.cy + s.ellipse.ry)
-    }
   }
 
   // Math.min() of an empty list is Infinity, and a span of -Infinity is truthy,
@@ -489,6 +569,5 @@ function buildScales(projection: Projection) {
     toX: (v: number) => PADDING + offsetX + (v - minX) * scale,
     // SVG y grows downward; invert so the map reads like a chart.
     toY: (v: number) => VIEW_H - PADDING - offsetY - (v - minY) * scale,
-    scaleLen: (v: number) => v * scale,
   }
 }
