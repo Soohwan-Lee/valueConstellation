@@ -34,7 +34,7 @@ export function RegionSteps({
   captions: [string, string, string]
 }) {
   const { reach, d } = useMemo(() => {
-    const { reach } = mapResolution(POINTS, 10)
+    const { reach } = mapResolution([POINTS], 10)
     return { reach, d: regionPath(regionRings(POINTS, reach)) }
   }, [])
 

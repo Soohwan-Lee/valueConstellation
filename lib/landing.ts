@@ -118,8 +118,8 @@ export const REGION_RULE = {
     en: 'Each statement claims one resolution of ground.',
   },
   body: {
-    ko: '먼저 지도 위 모든 발언에 대해 “가장 가까운 다른 발언까지의 거리”를 재고, 그 중앙값을 이 지도의 해상도로 씁니다. 이보다 가까운 두 발언은 사실상 같은 자리라고 보는 것입니다. 그다음 각 발언이 자기 주변 한 해상도만큼을 차지하고, 겹치는 것끼리 합쳐진 윤곽이 그 사람의 영역이 됩니다.',
-    en: 'For every statement on the map, measure how far it is to the nearest other statement, and take the median. That is the map’s resolution: two statements closer than that are not distinguishable positions. Each statement then claims the ground within one resolution of itself, and the outline of everything that overlaps is the speaker’s region.',
+    ko: '먼저 “같은 사람이 한 다음 발언까지의 거리”를 잽니다. 발언마다 그 사람의 가장 가까운 다른 발언까지 거리를 재고, 참여자 전원의 값을 모아 중앙값을 냅니다. 이것이 이 지도의 해상도입니다 — 이보다 가까운 두 발언은 사실상 같은 자리로 봅니다. 그다음 각 발언이 자기 주변 한 해상도만큼을 차지하고, 겹치는 것끼리 합쳐진 윤곽이 그 사람의 영역이 됩니다.',
+    en: 'First, measure how far it is from one statement to the next thing the same person said — for every statement, the distance to that speaker’s nearest other one, pooled across everybody, median. That is the map’s resolution: two statements closer than that are not distinguishable positions. Each statement then claims the ground within one resolution of itself, and the outline of everything that overlaps is the region.',
   },
   consequences: [
     {
@@ -131,14 +131,18 @@ export const REGION_RULE = {
       en: 'Statements within about 2.6 resolutions merge; further apart, they stay separate.',
     },
     {
-      ko: '해상도는 화자별이 아니라 지도 전체에서 한 번만 잽니다. 그래야 두 사람의 영역 크기를 그대로 비교할 수 있습니다.',
-      en: 'The resolution is measured once for the whole map, not per speaker, so two regions can be compared directly.',
+      ko: '다른 사람의 발언까지의 거리는 세지 않습니다. 서로 다른 두 사람이 거의 같은 말을 하는 일은 흔해서, 그것까지 세면 해상도가 절반 아래로 떨어지고 모든 영역이 잘게 부서집니다.',
+      en: 'Distances to other people’s statements are not counted. Two people saying near-identical things is common, and including those halves the figure — at which point every region shatters into fragments.',
+    },
+    {
+      ko: '값은 참여자별로 따로 두지 않고 하나로 모읍니다. 그래야 두 사람의 영역 크기를 그대로 비교할 수 있습니다.',
+      en: 'The figure is pooled into one number rather than kept per speaker, so two regions are drawn at one scale and can be compared.',
     },
   ],
   steps: [
     {
-      ko: '지도 위 모든 발언에 대해, 가장 가까운 다른 발언까지의 거리를 잽니다. 그 값들의 중앙값이 이 지도의 해상도입니다.',
-      en: 'For every statement, measure the distance to the nearest other one. The median of those is the map’s resolution.',
+      ko: '발언마다, 같은 사람이 한 가장 가까운 다른 발언까지의 거리를 잽니다. 전원의 값을 모은 중앙값이 이 지도의 해상도입니다.',
+      en: 'For each statement, measure the distance to the nearest other statement by the same person. Pooled across everybody, the median is the map’s resolution.',
     },
     {
       ko: '각 발언이 자기 주변으로 딱 한 해상도만큼을 차지합니다. 여기서는 왼쪽 넷이 서로 닿고, 오른쪽 둘은 닿지 않습니다.',

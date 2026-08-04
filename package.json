@@ -10,7 +10,8 @@
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "hero": "node --experimental-strip-types scripts/render-hero.ts",
-    "fixtures": "node --experimental-strip-types scripts/build-fixtures.ts"
+    "fixtures": "node --experimental-strip-types scripts/build-fixtures.ts",
+    "hero:data": "node --experimental-strip-types scripts/build-hero-fixture.ts"
   },
   "repository": {
     "type": "git",

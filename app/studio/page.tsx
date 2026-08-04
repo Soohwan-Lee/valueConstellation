@@ -252,6 +252,8 @@ export default function Studio() {
     [visiblePairs, selectedSpeaker],
   )
 
+  const lookFor = scenarioId ? getScenario(scenarioId)?.lookFor[lang] : null
+
   const sourceTitle = scenarioId
     ? (getScenario(scenarioId)?.title[lang] ?? '')
     : t('customSource', lang)
@@ -431,6 +433,14 @@ export default function Studio() {
                   showPoints={renderMode !== 'region'}
                   lang={lang}
                 />
+                {/* What to look for in this particular map. Carried over from
+                    the overview so somebody who arrived by picking an example
+                    is not left to work out why that one was worth opening. */}
+                {lookFor && (
+                  <p className="w-full border-t border-[var(--line)] pt-3 text-[12.5px] leading-[1.7] text-[var(--body)]">
+                    {lookFor}
+                  </p>
+                )}
               </header>
 
               <div className="relative min-h-0 flex-1">

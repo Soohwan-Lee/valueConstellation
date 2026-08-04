@@ -30,7 +30,7 @@ function lcg(seed: number): () => number {
 }
 
 function ringsFor(points: Point[], floor = 12) {
-  const { reach } = mapResolution(points, floor)
+  const { reach } = mapResolution([points], floor)
   return regionRings(points, reach)
 }
 
@@ -106,29 +106,59 @@ test('the resolution is the typical neighbour gap, and says when there is none',
     [80, 0],
     [120, 0],
   ]
-  const measured = mapResolution(evenlySpaced, 5)
+  const measured = mapResolution([evenlySpaced], 5)
   assert.equal(measured.reach, 40)
   assert.equal(measured.provisional, false)
 
   // One outlier must not move the scale for the whole map, which is why this
   // is a median rather than a mean.
   const withOutlier: Point[] = [...evenlySpaced, [9000, 0]]
-  assert.equal(mapResolution(withOutlier, 5).reach, 40)
+  assert.equal(mapResolution([withOutlier], 5).reach, 40)
 
   // Too few statements to take a median of anything.
   const pair = mapResolution(
     [
-      [0, 0],
-      [400, 0],
+      [
+        [0, 0],
+        [400, 0],
+      ],
     ],
     12,
   )
   assert.equal(pair.reach, 12)
   assert.equal(pair.provisional, true)
 
-  const alone = mapResolution([[5, 5]], 12)
+  const alone = mapResolution([[[5, 5]]], 12)
   assert.equal(alone.reach, 12)
   assert.equal(alone.provisional, true)
+})
+
+test('the resolution ignores how close two different people sat', () => {
+  // Two speakers whose own statements are 100 apart, but who each have one
+  // statement almost on top of one of the other's. Measured over every point on
+  // the map those near-coincident pairs dominate the median and the resolution
+  // collapses; measured within each speaker, they are irrelevant.
+  const a: Point[] = [
+    [0, 0],
+    [100, 0],
+    [200, 0],
+    [300, 0],
+  ]
+  const b: Point[] = [
+    [2, 6],
+    [102, 6],
+    [202, 6],
+    [302, 6],
+  ]
+  const withinSpeaker = mapResolution([a, b], 5)
+  assert.equal(withinSpeaker.reach, 100)
+
+  // The same points pooled as one group, for contrast.
+  const acrossMap = mapResolution([[...a, ...b]], 5)
+  assert.ok(
+    acrossMap.reach < 10,
+    'sanity: pooling everybody together does collapse the figure',
+  )
 })
 
 test('a lone statement draws a disk of exactly the reach', () => {

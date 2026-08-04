@@ -106,10 +106,10 @@ export const GROUPS: Group[] = [
     entries: [
       {
         term: { ko: '지도의 해상도', en: 'Map resolution' },
-        value: 'median nearest-neighbour',
+        value: 'median within-speaker NN',
         body: {
-          ko: '지도 위 모든 발언에 대해 가장 가까운 다른 발언까지의 거리를 재고, 그 중앙값을 씁니다. 화자별이 아니라 지도 전체에서 한 번만 재기 때문에, 두 사람의 영역 크기를 그대로 비교할 수 있습니다.',
-          en: 'For every statement, the distance to the nearest other one; the median of those. Measured once for the whole map rather than per speaker, so two regions are drawn at one scale.',
+          ko: '발언마다 같은 사람이 한 가장 가까운 다른 발언까지의 거리를 재고, 참여자 전원의 값을 모아 중앙값을 냅니다. 다른 사람과의 거리는 세지 않습니다 — 서로 다른 두 사람이 거의 같은 말을 하는 일이 흔해서, 포함하면 값이 절반 아래로 떨어지고 모든 영역이 네다섯 조각으로 부서집니다. 값은 하나로 모아 쓰기 때문에 두 사람의 영역 크기를 그대로 비교할 수 있습니다.',
+          en: 'For each statement, the distance to the nearest other statement by the same person, pooled across everybody, median. Distances to other people are excluded: two people saying near-identical things is common, and including those halves the figure, at which point every region shatters into four or five fragments. Pooled into one number, so two regions are drawn at one scale.',
         },
       },
       {

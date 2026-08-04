@@ -100,8 +100,12 @@ export function ConstellationMap({
    * them, so two regions are drawn at the same scale and can be compared.
    */
   const regions = useMemo(() => {
-    const all: Point[] = projection.utterances.map((u) => [toX(u.x), toY(u.y)])
-    const { reach } = mapResolution(all, REGION_FLOOR)
+    const bySpeaker: Point[][] = projection.speakers.map((s) =>
+      projection.utterances
+        .filter((u) => u.speaker === s.speaker)
+        .map((u) => [toX(u.x), toY(u.y)]),
+    )
+    const { reach } = mapResolution(bySpeaker, REGION_FLOOR)
 
     const byArea = projection.speakers.map((s) => {
       const points: Point[] = projection.utterances

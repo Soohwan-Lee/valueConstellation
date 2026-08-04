@@ -19,26 +19,33 @@
  *
  * ## Where `reach` comes from
  *
- * The median nearest-neighbour distance across **every** statement on the map:
- * the typical gap between one statement and the one nearest it. Call it the
- * map's resolution — below it, two statements are not distinguishable positions
- * — and each statement claims the ground within one resolution of itself.
+ * The typical distance from one statement to the next thing **the same person**
+ * said: for every statement, the distance to that speaker's nearest other
+ * statement, pooled across all speakers, median. Call it the map's resolution —
+ * below it, two of somebody's statements are not distinguishable positions —
+ * and each statement claims the ground within one resolution of itself.
  *
  * Every part of that is checkable against the picture. A statement with nothing
  * near it draws a disk of exactly that radius. Two statements up to about 2.6
  * resolutions apart merge into one shape; beyond that they stay separate. So
- * the outline covers the ground the statements are dense enough to hold
+ * the outline covers the ground a speaker's statements are dense enough to hold
  * together and leaves the rest empty, which is the distinction an ellipse
  * cannot make.
  *
- * It is estimated once for the whole map rather than per speaker, for two
- * reasons. A speaker with three statements has two or three neighbour distances
- * to take a median of, which is not an estimate of anything — on the built-in
- * examples the per-speaker figure swung by 3x between speakers in the same
- * discussion. And a shared resolution is what makes two regions comparable:
- * with a per-speaker scale, a wide region and a narrow one are drawn at
- * different magnifications and the reader cannot tell which speaker actually
- * ranged further.
+ * Two details of that definition are load-bearing.
+ *
+ * It measures within a speaker, not across the map. Neighbours from *different*
+ * people are usually closer than a person's own consecutive statements — two
+ * people can say near-identical things — so a resolution taken over everybody
+ * comes out far too small for the question a region asks. On the built-in
+ * examples that difference is roughly 2x, and at the smaller figure every
+ * speaker's region shattered into four or five fragments.
+ *
+ * It is pooled into one number rather than kept per speaker. A speaker with
+ * three statements has two or three distances to take a median of, which is not
+ * an estimate of anything, and a per-speaker scale would draw a wide region and
+ * a narrow one at different magnifications — leaving no way to tell which
+ * speaker actually ranged further.
  *
  * The median, not the mean, so a handful of statements far from everything
  * cannot inflate the scale for the whole map.
@@ -83,17 +90,24 @@ export interface Resolution {
 }
 
 /**
- * The map's resolution: the typical gap between a statement and the one nearest
- * it, measured over every statement on the map.
+ * The map's resolution, from statements grouped by who said them.
  *
  * Exported so the interface can report the number it drew with, rather than
  * asking the reader to take the shape on trust.
  */
-export function mapResolution(allPoints: Point[], floor: number): Resolution {
-  if (allPoints.length < MIN_POINTS_FOR_RESOLUTION) {
+export function mapResolution(
+  bySpeaker: Point[][],
+  floor: number,
+): Resolution {
+  const gaps: number[] = []
+  for (const points of bySpeaker) {
+    gaps.push(...nearestNeighbourDistances(points))
+  }
+  if (gaps.length < MIN_POINTS_FOR_RESOLUTION) {
     return { reach: floor, provisional: true }
   }
-  const spacing = medianNearestNeighbour(allPoints)
+  gaps.sort((a, b) => a - b)
+  const spacing = gaps[Math.floor(gaps.length / 2)]
   if (!Number.isFinite(spacing) || spacing <= floor) {
     return { reach: floor, provisional: true }
   }
@@ -368,12 +382,9 @@ export function containsAny(rings: Point[][], point: Point): boolean {
   return rings.some((ring) => contains(ring, point))
 }
 
-/**
- * Median distance from a point to its closest neighbour: the typical step from
- * one statement to the next. Infinity when there is nothing to compare against.
- */
-function medianNearestNeighbour(points: Point[]): number {
-  if (points.length < 2) return Infinity
+/** Distance from each point to its closest neighbour within the same group. */
+function nearestNeighbourDistances(points: Point[]): number[] {
+  if (points.length < 2) return []
   const nearest: number[] = []
   for (let i = 0; i < points.length; i += 1) {
     let best = Infinity
@@ -384,9 +395,7 @@ function medianNearestNeighbour(points: Point[]): number {
     }
     if (Number.isFinite(best)) nearest.push(best)
   }
-  if (nearest.length === 0) return Infinity
-  nearest.sort((a, b) => a - b)
-  return nearest[Math.floor(nearest.length / 2)]
+  return nearest
 }
 
 function wrap(i: number, n: number): number {

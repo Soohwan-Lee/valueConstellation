@@ -10,9 +10,9 @@
  *  - `consensus` — everybody says yes, and the reasons pull apart. The map
  *                  separates people who sound aligned in the transcript, which
  *                  is the case a vote count cannot see.
- *  - `drift`     — one speaker argues from a single frame throughout while
- *                  another moves between two, so one region stays tight and
- *                  the other splits. This is the example the region exists for.
+ *  - `drift`     — two people, one question, each staying inside a single kind
+ *                  of reason. The sharpest separation of the four, and the
+ *                  answer to "do I need a big meeting for this".
  *  - `mixed`     — three agenda items in one meeting. Every speaker holds a
  *                  different position on each, so averaging pulls all of them
  *                  to the middle and the map stops distinguishing anybody. It
@@ -53,8 +53,8 @@ export const SCENARIOS: Scenario[] = [
       en: 'Siting a plant — split across climate, local burden, process, budget',
     },
     lookFor: {
-      ko: '네 사람이 지도 곳곳에 흩어집니다. 이 방에 합의가 없다는 사실이 한눈에 보이는 상태입니다.',
-      en: 'Four people spread across the map. This is what a room with no agreement looks like.',
+      ko: '네 사람이 지도 곳곳에 흩어집니다. 이 방에 합의가 없다는 사실이 한눈에 보이는 상태입니다. 두 사람의 영역은 두 덩어리로 갈라져 있는데, 회의 도중 다른 근거로 옮겨간 자리입니다.',
+      en: 'Four people spread across the map: a room with no agreement. Two of the regions come apart into separate shapes, where that person moved to a different kind of reason mid-meeting.',
     },
     transcript: `사회자: 오늘은 북부 산단 인근 재생에너지 발전단지 부지 선정 안건 하나만 다루겠습니다. 위원별로 입장을 말씀해 주십시오.
 김철수: 저는 이 사업을 예정대로 추진해야 한다고 봅니다. 우리 시 온실가스 감축 목표가 2030년까지 40퍼센트인데 지금 진도로는 22퍼센트에서 멈춥니다. 이 발전단지 하나가 그 격차의 절반을 메웁니다.
@@ -129,16 +129,16 @@ export const SCENARIOS: Scenario[] = [
   {
     id: 'drift',
     title: {
-      ko: '한 사람은 일관, 한 사람은 이동',
-      en: 'One holds, one moves',
+      ko: '둘만 있어도 갈린다',
+      en: 'Two people, two worlds',
     },
     teaser: {
-      ko: '통학로 안전 대책 — 같은 사람이 회의 도중 근거를 바꿉니다',
-      en: 'School-route safety — one speaker changes grounds mid-meeting',
+      ko: '통학로 안전 — 한 사람은 사고 통계로, 한 사람은 집행 구조로 말합니다',
+      en: 'School-route safety — one argues from accident figures, the other from who spends the budget',
     },
     lookFor: {
-      ko: '한 사람의 범위는 좁고, 다른 한 사람의 범위는 두 덩어리로 갈라집니다. 갈라진 사이의 빈 곳은 아무도 서지 않은 자리입니다.',
-      en: 'One region stays tight; the other splits in two. The gap between the halves is ground nobody stood on.',
+      ko: '네 지도 중 가장 뚜렷하게 갈린 지도입니다. 두 사람이 같은 안건을 두고 각자 한 가지 근거로만 일관되게 말하면 이런 모양이 나옵니다 — 참여자가 적은 것은 문제가 아닙니다.',
+      en: 'The sharpest split of the four. Two people on one question, each staying inside a single kind of reason, produces this — a small room is not the problem.',
     },
     transcript: `사회자: 초등학교 통학로 안전 대책 안건입니다.
 윤태경: 저는 이 문제를 아이들 안전 하나로만 보고 싶습니다. 최근 삼 년간 이 구간에서 어린이 교통사고가 일곱 건 났고 그중 두 건이 중상입니다. 다른 고려 사항보다 이 숫자가 먼저입니다.
@@ -147,20 +147,20 @@ export const SCENARIOS: Scenario[] = [
 서나윤: 전면 통제는 저도 효과가 크다고 봅니다. 다만 그 구간이 인근 상가 유일한 진입로입니다. 아침 납품 차량이 그 시간에 집중됩니다.
 윤태경: 납품 시간은 조정할 수 있습니다. 아이 안전과 납품 편의를 같은 저울에 올릴 수는 없다고 생각합니다.
 서나윤: 저울에 올리자는 것이 아니라 실행 가능성을 말씀드리는 것입니다. 작년에 옆 동에서 같은 통제를 했다가 두 달 만에 철회했습니다. 단속 인력이 없어서 지켜지지 않았습니다.
-윤태경: 그 사례는 단속을 사람에게 맡겼기 때문입니다. 자동 볼라드를 설치하면 인력 없이도 통제됩니다. 설치비는 구간당 육천만 원입니다.
+윤태경: 그 사례에서도 사고는 계속 났습니다. 철회 이후 넉 달 동안 경상 두 건이 더 기록됐습니다. 저는 사고 기록이 남는 한 통제를 유지해야 한다고 봅니다.
 서나윤: 볼라드는 응급차량 진입도 막습니다. 소방서 협의가 선행되어야 하고 그 협의가 통상 넉 달 걸립니다.
-윤태경: 협의 기간 동안은 이동식 차단봉과 학부모 봉사로 메울 수 있습니다. 임시라도 없는 것보다 낫습니다.
+윤태경: 협의가 늦어지는 동안에도 등교 시간은 매일 옵니다. 저는 사고가 난 그 구간부터 즉시 막아야 한다고 봅니다.
 서나윤: 그 학부모 봉사가 문제입니다. 지금도 녹색어머니회 참여율이 정원의 사십 퍼센트입니다. 맞벌이 가구가 늘어서 아침에 나올 수 있는 사람이 없습니다.
-윤태경: 그러면 유급 안전요원으로 전환해야 합니다. 사람이 없으면 예산으로 사람을 사야 합니다. 아이 안전은 자원봉사에 의존할 사안이 아닙니다.
+윤태경: 사고 일곱 건 중 다섯 건이 오전 여덟 시에서 아홉 시 사이였습니다. 그 한 시간을 지키지 못하면 나머지 대책은 의미가 없습니다.
 서나윤: 유급 전환은 저도 방향에는 찬성입니다. 그런데 여기서부터는 조금 다른 이야기를 드리고 싶습니다. 이 사업이 교통과, 교육지원과, 자치행정과 세 부서에 걸쳐 있습니다.
 서나윤: 지금 통학로 예산이 세 부서에 나뉘어 있어서 볼라드는 교통과, 안전요원은 자치행정과, 홍보물은 교육지원과가 각각 집행합니다. 같은 구간에 대한 결정이 세 번 따로 납니다.
-윤태경: 부서 문제는 부서에서 풀 일이고 우리는 아이들 안전 기준을 먼저 정해야 한다고 봅니다. 기준이 서면 집행 부서는 따라옵니다.
+윤태경: 저는 사고 지점 분포를 먼저 봐야 한다고 봅니다. 일곱 건 중 여섯 건이 정문에서 백 미터 안입니다. 대책의 우선순위는 그 숫자가 정합니다.
 서나윤: 저는 반대로 봅니다. 기준을 아무리 잘 정해도 집행 창구가 셋이면 현장에서는 아무것도 바뀌지 않습니다. 작년 통학로 개선 예산 집행률이 오십일 퍼센트였던 이유가 그것입니다.
 서나윤: 통합 전담 창구를 하나 만들고 통학로 관련 예산을 그 창구로 모으는 조직 개편이 먼저라고 생각합니다. 그래야 다음 회의에서 결정한 것이 실제로 집행됩니다.
-윤태경: 조직 개편은 최소 일 년이 걸리는 일입니다. 그 일 년 동안 사고가 나면 개편 계획서로는 설명이 안 됩니다.
+윤태경: 조직 개편에 걸리는 일 년 동안에도 사고 발생률은 그대로입니다. 지난 삼 년 평균이 연 두 건이니 그 기간에 두 건이 더 납니다.
 서나윤: 개편 없이 예산만 늘리면 그 예산도 오십일 퍼센트만 쓰입니다. 저는 집행 구조를 고치는 것이 결국 더 빠른 길이라고 봅니다.
 서나윤: 인사 부서와 협의해서 전담 팀 정원 두 명만 확보해도 창구 통합은 가능합니다. 조직 개편 전체를 기다릴 필요는 없습니다.
-윤태경: 저는 그 구조 논의를 부정하지는 않습니다. 다만 그것과 별개로 정문 앞 삼십 미터는 이번 달에 손봐야 한다고 생각합니다.
+윤태경: 사고 여섯 건이 몰린 정문 앞 삼십 미터는 이번 달에 손봐야 한다고 생각합니다. 나머지 논의와 무관하게 그 구간은 통계가 명확합니다.
 서나윤: 정문 앞 삼십 미터는 저도 즉시 시행에 동의합니다. 그 구간만은 단일 부서 사업으로 떼어낼 수 있습니다.
 윤태경: 그러면 그 구간을 우선 시행으로 정리하고 나머지 구간은 다음 회의에서 다루겠습니다.
 서나윤: 나머지 구간을 다룰 때는 예산 집행 구조부터 안건에 올려 주시기 바랍니다.
@@ -179,8 +179,8 @@ export const SCENARIOS: Scenario[] = [
       en: 'Three agenda items at once — every average collapses to the middle',
     },
     lookFor: {
-      ko: '표식이 가운데로 몰리고, 지도가 스스로 "이 회의에서는 사람을 구분하지 못한다"고 알립니다. 회의록 하나에 쟁점이 하나여야 하는 이유입니다.',
-      en: 'The markers pile into the middle and the map says outright that it cannot tell these people apart. This is why one map wants one question.',
+      ko: '표식이 가운데로 몰리고, 지도가 스스로 "이 회의에서는 사람을 구분하지 못한다"고 알립니다. 영역도 서너 조각으로 흩어지는데, 안건이 바뀔 때마다 발언이 딴 곳으로 튀었다는 표시입니다. 회의록 하나에 쟁점이 하나여야 하는 이유입니다.',
+      en: 'The markers pile into the middle and the map says outright that it cannot tell these people apart. The regions scatter into three or four pieces each — every change of agenda item threw that person’s statements somewhere else. This is why one map wants one question.',
     },
     transcript: `사회자: 오늘은 세 안건을 한 번에 처리하겠습니다. 공영주차장 요금, 학교 급식 식재료, 도서관 운영시간 순입니다.
 강도현: 주차장 요금은 인상해야 합니다. 현재 시간당 육백 원은 인근 시의 절반이고 그래서 하루 종일 세워두는 차가 많아 회전율이 떨어집니다.
