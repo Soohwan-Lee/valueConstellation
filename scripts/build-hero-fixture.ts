@@ -16,16 +16,13 @@ import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
+import { requireOpenAiKey } from './env.ts'
 import { analyzeTranscript } from '../lib/analyze.ts'
 import { HERO_TRANSCRIPT } from '../data/hero.ts'
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 
-loadDotEnv(resolve(root, '.env'))
-if (!process.env.OPENAI_API_KEY) {
-  console.error('OPENAI_API_KEY is not set. Put it in .env or the environment.')
-  process.exit(1)
-}
+requireOpenAiKey(root)
 
 const outcome = await analyzeTranscript(HERO_TRANSCRIPT)
 if (!outcome.ok) {
@@ -45,19 +42,3 @@ const out = resolve(root, 'docs/hero-fixture.json')
 mkdirSync(dirname(out), { recursive: true })
 writeFileSync(out, `${JSON.stringify(outcome.result, null, 2)}\n`)
 console.log(`wrote ${out}`)
-
-/** Existing environment variables win, as in the fixture builder. */
-function loadDotEnv(path: string) {
-  let contents: string
-  try {
-    contents = readFileSync(path, 'utf8')
-  } catch {
-    return
-  }
-  for (const line of contents.split(/\r?\n/)) {
-    const match = /^\s*([A-Z0-9_]+)\s*=\s*(.*)$/.exec(line)
-    if (!match) continue
-    const value = match[2].trim().replace(/^["']|["']$/g, '')
-    if (!process.env[match[1]]) process.env[match[1]] = value
-  }
-}

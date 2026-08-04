@@ -22,17 +22,14 @@ import { readFileSync, writeFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
+import { requireOpenAiKey } from './env.ts'
 import { analyzeTranscript, type AnalysisWithDiagnostics } from '../lib/analyze.ts'
 import { MIN_USEFUL_SEPARATION } from '../lib/aggregate.ts'
 import { SCENARIOS } from '../data/scenarios.ts'
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 
-loadDotEnv(resolve(root, '.env'))
-if (!process.env.OPENAI_API_KEY) {
-  console.error('OPENAI_API_KEY is not set. Put it in .env or the environment.')
-  process.exit(1)
-}
+requireOpenAiKey(root)
 
 const only = process.argv.slice(2).filter((a) => !a.startsWith('-'))
 const wanted = only.length > 0 ? SCENARIOS.filter((s) => only.includes(s.id)) : SCENARIOS
@@ -128,27 +125,4 @@ function report(id: string, result: AnalysisWithDiagnostics) {
     }
   }
   void id
-}
-
-/**
- * Minimal `.env` reader.
- *
- * Node loads `.env` natively only behind a flag that also changes how the file
- * is parsed, and the alternative is a dependency for six lines. Existing
- * environment variables win, so `OPENAI_API_KEY=… npm run fixtures` overrides
- * the file.
- */
-function loadDotEnv(path: string) {
-  let contents: string
-  try {
-    contents = readFileSync(path, 'utf8')
-  } catch {
-    return
-  }
-  for (const line of contents.split(/\r?\n/)) {
-    const match = /^\s*([A-Z0-9_]+)\s*=\s*(.*)$/.exec(line)
-    if (!match) continue
-    const value = match[2].trim().replace(/^["']|["']$/g, '')
-    if (!process.env[match[1]]) process.env[match[1]] = value
-  }
 }

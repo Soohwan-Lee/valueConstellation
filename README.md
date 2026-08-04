@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="docs/mark.svg" alt="" width="72" height="72">
+
 # Value Constellation
 
 **Paste a meeting transcript. See where each participant actually stands.**
@@ -58,7 +60,7 @@ to run the pipeline without one of your own.
 | **Region** | The ground their statements cover. Two separate shapes means two separate positions, and the gap between them is ground nobody stood on. |
 | **Measure line** | The gap between two people, as a share of the widest gap on that map. Select a participant to draw them. |
 | **Dashed marker** | Fewer than three statements. Not yet a position. |
-| **Axes** | Deliberately unlabelled. Up and across carry no meaning; only the distances do. |
+| **Axes** | The two directions the room differed on most, named from the statements at each end. PCA only — MDS orientation is arbitrary, so it gets none. |
 
 Distances are always relative. Projected units mean nothing across two maps, so
 nothing in the interface ever reports one.
@@ -127,8 +129,8 @@ pipeline; none is a picture drawn in advance. Rebuild with `npm run fixtures`.
 | Example | Statements | Separation | What it shows |
 |---|---:|---:|---|
 | One question, four positions | 25 | 2.24 | Four grounds, wide spread, no clustering — and two regions that come apart where somebody changed their kind of reason |
-| Same yes, different reasons | 22 | 1.57 | A unanimous vote hiding three positions |
-| Two people, two worlds | 21 | 2.99 | The sharpest split of the four, from a room of two |
+| Same yes, different reasons | 22 | 1.56 | A unanimous vote hiding three positions |
+| Two people, two worlds | 23 | 2.80 | The sharpest split of the four, from a room of two |
 | When the map fails | 21 | 0.45 | Three agenda items at once; every average collapses to the middle and the regions scatter |
 
 The fourth is included **because** it fails. A reader should meet that case here,
@@ -167,9 +169,11 @@ research problem here.
 transcript
   → speaker attribution         rule-based, six formats, no model call
   → argument-unit segmentation  gpt-5.4-mini, 15 turns per call, 8 in flight
+  → translation repair          any Korean unit segmentation left untranslated
   → embedding                   text-embedding-3-small, 1536d
   → centroid + spread           per speaker, in embedding space
   → PCA / metric MDS            flattened to 2D, both computed
+  → axis naming                 from the statements at each end, PCA only
   → map
 ```
 
@@ -235,14 +239,17 @@ lib/
   project.ts               PCA (power iteration) and classical MDS
   aggregate.ts             centroids, spread, saturation, separation
   blob.ts                  map resolution, and regions as its contours
+  axes.ts                  naming the two PCA axes from their extremes
+  translate.ts             filling in translations segmentation missed
   pairs.ts                 gaps between participants, in map units
   frame.ts                 the drawing frame, shared with the hero renderer
   colors.ts                speaker colour and shape assignment
   i18n.ts                  every interface string, KOR and ENG
   landing.ts / how.ts      overview and reference prose, KOR and ENG
 components/                ConstellationMap, Composer, MapControls, DetailPanel,
-                           Chrome, HowToRead, Preferences, Reveal
+                           Chrome, Preferences, Reveal
   landing/                 LiveDemo, MarkFigure, RegionSteps
+  studio/                  SourceMenu, GuideButton
 scripts/                   fixture builders and the hero renderer
 archive/                   frozen v1 value-vector research pipeline
 ```
@@ -253,7 +260,7 @@ archive/                   frozen v1 value-vector research pipeline
 |---|---|:---:|
 | `npm run dev` | Dev server on :3000 | |
 | `npm run build` | Production build; also typechecks | |
-| `npm test` | Parser, projection, region and distance suites | |
+| `npm test` | Parser, projection, region, distance and fixture suites | |
 | `npm run typecheck` | `tsc --noEmit` | |
 | `npm run fixtures` | Rebuild the four examples through the real pipeline | ● |
 | `npm run hero:data` | Analyse the English transcript behind the README image | ● |
