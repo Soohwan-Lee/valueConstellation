@@ -8,7 +8,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "hero": "node --experimental-strip-types scripts/render-hero.ts"
   },
   "repository": {
     "type": "git",
@@ -16,7 +17,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/Soohwan-Lee/valueConstellation/issues"
   },
