@@ -24,9 +24,12 @@ This one asks a different question:
 
 > Given everything these people said, **how far apart are they?**
 
-A participant is a position with a region around it. Every coordinate traces back
-to a verbatim line. And when the map is not evidence, it says so on itself rather
-than letting a confident-looking picture speak.
+A participant is a position with a region around it, a one-sentence account of what
+they argued, and the statements that account was read from. Every coordinate traces
+back to a verbatim line. And when the map is not evidence, it says so on itself
+rather than letting a confident-looking picture speak — the figure it reports is
+how often it can name the speaker of a statement it was not shown, against what
+guessing would get.
 
 Korean-first, English throughout. Built for facilitators and deliberation
 researchers who need to look at a room and see the shape of the disagreement.
@@ -61,7 +64,7 @@ to run the pipeline without one of your own.
 | **Region** | The ground their statements cover. Two separate shapes means two separate positions, and the gap between them is ground nobody stood on. |
 | **Measure line** | The gap between two people, as a share of the widest gap on that map. Select a participant to draw them. |
 | **Dashed marker** | Fewer than three statements. Not yet a position. |
-| **Axes** | The two directions the room differed on most, named from the statements at each end. PCA only — MDS orientation is arbitrary, so it gets none. |
+| **Axes** | The two directions the map opens along, named from the statements at each end. Not on MDS, whose orientation is arbitrary. |
 
 Distances are always relative. Projected units mean nothing across two maps, so
 nothing in the interface ever reports one.
@@ -102,49 +105,68 @@ map calls.
 
 ## How much to trust a map
 
-Two figures sit under every map, in the order a reader needs them.
+**Hand the map 100 statements with the names removed. How many land nearest the
+person who actually said them?**
 
-**Does it tell these people apart?** Mean between-speaker distance over mean
-within-speaker spread.
+That is the figure under every map. It is computed leave-one-out — each statement
+is scored against centroids rebuilt without it — and printed beside what guessing
+would get, because chance moves with the size of the room: 50% is excellent with
+four participants and a coin toss with two.
 
-| Value | What the map says |
+| Result | What the map says |
 |---|---|
-| ≥ 1.5 | Tells the participants apart clearly |
-| 1.0 – 1.5 | Separates them, but not sharply |
-| < 1.0 | **Cannot** tell them apart — usually one meeting covering several agenda items |
+| ≥ 2× chance and ≥ 55% | Tells the participants apart clearly |
+| > chance + 10 points | Separates them, but not sharply |
+| below that | **Cannot** tell them apart — usually one meeting covering several agenda items |
+| fewer than 6 statements per person | Declines to judge, and says how little it had |
 
-**How much detail survived the flattening?** Differences between statements run in
-far more directions than a page has, and squashing them keeps some of it.
+That last row exists because the figure cannot otherwise distinguish *these people
+did not differ* from *there was not enough of them to tell*, and those need
+opposite advice. Leave-one-out removes 1/(n−1) of what builds a centroid, so at
+three statements each held-out point shifts its own speaker's centre by half that
+speaker's spread. Measured directly: a 9-statement transcript on a single agenda
+item scored 11% against 33% chance. Telling that reader to narrow their agenda
+would have been the wrong instruction — their meeting was short, not unfocused.
 
-On real transcripts this lands between **10% and 25%**, and that is normal rather
-than broken — it is what happens when 1536 directions become two. Near and far are
-readable; the difference between 0.62 and 0.58 is not. Below six statements the
-figure means nothing at all — a handful of points fits almost any plane exactly —
-and the map says so before showing it.
+Both this and the separation ratio are measured **in embedding space, never on the
+projected coordinates**, and all three layouts report identical numbers — pinned by
+a test. The default layout is fitted to push the speakers apart, so measuring "the
+speakers are far apart" on that picture would be grading its own homework. When
+this was measured on the projection, the figures came out more than twice as high.
+
+### Why the second figure is not a grade
+
+Under the layout switcher sits how much of the difference survived the flattening.
+For **Topics** (PCA) that runs 17–22%, which looks alarming and is not a verdict on
+the map. PCA maximises variance among *all statements*, and most of a sentence
+embedding is topic and phrasing — so what PCA works hardest to keep is not what
+this map is for. The **People** layout fits the plane to the speaker centroids
+instead and keeps **76–100%** of the between-speaker difference on the same
+transcripts. With three or fewer participants that figure is arithmetic rather
+than evidence — three points always lie in a plane exactly — and is marked as such.
 
 ## The built-in examples
 
 Four meetings, each producing a different shape. All four run through the real
 pipeline; none is a picture drawn in advance. Rebuild with `npm run fixtures`.
 
-| Example | Statements | Separation | What it shows |
-|---|---:|---:|---|
-| One question, four positions | 25 | 2.24 | Four grounds, wide spread, no clustering — and two regions that come apart where somebody changed their kind of reason |
-| Same yes, different reasons | 22 | 1.56 | A unanimous vote hiding three positions |
-| Two people, two worlds | 23 | 2.80 | The sharpest split of the four, from a room of two |
-| When the map fails | 21 | 0.45 | Three agenda items at once; every average collapses to the middle and the regions scatter |
+| Example | Agenda | Statements | Traced back | Chance | What it shows |
+|---|---|---:|---:|---:|---|
+| One question, four positions | Where to site a renewable energy plant | 25 | **64%** | 25% | Four grounds, wide spread, no clustering — and two regions that come apart where somebody changed their kind of reason |
+| Same yes, different reasons | Whether to rebuild the city hall | 22 | **82%** | 33% | A unanimous vote hiding three positions |
+| Two people, two worlds | Safety on the primary school route | 22 | **86%** | 50% | The sharpest split of the four, from a room of two |
+| When the map fails | Parking, school meals and library hours at once | 21 | **5%** | 33% | Three agenda items; every average collapses to the middle and the regions scatter |
 
-The fourth is included **because** it fails. A reader should meet that case here,
-where the map states it, rather than first on their own transcript.
+The fourth is included **because** it fails, and it fails convincingly: 5% against
+33% chance is *worse than guessing*. A reader should meet that case here, where the
+map states it, rather than first on their own transcript.
 
-Writing them was itself the finding. The first draft of the consensus example
-scored 0.51 — the map could not tell the three speakers apart at all — because
-each speaker had been given several distinct sub-arguments. Separation is
-between-speaker distance over within-speaker spread, so a rich range of arguments
-scatters somebody's own statements and buries the difference between them and
-everybody else. Rewriting it so each speaker stays inside one vocabulary, drawn
-from a genuinely different world — legal liability, cost recovery, and what
-happens at the service counter — took it to 1.56.
+Writing them was itself the finding. The first draft of the consensus example could
+not tell its three speakers apart at all, because each had been given several
+distinct sub-arguments — a rich range scatters somebody's own statements and buries
+the difference between them and everybody else. Rewriting it so each speaker stays
+inside one vocabulary, drawn from a genuinely different world — legal liability,
+cost recovery, and what happens at the service counter — is what took it to 82%.
 
 ## What testing on real data showed
 
@@ -152,7 +174,8 @@ A 57-minute five-party political debate (105 turns) is the honest test case, and
 the result is a caution rather than a success.
 
 **All five parties landed on top of each other.** Centroids fell within 0.17 of one
-another while each party's own spread was 0.18–0.26. Separation: **0.38**.
+another while each party's own spread was 0.18–0.26 — statements scattered wider
+than the speakers sat apart, and every average landed in the middle.
 
 In raw text embeddings, **topic dominates speaker identity**. Each party discussed
 every sub-topic, so averaging across all of them returns roughly the topic centroid
@@ -160,9 +183,16 @@ for everybody.
 
 The practical consequence: **one map wants one question.** A meeting covering
 several agenda items needs a map per item. Per-speaker averaging over heterogeneous
-topics is a real limitation of the method, not a bug to tune away. Making speaker
-identity separable — rather than relying on raw embedding distance — is the open
-research problem here.
+topics is a real limitation of the method, not a bug to tune away.
+
+The People layout is a partial answer, not a solution. Fitting the plane to the
+speaker centroids recovers whatever separates them from the directions PCA spends
+on topic, which is why it keeps 76–100% where PCA keeps 17–22%. But it can only
+project a difference that is there: on the `mixed` example it keeps 100% of the
+between-speaker variance and still traces back only 5% of statements, because the
+speakers genuinely do not differ once three agendas are averaged together. Making
+speaker identity separable in the first place — rather than relying on raw
+embedding distance — remains the open research problem here.
 
 ## How it is built
 
@@ -174,8 +204,10 @@ transcript
   → speaker names               each name rendered in the other language
   → embedding                   text-embedding-3-small, 1536d
   → centroid + spread           per speaker, in embedding space
-  → PCA / metric MDS            flattened to 2D, both computed
-  → axis naming                 from the statements at each end, PCA only
+  → attribution + separation    leave-one-out, in embedding space, before any layout
+  → People / PCA / metric MDS   flattened to 2D, all three computed
+  → axis naming                 from the statements at each end, not for MDS
+  → speaker summaries           one call covering everybody, anchored to statement ids
   → map
 ```
 
@@ -185,9 +217,25 @@ transcript are dropped and counted, because a paraphrase would silently corrupt
 every downstream coordinate.
 
 Centroids are computed in embedding space and then projected, never averaged from
-projected coordinates. The two agree only for a linear map, which is why PCA is the
-default; MDS has no out-of-sample extension, so its centroids are embedded jointly
-with the statements.
+projected coordinates. The two agree only for a linear map, which is why the
+default layout is linear; MDS has no out-of-sample extension, so its centroids are
+embedded jointly with the statements.
+
+**Three layouts, one set of statements.** *People* fits the plane to the speaker
+centroids, weighted by √n so somebody who spoke three times does not steer it as
+hard as somebody who spoke forty — this is the default, because the question the
+tool exists for is who differs from whom. *Topics* (PCA) fits it to the statements,
+so the axes describe what the room argued about. *Distance* (metric MDS on cosine
+distance) preserves pairwise distance instead of finding directions at all, and so
+gets no axis names — rotate an MDS picture and nothing is lost.
+
+**Per-speaker summaries** are read from the transcript, not from the coordinates,
+so they say the same thing whichever layout is on screen. One call covers every
+participant at once rather than one call each: summarised in isolation the results
+come back interchangeable, and a map whose whole claim is that these people differ
+cannot hand out swappable descriptions of them. Each summary carries the ids of the
+statements it rests on, marked in the inspector, and an id pointing at a statement
+that speaker did not make is dropped rather than shown.
 
 `/how-it-works` has the rest: both projections, every threshold with the value it
 uses, and what happens to a pasted transcript.
@@ -195,7 +243,7 @@ uses, and what happens to a pasted transcript.
 ## Design commitments
 
 <details>
-<summary>Ten rules for not being confidently wrong about people</summary>
+<summary>Rules for not being confidently wrong about people</summary>
 
 - **A centroid never travels alone.** Every position carries its statement count
   and spread. One inferred from two statements is drawn differently from one
@@ -203,10 +251,20 @@ uses, and what happens to a pasted transcript.
 - **Regions are built from the statements, not fitted to them.** See above.
 - **Nothing on the map is tuned.** If a shape needs fixing, change what is
   measured rather than adding a multiplier.
-- **A map that shows nothing says so.** Below six statements the kept-detail
-  figure is arithmetic rather than evidence, and below a separation of 1 the
-  centroids are not distinguishing anybody. Both are stated on the map. A
-  single-speaker transcript is refused outright.
+- **A map that shows nothing says so.** When the statements cannot be traced back
+  to their speakers better than guessing, the map states that instead of letting
+  the picture imply otherwise; when there were too few statements to tell, it
+  states *that* rather than guessing at a cause. A single-speaker transcript is
+  refused outright, before it costs anything to segment or embed.
+- **A layout may not grade itself.** Both trust figures are computed in embedding
+  space before any projection, so all three layouts report identical numbers. How
+  far apart a layout draws people and how far apart they are are different
+  questions, and the first cannot answer the second.
+- **A participant who was in the room is accounted for.** Somebody who said
+  nothing but "네, 맞습니다" is not on the map, and is named underneath it. A map
+  that quietly drops a person claims a meeting had fewer people in it than it did.
+- **A summary you cannot check is worse than none.** Every per-speaker summary
+  carries the statements it was read from, and they are marked in the list.
 - **Say what the number means, not what it is called.** No variance, no
   saturation, no explained-variance ratio in front of somebody trying to
   understand a meeting.
@@ -244,10 +302,12 @@ lib/
   analyze.ts               the pipeline, shared by the route and the fixture builder
   parse.ts                 speaker attribution, six transcript formats
   segment.ts               argument-unit schema, prompt, fabrication filter
-  project.ts               PCA (power iteration) and classical MDS
-  aggregate.ts             centroids, spread, saturation, separation
+  project.ts               PCA (power iteration), classical MDS, centroid fitting
+  aggregate.ts             centroids, spread, attribution, separation
+  models.ts                the two model names, with no other dependencies
   blob.ts                  map resolution, and regions as its contours
-  axes.ts                  naming the two PCA axes from their extremes
+  axes.ts                  naming the two axes from their extremes
+  summaries.ts             what each participant argued, anchored to statement ids
   translate.ts             filling in translations segmentation missed
   speakers.ts              each participant name in both languages
   pairs.ts                 gaps between participants, in map units
@@ -258,7 +318,7 @@ lib/
 components/                ConstellationMap, Composer, MapControls, DetailPanel,
                            Chrome, SiteHeader, Preferences, Reveal
   landing/                 ScenarioCard, MarkFigure, RegionSteps
-  studio/                  SourceMenu, GuideButton
+  studio/                  SourceMenu, GuideButton, MethodFooter
 scripts/                   fixture builders and the hero renderer
 archive/                   frozen v1 value-vector research pipeline
 ```

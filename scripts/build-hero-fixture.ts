@@ -30,7 +30,7 @@ if (!outcome.ok) {
   process.exit(1)
 }
 
-const projection = outcome.result.projections.pca
+const projection = outcome.result.projections.people
 console.log(
   `statements ${projection.utterances.length}` +
     `  speakers ${projection.speakers.length}` +

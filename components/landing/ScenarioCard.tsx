@@ -181,15 +181,21 @@ export function ScenarioCard({
           {verdict && (
             <>
               <span className="text-[var(--faint)]">·</span>
+              {/* Weight rather than hue: every colour on this page belongs to
+                  a speaker, and an alarm-coloured chip would read as a fifth
+                  participant. The failing card gets the ink outline the rest
+                  of the interface uses for a caveat. */}
               <span
                 className="rounded-full px-1.5 py-0.5"
-                style={{
-                  background:
-                    verdict === 'none'
-                      ? 'color-mix(in oklch, var(--warn) 14%, transparent)'
-                      : 'var(--panel-2)',
-                  color: verdict === 'none' ? 'var(--warn)' : 'var(--body)',
-                }}
+                style={
+                  verdict === 'none'
+                    ? {
+                        border: '1px solid var(--ink)',
+                        color: 'var(--ink)',
+                        padding: '1px 5px',
+                      }
+                    : { background: 'var(--panel-2)', color: 'var(--body)' }
+                }
               >
                 {t(verdict === 'none' ? 'cardFails' : 'cardWorks', lang)}
               </span>

@@ -66,7 +66,7 @@ const analysis: AnalysisResult = JSON.parse(
   readFileSync(resolve(root, 'docs/hero-fixture.json'), 'utf8'),
 )
 
-const projection = analysis.projections.pca
+const projection = analysis.projections.people
 const { toX, toY } = buildScales(projection)
 const color = (i: number) => SPEAKER_COLORS[i % SPEAKER_COLORS.length]
 
