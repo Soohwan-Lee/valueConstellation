@@ -31,28 +31,49 @@ export const HERO = {
     ko: '회의록을 붙여넣으면 각 참여자의 발언을 주장 단위로 나누고, 의미가 비슷한 발언끼리 가깝게 배치합니다. 누가 누구와 가까운지, 누가 혼자 떨어져 있는지가 한 장에 보입니다.',
     en: 'Paste a transcript. Each participant’s speech is split into argument units and laid out so that statements meaning similar things sit close together — who stands near whom, and who stands alone, on one page.',
   },
-  primary: { ko: '회의록 붙여넣기', en: 'Paste a transcript' },
-  secondary: { ko: '읽는 법부터 보기', en: 'Learn to read it first' },
-  demoCaption: {
-    ko: '실제 예시입니다. 위에서 다른 회의를 골라 보거나, 참여자 표식을 클릭해 거리를 재보세요.',
-    en: 'A real example. Pick a different meeting above, or click a participant to measure their distance to everyone else.',
-  },
-  demoOpen: { ko: '이 예시를 도구에서 열기', en: 'Open this one in the studio' },
 } satisfies Record<string, Bilingual>
 
-export const TRY_SECTION = {
-  eyebrow: { ko: '직접 해보기', en: 'Try it' },
+export const EXAMPLES_LEAD = {
+  eyebrow: { ko: '예시로 시작하기', en: 'Start from an example' },
   headline: {
-    ko: '가지고 계신 회의록을 그대로 붙여넣어 보세요.',
-    en: 'Paste a transcript you already have.',
+    ko: '네 개의 회의. 지도가 무엇을 보여줄 수 있고 무엇을 못 보여주는지 한 번에.',
+    en: 'Four meetings — what the map can show, and what it cannot.',
   },
   lead: {
-    ko: '한 줄에 한 발언씩이면 됩니다. 붙여넣는 즉시 누가 발언자로 인식되는지 아래에 표시되고, 그 상태에서 지도를 만듭니다. 회의록은 지도를 만드는 동안에만 서버로 보내고 저장하지 않습니다.',
-    en: 'One statement per line is enough. The names it recognises appear underneath as you type, and the map is built from exactly those. The transcript is sent only to build the map, and is not stored.',
+    ko: '전부 실제 파이프라인을 그대로 거친 결과입니다. 하나를 골라 열어보세요.',
+    en: 'All four went through the real pipeline. Pick one and open it.',
+  },
+  open: { ko: '열어보기', en: 'Open' },
+} satisfies Record<string, Bilingual>
+
+export const OWN_TRANSCRIPT = {
+  or: { ko: '또는', en: 'or' },
+  headline: {
+    ko: '가지고 계신 회의록으로 바로 만들어 보세요.',
+    en: 'Build one from a transcript you already have.',
+  },
+  lead: {
+    ko: '한 줄에 한 발언씩이면 충분합니다. 30초쯤 걸립니다.',
+    en: 'One statement per line is enough. It takes about thirty seconds.',
+  },
+  cta: { ko: '회의록 붙여넣기', en: 'Paste a transcript' },
+} satisfies Record<string, Bilingual>
+
+export const NEW_PAGE = {
+  back: { ko: '← 예시로 돌아가기', en: '← Back to the examples' },
+  eyebrow: { ko: '새 지도', en: 'New map' },
+  headline: { ko: '회의록을 붙여넣으세요.', en: 'Paste your transcript.' },
+  lead: {
+    ko: '한 줄에 한 발언씩, 앞에 누가 말했는지만 적혀 있으면 됩니다. 붙여넣는 즉시 누가 발언자로 인식되는지 아래에 표시되고, 그대로 지도를 만듭니다.',
+    en: 'One statement per line, each prefixed with who said it. The names it recognises appear underneath as you type, and the map is built from exactly those.',
   },
   privacy: {
-    ko: '민감한 회의록이라면 이름을 A, B, C로 바꿔서 붙여넣어도 결과는 같습니다.',
-    en: 'If the meeting is sensitive, replacing names with A, B and C changes nothing about the result.',
+    ko: '회의록은 지도를 만드는 동안에만 서버로 보내고 저장하지 않습니다. 민감한 회의라면 이름을 A, B, C로 바꿔 붙여넣어도 결과는 같습니다.',
+    en: 'The transcript is sent only while the map is built, and is not stored. If the meeting is sensitive, replacing names with A, B and C changes nothing about the result.',
+  },
+  waitNote: {
+    ko: '분석에는 보통 10~30초가 걸립니다.',
+    en: 'Analysis usually takes between ten and thirty seconds.',
   },
 } satisfies Record<string, Bilingual>
 
@@ -213,19 +234,6 @@ export const PIPELINE: { title: Bilingual; body: Bilingual }[] = [
     },
   },
 ]
-
-export const EXAMPLES_SECTION = {
-  eyebrow: { ko: '예시', en: 'Examples' },
-  headline: {
-    ko: '지도가 무엇을 보여줄 수 있는지 먼저 확인하세요.',
-    en: 'See what the map can and cannot show.',
-  },
-  lead: {
-    ko: '세 가지 예시는 모두 실제 파이프라인을 그대로 거친 결과입니다. 미리 그려둔 그림이 아닙니다.',
-    en: 'All three ran through the real pipeline. None of them is a picture drawn in advance.',
-  },
-  open: { ko: '이 예시 열기', en: 'Open this example' },
-} satisfies Record<string, Bilingual>
 
 export const LIMITS_SECTION = {
   eyebrow: { ko: '한계', en: 'Limits' },

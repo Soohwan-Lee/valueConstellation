@@ -1,0 +1,172 @@
+'use client'
+
+import Link from 'next/link'
+import { mapResolution, regionPath, regionRings, type Point } from '@/lib/blob'
+import { speakerLabel } from '@/lib/speakers'
+import type { Lang } from '@/lib/i18n'
+import type { AnalysisResult } from '@/lib/types'
+import type { Scenario } from '@/data/scenarios'
+
+/**
+ * One example, as the thing you click.
+ *
+ * The overview used to open on a single large map with the other three behind
+ * tabs, which put the choice one interaction away and let somebody leave having
+ * seen one shape. Four cards, each showing its own map, is the pattern template
+ * galleries settled on for the same reason: the options are the content, and
+ * picking one is the first thing you do rather than the thing you do after
+ * reading.
+ *
+ * Each preview is drawn from that example's committed analysis with the same
+ * region maths as the real map, so the shapes on the cards are the shapes you
+ * get when you open them.
+ */
+const W = 300
+const H = 168
+const PAD = 26
+
+export function ScenarioCard({
+  scenario,
+  analysis,
+  lang,
+  cta,
+  index,
+}: {
+  scenario: Scenario
+  analysis: AnalysisResult
+  lang: Lang
+  cta: string
+  index: number
+}) {
+  const projection = analysis.projections.pca
+
+  const xs = projection.utterances.map((u) => u.x)
+  const ys = projection.utterances.map((u) => u.y)
+  const spanX = Math.max(...xs) - Math.min(...xs) || 1
+  const spanY = Math.max(...ys) - Math.min(...ys) || 1
+  const scale = Math.min((W - PAD * 2) / spanX, (H - PAD * 2) / spanY)
+  const offX = (W - PAD * 2 - spanX * scale) / 2
+  const offY = (H - PAD * 2 - spanY * scale) / 2
+  const toX = (v: number) => PAD + offX + (v - Math.min(...xs)) * scale
+  const toY = (v: number) => H - PAD - offY - (v - Math.min(...ys)) * scale
+
+  const bySpeaker: Point[][] = projection.speakers.map((s) =>
+    projection.utterances
+      .filter((u) => u.speaker === s.speaker)
+      .map((u) => [toX(u.x), toY(u.y)] as Point),
+  )
+  const { reach } = mapResolution(bySpeaker, 14)
+
+  return (
+    <Link
+      href={`/studio?example=${scenario.id}`}
+      className="group flex h-full flex-col overflow-hidden rounded-[16px] border border-[var(--line)] bg-[var(--panel)] transition-all duration-200 hover:-translate-y-1 hover:border-[var(--line-strong)] hover:shadow-[0_24px_44px_-28px_rgba(0,0,0,0.45)]"
+    >
+      <div className="relative border-b border-[var(--line)] bg-[var(--plate)]">
+        <svg
+          viewBox={`0 0 ${W} ${H}`}
+          className="h-full w-full"
+          role="img"
+          aria-label={scenario.title[lang]}
+        >
+          <defs>
+            <pattern
+              id={`card-field-${scenario.id}`}
+              width={16}
+              height={16}
+              patternUnits="userSpaceOnUse"
+            >
+              <circle cx={1} cy={1} r={0.7} fill="var(--line)" />
+            </pattern>
+          </defs>
+          <rect width={W} height={H} fill={`url(#card-field-${scenario.id})`} opacity={0.6} />
+
+          {bySpeaker.map((points, i) => {
+            const d = regionPath(regionRings(points, reach))
+            if (!d) return null
+            const colour = `var(--s${(projection.speakers[i].colorIndex % 8) + 1})`
+            return (
+              <path
+                key={`r${i}`}
+                d={d}
+                fillRule="evenodd"
+                fill={colour}
+                fillOpacity={0.1}
+                stroke={colour}
+                strokeOpacity={0.3}
+                strokeWidth={1}
+              />
+            )
+          })}
+
+          {projection.utterances.map((u, i) => {
+            const s = projection.speakers.find((x) => x.speaker === u.speaker)
+            return (
+              <circle
+                key={u.id}
+                cx={toX(u.x)}
+                cy={toY(u.y)}
+                r={2.6}
+                fill={`var(--s${((s?.colorIndex ?? 0) % 8) + 1})`}
+                fillOpacity={0.55}
+                className="motion-safe:animate-[settle_320ms_cubic-bezier(0.32,0.72,0,1)_both]"
+                style={{
+                  animationDelay: `${index * 90 + i * 12}ms`,
+                  transformBox: 'fill-box',
+                  transformOrigin: 'center',
+                }}
+              />
+            )
+          })}
+
+          {projection.speakers.map((s) => (
+            <g key={s.speaker}>
+              <circle
+                cx={toX(s.x)}
+                cy={toY(s.y)}
+                r={6}
+                fill={s.underdetermined ? 'var(--plate)' : `var(--s${(s.colorIndex % 8) + 1})`}
+                stroke={`var(--s${(s.colorIndex % 8) + 1})`}
+                strokeWidth={1.4}
+                strokeDasharray={s.underdetermined ? '3 2.5' : undefined}
+              />
+              <text
+                x={toX(s.x)}
+                y={toY(s.y) - 11}
+                textAnchor="middle"
+                className="text-[9.5px] font-medium"
+                fill="var(--body)"
+                stroke="var(--plate)"
+                strokeWidth={2.5}
+                strokeLinejoin="round"
+                style={{ paintOrder: 'stroke' }}
+              >
+                {speakerLabel(s.speaker, lang, analysis.speakerNames)}
+              </text>
+            </g>
+          ))}
+        </svg>
+
+        <span className="readout absolute left-3 top-3 rounded-full bg-[var(--panel)]/85 px-2 py-0.5 text-[10px] text-[var(--muted)] backdrop-blur-sm">
+          {String(index + 1).padStart(2, '0')}
+        </span>
+      </div>
+
+      <div className="flex flex-1 flex-col p-5">
+        <h3 className="t-title">{scenario.title[lang]}</h3>
+        <p className="mt-2 flex-1 text-[13px] leading-[1.65] text-[var(--muted)]">
+          {scenario.teaser[lang]}
+        </p>
+        <span className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-medium text-[var(--body)] transition-colors group-hover:text-[var(--ink)]">
+          {cta}
+          <span
+            aria-hidden
+            className="readout transition-transform group-hover:translate-x-1"
+          >
+            →
+          </span>
+        </span>
+      </div>
+    </Link>
+  )
+}
