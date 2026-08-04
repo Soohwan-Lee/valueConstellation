@@ -57,7 +57,7 @@ export function GuideButton({ lang }: { lang: Lang }) {
       </button>
 
       {open && (
-        <div className="animate-rise absolute right-0 top-[calc(100%+6px)] z-30 w-[min(26rem,86vw)] rounded-[12px] border border-[var(--line)] bg-[var(--panel)] p-5 shadow-[0_24px_48px_-24px_rgba(0,0,0,0.45)]">
+        <div className="animate-rise absolute right-0 top-[calc(100%+6px)] z-30 w-[min(26rem,86vw)] rounded-[12px] border border-[var(--line)] bg-[var(--panel)] p-5 shadow-[var(--shadow-lift)]">
           <p className="text-[12.5px] leading-[1.7] text-[var(--body)]">
             <Rich text={t('readDistance', lang)} />
           </p>

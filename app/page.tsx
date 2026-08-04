@@ -152,7 +152,7 @@ export default function Overview() {
             headline={say(MARKS_SECTION.headline)}
             lead={say(MARKS_SECTION.lead)}
           />
-          <ul className="mt-12 grid gap-px overflow-hidden rounded-[16px] border border-[var(--line)] bg-[var(--line)] sm:grid-cols-2 xl:grid-cols-3">
+          <ul className="mt-12 grid gap-px overflow-hidden rounded-[16px] border border-[var(--line)] bg-[var(--line)] shadow-[var(--shadow-card)] sm:grid-cols-2 xl:grid-cols-3">
             {MARKS.map((mark, i) => (
               <li key={mark.figure} className="bg-[var(--panel)]">
                 <Reveal delay={i * 50} className="h-full">
@@ -250,25 +250,30 @@ export default function Overview() {
         {/* ── Limits ───────────────────────────────────────────────────────
             Before the closing call to action rather than in a footnote: a tool
             that draws conclusions about named people should say what it cannot
-            do while somebody is still deciding whether to use it. */}
-        <Band>
-          <SectionHead
-            eyebrow={say(LIMITS_SECTION.eyebrow)}
-            headline={say(LIMITS_SECTION.headline)}
-          />
-          <ul className="mt-10 space-y-px overflow-hidden rounded-[16px] border border-[var(--line)] bg-[var(--line)]">
-            {LIMITS.map((limit, i) => (
-              <li key={limit.title.en} className="bg-[var(--panel)]">
-                <Reveal delay={i * 50}>
-                  <div className="grid gap-3 p-6 sm:grid-cols-[17rem_1fr] sm:gap-10 sm:p-8">
-                    <h4 className="t-title">{say(limit.title)}</h4>
-                    <p className="t-body text-[var(--muted)]">{say(limit.body)}</p>
-                  </div>
-                </Reveal>
-              </li>
-            ))}
-          </ul>
-        </Band>
+            do while somebody is still deciding whether to use it.
+
+            Inverted, because it is the one section that asks the reader to
+            stop, and a long page needs one change of gravity. */}
+        <section className="band-invert mt-8">
+          <div className="mx-auto max-w-[1240px] px-5 py-20 sm:px-8 sm:py-28">
+            <SectionHead
+              eyebrow={say(LIMITS_SECTION.eyebrow)}
+              headline={say(LIMITS_SECTION.headline)}
+            />
+            <ul className="mt-12 space-y-px overflow-hidden rounded-[16px] border border-[var(--line)] bg-[var(--line)]">
+              {LIMITS.map((limit, i) => (
+                <li key={limit.title.en} className="bg-[var(--panel)]">
+                  <Reveal delay={i * 50}>
+                    <div className="grid gap-3 p-6 sm:grid-cols-[17rem_1fr] sm:gap-10 sm:p-8">
+                      <h4 className="t-title">{say(limit.title)}</h4>
+                      <p className="t-body text-[var(--muted)]">{say(limit.body)}</p>
+                    </div>
+                  </Reveal>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
       </main>
 
       <footer className="border-t border-[var(--line)]">

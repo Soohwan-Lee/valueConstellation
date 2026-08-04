@@ -59,7 +59,7 @@ export default function HowItWorks() {
                   </p>
                 )}
 
-                <dl className="mt-7 space-y-px overflow-hidden rounded-[12px] border border-[var(--line)] bg-[var(--line)]">
+                <dl className="mt-7 space-y-px overflow-hidden rounded-[12px] border border-[var(--line)] bg-[var(--line)] shadow-[var(--shadow-card)]">
                   {group.entries.map((entry) => (
                     <div
                       key={entry.term.en}

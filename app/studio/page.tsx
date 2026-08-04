@@ -357,7 +357,7 @@ export default function Studio() {
 
       {/* The plate. */}
       <main className="order-1 min-w-0 flex-1 p-3 sm:p-4 lg:order-2 lg:h-full lg:p-5">
-        <div className="flex h-[70vh] min-h-[460px] flex-col overflow-hidden rounded-[18px] border border-[var(--line)] bg-[var(--plate)] lg:h-full">
+        <div className="flex h-[70vh] min-h-[460px] flex-col overflow-hidden rounded-[18px] border border-[var(--line)] bg-[var(--plate)] shadow-[var(--shadow-card)] lg:h-full">
           {/* Loading is checked before the composer: the request is started
               from the composer and leaves it mounted, so testing `pasting`
               first would keep the editor on screen for the whole eight-second

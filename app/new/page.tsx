@@ -62,7 +62,7 @@ export default function NewMap() {
         <h1 className="t-headline mt-3">{say(NEW_PAGE.headline)}</h1>
         <p className="t-lead mt-4 max-w-[40rem]">{say(NEW_PAGE.lead)}</p>
 
-        <div className="mt-10 rounded-[16px] border border-[var(--line)] bg-[var(--panel)] p-5 sm:p-7">
+        <div className="mt-10 rounded-[18px] border border-[var(--line)] bg-[var(--panel)] p-5 shadow-[var(--shadow-card)] sm:p-7">
           <Composer
             lang={lang}
             transcript={transcript}

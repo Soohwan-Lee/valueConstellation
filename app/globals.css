@@ -34,6 +34,14 @@
   --signal: #0f1416;
   --on-signal: #fcfdfd;
 
+  /* Elevation. Hairlines alone separate surfaces but do not raise them, which
+     is what left every card reading as a wireframe. Two steps only: at rest,
+     and under the pointer. */
+  --shadow-card: 0 1px 2px rgba(15, 20, 22, 0.04),
+    0 10px 24px -18px rgba(15, 20, 22, 0.24);
+  --shadow-lift: 0 2px 4px rgba(15, 20, 22, 0.06),
+    0 26px 46px -28px rgba(15, 20, 22, 0.42);
+
   /* Speaker colours. A single categorical palette cannot serve both themes:
      Observable10's yellow measures 1.91:1 on white, and Okabe-Ito's black
      measures 1.06:1 on dark. Both sets below are >=4.27:1 against their own
@@ -64,6 +72,13 @@
 
   --signal: #eaf0f2;
   --on-signal: #0f1416;
+
+  /* Deeper, because a shadow on a dark surface has to be darker than the
+     surface to read at all. */
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4),
+    0 10px 24px -18px rgba(0, 0, 0, 0.7);
+  --shadow-lift: 0 2px 4px rgba(0, 0, 0, 0.45),
+    0 26px 46px -28px rgba(0, 0, 0, 0.85);
 
   --s1: #7aa2f7;
   --s2: #e39b4f;
@@ -118,6 +133,81 @@ body {
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+
+/* ---------------------------------------------------------------------------
+   The field.
+
+   The same uniform dot texture the plate uses, behind the whole page. It gives
+   the surround something to be — a flat expanse of one grey reads as unfinished
+   rather than as quiet — and it ties the explanatory pages to the instrument
+   without adding a decorative motif that means nothing.
+
+   Masked so it fades out down the page: strongest where the reader arrives,
+   gone by the time they are reading prose.
+   --------------------------------------------------------------------------- */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: radial-gradient(var(--line-strong) 1px, transparent 1px);
+  background-size: 30px 30px;
+  opacity: 0.5;
+  -webkit-mask-image: radial-gradient(
+    ellipse 140% 90% at 50% -10%,
+    #000 15%,
+    transparent 70%
+  );
+  mask-image: radial-gradient(
+    ellipse 140% 90% at 50% -10%,
+    #000 15%,
+    transparent 70%
+  );
+}
+
+/* ---------------------------------------------------------------------------
+   Inverted band.
+
+   One section of the overview flips to ink, which gives a long explanatory
+   page a change of gravity without introducing a colour — the only chromatic
+   thing on this site is a participant.
+
+   In dark mode it deepens rather than flipping to light: a white band in the
+   middle of a dark page is a flash, not a rhythm.
+   --------------------------------------------------------------------------- */
+.band-invert {
+  --tray: #0f1416;
+  --plate: #12181b;
+  --panel: #171f23;
+  --panel-2: #1d272c;
+  --line: #2a343a;
+  --line-strong: #3d4a51;
+  --ink: #eaf0f2;
+  --body: #b6c1c6;
+  --muted: #8b979d;
+  --faint: #5f6b70;
+  --signal: #eaf0f2;
+  --on-signal: #0f1416;
+  --s1: #7aa2f7;
+  --s2: #e39b4f;
+  --s3: #57cf9b;
+  --s4: #f086c4;
+  --s5: #48c6d8;
+  --s6: #c79a6a;
+  --s7: #f0796a;
+  --s8: #a3a3ad;
+  background: var(--tray);
+  color: var(--body);
+}
+
+.dark .band-invert {
+  --tray: #05080a;
+  --panel: #0d1215;
+  --panel-2: #131a1e;
+  --line: #1e262b;
+  --line-strong: #303a40;
 }
 
 /* ---------------------------------------------------------------------------

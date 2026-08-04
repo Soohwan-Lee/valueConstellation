@@ -60,7 +60,7 @@ export function ScenarioCard({
   return (
     <Link
       href={`/studio?example=${scenario.id}`}
-      className="group flex h-full flex-col overflow-hidden rounded-[16px] border border-[var(--line)] bg-[var(--panel)] transition-all duration-200 hover:-translate-y-1 hover:border-[var(--line-strong)] hover:shadow-[0_24px_44px_-28px_rgba(0,0,0,0.45)]"
+      className="group flex h-full flex-col overflow-hidden rounded-[16px] border border-[var(--line)] bg-[var(--panel)] shadow-[var(--shadow-card)] transition-all duration-200 hover:-translate-y-1 hover:border-[var(--line-strong)] hover:shadow-[var(--shadow-lift)]"
     >
       <div className="relative border-b border-[var(--line)] bg-[var(--plate)]">
         <svg

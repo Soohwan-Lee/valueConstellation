@@ -78,7 +78,7 @@ export function SourceMenu({
       {open && (
         <div
           role="menu"
-          className="animate-rise absolute left-0 top-[calc(100%+6px)] z-30 w-[min(22rem,80vw)] overflow-hidden rounded-[12px] border border-[var(--line)] bg-[var(--panel)] shadow-[0_24px_48px_-24px_rgba(0,0,0,0.45)]"
+          className="animate-rise absolute left-0 top-[calc(100%+6px)] z-30 w-[min(22rem,80vw)] overflow-hidden rounded-[12px] border border-[var(--line)] bg-[var(--panel)] shadow-[var(--shadow-lift)]"
         >
           <ul className="p-1.5">
             {SCENARIOS.map((s) => {
