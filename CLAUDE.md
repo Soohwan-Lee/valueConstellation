@@ -92,6 +92,24 @@ never from the coordinates, so they read the same under every layout. They carry
 the ids of the statements they rest on, an id the speaker did not say is dropped
 rather than shown, and the interface marks those statements in the list.
 
+**The rail holds one primary thing.** The console is the participant list —
+who is in this room and where each of them stands — under the only heading in
+it set in ink at reading size. Everything else is a closed disclosure or the
+method footer. Anything that changes how the map is *drawn* rather than what it
+*says* belongs on the plate toolbar beside the source and the reading guide,
+which is where the layout picker lives. Giving a rendering preference the same
+heading as the participants asks a first-time reader to make two decisions of
+apparently equal size, and only one of them is what the tool is for.
+
+**An example has to be a room the reader has sat in.** The four examples exist
+to answer "does this apply to my meeting" in ten seconds. They were municipal
+council agendas — accurate, and answering that question with "only if you sit
+on a council". A speaker in an example must also stay inside one kind of reason
+for the whole meeting: conceding ground means adopting the other person's
+vocabulary, which is measured as the two of them being alike. Two drafts have
+now failed this way, one at 57% against 50% chance. Rebuild with
+`npm run fixtures` and read the printed attribution before shipping one.
+
 **Colour means a person.** The eight speaker hues are the only saturated colour
 in the interface. Buttons, selection, focus and warnings are ink on paper, and
 the overview changes gravity with an inverted band rather than a hue. A "brand
