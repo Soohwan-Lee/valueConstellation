@@ -1,3 +1,4 @@
+import { MIN_STATEMENTS_FOR_ATTRIBUTION } from './aggregate'
 import type { Lang } from './i18n'
 
 /**
@@ -85,6 +86,36 @@ export const NEW_PAGE = {
     en: 'Analysis usually takes between ten and thirty seconds.',
   },
 } satisfies Record<string, Bilingual>
+
+/**
+ * What makes a transcript that produces a usable map.
+ *
+ * Stated before the paste rather than after the analysis. The tool already
+ * reports "이 지도는 참여자를 구분하지 못합니다" and why, but it reports it
+ * thirty seconds and one API call after the point at which the reader could
+ * have done anything about it — and the commonest cause, several agenda items
+ * in one meeting, is knowable from the transcript alone.
+ *
+ * The six comes from `MIN_STATEMENTS_FOR_ATTRIBUTION`, so this stays true when
+ * the threshold moves.
+ */
+export const WORKS_BEST = {
+  heading: { ko: '이럴 때 잘 나옵니다', en: 'What makes a usable map' },
+  items: [
+    {
+      ko: '쟁점이 하나인 회의. 안건 서너 개를 한 번에 다룬 회의록은 안건이 바뀔 때마다 발언이 딴 자리로 튀어서, 평균이 모두 가운데로 모입니다 — 예시 “지도가 실패하는 경우”가 정확히 그 상태입니다.',
+      en: 'One question, not several. When a meeting covers three or four items, each change of topic throws a person’s statements somewhere else and every average lands in the middle — the “When the map fails” example is exactly that.',
+    },
+    {
+      ko: `한 사람이 ${MIN_STATEMENTS_FOR_ATTRIBUTION}번 이상 말한 회의. 그보다 적으면 지도는 그리되 “구분되는가”에 대한 판정은 보류합니다.`,
+      en: `At least ${MIN_STATEMENTS_FOR_ATTRIBUTION} statements from each person. Below that the map is still drawn, but it declines to say whether the people differ.`,
+    },
+    {
+      ko: '참여자는 두 명이어도 됩니다. 사람 수보다 각자가 얼마나 말했는지가 결과를 정합니다 — 예시 “둘만 있어도 갈린다”가 두 명짜리입니다.',
+      en: 'Two participants is enough. How much each of them said matters more than how many there were — the “Two people, two worlds” example has exactly two.',
+    },
+  ] satisfies Bilingual[],
+}
 
 export const MARKS_SECTION = {
   eyebrow: { ko: '읽는 법', en: 'How to read it' },

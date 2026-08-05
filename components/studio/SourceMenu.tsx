@@ -47,13 +47,12 @@ export function SourceMenu({
     }
   }, [open])
 
-  // The agenda item, not the finding. This control answers "which meeting am
-  // I looking at", and "말은 같고, 이유는 다르다" is an answer to a different
-  // question — one a reader cannot even check until they know what was being
-  // decided.
+  // The short name on the trigger, the agenda in the menu and again in full
+  // under the header. Putting the agenda on the trigger too made the plate say
+  // the same sentence twice, once truncated.
   const current = pasting
     ? t('pasteTitle', lang)
-    : (SCENARIOS.find((s) => s.id === activeId)?.topic[lang] ??
+    : (SCENARIOS.find((s) => s.id === activeId)?.title[lang] ??
       t('customSource', lang))
 
   return (

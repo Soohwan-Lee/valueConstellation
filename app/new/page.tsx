@@ -7,7 +7,7 @@ import { Composer } from '@/components/Composer'
 import { useBilingual } from '@/components/Preferences'
 import { SiteHeader } from '@/components/SiteHeader'
 import { stageTranscript } from '@/lib/handoff'
-import { NEW_PAGE } from '@/lib/landing'
+import { NEW_PAGE, WORKS_BEST } from '@/lib/landing'
 
 /**
  * Pasting a transcript, on its own page.
@@ -67,6 +67,26 @@ export default function NewMap() {
         <p className="mt-4 text-[12.5px] leading-[1.7] text-[var(--muted)]">
           {say(NEW_PAGE.waitNote)} {say(NEW_PAGE.privacy)}
         </p>
+
+        {/* Before the paste, not after the analysis. The map already says when
+            it cannot tell participants apart and why, but it says so half a
+            minute and one API call after the reader could have acted on it. */}
+        <section className="mt-8 rounded-[14px] border border-[var(--line)] p-6">
+          <h2 className="t-title text-[1.05rem]">{say(WORKS_BEST.heading)}</h2>
+          <ul className="mt-4 space-y-3.5">
+            {WORKS_BEST.items.map((item) => (
+              <li key={item.en} className="flex gap-3">
+                <span
+                  aria-hidden
+                  className="mt-[0.6rem] h-px w-4 shrink-0 bg-[var(--line-strong)]"
+                />
+                <span className="text-[13.5px] leading-[1.7] text-[var(--body)]">
+                  {say(item)}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
       </main>
     </div>
   )
