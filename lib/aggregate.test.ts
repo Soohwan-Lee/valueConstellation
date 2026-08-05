@@ -4,6 +4,7 @@ import assert from 'node:assert/strict'
 import { applyPca, classicalMds, fitPca } from './project.ts'
 import {
   aggregateAndProject,
+  attributionVerdict,
   centroid,
   covarianceEllipse,
   MIN_STATEMENTS_FOR_ATTRIBUTION,
@@ -389,4 +390,83 @@ test('degenerate input returns empty rather than throwing', () => {
     method: 'pca',
   })
   assert.ok(identical.speakers.every((s) => Number.isFinite(s.x)))
+})
+
+test('two speakers can reach a clear verdict', () => {
+  // With two participants chance is 50%, so "twice chance" is a perfect score
+  // and `strong` was unreachable however cleanly the meeting split. Observed
+  // on the `drift` example: 87% against 50%, two people arguing from two
+  // different kinds of reason for the whole meeting, reported as weak.
+  const enough = MIN_STATEMENTS_FOR_ATTRIBUTION
+  assert.equal(
+    attributionVerdict({
+      correct: 87,
+      total: 100,
+      share: 0.87,
+      chance: 0.5,
+      perSpeaker: enough,
+    }),
+    'strong',
+  )
+  // Still graded, though: a coin toss with two speakers is not a finding.
+  assert.equal(
+    attributionVerdict({
+      correct: 55,
+      total: 100,
+      share: 0.55,
+      chance: 0.5,
+      perSpeaker: enough,
+    }),
+    'none',
+  )
+  // And the doubling rule survives where doubling is attainable: four
+  // participants, 60% against 25%, is the shape the method exists for.
+  assert.equal(
+    attributionVerdict({
+      correct: 60,
+      total: 100,
+      share: 0.6,
+      chance: 0.25,
+      perSpeaker: enough,
+    }),
+    'strong',
+  )
+  assert.equal(
+    attributionVerdict({
+      correct: 5,
+      total: 100,
+      share: 0.05,
+      chance: 0.33,
+      perSpeaker: enough,
+    }),
+    'none',
+  )
+})
+
+test('a good score outranks a thin transcript, a bad one does not', () => {
+  const thin = MIN_STATEMENTS_FOR_ATTRIBUTION - 1
+  // Whether these people differ is established; that the meeting was short
+  // does not unestablish it.
+  assert.equal(
+    attributionVerdict({
+      correct: 90,
+      total: 100,
+      share: 0.9,
+      chance: 0.25,
+      perSpeaker: thin,
+    }),
+    'strong',
+  )
+  // A failure on this little material says nothing about the meeting, so it is
+  // reported as too little material rather than as an unfocused agenda.
+  assert.equal(
+    attributionVerdict({
+      correct: 11,
+      total: 100,
+      share: 0.11,
+      chance: 0.33,
+      perSpeaker: thin,
+    }),
+    'thin',
+  )
 })

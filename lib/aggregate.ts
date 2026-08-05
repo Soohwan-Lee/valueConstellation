@@ -275,6 +275,46 @@ export interface Attribution {
 export const MIN_STATEMENTS_FOR_ATTRIBUTION = 6
 
 /**
+ * Where an attribution figure falls, in words rather than in a number.
+ *
+ * Lives here rather than beside the component that renders it, for the reason
+ * every other diagnostic does: this is a judgement about the meeting, and the
+ * fixture builder, the example cards and the studio must all reach the same
+ * one. They used to hold two copies of it.
+ *
+ * Graded against chance, because chance depends on how many people are in the
+ * room: 50% is excellent with four participants and a coin toss with two.
+ *
+ * `strong` was twice chance, which is unreachable the moment there are only two
+ * speakers — twice 50% is a perfect score, so a two-person meeting could never
+ * be called well separated however cleanly it split. The bar is the lower of
+ * twice chance and halfway from chance to perfect, so the doubling rule still
+ * applies wherever doubling is attainable and gives way to "closes half the
+ * distance to a perfect score" where it is not. Measured on the built-in
+ * examples: 87% against 50% chance is two people arguing from two different
+ * kinds of reason throughout, and reading that as "구분은 되지만 뚜렷하지
+ * 않습니다" was wrong about it.
+ */
+export function attributionVerdict(
+  attribution: Attribution | null,
+): 'none' | 'weak' | 'strong' | 'thin' | null {
+  if (!attribution) return null
+  const { share, chance, perSpeaker } = attribution
+
+  const clear = Math.min(chance * 2, (1 + chance) / 2)
+
+  // A good score survives a thin transcript, so it is still worth saying. A bad
+  // one does not distinguish "these people did not differ" from "there was not
+  // enough of them to tell", and the failure message for the first — you covered
+  // too many agenda items, narrow it down — is the wrong instruction for the
+  // second, whose meeting may have been perfectly focused and simply short.
+  if (share >= clear && share >= 0.55) return 'strong'
+  if (perSpeaker < MIN_STATEMENTS_FOR_ATTRIBUTION) return 'thin'
+  if (share > chance + 0.1) return 'weak'
+  return 'none'
+}
+
+/**
  * How often a statement is nearest to the centre of the person who said it.
  *
  * The trust figure a reader can actually hold. Separation is a ratio of two

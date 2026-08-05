@@ -182,10 +182,10 @@ export const GROUPS: Group[] = [
     entries: [
       {
         term: { ko: '누가 말했는지 맞히기', en: 'Who-said-it accuracy' },
-        value: '2× chance · 55%',
+        value: 'min(2× chance, halfway to 100%) · 55%',
         body: {
-          ko: '지도 아래에 적히는 신뢰 수치입니다. 발언 하나를 빼고 나머지로 각 사람의 중심을 다시 구한 뒤, 뺀 발언이 실제 발언자의 중심에 가장 가까운지 봅니다. 전 발언에 대해 반복해 맞힌 비율을 냅니다. 우연히 맞을 확률(참여자가 넷이면 25%)을 함께 적는 이유는, 같은 50%라도 참여자가 넷이면 좋은 값이고 둘이면 동전 던지기와 같기 때문입니다. 우연의 2배이면서 55% 이상이면 “잘 구분한다”, 우연 + 10%p를 넘으면 “구분은 된다”, 그 아래면 “구분하지 못한다”고 적습니다.',
-          en: 'The trust figure printed under the map. Leave one statement out, recompute every centroid from the rest, and check whether the held-out statement is nearest the person who said it; repeat for all of them. Chance is printed beside it — with four participants that is 25% — because 50% is strong with four and a coin toss with two. Twice chance and at least 55% reads as telling them apart clearly; more than chance plus 10 points reads as weakly; below that, as not at all.',
+          ko: '지도 아래에 적히는 신뢰 수치입니다. 발언 하나를 빼고 나머지로 각 사람의 중심을 다시 구한 뒤, 뺀 발언이 실제 발언자의 중심에 가장 가까운지 봅니다. 전 발언에 대해 반복해 맞힌 비율을 냅니다. 우연히 맞을 확률(참여자가 넷이면 25%)을 함께 적는 이유는, 같은 50%라도 참여자가 넷이면 좋은 값이고 둘이면 동전 던지기와 같기 때문입니다. 기준선은 “우연의 2배”와 “우연에서 100% 사이의 절반” 중 낮은 쪽입니다 — 참여자가 둘이면 우연이 50%라 2배가 만점이 되어, 아무리 깨끗하게 갈린 회의도 “잘 구분한다”에 닿을 수 없었기 때문입니다. 이 기준선을 넘으면서 55% 이상이면 “잘 구분한다”, 우연 + 10%p를 넘으면 “구분은 된다”, 그 아래면 “구분하지 못한다”고 적습니다.',
+          en: 'The trust figure printed under the map. Leave one statement out, recompute every centroid from the rest, and check whether the held-out statement is nearest the person who said it; repeat for all of them. Chance is printed beside it — with four participants that is 25% — because 50% is strong with four and a coin toss with two. The bar is the lower of twice chance and halfway from chance to a perfect score: with two participants chance is 50%, so doubling it is perfection and no two-person meeting could ever be called well separated however cleanly it split. Clearing that bar with at least 55% reads as telling them apart; more than chance plus 10 points reads as weakly; below that, as not at all.',
         },
       },
       {

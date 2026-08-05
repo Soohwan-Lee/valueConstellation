@@ -23,6 +23,7 @@ import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import { requireOpenAiKey } from './env.ts'
+import { attributionVerdict } from '../lib/aggregate.ts'
 import { analyzeTranscript, type AnalysisWithDiagnostics } from '../lib/analyze.ts'
 import { SCENARIOS } from '../data/scenarios.ts'
 
@@ -79,13 +80,19 @@ function report(id: string, result: AnalysisWithDiagnostics) {
   // layout, so they are printed once rather than per method.
   const a = result.projections.people.meta.attribution
   const separation = result.projections.people.meta.separation
-  const verdict = !a
-    ? ''
-    : a.share >= a.chance * 2 && a.share >= 0.55
+  // The same call the interface makes. This used to be a second copy of the
+  // rule, which is one place for the printed report to disagree with the card
+  // the reader will see.
+  const called = attributionVerdict(a)
+  const verdict =
+    called === null
       ? ''
-      : a.share > a.chance + 0.1
-        ? ' ← weak'
-        : ' ← does not tell them apart'
+      : {
+          strong: '',
+          weak: ' ← weak',
+          none: ' ← does not tell them apart',
+          thin: ' ← too few statements to judge',
+        }[called]
   console.log(
     `  attribution ${a ? `${(a.share * 100).toFixed(0)}%` : '—'}` +
       ` (chance ${a ? `${(a.chance * 100).toFixed(0)}%` : '—'})` +
