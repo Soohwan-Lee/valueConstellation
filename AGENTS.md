@@ -47,7 +47,14 @@ Node 22.6+ is required for native type stripping. `OPENAI_API_KEY` goes in
   implementation would be wrong. Do not narrate what the code already says.
 - Interface strings belong in `lib/i18n.ts`, in both languages, `title` hints
   included. Transcript content is never translated.
+- Every figure on screen gets a plain-language name and one line saying how to
+  read it, and the verdict is stated before the arithmetic behind it.
 - The mono face carries no Hangul: use it for digits and Latin identifiers only.
+  That applies inside a value too — put `readout` on the digits, not on a string
+  that may contain a participant's name.
+- 12px is the smallest text on either page. Glyph marks — a disclosure
+  triangle, an axis arrow — may be smaller; anything a reader has to read may
+  not.
 - Colour is reserved for speaker identity. Chrome is ink on paper.
 
 ## Testing

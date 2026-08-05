@@ -34,7 +34,9 @@ archive/                  frozen v1 Python value-vector pipeline — do not exte
 The two pages have different jobs and different rules. The overview explains and
 is read once; the studio works and is used for an hour. Display type, scroll
 reveals and long prose belong on the overview only — the studio's four sizes
-between 11 and 15px are correct for a dense working surface.
+between 12 and 15px are correct for a dense working surface. Twelve is the
+floor on both pages: 11px of Hangul costs more to read than the control it
+labels saves.
 
 `lib/` is deliberately free of React and of anything Node-only, so the same
 modules run in the browser, in the API route, in the test runner, and in the hero
@@ -75,6 +77,15 @@ the speakers apart, so measuring "the speakers are far apart" on its output woul
 be circular; it read more than twice as high when it was measured there. Any new
 diagnostic goes in `lib/aggregate.ts` alongside these, not in a component with
 access to coordinates.
+
+**A figure needs a name and a sentence.** Every number on screen is shown with
+a plain-language label and one line saying how to read it, and the reader gets
+the verdict before the arithmetic that produced it. Three coinages and four bare
+numbers under a map — `발언 되찾기 64% / 25%` — is not transparency; it is noise
+in the shape of transparency. Distances lead with a phrase and follow with the
+ratio, never the other way round. Where a threshold decides what the sentence
+says, that decision lives in `lib/aggregate.ts` with the metric, not in the
+component that renders it and not copied into `scripts/`.
 
 **A summary must be checkable.** Per-speaker summaries come from the transcript,
 never from the coordinates, so they read the same under every layout. They carry

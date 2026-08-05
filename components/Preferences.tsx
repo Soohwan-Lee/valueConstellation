@@ -130,7 +130,7 @@ export function LangSwitch() {
           type="button"
           onClick={() => setLang(option)}
           aria-pressed={lang === option}
-          className="readout relative z-10 w-[46px] rounded-full py-1 text-[10.5px] font-medium tracking-[0.12em] transition-colors"
+          className="readout relative z-10 w-[46px] rounded-full py-1 text-[11.5px] font-medium tracking-[0.12em] transition-colors"
           style={{
             color: lang === option ? 'var(--on-signal)' : 'var(--muted)',
           }}

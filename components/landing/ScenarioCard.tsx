@@ -135,7 +135,7 @@ export function ScenarioCard({
                 x={toX(s.x)}
                 y={toY(s.y) - 11}
                 textAnchor="middle"
-                className="text-[9.5px] font-medium"
+                className="text-[11px] font-medium"
                 fill="var(--body)"
                 stroke="var(--plate)"
                 strokeWidth={2.5}

@@ -95,7 +95,7 @@ export function ParticipantList({
                   </span>
                   {s.underdetermined && (
                     <span
-                      className="readout shrink-0 text-[10px] text-[var(--muted)]"
+                      className="readout shrink-0 text-[12px] text-[var(--muted)]"
                       title={tf('underdeterminedHint', lang, {
                         n: s.n,
                         s: s.n === 1 ? '' : 's',
