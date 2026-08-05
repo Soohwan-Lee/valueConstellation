@@ -179,8 +179,6 @@ export const STRINGS = {
     ko: '발언 내용을 읽어 정리한 요약입니다. 지도 좌표가 아니라 실제 발언에서 나왔으므로, 배치를 바꿔도 이 요약은 그대로입니다. 아래 “근거” 표시가 붙은 발언이 근거입니다.',
     en: 'Read from what this person said, not from where they sit — switch the layout and this summary does not change. The statements marked “Basis” below are what it rests on.',
   },
-  mapped: { ko: '지도에 표시', en: 'Mapped' },
-  assentProcedural: { ko: '단순 동의 / 진행 발언', en: 'Assent / procedural' },
   offsetLabel: { ko: '이 사람 중심에서', en: 'From their centre' },
   nearestLabel: { ko: '가장 가까운 사람', en: 'Closest to' },
   spreadLabel: { ko: '퍼짐', en: 'Spread' },
@@ -196,41 +194,84 @@ export const STRINGS = {
     ko: '지도에 표시되지 않음 (실질 발언 없음)',
     en: 'Not placed (no substantive statements)',
   },
-  // How much to trust this map, in the order a reader needs it: does it tell
-  // these people apart at all, and then how much detail the flattening cost.
+  // How much to trust this map.
+  //
+  // A verdict is a headline plus one sentence, in that order and in that
+  // weight. These four sentences used to be the whole of it, each opening on
+  // its own arithmetic — "hand this map 100 statements with the names removed
+  // and 64 of them land nearest the person who actually said them" — so a
+  // reader had to finish a clause about a procedure they had not asked about
+  // before reaching the answer. The headline says whether to believe the map;
+  // the sentence says how that was established, for whoever wants it.
+  verdictStrongHead: {
+    ko: '이 지도는 참여자를 잘 구분합니다',
+    en: 'This map tells the participants apart',
+  },
   verdictStrong: {
-    ko: '이름을 가린 발언 100개를 이 지도 위에 놓으면 {pct}개는 실제 발언자에게 돌아갑니다. 아무렇게나 찍으면 {chance}개입니다.',
-    en: 'Hand this map 100 statements with the names removed and {pct} of them land nearest the person who actually said them. Guessing would get {chance}.',
+    ko: '발언에서 이름을 지우고 “누가 한 말인지” 지도에 물어보면 100개 중 {pct}개를 맞힙니다. 찍으면 {chance}개입니다.',
+    en: 'Take the names off the statements and ask the map who said each one: it gets {pct} of 100 right, where guessing gets {chance}.',
+  },
+  verdictWeakHead: {
+    ko: '구분은 되지만 뚜렷하지 않습니다',
+    en: 'It tells them apart, but only just',
   },
   verdictWeak: {
-    ko: '이름을 가린 발언 100개 중 {pct}개가 실제 발언자에게 돌아갑니다. 아무렇게나 찍으면 {chance}개이니 우연보다는 낫지만, 크게 낫지는 않습니다 — 각자 자기 이야기를 하면서도 서로 비슷한 말을 많이 했다는 뜻입니다.',
-    en: 'Of 100 statements with the names removed, {pct} land nearest the person who said them, against {chance} for guessing. Better than chance, but not by much — they said a lot of similar things alongside their own.',
+    ko: '이름을 지운 발언 100개 중 {pct}개를 맞힙니다 — 찍었을 때의 {chance}개보다 낫지만 크게 낫지는 않습니다. 각자 자기 이야기를 하면서도 서로 비슷한 말을 많이 했다는 뜻입니다.',
+    en: 'With the names removed it gets {pct} of 100 right, against {chance} for guessing — better, but not by much. They said a lot of similar things alongside their own.',
+  },
+  verdictNoneHead: {
+    ko: '이 지도는 참여자를 구분하지 못합니다',
+    en: 'This map cannot tell the participants apart',
   },
   verdictNone: {
-    ko: '이 지도는 참여자를 구분하지 못합니다. 이름을 가린 발언 100개 중 {pct}개만 실제 발언자에게 돌아가는데, 아무렇게나 찍어도 {chance}개입니다. 대개 한 회의에서 여러 안건을 함께 다룬 경우로, 안건이 바뀔 때마다 발언이 딴 곳으로 튀어 평균이 모두 가운데로 모입니다 — 쟁점 하나로 좁혀서 다시 만들어 보세요.',
-    en: 'This map cannot tell the participants apart. Of 100 statements with the names removed only {pct} land nearest the person who said them, and guessing would get {chance}. That usually means one meeting covered several agenda items: every change of topic throws a person’s statements somewhere else and every average lands in the middle. Narrow it to one question and try again.',
+    ko: '이름을 지운 발언 100개 중 {pct}개만 맞히는데, 찍어도 {chance}개는 맞습니다. 대개 한 회의에서 여러 안건을 함께 다룬 경우입니다 — 안건이 바뀔 때마다 그 사람의 발언이 딴 자리로 튀고, 그것을 평균 내면 모두가 가운데로 모입니다. 쟁점 하나로 좁혀서 다시 만들어 보세요.',
+    en: 'With the names removed it gets only {pct} of 100 right, and guessing gets {chance}. That usually means one meeting covered several agenda items: each change of topic throws a person’s statements somewhere else, and averaging those lands everybody in the middle. Narrow it to one question and run it again.',
   },
   agendaLabel: { ko: '안건', en: 'Agenda' },
   cardPeople: { ko: '{n}명', en: '{n} people' },
   cardStatements: { ko: '발언 {n}개', en: '{n} statements' },
   cardWorks: { ko: '구분됨', en: 'Tells them apart' },
   cardFails: { ko: '구분 실패', en: 'Cannot tell them apart' },
-  verdictThin: {
-    ko: '이 회의는 판정을 내리기에 발언이 적습니다. 한 사람당 중앙값 {n}개로, {min}개는 있어야 합니다. 지도는 그대로 읽으셔도 되지만, 참여자가 실제로 갈렸는지 여부는 이 자료만으로 말할 수 없습니다 — 회의가 산만했다는 뜻이 아니라 짧았다는 뜻입니다.',
-    en: 'There are too few statements here to reach a verdict: {n} per person at the median, where {min} is the minimum. The map is still worth reading, but whether these people genuinely differ is not something this much material can settle — which says the meeting was short, not that it was unfocused.',
+  verdictThinHead: {
+    ko: '판정하기에는 발언이 적습니다',
+    en: 'Too little was said to judge',
   },
-  attributionTerm: { ko: '발언 되찾기', en: 'Statements traced back' },
-  separationTerm: { ko: '사람 구분 정도', en: 'Separation' },
+  verdictThin: {
+    ko: '한 사람당 {n}개(중앙값)로, 판정하려면 {min}개는 있어야 합니다. 지도는 그대로 읽으셔도 되지만, 참여자가 실제로 갈렸는지는 이 분량으로 말할 수 없습니다 — 회의가 산만했다는 뜻이 아니라 짧았다는 뜻입니다.',
+    en: '{n} statements per person at the median, where {min} is the minimum. The map is still worth reading, but whether these people genuinely differ is not something this much material can settle — the meeting was short, not unfocused.',
+  },
 
+  // The figures themselves, behind one click, each with the sentence that makes
+  // it readable. They used to sit open in a row — "발언 되찾기 64% / 25%,
+  // 사람 구분 정도 1.04, 평면에 남은 정도 17%" — three coinages and four bare
+  // numbers under a map somebody was still working out how to read. A number
+  // nobody can interpret is not transparency; it is noise that looks like
+  // transparency.
+  trustTitle: { ko: '이 숫자들은 무슨 뜻인가요', en: 'What these numbers mean' },
+  attributionTerm: { ko: '누가 말했는지 맞히기', en: 'Who-said-it accuracy' },
+  attributionHelp: {
+    ko: '이름을 지운 발언 하나를 지도에서 가장 가까운 사람에게 돌려줬을 때 맞은 비율입니다. 괄호 안은 찍었을 때의 확률이고, 두 숫자의 차이가 지도가 실제로 알아낸 몫입니다.',
+    en: 'Take one statement, remove its name, and give it to whoever’s centre is nearest: this is how often that is the right person. In brackets is what guessing would get, and the gap between the two is what the map actually knows.',
+  },
+  separationTerm: { ko: '서로 떨어진 정도', en: 'Apart vs. spread' },
+  separationHelp: {
+    ko: '두 사람 중심 사이의 평균 거리를, 각자의 발언이 퍼진 평균 폭으로 나눈 값입니다. 1보다 크면 사람 사이 간격이 각자의 폭보다 넓고, 1보다 작으면 서로 겹칩니다.',
+    en: 'The average gap between two people’s centres divided by how widely each of them ranged. Above 1 they stand further apart than they are wide; below 1 they overlap.',
+  },
+  keptTerm: { ko: '화면에 옮긴 정도', en: 'Carried onto the screen' },
   keptPeople: {
-    ko: '참여자들 사이의 차이 중 {pct}%가 이 평면에 남았습니다. 이 배치는 사람을 갈라 보이게 하려고 고른 것이라 이 수치는 높게 나옵니다 — 실제로 갈라져 있는지는 위의 “사람 구분 정도”가 답합니다.',
-    en: '{pct}% of the differences between the participants survived the flattening. This layout was chosen to show them apart, so the figure runs high — whether they really are apart is what the separation figure above answers.',
+    ko: '참여자들이 서로 갈리는 정도 중 {pct}%를 이 화면에 옮겼습니다. 사람을 갈라 보이게 하려고 고른 배치라 이 수치는 원래 높게 나옵니다 — 실제로 갈렸는지는 위의 판정이 답합니다.',
+    en: 'This layout carried {pct}% of what separates the participants onto the screen. It was chosen to show them apart, so the figure runs high by construction — whether they really are apart is what the verdict above answers.',
   },
   keptPlain: {
-    ko: '발언들의 차이는 원래 훨씬 여러 방향으로 나 있고, 그중 {pct}%가 이 평면에 남았습니다. 회의 전체를 담으려는 배치라 이 수치는 보통 10~25%로 낮게 나옵니다 — 대부분이 누가 말했는지가 아니라 무슨 주제였는지에 대한 차이이기 때문입니다.',
-    en: 'Differences between statements run in many more directions than two, and {pct}% of that survived. A layout that tries to hold the whole discussion usually lands between 10 and 25%, because most of what it is holding is topic rather than who was speaking.',
+    ko: '발언의 차이는 두 방향보다 훨씬 많은 방향으로 나 있고, 그중 {pct}%를 이 화면에 옮겼습니다. 회의 전체를 담으려는 배치라 보통 10~25%에 그치는데, 화면에 못 담긴 대부분은 누가 말했는지가 아니라 무슨 주제였는지의 차이입니다.',
+    en: 'Statements differ in far more than two directions, and this layout carried {pct}% of that onto the screen. A layout holding the whole discussion usually lands between 10 and 25%, and most of what it leaves behind is topic rather than person.',
   },
-  keptTerm: { ko: '평면에 남은 정도', en: 'Detail kept' },
+  mappedTerm: { ko: '지도에 올린 발언', en: 'Statements mapped' },
+  mappedHelp: {
+    ko: '주장만 지도에 올립니다. 단순 동의 {a}개와 “다음 안건으로 넘어가겠습니다” 같은 진행 발언 {p}개는 입장이 담겨 있지 않아 자리를 흐리므로 뺐습니다.',
+    en: 'Only statements that carry a position are placed. {a} bare agreements and {p} procedural lines (“let us move to the next item”) say nothing about where somebody stands and would blur the ones that do, so they are left off.',
+  },
   keptFitSaturated: {
     ko: '참여자가 {n}명뿐이라 이 수치는 의미가 없습니다 — 점 세 개는 어떤 평면에도 정확히 들어맞습니다.',
     en: 'With only {n} participants this figure means nothing: three points fit a plane exactly.',

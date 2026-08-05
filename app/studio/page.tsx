@@ -510,28 +510,20 @@ export default function Studio() {
               {/* Caveats sit under the map rather than behind a disclosure:
                   what the projection failed to capture has to be readable
                   without first suspecting that something is wrong. */}
-              <footer className="space-y-2 border-t border-[var(--line)] px-4 py-3">
+              {/* The statement counts used to sit here as a second row —
+                  "지도에 표시 25 / 단순 동의 · 진행 발언 0 · 3" — four numbers
+                  with no unit and one label doing double duty. They are facts
+                  about how the map was built, which is what the disclosure
+                  inside the notice is for, so that is where they went. */}
+              <footer className="border-t border-[var(--line)] px-4 py-3">
                 <ProjectionNotice
                   projection={projection}
                   droppedSpeakers={analysis?.droppedSpeakers ?? []}
+                  counts={
+                    analysis?.counts ?? { agreement: 0, procedural: 0 }
+                  }
                   lang={lang}
                 />
-                <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11.5px] text-[var(--muted)]">
-                  <span>
-                    {t('mapped', lang)}{' '}
-                    <span className="readout text-[var(--body)]">
-                      {projection.utterances.length}
-                    </span>
-                  </span>
-                  <span className="text-[var(--faint)]">/</span>
-                  <span>
-                    {t('assentProcedural', lang)}{' '}
-                    <span className="readout text-[var(--body)]">
-                      {analysis ? analysis.counts.agreement : 0} ·{' '}
-                      {analysis ? analysis.counts.procedural : 0}
-                    </span>
-                  </span>
-                </div>
               </footer>
             </>
           ) : (

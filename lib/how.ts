@@ -172,7 +172,7 @@ export const GROUPS: Group[] = [
     title: { ko: '판단에 쓰이는 기준값', en: 'Thresholds the tool judges on' },
     entries: [
       {
-        term: { ko: '발언 되찾기', en: 'Statements traced back' },
+        term: { ko: '누가 말했는지 맞히기', en: 'Who-said-it accuracy' },
         value: '2× chance · 55%',
         body: {
           ko: '지도 아래에 적히는 신뢰 수치입니다. 발언 하나를 빼고 나머지로 각 사람의 중심을 다시 구한 뒤, 뺀 발언이 실제 발언자의 중심에 가장 가까운지 봅니다. 전 발언에 대해 반복해 맞힌 비율을 냅니다. 우연히 맞을 확률(참여자가 넷이면 25%)을 함께 적는 이유는, 같은 50%라도 참여자가 넷이면 좋은 값이고 둘이면 동전 던지기와 같기 때문입니다. 우연의 2배이면서 55% 이상이면 “잘 구분한다”, 우연 + 10%p를 넘으면 “구분은 된다”, 그 아래면 “구분하지 못한다”고 적습니다.',
@@ -183,15 +183,15 @@ export const GROUPS: Group[] = [
         term: { ko: '어디에서 재는가', en: 'Where it is measured' },
         value: 'embedding space',
         body: {
-          ko: '되찾기 비율도, 사람 구분 정도도 평면 좌표가 아니라 펼치기 전 원래 공간에서 잽니다. 기본 배치는 사람들을 최대한 갈라 놓도록 맞춰진 것이라, 그 그림 위에서 “사람들이 잘 갈라져 있다”고 재면 자기 채점이 됩니다. 실제로 평면에서 재던 때는 값이 두 배 넘게 부풀어 있었습니다. 세 배치가 같은 수치를 내는지 테스트로 고정해 두었습니다.',
+          ko: '맞히기 비율도, 서로 떨어진 정도도 평면 좌표가 아니라 펼치기 전 원래 공간에서 잽니다. 기본 배치는 사람들을 최대한 갈라 놓도록 맞춰진 것이라, 그 그림 위에서 “사람들이 잘 갈라져 있다”고 재면 자기 채점이 됩니다. 실제로 평면에서 재던 때는 값이 두 배 넘게 부풀어 있었습니다. 세 배치가 같은 수치를 내는지 테스트로 고정해 두었습니다.',
           en: 'Both figures are computed in the original space, never on the projected coordinates. The default layout is fitted to push the speakers apart, so measuring "the speakers are far apart" on that picture would be grading its own homework — when it was measured on the projection, the figure came out more than twice as high. A test pins all three layouts to identical numbers.',
         },
       },
       {
-        term: { ko: '사람 구분 정도', en: 'Separation' },
+        term: { ko: '서로 떨어진 정도', en: 'Apart vs. spread' },
         value: MIN_USEFUL_SEPARATION.toFixed(1),
         body: {
-          ko: '사람 사이 평균 거리를 각자 발언이 퍼진 정도로 나눈 값으로, 상세 수치로만 함께 표시합니다. 1 미만이면 각자의 발언이 사람 사이 거리보다 더 넓게 퍼져 있다는 뜻입니다. 위쪽에 한계가 없어서 “얼마면 충분한가”에 답하지 못하기 때문에, 화면에서 판단을 내리는 자리는 되찾기 비율이 대신합니다.',
+          ko: '사람 사이 평균 거리를 각자 발언이 퍼진 정도로 나눈 값으로, 상세 수치로만 함께 표시합니다. 1 미만이면 각자의 발언이 사람 사이 거리보다 더 넓게 퍼져 있다는 뜻입니다. 위쪽에 한계가 없어서 “얼마면 충분한가”에 답하지 못하기 때문에, 화면에서 판단을 내리는 자리는 맞히기 비율이 대신합니다.',
           en: 'Mean between-speaker distance over mean within-speaker spread, shown as a secondary readout. Below 1, each person’s statements scatter wider than the people sit apart. It has no upper bound and so cannot answer "is this enough", which is why the verdict on screen is made on attribution instead.',
         },
       },
@@ -199,7 +199,7 @@ export const GROUPS: Group[] = [
         term: { ko: '판정을 보류하는 지점', en: 'Where it declines to judge' },
         value: `< ${MIN_STATEMENTS_FOR_ATTRIBUTION} per speaker`,
         body: {
-          ko: '한 사람당 발언 중앙값이 6개 미만이면 되찾기 비율로 판정하지 않고 발언 수를 대신 알립니다. 하나를 빼고 다시 재는 방식이라, 발언이 세 개뿐이면 뺀 하나가 그 사람의 중심을 자기 퍼짐의 절반만큼 밀어냅니다 — 회의와 무관한 이유로 점수가 무너집니다. 실제로 한 안건만 다룬 9발언 회의에서 되찾기는 11%(우연 33%)로 나왔지만 사람 구분 정도는 1.30이었습니다. 이때 “안건을 좁히세요”라고 안내하면 틀린 처방입니다. 그 회의는 산만한 게 아니라 짧았습니다.',
+          ko: '한 사람당 발언 중앙값이 6개 미만이면 맞히기 비율로 판정하지 않고 발언 수를 대신 알립니다. 하나를 빼고 다시 재는 방식이라, 발언이 세 개뿐이면 뺀 하나가 그 사람의 중심을 자기 퍼짐의 절반만큼 밀어냅니다 — 회의와 무관한 이유로 점수가 무너집니다. 실제로 한 안건만 다룬 9발언 회의에서 맞히기는 11%(우연 33%)로 나왔지만 서로 떨어진 정도는 1.30이었습니다. 이때 “안건을 좁히세요”라고 안내하면 틀린 처방입니다. 그 회의는 산만한 게 아니라 짧았습니다.',
           en: 'Below a median of six statements per speaker the tool reports the count instead of a verdict. Leave-one-out removes 1/(n−1) of what builds a centroid, so at three statements the held-out point shifts its own speaker’s centre by half that speaker’s spread and the score collapses for reasons unrelated to the meeting. Measured: a 9-statement transcript on a single agenda item scored 11% against 33% chance while separation read 1.30. Telling that reader to narrow their agenda would be the wrong instruction — their meeting was short, not unfocused.',
         },
       },
@@ -215,7 +215,7 @@ export const GROUPS: Group[] = [
         term: { ko: '수치가 무의미해지는 지점', en: 'Where the figure stops meaning anything' },
         value: '< 6 statements',
         body: {
-          ko: '발언이 6개 미만이면 “평면에 남은 정도”는 어떤 값이든 근거가 아닙니다. 점이 몇 개 없으면 어떤 평면에도 거의 그대로 들어맞기 때문입니다. 이 경우 지도가 먼저 그렇다고 말합니다.',
+          ko: '발언이 6개 미만이면 “화면에 옮긴 정도”는 어떤 값이든 근거가 아닙니다. 점이 몇 개 없으면 어떤 평면에도 거의 그대로 들어맞기 때문입니다. 이 경우 지도가 먼저 그렇다고 말합니다.',
           en: 'Below six statements the kept-detail figure is arithmetic, not evidence — a handful of points fits almost any plane exactly — and the map says so before showing it.',
         },
       },
