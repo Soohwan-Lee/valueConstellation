@@ -166,7 +166,7 @@ pipeline; none is a picture drawn in advance. Rebuild with `npm run fixtures`.
 | One question, four different conversations | Ship next week, or push the date | 24 | **63%** | 25% | Four grounds, wide spread, no clustering — and two regions that come apart where somebody changed their kind of reason |
 | Everyone said yes to a different holiday | Whether to go to Jeju this summer | 23 | **87%** | 33% | A unanimous yes hiding three incompatible holidays |
 | Two people, two worlds | Whether to get a dog | 28 | **86%** | 50% | The sharpest split of the four, from a room of two |
-| When the map fails | Cleaning rota, parking and thermostat at once | 21 | **33%** | 33% | Three subjects; every average collapses to the middle and the regions scatter |
+| When the map fails | Cleaning rota, parking and thermostat at once | 23 | **26%** | 33% | Three subjects, no thread running through any one person; the map does worse than guessing |
 
 The situations are ordinary on purpose. They were four municipal council
 meetings — plant siting, a city hall rebuild, school-route safety, a combined
@@ -182,9 +182,25 @@ Ivan, Clara and eight more. An example is read rather than analysed, and a
 reader choosing between four maps should not also be holding four unfamiliar
 names in a script they may not read. Pasted transcripts keep their own names.
 
-The fourth is included **because** it fails, and it fails completely: 33% against
-33% chance is *exactly guessing*. A reader should meet that case here, where the
+The fourth is included **because** it fails, and it fails completely: 26% against
+33% chance is *worse than guessing*. A reader should meet that case here, where the
 map states it, rather than first on their own transcript.
+
+Making it fail took three attempts, and the reason is worth recording. Giving each
+speaker a consistent temperament across the three subjects — one always arguing
+fairness, one always practicality — is enough signal to identify them, so the map
+scored 39% and the fixture test rejected it for teaching nothing. A meeting only
+truly collapses when no thread runs through any one person: Lena worries about the
+big clean, then the width of the parking bays, then when to open the windows, and
+those three have nothing in common. That is what a real multi-item meeting does to
+a transcript, and it is what drops the score below chance.
+
+One caveat this example makes visible: the default **Spread the people apart**
+layout still draws these three some way apart, because it fits a plane to the
+speaker centroids and any three points lie in a plane exactly — which the interface
+already flags as arithmetic rather than evidence. The other two layouts show the
+overlap directly (gap-to-spread 0.93 and 0.97, both below 1). The example's
+"what to look for" text says so and names the layout to switch to.
 
 Writing them was itself the finding, twice over. The first draft of the consensus
 example could not tell its three speakers apart at all, because each had been given

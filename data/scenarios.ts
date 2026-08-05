@@ -87,8 +87,8 @@ export const SCENARIOS: Scenario[] = [
       en: 'split across deadline, quality, customers and burnout',
     },
     lookFor: {
-      ko: '네 사람이 지도 곳곳에 흩어집니다. 같은 회의에 앉아 사실은 서로 다른 네 가지 회의를 하고 있었다는 뜻입니다. 두 사람의 영역이 두 덩어리로 갈라져 있는데, 회의 도중 다른 근거로 옮겨간 자리입니다.',
-      en: 'Four people spread right across the map: one meeting that was really four. Two of the regions come apart into separate shapes, where that person moved to a different kind of reason mid-meeting.',
+      ko: '네 사람이 지도 곳곳에 흩어집니다. 같은 회의에 앉아 사실은 서로 다른 네 가지 회의를 하고 있었다는 뜻입니다. Dave의 영역만 두 덩어리로 갈라져 있는데, 약속한 날짜를 지키자는 이야기에서 결제만 우회하자는 이야기로 옮겨간 자리입니다.',
+      en: 'Four people spread right across the map: one meeting that was really four. Only Dave’s region comes apart into two shapes — where he moved from keeping the promised date to routing around the payment code instead.',
     },
     transcript: `진행: 다음 주 목요일 출시를 그대로 갈지 미룰지 오늘 정하겠습니다. 한 분씩 의견 주세요.
 Dave: 저는 예정대로 가야 한다고 봅니다. 이 날짜를 기준으로 마케팅 메일이 이미 나갔고, 영업팀이 고객사 세 곳에 목요일이라고 말해뒀습니다. 지금 미루면 그 약속을 저희가 깨는 겁니다.
@@ -226,37 +226,39 @@ Mia: 나도 알아. 나는 계산이 맞아야 그 마음이 오래간다고 보
       en: 'When the map fails',
     },
     teaser: {
-      ko: '상관없는 세 안건을 섞으니 모든 평균이 가운데로 모입니다',
-      en: 'three unrelated items mixed together, and every average collapses to the middle',
+      ko: '상관없는 세 안건을 섞으니 찍는 것보다 못하게 됩니다',
+      en: 'three unrelated items mixed together, and the map does worse than guessing',
     },
     lookFor: {
-      ko: '표식이 가운데로 몰리고, 지도가 스스로 "이 회의에서는 사람을 구분하지 못한다"고 알립니다. 영역도 서너 조각으로 흩어지는데, 안건이 바뀔 때마다 발언이 딴 곳으로 튀었다는 표시입니다. 회의 하나에 쟁점이 하나여야 하는 이유입니다.',
-      en: 'The markers pile into the middle and the map says outright that it cannot tell these people apart. The regions scatter into three or four pieces each — every change of subject threw that person’s statements somewhere else. This is why one map wants one question.',
+      ko: '지도 아래를 먼저 보세요. "이 지도는 참여자를 구분하지 못합니다"라고 적혀 있습니다 — 이름을 지운 발언을 돌려주면 100개 중 26개만 맞는데, 찍으면 33개가 맞습니다. 찍느니만 못하다는 뜻입니다. 그런데도 그림은 세 사람을 제법 떨어뜨려 그립니다. 이 배치가 사람을 갈라 보이게 하려고 고른 것이고, 참여자가 세 명이면 어떤 세 점이든 평면에 정확히 놓이기 때문입니다. 갈라 보이는 것과 실제로 갈린 것은 다릅니다 — “거리 그대로 보기”로 바꾸면 셋이 겹칩니다. 회의 하나에 쟁점이 하나여야 하는 이유입니다.',
+      en: 'Read under the map first: it says it cannot tell these people apart — 26 of 100 name-stripped statements go back to the right person, where guessing gets 33. It is doing worse than guessing. The picture still draws the three of them some way apart, because this layout was chosen to show people apart and any three points lie in a plane exactly. Drawn apart and actually apart are different things — switch to “Keep the distances true” and the three of them overlap. This is why one map wants one question.',
     },
     transcript: `진행: 오늘은 세 가지 한 번에 정하겠습니다. 청소 당번, 주차 자리, 에어컨 온도 순서로요.
-Ted: 청소는 요일제로 돌리는 게 맞다고 봅니다. 지금처럼 눈에 띄는 사람이 하면 결국 같은 사람만 계속 합니다.
-Lena: 저는 요일제 반대입니다. 사람마다 집에 있는 시간이 달라서, 제 요일에 제가 집에 없으면 그날은 그냥 안 되는 겁니다.
-Hugo: 저는 공간별로 나누는 게 낫다고 봅니다. 주방은 A, 화장실은 B, 거실은 C 이렇게요. 요일보다 책임이 분명합니다.
-Ted: 공간별로 하면 화장실 맡은 사람만 계속 손해입니다. 일의 양이 다릅니다.
-Lena: 그래서 저는 그때그때 더러운 걸 본 사람이 하고, 대신 한 달에 한 번 다 같이 대청소하는 게 현실적이라고 생각합니다.
-Hugo: 그건 지금 방식이고 지금이 안 되고 있어서 회의하는 겁니다.
+Ted: 청소는 요일제로 돌리는 게 맞다고 봅니다. 지금은 눈에 띄는 사람만 계속하게 됩니다.
+Lena: 저는 요일제면 제 요일에 집에 없는 날이 많아서 그날은 그냥 넘어갈 것 같습니다.
+Hugo: 저는 공간별로 나누는 게 낫다고 봅니다. 주방, 화장실, 거실을 하나씩 맡는 방식이요.
+Ted: 공간별로 하면 화장실 맡은 사람 일이 제일 많습니다. 그건 형평에 안 맞습니다.
+Lena: 그때그때 눈에 보이는 사람이 하고 한 달에 한 번 같이 대청소하는 게 현실적입니다.
+Hugo: 지금이 그 방식인데 안 되고 있어서 회의하는 겁니다. 담당을 적어 붙여야 합니다.
+Ted: 그럼 요일제로 하되 못 하는 날은 서로 바꾸는 걸로 하면 될 것 같습니다.
 진행: 청소는 여기까지 하고 주차 자리로 넘어가겠습니다.
-Lena: 주차는 차를 매일 쓰는 사람이 안쪽 자리를 쓰는 게 맞습니다. 저는 출퇴근에 매일 쓰는데 지금 제일 바깥입니다.
-Ted: 저는 먼저 계약한 순서대로 가야 한다고 봅니다. 저는 2년 전에 들어왔고 그때부터 그 자리였습니다.
-Hugo: 저는 석 달마다 자리를 돌리는 게 제일 공평하다고 봅니다. 어떤 기준을 잡아도 누군가는 손해라서요.
-Lena: 석 달마다 돌리면 짐 옮기는 게 일입니다. 저는 차에 짐을 두고 다녀서요.
-Ted: 순서대로가 제일 단순합니다. 새로 들어온 사람이 기다리는 건 어디나 그렇습니다.
-Hugo: 단순한 것과 공평한 건 다릅니다. 지금 기준은 그냥 먼저 온 사람이 계속 유리한 겁니다.
+Lena: 저는 주차선 폭이 좁아 문을 못 여는 게 제일 급하다고 봅니다. 옆 차에 자국이 납니다.
+Ted: 저는 눈 오는 날 지붕 있는 자리가 하나뿐인 게 문제라고 봅니다. 겨울에만 문제가 됩니다.
+Hugo: 저는 자전거 세울 데가 없어서 현관 앞에 두고 있습니다. 그 자리를 좀 만들었으면 합니다.
+Lena: 선을 다시 그으면 한 대가 더 들어갈 수도 있습니다. 지금 배치가 비효율적입니다.
+Ted: 지붕 자리는 겨울 석 달만 돌려 쓰면 될 것 같습니다. 여름엔 아무나 써도 됩니다.
+Hugo: 자전거 거치대는 밖에 두면 비를 맞아서, 처마 밑 공간이면 좋겠습니다.
+Lena: 폭을 재보면 십 센티만 넓혀도 문 여는 데는 충분합니다.
 진행: 마지막으로 에어컨 온도입니다.
-Ted: 저는 26도로 고정했으면 합니다. 지금 사람마다 만져서 하루에도 몇 번씩 바뀝니다.
-Hugo: 저는 24도 아니면 잠을 못 잡니다. 26도면 밤에 계속 깹니다.
-Lena: 저는 전기요금을 봤으면 합니다. 지난달에 십오만 원 나왔고 그 전 달보다 사만 원 늘었습니다.
-Ted: 고정하면 요금도 예측이 됩니다. 저는 26도 고정이 요금 문제도 같이 푼다고 봅니다.
-Hugo: 저는 밤에만 24도로 내리는 걸로 하면 어떨까 합니다. 낮에는 26도 괜찮습니다.
-Lena: 밤에 24도면 요금이 제일 많이 나오는 시간대입니다. 그게 지난달 증가분의 대부분일 겁니다.
-Ted: 그러면 밤 25도로 절충하는 건 어떻습니까.
-Hugo: 25도도 저는 좀 덥긴 한데 26도보다는 낫습니다.
-Lena: 저는 온도보다 창문 여는 시간을 정하는 게 더 효과가 클 것 같습니다. 지금 에어컨 켜놓고 창문 열어두는 날이 있습니다.
+Ted: 저는 밤에 더워서 잠을 설칩니다. 새벽 세 시쯤 깨는 날이 많습니다.
+Hugo: 저는 지난달 전기요금 십오만 원이 마음에 걸립니다. 사만 원이 늘었습니다.
+Lena: 저는 온도보다 창문을 언제 여는지가 더 크다고 봅니다. 켜놓고 열어두는 날이 있습니다.
+Ted: 저는 얇은 이불로 바꾸고 나서도 비슷했습니다. 체감이 사람마다 너무 다릅니다.
+Hugo: 요금은 밤 시간대가 제일 비쌉니다. 증가분 대부분이 거기서 나왔을 겁니다.
+Lena: 환기를 아침에 한 번 몰아서 하면 낮 동안 실내 온도가 덜 오릅니다.
+Ted: 저는 선풍기를 같이 쓰면 좀 나을까 싶어서 지난주에 하나 사봤습니다.
+Hugo: 계량기를 방마다 따로 볼 수 있으면 누가 얼마나 쓰는지는 알 수 있습니다.
+Lena: 커튼을 낮에 쳐두는 것만으로도 차이가 난다고 들었습니다.
 진행: 세 가지 다 결론이 안 났으니 각각 다음에 다시 얘기하겠습니다.`,
   },
 ]

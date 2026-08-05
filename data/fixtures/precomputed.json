@@ -3453,244 +3453,264 @@
           {
             "id": "u1",
             "speaker": "Ted",
-            "text": "청소는 요일제로 돌리는 게 맞다고 봅니다. 지금처럼 눈에 띄는 사람이 하면 결국 같은 사람만 계속 합니다.",
-            "textEn": "I think it is right to rotate cleaning by day of the week. If the noticeable person does it like now, in the end the same person keeps doing it.",
+            "text": "청소는 요일제로 돌리는 게 맞다고 봅니다. 지금은 눈에 띄는 사람만 계속하게 됩니다.",
+            "textEn": "I think rotating cleaning by day of the week is right. Right now, only the people who stand out keep doing it.",
             "kind": "claim",
             "index": 1,
-            "x": 0.0556815729740282,
-            "y": -0.29481315720511797
+            "x": 0.22328568161464504,
+            "y": 0.2061338412107515
           },
           {
             "id": "u2",
             "speaker": "Lena",
-            "text": "저는 요일제 반대입니다. 사람마다 집에 있는 시간이 달라서, 제 요일에 제가 집에 없으면 그날은 그냥 안 되는 겁니다.",
-            "textEn": "I am against a day-of-the-week system. Because each person has different times at home, if I am not home on my day, that day simply does not work.",
+            "text": "저는 요일제면 제 요일에 집에 없는 날이 많아서 그날은 그냥 넘어갈 것 같습니다.",
+            "textEn": "For me, if it is by day of the week, there are many days when I am not home on my day, so I think I would just skip that day.",
             "kind": "claim",
             "index": 2,
-            "x": 0.352714419270787,
-            "y": 0.06727375754485157
+            "x": 0.11384307854965935,
+            "y": -0.0087098758988501
           },
           {
             "id": "u3",
             "speaker": "Hugo",
-            "text": "저는 공간별로 나누는 게 낫다고 봅니다. 주방은 A, 화장실은 B, 거실은 C 이렇게요. 요일보다 책임이 분명합니다.",
-            "textEn": "I think dividing by area is better. The kitchen is A, the bathroom is B, the living room is C, like that. Responsibility is clearer than by day of the week.",
+            "text": "저는 공간별로 나누는 게 낫다고 봅니다. 주방, 화장실, 거실을 하나씩 맡는 방식이요.",
+            "textEn": "I think dividing it by space is better. The way of each person taking one of the kitchen, bathroom, and living room.",
             "kind": "claim",
             "index": 3,
-            "x": -0.11996927694206053,
-            "y": 0.1876858378403637
+            "x": -0.29562371960592915,
+            "y": 0.13596406881798068
           },
           {
             "id": "u4",
             "speaker": "Ted",
-            "text": "공간별로 하면 화장실 맡은 사람만 계속 손해입니다. 일의 양이 다릅니다.",
-            "textEn": "If it is by area, only the person in charge of the bathroom keeps taking the loss. The amount of work is different.",
+            "text": "공간별로 하면 화장실 맡은 사람 일이 제일 많습니다. 그건 형평에 안 맞습니다.",
+            "textEn": "If we do it by space, the person assigned the bathroom has the most work. That is not fair.",
             "kind": "claim",
             "index": 4,
-            "x": -0.21199981934421366,
-            "y": -0.24451428539764591
+            "x": -0.044979078224515794,
+            "y": 0.21244197359347414
           },
           {
             "id": "u5",
             "speaker": "Lena",
-            "text": "그래서 저는 그때그때 더러운 걸 본 사람이 하고, 대신 한 달에 한 번 다 같이 대청소하는 게 현실적이라고 생각합니다.",
-            "textEn": "So I think it is realistic for the person who sees something dirty to do it then and there, and instead for everyone to do a big cleaning together once a month.",
+            "text": "그때그때 눈에 보이는 사람이 하고 한 달에 한 번 같이 대청소하는 게 현실적입니다.",
+            "textEn": "It is realistic for the person who is visible at the moment to do it, and to do a big cleaning together once a month.",
             "kind": "claim",
             "index": 5,
-            "x": 0.27419760994693754,
-            "y": -0.06379165920924967
+            "x": 0.23319925077484205,
+            "y": -0.09396189763368229
           },
           {
             "id": "u6",
             "speaker": "Hugo",
-            "text": "그건 지금 방식이고 지금이 안 되고 있어서 회의하는 겁니다.",
-            "textEn": "That is the current method, and we are meeting because the current method is not working.",
+            "text": "지금이 그 방식인데 안 되고 있어서 회의하는 겁니다. 담당을 적어 붙여야 합니다.",
+            "textEn": "This is that way right now, but it is not working, so we are meeting. We have to write down and post who is responsible.",
             "kind": "claim",
             "index": 6,
-            "x": -0.111323371801709,
-            "y": 0.20452123712469636
+            "x": -0.320252783017808,
+            "y": 0.040795076644506455
           },
           {
-            "id": "u8",
-            "speaker": "Lena",
-            "text": "주차는 차를 매일 쓰는 사람이 안쪽 자리를 쓰는 게 맞습니다. 저는 출퇴근에 매일 쓰는데 지금 제일 바깥입니다.",
-            "textEn": "For parking, the person who uses the car every day should use the inner spot. I use it every day for commuting, but right now I am at the very outside.",
+            "id": "u7",
+            "speaker": "Ted",
+            "text": "그럼 요일제로 하되 못 하는 날은 서로 바꾸는 걸로 하면 될 것 같습니다.",
+            "textEn": "Then we can do it by day of the week, but if someone cannot do it, we can swap with each other.",
             "kind": "claim",
-            "index": 8,
-            "x": 0.3207798527762498,
-            "y": 0.05647977156265028
+            "index": 7,
+            "x": 0.13853063795250214,
+            "y": 0.1378261755199349
           },
           {
             "id": "u9",
-            "speaker": "Ted",
-            "text": "저는 먼저 계약한 순서대로 가야 한다고 봅니다. 저는 2년 전에 들어왔고 그때부터 그 자리였습니다.",
-            "textEn": "I think we should go in the order of who contracted first. I moved in two years ago, and I have had that spot since then.",
+            "speaker": "Lena",
+            "text": "저는 주차선 폭이 좁아 문을 못 여는 게 제일 급하다고 봅니다. 옆 차에 자국이 납니다.",
+            "textEn": "I think the most urgent thing is that the parking lane is too narrow to open the door. It leaves marks on the car next to it.",
             "kind": "claim",
             "index": 9,
-            "x": 0.012001407158848317,
-            "y": -0.22218305327686724
+            "x": 0.0053232209171007756,
+            "y": -0.21786229052090741
           },
           {
             "id": "u10",
-            "speaker": "Hugo",
-            "text": "저는 석 달마다 자리를 돌리는 게 제일 공평하다고 봅니다. 어떤 기준을 잡아도 누군가는 손해라서요.",
-            "textEn": "I think rotating the spots every three months is the fairest. Because whichever standard we set, someone will lose out.",
+            "speaker": "Ted",
+            "text": "저는 눈 오는 날 지붕 있는 자리가 하나뿐인 게 문제라고 봅니다. 겨울에만 문제가 됩니다.",
+            "textEn": "I think the problem is that there is only one covered parking spot on snowy days. It is only a problem in winter.",
             "kind": "claim",
             "index": 10,
-            "x": -0.006742966591879074,
-            "y": 0.16264543846982368
+            "x": 0.121677665651282,
+            "y": 0.19473367870509278
           },
           {
             "id": "u11",
-            "speaker": "Lena",
-            "text": "석 달마다 돌리면 짐 옮기는 게 일입니다. 저는 차에 짐을 두고 다녀서요.",
-            "textEn": "If we rotate every three months, moving luggage becomes work. I keep luggage in the car and travel with it.",
+            "speaker": "Hugo",
+            "text": "저는 자전거 세울 데가 없어서 현관 앞에 두고 있습니다. 그 자리를 좀 만들었으면 합니다.",
+            "textEn": "I do not have a place to park my bicycle, so I have been putting it in front of the entrance. I would like us to make a place for that spot.",
             "kind": "claim",
             "index": 11,
-            "x": 0.33475802279357825,
-            "y": -0.0040473534942854494
+            "x": -0.362866136440545,
+            "y": -0.06759587496371637
           },
           {
             "id": "u12",
-            "speaker": "Ted",
-            "text": "순서대로가 제일 단순합니다. 새로 들어온 사람이 기다리는 건 어디나 그렇습니다.",
-            "textEn": "Going by order is the simplest. The person who comes in new waiting is how it is everywhere.",
+            "speaker": "Lena",
+            "text": "선을 다시 그으면 한 대가 더 들어갈 수도 있습니다. 지금 배치가 비효율적입니다.",
+            "textEn": "If we redraw the lines, one more car might fit. The current arrangement is inefficient.",
             "kind": "claim",
             "index": 12,
-            "x": -0.07842771210790368,
-            "y": -0.25184569606711865
+            "x": 0.07284898037941866,
+            "y": -0.3156063689179643
           },
           {
             "id": "u13",
-            "speaker": "Hugo",
-            "text": "단순한 것과 공평한 건 다릅니다. 지금 기준은 그냥 먼저 온 사람이 계속 유리한 겁니다.",
-            "textEn": "Simple and fair are different. The current standard just keeps favoring the person who came first.",
+            "speaker": "Ted",
+            "text": "지붕 자리는 겨울 석 달만 돌려 쓰면 될 것 같습니다. 여름엔 아무나 써도 됩니다.",
+            "textEn": "The covered spot can just be shared in rotation for the three winter months. In summer, anyone can use it.",
             "kind": "claim",
             "index": 13,
-            "x": -0.22578312874605985,
-            "y": 0.18603961811710787
+            "x": 0.11998618165882209,
+            "y": 0.25121342282139114
+          },
+          {
+            "id": "u14",
+            "speaker": "Hugo",
+            "text": "자전거 거치대는 밖에 두면 비를 맞아서, 처마 밑 공간이면 좋겠습니다.",
+            "textEn": "If the bicycle rack is placed outside, it gets rained on, so a space under the eaves would be good.",
+            "kind": "claim",
+            "index": 14,
+            "x": -0.4255920416006012,
+            "y": -0.1303382663080619
           },
           {
             "id": "u15",
-            "speaker": "Ted",
-            "text": "저는 26도로 고정했으면 합니다. 지금 사람마다 만져서 하루에도 몇 번씩 바뀝니다.",
-            "textEn": "I want it fixed at 26 degrees. Right now, people touch it and it changes several times a day.",
+            "speaker": "Lena",
+            "text": "폭을 재보면 십 센티만 넓혀도 문 여는 데는 충분합니다.",
+            "textEn": "If you measure the width, widening it by just ten centimeters is enough to open the door.",
             "kind": "claim",
             "index": 15,
-            "x": -0.18348008157098172,
-            "y": -0.1535984319610244
-          },
-          {
-            "id": "u16",
-            "speaker": "Hugo",
-            "text": "저는 24도 아니면 잠을 못 잡니다. 26도면 밤에 계속 깹니다.",
-            "textEn": "I cannot sleep unless it is 24 degrees. At 26 degrees, I keep waking up at night.",
-            "kind": "claim",
-            "index": 16,
-            "x": -0.2376679318450125,
-            "y": 0.21034109234747939
+            "x": 0.07578920207050346,
+            "y": -0.3022980453417266
           },
           {
             "id": "u17",
-            "speaker": "Lena",
-            "text": "저는 전기요금을 봤으면 합니다. 지난달에 십오만 원 나왔고 그 전 달보다 사만 원 늘었습니다.",
-            "textEn": "I want us to look at the electricity bill. Last month it came to 150,000 won, and it increased by 40,000 won compared to the month before.",
+            "speaker": "Ted",
+            "text": "저는 밤에 더워서 잠을 설칩니다. 새벽 세 시쯤 깨는 날이 많습니다.",
+            "textEn": "I lose sleep because it is hot at night. There are many days when I wake up around three in the morning.",
             "kind": "claim",
             "index": 17,
-            "x": 0.4749877579380955,
-            "y": 0.01666792241944051
+            "x": 0.11640251184949944,
+            "y": 0.1638597180964043
           },
           {
             "id": "u18",
-            "speaker": "Ted",
-            "text": "고정하면 요금도 예측이 됩니다. 저는 26도 고정이 요금 문제도 같이 푼다고 봅니다.",
-            "textEn": "If we fix it, the bill also becomes predictable. I think fixing it at 26 degrees also solves the billing problem together.",
+            "speaker": "Hugo",
+            "text": "저는 지난달 전기요금 십오만 원이 마음에 걸립니다. 사만 원이 늘었습니다.",
+            "textEn": "I am bothered by last month's electricity bill of 150,000 won. It increased by 40,000 won.",
             "kind": "claim",
             "index": 18,
-            "x": -0.13858201900942188,
-            "y": -0.11149051656157584
+            "x": -0.2104686443405896,
+            "y": 0.047856888140150024
           },
           {
             "id": "u19",
-            "speaker": "Hugo",
-            "text": "저는 밤에만 24도로 내리는 걸로 하면 어떨까 합니다. 낮에는 26도 괜찮습니다.",
-            "textEn": "I think we could lower it to 24 degrees only at night. During the day, 26 degrees is fine.",
+            "speaker": "Lena",
+            "text": "저는 온도보다 창문을 언제 여는지가 더 크다고 봅니다. 켜놓고 열어두는 날이 있습니다.",
+            "textEn": "I think when you open the window matters more than the temperature. There are days when it is left on and the window is left open.",
             "kind": "claim",
             "index": 19,
-            "x": -0.15682878016948384,
-            "y": 0.23472808903548484
+            "x": 0.20558141185247306,
+            "y": -0.18369176361200137
           },
           {
             "id": "u20",
-            "speaker": "Lena",
-            "text": "밤에 24도면 요금이 제일 많이 나오는 시간대입니다. 그게 지난달 증가분의 대부분일 겁니다.",
-            "textEn": "If it is 24 degrees at night, that is the time period when the bill is the highest. That will probably be most of last month’s increase.",
+            "speaker": "Ted",
+            "text": "저는 얇은 이불로 바꾸고 나서도 비슷했습니다. 체감이 사람마다 너무 다릅니다.",
+            "textEn": "Even after I changed to a thin blanket, it was similar. Perception varies too much from person to person.",
             "kind": "claim",
             "index": 20,
-            "x": 0.2381291406647999,
-            "y": 0.08347078733409133
+            "x": 0.030314078049156118,
+            "y": 0.1881245676668287
           },
           {
             "id": "u21",
-            "speaker": "Ted",
-            "text": "그러면 밤 25도로 절충하는 건 어떻습니까.",
-            "textEn": "Then how about compromising at 25 degrees at night.",
-            "kind": "question",
+            "speaker": "Hugo",
+            "text": "요금은 밤 시간대가 제일 비쌉니다. 증가분 대부분이 거기서 나왔을 겁니다.",
+            "textEn": "The rates are most expensive during the night hours. Most of the increase probably came from there.",
+            "kind": "claim",
             "index": 21,
-            "x": -0.14805689444087483,
-            "y": -0.10815686542061378
+            "x": -0.17761856890340802,
+            "y": -0.04528864558231975
           },
           {
             "id": "u22",
-            "speaker": "Hugo",
-            "text": "25도도 저는 좀 덥긴 한데 26도보다는 낫습니다.",
-            "textEn": "25 degrees is a bit hot for me too, but it is better than 26 degrees.",
+            "speaker": "Lena",
+            "text": "환기를 아침에 한 번 몰아서 하면 낮 동안 실내 온도가 덜 오릅니다.",
+            "textEn": "If you batch ventilation once in the morning, the indoor temperature rises less during the day.",
             "kind": "claim",
             "index": 22,
-            "x": -0.29339725033379943,
-            "y": 0.19938244982755585
+            "x": 0.16914269878037655,
+            "y": -0.10651603414899227
           },
           {
             "id": "u23",
-            "speaker": "Lena",
-            "text": "저는 온도보다 창문 여는 시간을 정하는 게 더 효과가 클 것 같습니다. 지금 에어컨 켜놓고 창문 열어두는 날이 있습니다.",
-            "textEn": "I think setting the time for opening windows would be more effective than temperature. There are days when the air conditioner is on and the windows are left open.",
+            "speaker": "Ted",
+            "text": "저는 선풍기를 같이 쓰면 좀 나을까 싶어서 지난주에 하나 사봤습니다.",
+            "textEn": "I wondered whether using a fan together would help a little, so I bought one last week and tried it.",
             "kind": "claim",
             "index": 23,
-            "x": 0.30688794760189214,
-            "y": 0.07741707405786587
+            "x": 0.02158058126617591,
+            "y": 0.22264442679421645
+          },
+          {
+            "id": "u24",
+            "speaker": "Hugo",
+            "text": "계량기를 방마다 따로 볼 수 있으면 누가 얼마나 쓰는지는 알 수 있습니다.",
+            "textEn": "If you can view the meter separately for each room, you can know who is using how much.",
+            "kind": "claim",
+            "index": 24,
+            "x": -0.33681064446342235,
+            "y": -0.12265819127434581
+          },
+          {
+            "id": "u25",
+            "speaker": "Lena",
+            "text": "커튼을 낮에 쳐두는 것만으로도 차이가 난다고 들었습니다.",
+            "textEn": "I heard that even just keeping the curtains drawn during the day makes a difference.",
+            "kind": "claim",
+            "index": 25,
+            "x": 0.07826201774958175,
+            "y": -0.26594727616108293
           }
         ],
         "speakers": [
           {
             "speaker": "Ted",
             "colorIndex": 0,
-            "n": 7,
+            "n": 8,
             "nExcluded": 0,
-            "x": -0.19053799320910855,
-            "y": -0.33704218034225114,
+            "x": 0.1825429761326805,
+            "y": 0.3207884849933858,
             "ellipse": {
-              "cx": -0.09898050662007418,
-              "cy": -0.1980860008414234,
-              "rx": 0.11201524861783263,
-              "ry": 0.05448738836911014,
-              "angle": 149.57973391060025
+              "cx": 0.09084978247719587,
+              "cy": 0.19712222555101175,
+              "rx": 0.08419782824190734,
+              "ry": 0.034131129251795796,
+              "angle": 174.0361796402907
             },
             "underdetermined": false
           },
           {
             "speaker": "Lena",
             "colorIndex": 1,
-            "n": 7,
+            "n": 8,
             "nExcluded": 0,
-            "x": 0.47081573826314915,
-            "y": 0.040272236808433746,
+            "x": 0.23428700701998476,
+            "y": -0.2974347721228659,
             "ellipse": {
-              "cx": 0.32892210728461996,
-              "cy": 0.033352900030766346,
-              "rx": 0.07530478566609074,
-              "ry": 0.05315627809620042,
-              "angle": 172.3869942686461
+              "cx": 0.11924873263424446,
+              "cy": -0.18682419402940093,
+              "rx": 0.12005000029576837,
+              "ry": 0.05943000373779534,
+              "angle": 61.86613509235146
             },
             "underdetermined": false
           },
@@ -3699,56 +3719,56 @@
             "colorIndex": 2,
             "n": 7,
             "nExcluded": 0,
-            "x": -0.28027774505403996,
-            "y": 0.29676994353381775,
+            "x": -0.47637712360304557,
+            "y": -0.026689957566308223,
             "ellipse": {
-              "cx": -0.16453038663285774,
-              "cy": 0.19790625182321595,
-              "rx": 0.09669973957951672,
-              "ry": 0.020085244329207493,
-              "angle": 173.8082669604683
+              "cx": -0.30417607691032905,
+              "cy": -0.020180706360829522,
+              "rx": 0.11209115617592018,
+              "ry": 0.06737653004520623,
+              "angle": 53.36633889503465
             },
             "underdetermined": false
           }
         ],
         "meta": {
           "method": "people",
-          "explainedVariance": 0.9999999999999998,
+          "explainedVariance": 0.9999999999999976,
           "componentVariance": [
-            0.623408028705409,
-            0.37659197129459077
+            0.5989862496767357,
+            0.40101375032326186
           ],
-          "fittedOn": 21,
+          "fittedOn": 23,
           "saturated": false,
           "fitSaturated": true,
-          "separation": 0.8674148335887006,
+          "separation": 0.8027151105847622,
           "attribution": {
-            "correct": 7,
-            "total": 21,
-            "share": 0.3333333333333333,
+            "correct": 6,
+            "total": 23,
+            "share": 0.2608695652173913,
             "chance": 0.3333333333333333,
-            "perSpeaker": 7
+            "perSpeaker": 8
           },
           "secondAxisFromResiduals": false,
           "axes": {
             "horizontal": {
               "low": {
-                "ko": "공평한 배분",
-                "en": "Fair allocation"
+                "ko": "공간별 분담",
+                "en": "space-based assignment"
               },
               "high": {
-                "ko": "효율과 비용",
-                "en": "Efficiency and cost"
+                "ko": "순번·교대 운영",
+                "en": "rotating duty roster"
               }
             },
             "vertical": {
               "low": {
-                "ko": "정해진 순서",
-                "en": "Fixed rotation"
+                "ko": "공간 확장·배치",
+                "en": "space expansion"
               },
               "high": {
-                "ko": "상황별 조절",
-                "en": "Situation-based adjustment"
+                "ko": "계절·공용 운영",
+                "en": "seasonal shared use"
               }
             }
           }
@@ -3759,244 +3779,264 @@
           {
             "id": "u1",
             "speaker": "Ted",
-            "text": "청소는 요일제로 돌리는 게 맞다고 봅니다. 지금처럼 눈에 띄는 사람이 하면 결국 같은 사람만 계속 합니다.",
-            "textEn": "I think it is right to rotate cleaning by day of the week. If the noticeable person does it like now, in the end the same person keeps doing it.",
+            "text": "청소는 요일제로 돌리는 게 맞다고 봅니다. 지금은 눈에 띄는 사람만 계속하게 됩니다.",
+            "textEn": "I think rotating cleaning by day of the week is right. Right now, only the people who stand out keep doing it.",
             "kind": "claim",
             "index": 1,
-            "x": -0.3301949332840942,
-            "y": 0.0585928361613458
+            "x": -0.28389540155578874,
+            "y": -0.2312890277932696
           },
           {
             "id": "u2",
             "speaker": "Lena",
-            "text": "저는 요일제 반대입니다. 사람마다 집에 있는 시간이 달라서, 제 요일에 제가 집에 없으면 그날은 그냥 안 되는 겁니다.",
-            "textEn": "I am against a day-of-the-week system. Because each person has different times at home, if I am not home on my day, that day simply does not work.",
+            "text": "저는 요일제면 제 요일에 집에 없는 날이 많아서 그날은 그냥 넘어갈 것 같습니다.",
+            "textEn": "For me, if it is by day of the week, there are many days when I am not home on my day, so I think I would just skip that day.",
             "kind": "claim",
             "index": 2,
-            "x": -0.16705382066346128,
-            "y": -0.2695205240532659
+            "x": -0.16489578311774483,
+            "y": -0.4562460978175425
           },
           {
             "id": "u3",
             "speaker": "Hugo",
-            "text": "저는 공간별로 나누는 게 낫다고 봅니다. 주방은 A, 화장실은 B, 거실은 C 이렇게요. 요일보다 책임이 분명합니다.",
-            "textEn": "I think dividing by area is better. The kitchen is A, the bathroom is B, the living room is C, like that. Responsibility is clearer than by day of the week.",
+            "text": "저는 공간별로 나누는 게 낫다고 봅니다. 주방, 화장실, 거실을 하나씩 맡는 방식이요.",
+            "textEn": "I think dividing it by space is better. The way of each person taking one of the kitchen, bathroom, and living room.",
             "kind": "claim",
             "index": 3,
-            "x": -0.24882892523895592,
-            "y": 0.17985297123457145
+            "x": 0.22896716951616103,
+            "y": -0.1896190069860705
           },
           {
             "id": "u4",
             "speaker": "Ted",
-            "text": "공간별로 하면 화장실 맡은 사람만 계속 손해입니다. 일의 양이 다릅니다.",
-            "textEn": "If it is by area, only the person in charge of the bathroom keeps taking the loss. The amount of work is different.",
+            "text": "공간별로 하면 화장실 맡은 사람 일이 제일 많습니다. 그건 형평에 안 맞습니다.",
+            "textEn": "If we do it by space, the person assigned the bathroom has the most work. That is not fair.",
             "kind": "claim",
             "index": 4,
-            "x": -0.23718504655897138,
-            "y": 0.4546306852069317
+            "x": 0.25400608093198346,
+            "y": -0.11624613173849026
           },
           {
             "id": "u5",
             "speaker": "Lena",
-            "text": "그래서 저는 그때그때 더러운 걸 본 사람이 하고, 대신 한 달에 한 번 다 같이 대청소하는 게 현실적이라고 생각합니다.",
-            "textEn": "So I think it is realistic for the person who sees something dirty to do it then and there, and instead for everyone to do a big cleaning together once a month.",
+            "text": "그때그때 눈에 보이는 사람이 하고 한 달에 한 번 같이 대청소하는 게 현실적입니다.",
+            "textEn": "It is realistic for the person who is visible at the moment to do it, and to do a big cleaning together once a month.",
             "kind": "claim",
             "index": 5,
-            "x": -0.27175010900772284,
-            "y": -0.1561521723812203
+            "x": -0.2807586679342882,
+            "y": -0.055410336557632715
           },
           {
             "id": "u6",
             "speaker": "Hugo",
-            "text": "그건 지금 방식이고 지금이 안 되고 있어서 회의하는 겁니다.",
-            "textEn": "That is the current method, and we are meeting because the current method is not working.",
+            "text": "지금이 그 방식인데 안 되고 있어서 회의하는 겁니다. 담당을 적어 붙여야 합니다.",
+            "textEn": "This is that way right now, but it is not working, so we are meeting. We have to write down and post who is responsible.",
             "kind": "claim",
             "index": 6,
-            "x": -0.2553526178138163,
-            "y": 0.21578623161030117
+            "x": 0.16116429736448595,
+            "y": -0.2583770896081176
           },
           {
-            "id": "u8",
-            "speaker": "Lena",
-            "text": "주차는 차를 매일 쓰는 사람이 안쪽 자리를 쓰는 게 맞습니다. 저는 출퇴근에 매일 쓰는데 지금 제일 바깥입니다.",
-            "textEn": "For parking, the person who uses the car every day should use the inner spot. I use it every day for commuting, but right now I am at the very outside.",
+            "id": "u7",
+            "speaker": "Ted",
+            "text": "그럼 요일제로 하되 못 하는 날은 서로 바꾸는 걸로 하면 될 것 같습니다.",
+            "textEn": "Then we can do it by day of the week, but if someone cannot do it, we can swap with each other.",
             "kind": "claim",
-            "index": 8,
-            "x": -0.1860343858759762,
-            "y": -0.17779008102592417
+            "index": 7,
+            "x": -0.1940809476898874,
+            "y": -0.3950956515353983
           },
           {
             "id": "u9",
-            "speaker": "Ted",
-            "text": "저는 먼저 계약한 순서대로 가야 한다고 봅니다. 저는 2년 전에 들어왔고 그때부터 그 자리였습니다.",
-            "textEn": "I think we should go in the order of who contracted first. I moved in two years ago, and I have had that spot since then.",
+            "speaker": "Lena",
+            "text": "저는 주차선 폭이 좁아 문을 못 여는 게 제일 급하다고 봅니다. 옆 차에 자국이 납니다.",
+            "textEn": "I think the most urgent thing is that the parking lane is too narrow to open the door. It leaves marks on the car next to it.",
             "kind": "claim",
             "index": 9,
-            "x": -0.25148408514718856,
-            "y": -0.2288340979419347
+            "x": 0.3595315555609615,
+            "y": -0.13945834122502246
           },
           {
             "id": "u10",
-            "speaker": "Hugo",
-            "text": "저는 석 달마다 자리를 돌리는 게 제일 공평하다고 봅니다. 어떤 기준을 잡아도 누군가는 손해라서요.",
-            "textEn": "I think rotating the spots every three months is the fairest. Because whichever standard we set, someone will lose out.",
+            "speaker": "Ted",
+            "text": "저는 눈 오는 날 지붕 있는 자리가 하나뿐인 게 문제라고 봅니다. 겨울에만 문제가 됩니다.",
+            "textEn": "I think the problem is that there is only one covered parking spot on snowy days. It is only a problem in winter.",
             "kind": "claim",
             "index": 10,
-            "x": -0.20694141036020172,
-            "y": -0.10851803526984945
+            "x": 0.02331183180206527,
+            "y": -0.2287656188095561
           },
           {
             "id": "u11",
-            "speaker": "Lena",
-            "text": "석 달마다 돌리면 짐 옮기는 게 일입니다. 저는 차에 짐을 두고 다녀서요.",
-            "textEn": "If we rotate every three months, moving luggage becomes work. I keep luggage in the car and travel with it.",
+            "speaker": "Hugo",
+            "text": "저는 자전거 세울 데가 없어서 현관 앞에 두고 있습니다. 그 자리를 좀 만들었으면 합니다.",
+            "textEn": "I do not have a place to park my bicycle, so I have been putting it in front of the entrance. I would like us to make a place for that spot.",
             "kind": "claim",
             "index": 11,
-            "x": -0.08951367167887558,
-            "y": -0.3123832158119923
+            "x": 0.4390126176254261,
+            "y": -0.0726122643269366
           },
           {
             "id": "u12",
-            "speaker": "Ted",
-            "text": "순서대로가 제일 단순합니다. 새로 들어온 사람이 기다리는 건 어디나 그렇습니다.",
-            "textEn": "Going by order is the simplest. The person who comes in new waiting is how it is everywhere.",
+            "speaker": "Lena",
+            "text": "선을 다시 그으면 한 대가 더 들어갈 수도 있습니다. 지금 배치가 비효율적입니다.",
+            "textEn": "If we redraw the lines, one more car might fit. The current arrangement is inefficient.",
             "kind": "claim",
             "index": 12,
-            "x": -0.36380504200146424,
-            "y": 0.22752277455177966
+            "x": 0.13502498706312374,
+            "y": 0.34276969974062244
           },
           {
             "id": "u13",
-            "speaker": "Hugo",
-            "text": "단순한 것과 공평한 건 다릅니다. 지금 기준은 그냥 먼저 온 사람이 계속 유리한 겁니다.",
-            "textEn": "Simple and fair are different. The current standard just keeps favoring the person who came first.",
+            "speaker": "Ted",
+            "text": "지붕 자리는 겨울 석 달만 돌려 쓰면 될 것 같습니다. 여름엔 아무나 써도 됩니다.",
+            "textEn": "The covered spot can just be shared in rotation for the three winter months. In summer, anyone can use it.",
             "kind": "claim",
             "index": 13,
-            "x": -0.3099558388720252,
-            "y": 0.4234066225890858
+            "x": 0.0894545211314224,
+            "y": -0.15973701066181986
+          },
+          {
+            "id": "u14",
+            "speaker": "Hugo",
+            "text": "자전거 거치대는 밖에 두면 비를 맞아서, 처마 밑 공간이면 좋겠습니다.",
+            "textEn": "If the bicycle rack is placed outside, it gets rained on, so a space under the eaves would be good.",
+            "kind": "claim",
+            "index": 14,
+            "x": 0.5549437276401421,
+            "y": 0.08879179292106705
           },
           {
             "id": "u15",
-            "speaker": "Ted",
-            "text": "저는 26도로 고정했으면 합니다. 지금 사람마다 만져서 하루에도 몇 번씩 바뀝니다.",
-            "textEn": "I want it fixed at 26 degrees. Right now, people touch it and it changes several times a day.",
+            "speaker": "Lena",
+            "text": "폭을 재보면 십 센티만 넓혀도 문 여는 데는 충분합니다.",
+            "textEn": "If you measure the width, widening it by just ten centimeters is enough to open the door.",
             "kind": "claim",
             "index": 15,
-            "x": 0.2921405897530982,
-            "y": 0.053218948136910506
-          },
-          {
-            "id": "u16",
-            "speaker": "Hugo",
-            "text": "저는 24도 아니면 잠을 못 잡니다. 26도면 밤에 계속 깹니다.",
-            "textEn": "I cannot sleep unless it is 24 degrees. At 26 degrees, I keep waking up at night.",
-            "kind": "claim",
-            "index": 16,
-            "x": 0.5029118286469119,
-            "y": 0.10233344831083918
+            "x": 0.24377523538113408,
+            "y": 0.21795859397562034
           },
           {
             "id": "u17",
-            "speaker": "Lena",
-            "text": "저는 전기요금을 봤으면 합니다. 지난달에 십오만 원 나왔고 그 전 달보다 사만 원 늘었습니다.",
-            "textEn": "I want us to look at the electricity bill. Last month it came to 150,000 won, and it increased by 40,000 won compared to the month before.",
+            "speaker": "Ted",
+            "text": "저는 밤에 더워서 잠을 설칩니다. 새벽 세 시쯤 깨는 날이 많습니다.",
+            "textEn": "I lose sleep because it is hot at night. There are many days when I wake up around three in the morning.",
             "kind": "claim",
             "index": 17,
-            "x": -0.06532045817186438,
-            "y": -0.5466469128049539
+            "x": -0.28615050405050246,
+            "y": 0.07931722005556067
           },
           {
             "id": "u18",
-            "speaker": "Ted",
-            "text": "고정하면 요금도 예측이 됩니다. 저는 26도 고정이 요금 문제도 같이 푼다고 봅니다.",
-            "textEn": "If we fix it, the bill also becomes predictable. I think fixing it at 26 degrees also solves the billing problem together.",
+            "speaker": "Hugo",
+            "text": "저는 지난달 전기요금 십오만 원이 마음에 걸립니다. 사만 원이 늘었습니다.",
+            "textEn": "I am bothered by last month's electricity bill of 150,000 won. It increased by 40,000 won.",
             "kind": "claim",
             "index": 18,
-            "x": 0.38696551809902363,
-            "y": -0.03217867824000773
+            "x": -0.35291982373371994,
+            "y": 0.0006136779671167855
           },
           {
             "id": "u19",
-            "speaker": "Hugo",
-            "text": "저는 밤에만 24도로 내리는 걸로 하면 어떨까 합니다. 낮에는 26도 괜찮습니다.",
-            "textEn": "I think we could lower it to 24 degrees only at night. During the day, 26 degrees is fine.",
+            "speaker": "Lena",
+            "text": "저는 온도보다 창문을 언제 여는지가 더 크다고 봅니다. 켜놓고 열어두는 날이 있습니다.",
+            "textEn": "I think when you open the window matters more than the temperature. There are days when it is left on and the window is left open.",
             "kind": "claim",
             "index": 19,
-            "x": 0.5400722254468122,
-            "y": 0.012429658301610531
+            "x": -0.18164026246724002,
+            "y": 0.18435872172839754
           },
           {
             "id": "u20",
-            "speaker": "Lena",
-            "text": "밤에 24도면 요금이 제일 많이 나오는 시간대입니다. 그게 지난달 증가분의 대부분일 겁니다.",
-            "textEn": "If it is 24 degrees at night, that is the time period when the bill is the highest. That will probably be most of last month’s increase.",
+            "speaker": "Ted",
+            "text": "저는 얇은 이불로 바꾸고 나서도 비슷했습니다. 체감이 사람마다 너무 다릅니다.",
+            "textEn": "Even after I changed to a thin blanket, it was similar. Perception varies too much from person to person.",
             "kind": "claim",
             "index": 20,
-            "x": 0.3373858005713778,
-            "y": -0.22089824969965
+            "x": -0.00035332228434845287,
+            "y": 0.1888249258279064
           },
           {
             "id": "u21",
-            "speaker": "Ted",
-            "text": "그러면 밤 25도로 절충하는 건 어떻습니까.",
-            "textEn": "Then how about compromising at 25 degrees at night.",
-            "kind": "question",
+            "speaker": "Hugo",
+            "text": "요금은 밤 시간대가 제일 비쌉니다. 증가분 대부분이 거기서 나왔을 겁니다.",
+            "textEn": "The rates are most expensive during the night hours. Most of the increase probably came from there.",
+            "kind": "claim",
             "index": 21,
-            "x": 0.4585108178214718,
-            "y": 0.168082837933717
+            "x": -0.2857486086508104,
+            "y": 0.27707446154882986
           },
           {
             "id": "u22",
-            "speaker": "Hugo",
-            "text": "25도도 저는 좀 덥긴 한데 26도보다는 낫습니다.",
-            "textEn": "25 degrees is a bit hot for me too, but it is better than 26 degrees.",
+            "speaker": "Lena",
+            "text": "환기를 아침에 한 번 몰아서 하면 낮 동안 실내 온도가 덜 오릅니다.",
+            "textEn": "If you batch ventilation once in the morning, the indoor temperature rises less during the day.",
             "kind": "claim",
             "index": 22,
-            "x": 0.50308677388548,
-            "y": 0.21997813194490493
+            "x": -0.38302374576801257,
+            "y": 0.16460711799658911
           },
           {
             "id": "u23",
-            "speaker": "Lena",
-            "text": "저는 온도보다 창문 여는 시간을 정하는 게 더 효과가 클 것 같습니다. 지금 에어컨 켜놓고 창문 열어두는 날이 있습니다.",
-            "textEn": "I think setting the time for opening windows would be more effective than temperature. There are days when the air conditioner is on and the windows are left open.",
+            "speaker": "Ted",
+            "text": "저는 선풍기를 같이 쓰면 좀 나을까 싶어서 지난주에 하나 사봤습니다.",
+            "textEn": "I wondered whether using a fan together would help a little, so I bought one last week and tried it.",
             "kind": "claim",
             "index": 23,
-            "x": -0.037653209549557906,
-            "y": -0.06291317875319931
+            "x": -0.2833495104949232,
+            "y": 0.142824363545346
+          },
+          {
+            "id": "u24",
+            "speaker": "Hugo",
+            "text": "계량기를 방마다 따로 볼 수 있으면 누가 얼마나 쓰는지는 알 수 있습니다.",
+            "textEn": "If you can view the meter separately for each room, you can know who is using how much.",
+            "kind": "claim",
+            "index": 24,
+            "x": 0.13819502109281814,
+            "y": 0.44827465525527355
+          },
+          {
+            "id": "u25",
+            "speaker": "Lena",
+            "text": "커튼을 낮에 쳐두는 것만으로도 차이가 난다고 들었습니다.",
+            "textEn": "I heard that even just keeping the curtains drawn during the day makes a difference.",
+            "kind": "claim",
+            "index": 25,
+            "x": 0.0694295326375431,
+            "y": 0.16744134649752607
           }
         ],
         "speakers": [
           {
             "speaker": "Ted",
             "colorIndex": 0,
-            "n": 7,
+            "n": 8,
             "nExcluded": 0,
-            "x": 0.04682161798548249,
-            "y": 0.1320390983327643,
+            "x": -0.148426363747601,
+            "y": -0.1666730846166843,
             "ellipse": {
-              "cx": -0.0064360259025892375,
-              "cy": 0.10014790082982031,
-              "rx": 0.36842834799858787,
-              "ry": 0.21120446070240492,
-              "angle": 172.82828790157257
+              "cx": -0.0851321565262474,
+              "cy": -0.0900208663887151,
+              "rx": 0.21659015518440175,
+              "ry": 0.19479355019659844,
+              "angle": 133.65087631623172
             },
             "underdetermined": false
           },
           {
             "speaker": "Lena",
             "colorIndex": 1,
-            "n": 7,
+            "n": 8,
             "nExcluded": 0,
-            "x": -0.05796218438500634,
-            "y": -0.39891361568141104,
+            "x": -0.0547443559218649,
+            "y": 0.0622030610984003,
             "ellipse": {
-              "cx": -0.06856283633944006,
-              "cy": -0.24947204779002938,
-              "rx": 0.1964876770612591,
-              "ry": 0.1535578330630786,
-              "angle": 175.09126653899267
+              "cx": -0.025319643580565404,
+              "cy": 0.053252588042319735,
+              "rx": 0.2789958808924936,
+              "ry": 0.24188791466635673,
+              "angle": 38.547186187351656
             },
             "underdetermined": false
           },
@@ -4005,56 +4045,56 @@
             "colorIndex": 2,
             "n": 7,
             "nExcluded": 0,
-            "x": 0.1663220029994017,
-            "y": 0.20423774859150423,
+            "x": 0.2012218408518168,
+            "y": 0.04415970279567295,
             "ellipse": {
-              "cx": 0.07499886224202927,
-              "cy": 0.1493241469602091,
-              "rx": 0.4164209941357838,
-              "ry": 0.1616547421968205,
-              "angle": 172.24252950524374
+              "cx": 0.12623062869350044,
+              "cy": 0.042020889538737505,
+              "rx": 0.3500193024368241,
+              "ry": 0.23770005611576583,
+              "angle": 160.94330414221815
             },
             "underdetermined": false
           }
         ],
         "meta": {
           "method": "pca",
-          "explainedVariance": 0.2428437659051198,
+          "explainedVariance": 0.18246258135373397,
           "componentVariance": [
-            0.15299354348250108,
-            0.08985022242261873
+            0.10425798573059222,
+            0.07820459562314175
           ],
-          "fittedOn": 21,
+          "fittedOn": 23,
           "saturated": false,
           "fitSaturated": false,
-          "separation": 0.8674148335887006,
+          "separation": 0.8027151105847622,
           "attribution": {
-            "correct": 7,
-            "total": 21,
-            "share": 0.3333333333333333,
+            "correct": 6,
+            "total": 23,
+            "share": 0.2608695652173913,
             "chance": 0.3333333333333333,
-            "perSpeaker": 7
+            "perSpeaker": 8
           },
           "secondAxisFromResiduals": false,
           "axes": {
             "horizontal": {
               "low": {
-                "ko": "순번 정리",
-                "en": "Order-based fairness"
+                "ko": "비용·운영 개선",
+                "en": "Cost and operations"
               },
               "high": {
-                "ko": "온도 절충",
-                "en": "Temperature compromise"
+                "ko": "공간 활용",
+                "en": "Space usage"
               }
             },
             "vertical": {
               "low": {
-                "ko": "비용·실무 부담",
-                "en": "Cost and logistics"
+                "ko": "운영 방식 조정",
+                "en": "Scheduling and coordination"
               },
               "high": {
-                "ko": "공평성·기준 논리",
-                "en": "Fairness and rules"
+                "ko": "사용량·효율 분석",
+                "en": "Usage and efficiency"
               }
             }
           }
@@ -4065,244 +4105,264 @@
           {
             "id": "u1",
             "speaker": "Ted",
-            "text": "청소는 요일제로 돌리는 게 맞다고 봅니다. 지금처럼 눈에 띄는 사람이 하면 결국 같은 사람만 계속 합니다.",
-            "textEn": "I think it is right to rotate cleaning by day of the week. If the noticeable person does it like now, in the end the same person keeps doing it.",
+            "text": "청소는 요일제로 돌리는 게 맞다고 봅니다. 지금은 눈에 띄는 사람만 계속하게 됩니다.",
+            "textEn": "I think rotating cleaning by day of the week is right. Right now, only the people who stand out keep doing it.",
             "kind": "claim",
             "index": 1,
-            "x": -0.25460244201639004,
-            "y": -0.02785499311515542
+            "x": 0.2164112668504644,
+            "y": -0.12414355264580068
           },
           {
             "id": "u2",
             "speaker": "Lena",
-            "text": "저는 요일제 반대입니다. 사람마다 집에 있는 시간이 달라서, 제 요일에 제가 집에 없으면 그날은 그냥 안 되는 겁니다.",
-            "textEn": "I am against a day-of-the-week system. Because each person has different times at home, if I am not home on my day, that day simply does not work.",
+            "text": "저는 요일제면 제 요일에 집에 없는 날이 많아서 그날은 그냥 넘어갈 것 같습니다.",
+            "textEn": "For me, if it is by day of the week, there are many days when I am not home on my day, so I think I would just skip that day.",
             "kind": "claim",
             "index": 2,
-            "x": -0.12133952341743601,
-            "y": 0.20567607768339022
+            "x": 0.11973057998118997,
+            "y": -0.29597107057271616
           },
           {
             "id": "u3",
             "speaker": "Hugo",
-            "text": "저는 공간별로 나누는 게 낫다고 봅니다. 주방은 A, 화장실은 B, 거실은 C 이렇게요. 요일보다 책임이 분명합니다.",
-            "textEn": "I think dividing by area is better. The kitchen is A, the bathroom is B, the living room is C, like that. Responsibility is clearer than by day of the week.",
+            "text": "저는 공간별로 나누는 게 낫다고 봅니다. 주방, 화장실, 거실을 하나씩 맡는 방식이요.",
+            "textEn": "I think dividing it by space is better. The way of each person taking one of the kitchen, bathroom, and living room.",
             "kind": "claim",
             "index": 3,
-            "x": -0.17791078598464646,
-            "y": -0.12309376214847603
+            "x": -0.1722852496228933,
+            "y": -0.19989509890400153
           },
           {
             "id": "u4",
             "speaker": "Ted",
-            "text": "공간별로 하면 화장실 맡은 사람만 계속 손해입니다. 일의 양이 다릅니다.",
-            "textEn": "If it is by area, only the person in charge of the bathroom keeps taking the loss. The amount of work is different.",
+            "text": "공간별로 하면 화장실 맡은 사람 일이 제일 많습니다. 그건 형평에 안 맞습니다.",
+            "textEn": "If we do it by space, the person assigned the bathroom has the most work. That is not fair.",
             "kind": "claim",
             "index": 4,
-            "x": -0.17123380803609511,
-            "y": -0.3249565492041601
+            "x": -0.17564483768369338,
+            "y": -0.11243012663446035
           },
           {
             "id": "u5",
             "speaker": "Lena",
-            "text": "그래서 저는 그때그때 더러운 걸 본 사람이 하고, 대신 한 달에 한 번 다 같이 대청소하는 게 현실적이라고 생각합니다.",
-            "textEn": "So I think it is realistic for the person who sees something dirty to do it then and there, and instead for everyone to do a big cleaning together once a month.",
+            "text": "그때그때 눈에 보이는 사람이 하고 한 달에 한 번 같이 대청소하는 게 현실적입니다.",
+            "textEn": "It is realistic for the person who is visible at the moment to do it, and to do a big cleaning together once a month.",
             "kind": "claim",
             "index": 5,
-            "x": -0.20233437059195236,
-            "y": 0.11405148404650872
+            "x": 0.2166373179233271,
+            "y": 0.039629033049771646
           },
           {
             "id": "u6",
             "speaker": "Hugo",
-            "text": "그건 지금 방식이고 지금이 안 되고 있어서 회의하는 겁니다.",
-            "textEn": "That is the current method, and we are meeting because the current method is not working.",
+            "text": "지금이 그 방식인데 안 되고 있어서 회의하는 겁니다. 담당을 적어 붙여야 합니다.",
+            "textEn": "This is that way right now, but it is not working, so we are meeting. We have to write down and post who is responsible.",
             "kind": "claim",
             "index": 6,
-            "x": -0.19141235897668327,
-            "y": -0.15450211906351388
+            "x": -0.14176627589598167,
+            "y": -0.165021942824102
           },
           {
-            "id": "u8",
-            "speaker": "Lena",
-            "text": "주차는 차를 매일 쓰는 사람이 안쪽 자리를 쓰는 게 맞습니다. 저는 출퇴근에 매일 쓰는데 지금 제일 바깥입니다.",
-            "textEn": "For parking, the person who uses the car every day should use the inner spot. I use it every day for commuting, but right now I am at the very outside.",
+            "id": "u7",
+            "speaker": "Ted",
+            "text": "그럼 요일제로 하되 못 하는 날은 서로 바꾸는 걸로 하면 될 것 같습니다.",
+            "textEn": "Then we can do it by day of the week, but if someone cannot do it, we can swap with each other.",
             "kind": "claim",
-            "index": 8,
-            "x": -0.13346746682418503,
-            "y": 0.13860744393503804
+            "index": 7,
+            "x": 0.13838090971384678,
+            "y": -0.17702935330475886
           },
           {
             "id": "u9",
-            "speaker": "Ted",
-            "text": "저는 먼저 계약한 순서대로 가야 한다고 봅니다. 저는 2년 전에 들어왔고 그때부터 그 자리였습니다.",
-            "textEn": "I think we should go in the order of who contracted first. I moved in two years ago, and I have had that spot since then.",
+            "speaker": "Lena",
+            "text": "저는 주차선 폭이 좁아 문을 못 여는 게 제일 급하다고 봅니다. 옆 차에 자국이 납니다.",
+            "textEn": "I think the most urgent thing is that the parking lane is too narrow to open the door. It leaves marks on the car next to it.",
             "kind": "claim",
             "index": 9,
-            "x": -0.19587496595195777,
-            "y": 0.12611446891787365
+            "x": -0.2519272251692567,
+            "y": -0.1219512563314885
           },
           {
             "id": "u10",
-            "speaker": "Hugo",
-            "text": "저는 석 달마다 자리를 돌리는 게 제일 공평하다고 봅니다. 어떤 기준을 잡아도 누군가는 손해라서요.",
-            "textEn": "I think rotating the spots every three months is the fairest. Because whichever standard we set, someone will lose out.",
+            "speaker": "Ted",
+            "text": "저는 눈 오는 날 지붕 있는 자리가 하나뿐인 게 문제라고 봅니다. 겨울에만 문제가 됩니다.",
+            "textEn": "I think the problem is that there is only one covered parking spot on snowy days. It is only a problem in winter.",
             "kind": "claim",
             "index": 10,
-            "x": -0.14479094581870908,
-            "y": 0.038082063630371456
+            "x": 0.002055284024821645,
+            "y": -0.16616318477680342
           },
           {
             "id": "u11",
-            "speaker": "Lena",
-            "text": "석 달마다 돌리면 짐 옮기는 게 일입니다. 저는 차에 짐을 두고 다녀서요.",
-            "textEn": "If we rotate every three months, moving luggage becomes work. I keep luggage in the car and travel with it.",
+            "speaker": "Hugo",
+            "text": "저는 자전거 세울 데가 없어서 현관 앞에 두고 있습니다. 그 자리를 좀 만들었으면 합니다.",
+            "textEn": "I do not have a place to park my bicycle, so I have been putting it in front of the entrance. I would like us to make a place for that spot.",
             "kind": "claim",
             "index": 11,
-            "x": -0.049275126043963946,
-            "y": 0.21213497793334507
+            "x": -0.3355789711712347,
+            "y": -0.08368892531902927
           },
           {
             "id": "u12",
-            "speaker": "Ted",
-            "text": "순서대로가 제일 단순합니다. 새로 들어온 사람이 기다리는 건 어디나 그렇습니다.",
-            "textEn": "Going by order is the simplest. The person who comes in new waiting is how it is everywhere.",
+            "speaker": "Lena",
+            "text": "선을 다시 그으면 한 대가 더 들어갈 수도 있습니다. 지금 배치가 비효율적입니다.",
+            "textEn": "If we redraw the lines, one more car might fit. The current arrangement is inefficient.",
             "kind": "claim",
             "index": 12,
-            "x": -0.2979080443609913,
-            "y": -0.15434622934239056
+            "x": -0.09716093766290003,
+            "y": 0.31179761394654765
           },
           {
             "id": "u13",
-            "speaker": "Hugo",
-            "text": "단순한 것과 공평한 건 다릅니다. 지금 기준은 그냥 먼저 온 사람이 계속 유리한 겁니다.",
-            "textEn": "Simple and fair are different. The current standard just keeps favoring the person who came first.",
+            "speaker": "Ted",
+            "text": "지붕 자리는 겨울 석 달만 돌려 쓰면 될 것 같습니다. 여름엔 아무나 써도 됩니다.",
+            "textEn": "The covered spot can just be shared in rotation for the three winter months. In summer, anyone can use it.",
             "kind": "claim",
             "index": 13,
-            "x": -0.23469507035595855,
-            "y": -0.30844496493908324
+            "x": -0.04424851896556211,
+            "y": -0.11389631728789987
+          },
+          {
+            "id": "u14",
+            "speaker": "Hugo",
+            "text": "자전거 거치대는 밖에 두면 비를 맞아서, 처마 밑 공간이면 좋겠습니다.",
+            "textEn": "If the bicycle rack is placed outside, it gets rained on, so a space under the eaves would be good.",
+            "kind": "claim",
+            "index": 14,
+            "x": -0.4314206734119859,
+            "y": 0.05812999226462801
           },
           {
             "id": "u15",
-            "speaker": "Ted",
-            "text": "저는 26도로 고정했으면 합니다. 지금 사람마다 만져서 하루에도 몇 번씩 바뀝니다.",
-            "textEn": "I want it fixed at 26 degrees. Right now, people touch it and it changes several times a day.",
+            "speaker": "Lena",
+            "text": "폭을 재보면 십 센티만 넓혀도 문 여는 데는 충분합니다.",
+            "textEn": "If you measure the width, widening it by just ten centimeters is enough to open the door.",
             "kind": "claim",
             "index": 15,
-            "x": 0.18652076590807998,
-            "y": -0.04854526345097547
-          },
-          {
-            "id": "u16",
-            "speaker": "Hugo",
-            "text": "저는 24도 아니면 잠을 못 잡니다. 26도면 밤에 계속 깹니다.",
-            "textEn": "I cannot sleep unless it is 24 degrees. At 26 degrees, I keep waking up at night.",
-            "kind": "claim",
-            "index": 16,
-            "x": 0.3288945726103588,
-            "y": -0.07641048016791806
+            "x": -0.17673272310301183,
+            "y": 0.17919612297985246
           },
           {
             "id": "u17",
-            "speaker": "Lena",
-            "text": "저는 전기요금을 봤으면 합니다. 지난달에 십오만 원 나왔고 그 전 달보다 사만 원 늘었습니다.",
-            "textEn": "I want us to look at the electricity bill. Last month it came to 150,000 won, and it increased by 40,000 won compared to the month before.",
+            "speaker": "Ted",
+            "text": "저는 밤에 더워서 잠을 설칩니다. 새벽 세 시쯤 깨는 날이 많습니다.",
+            "textEn": "I lose sleep because it is hot at night. There are many days when I wake up around three in the morning.",
             "kind": "claim",
             "index": 17,
-            "x": -0.03144856373858701,
-            "y": 0.4029917744952209
+            "x": 0.21445176158097007,
+            "y": -0.0005694861157338317
           },
           {
             "id": "u18",
-            "speaker": "Ted",
-            "text": "고정하면 요금도 예측이 됩니다. 저는 26도 고정이 요금 문제도 같이 푼다고 봅니다.",
-            "textEn": "If we fix it, the bill also becomes predictable. I think fixing it at 26 degrees also solves the billing problem together.",
+            "speaker": "Hugo",
+            "text": "저는 지난달 전기요금 십오만 원이 마음에 걸립니다. 사만 원이 늘었습니다.",
+            "textEn": "I am bothered by last month's electricity bill of 150,000 won. It increased by 40,000 won.",
             "kind": "claim",
             "index": 18,
-            "x": 0.30178697720298286,
-            "y": -0.0004815744492112989
+            "x": 0.25584481532348585,
+            "y": -0.029575431191020164
           },
           {
             "id": "u19",
-            "speaker": "Hugo",
-            "text": "저는 밤에만 24도로 내리는 걸로 하면 어떨까 합니다. 낮에는 26도 괜찮습니다.",
-            "textEn": "I think we could lower it to 24 degrees only at night. During the day, 26 degrees is fine.",
+            "speaker": "Lena",
+            "text": "저는 온도보다 창문을 언제 여는지가 더 크다고 봅니다. 켜놓고 열어두는 날이 있습니다.",
+            "textEn": "I think when you open the window matters more than the temperature. There are days when it is left on and the window is left open.",
             "kind": "claim",
             "index": 19,
-            "x": 0.36077634731308306,
-            "y": 0.0037309261625567804
+            "x": 0.14503186196909687,
+            "y": 0.09106308446773075
           },
           {
             "id": "u20",
-            "speaker": "Lena",
-            "text": "밤에 24도면 요금이 제일 많이 나오는 시간대입니다. 그게 지난달 증가분의 대부분일 겁니다.",
-            "textEn": "If it is 24 degrees at night, that is the time period when the bill is the highest. That will probably be most of last month’s increase.",
+            "speaker": "Ted",
+            "text": "저는 얇은 이불로 바꾸고 나서도 비슷했습니다. 체감이 사람마다 너무 다릅니다.",
+            "textEn": "Even after I changed to a thin blanket, it was similar. Perception varies too much from person to person.",
             "kind": "claim",
             "index": 20,
-            "x": 0.2556794371456042,
-            "y": 0.1716728376154642
+            "x": 0.007493660487006992,
+            "y": 0.059880652594383355
           },
           {
             "id": "u21",
-            "speaker": "Ted",
-            "text": "그러면 밤 25도로 절충하는 건 어떻습니까.",
-            "textEn": "Then how about compromising at 25 degrees at night.",
-            "kind": "question",
+            "speaker": "Hugo",
+            "text": "요금은 밤 시간대가 제일 비쌉니다. 증가분 대부분이 거기서 나왔을 겁니다.",
+            "textEn": "The rates are most expensive during the night hours. Most of the increase probably came from there.",
+            "kind": "claim",
             "index": 21,
-            "x": 0.36107668341321436,
-            "y": -0.10975130460828653
+            "x": 0.19880274638724957,
+            "y": 0.18553766941194097
           },
           {
             "id": "u22",
-            "speaker": "Hugo",
-            "text": "25도도 저는 좀 덥긴 한데 26도보다는 낫습니다.",
-            "textEn": "25 degrees is a bit hot for me too, but it is better than 26 degrees.",
+            "speaker": "Lena",
+            "text": "환기를 아침에 한 번 몰아서 하면 낮 동안 실내 온도가 덜 오릅니다.",
+            "textEn": "If you batch ventilation once in the morning, the indoor temperature rises less during the day.",
             "kind": "claim",
             "index": 22,
-            "x": 0.3742678175944576,
-            "y": -0.16558647037289184
+            "x": 0.2939788515528732,
+            "y": 0.11718402585763521
           },
           {
             "id": "u23",
-            "speaker": "Lena",
-            "text": "저는 온도보다 창문 여는 시간을 정하는 게 더 효과가 클 것 같습니다. 지금 에어컨 켜놓고 창문 열어두는 날이 있습니다.",
-            "textEn": "I think setting the time for opening windows would be more effective than temperature. There are days when the air conditioner is on and the windows are left open.",
+            "speaker": "Ted",
+            "text": "저는 선풍기를 같이 쓰면 좀 나을까 싶어서 지난주에 하나 사봤습니다.",
+            "textEn": "I wondered whether using a fan together would help a little, so I bought one last week and tried it.",
             "kind": "claim",
             "index": 23,
-            "x": -0.013883982899871566,
-            "y": 0.08780860431398912
+            "x": 0.2077576136943356,
+            "y": 0.06612554097141249
+          },
+          {
+            "id": "u24",
+            "speaker": "Hugo",
+            "text": "계량기를 방마다 따로 볼 수 있으면 누가 얼마나 쓰는지는 알 수 있습니다.",
+            "textEn": "If you can view the meter separately for each room, you can know who is using how much.",
+            "kind": "claim",
+            "index": 24,
+            "x": -0.1346834119827244,
+            "y": 0.36976071430628493
+          },
+          {
+            "id": "u25",
+            "speaker": "Lena",
+            "text": "커튼을 낮에 쳐두는 것만으로도 차이가 난다고 들었습니다.",
+            "textEn": "I heard that even just keeping the curtains drawn during the day makes a difference.",
+            "kind": "claim",
+            "index": 25,
+            "x": -0.045727685895242634,
+            "y": 0.1244951546779946
           }
         ],
         "speakers": [
           {
             "speaker": "Ted",
             "colorIndex": 0,
-            "n": 7,
+            "n": 8,
             "nExcluded": 0,
-            "x": 0.009353989044274575,
-            "y": -0.1041427573675787,
+            "x": 0.09991034069262539,
+            "y": -0.10730298816193617,
             "ellipse": {
-              "cx": -0.010033547691593854,
-              "cy": -0.07711734932175797,
-              "rx": 0.2826233276130115,
-              "ry": 0.13929219767283146,
-              "angle": 4.7221018307673015
+              "cx": 0.07083214246277375,
+              "cy": -0.07102822839995762,
+              "rx": 0.14943908930338407,
+              "ry": 0.09189756670974264,
+              "angle": 17.154372877339824
             },
             "underdetermined": false
           },
           {
             "speaker": "Lena",
             "colorIndex": 1,
-            "n": 7,
+            "n": 8,
             "nExcluded": 0,
-            "x": -0.033808695960118894,
-            "y": 0.24828964523690636,
+            "x": 0.03891116717377679,
+            "y": 0.07161674882556676,
             "ellipse": {
-              "cx": -0.04229565662434169,
-              "cy": 0.1904204571461366,
-              "rx": 0.14791459305173493,
-              "ry": 0.10324025880132624,
-              "angle": 8.101377509603571
+              "cx": 0.025478754949509484,
+              "cy": 0.05568033850941596,
+              "rx": 0.2027834041241744,
+              "ry": 0.18047895348074952,
+              "angle": 146.6520154665011
             },
             "underdetermined": false
           },
@@ -4311,14 +4371,14 @@
             "colorIndex": 2,
             "n": 7,
             "nExcluded": 0,
-            "x": 0.07562956074549225,
-            "y": -0.15104383574102434,
+            "x": -0.1482216667905832,
+            "y": 0.02322238071600066,
             "ellipse": {
-              "cx": 0.04501851091170032,
-              "cy": -0.11231782955699356,
-              "rx": 0.29413665058449623,
-              "ry": 0.10803986996380269,
-              "angle": 8.812640040809894
+              "cx": -0.10872671719629778,
+              "cy": 0.019320996820671555,
+              "rx": 0.26068640031707246,
+              "ry": 0.19498837493236804,
+              "angle": 18.906708789498545
             },
             "underdetermined": false
           }
@@ -4327,16 +4387,16 @@
           "method": "mds",
           "explainedVariance": null,
           "componentVariance": null,
-          "fittedOn": 21,
+          "fittedOn": 23,
           "saturated": false,
           "fitSaturated": false,
-          "separation": 0.8674148335887006,
+          "separation": 0.8027151105847622,
           "attribution": {
-            "correct": 7,
-            "total": 21,
-            "share": 0.3333333333333333,
+            "correct": 6,
+            "total": 23,
+            "share": 0.2608695652173913,
             "chance": 0.3333333333333333,
-            "perSpeaker": 7
+            "perSpeaker": 8
           },
           "secondAxisFromResiduals": false,
           "axes": null
@@ -4344,8 +4404,8 @@
       }
     },
     "counts": {
-      "claim": 20,
-      "question": 1,
+      "claim": 23,
+      "question": 0,
       "agreement": 0,
       "procedural": 4
     },
@@ -4360,84 +4420,92 @@
       "Ted": {
         "speaker": "Ted",
         "stance": {
-          "ko": "청소는 요일제로 돌리고, 자리와 온도는 먼저 들어온 순서와 26도 고정으로 정해 혼란과 비용을 줄이자고 주장했습니다.",
-          "en": "He argued for rotating cleaning by day, keeping seats by order of arrival, and fixing the temperature at 26 degrees to reduce confusion and costs."
+          "ko": "청소는 요일제로 돌리되 못 하는 날은 서로 바꿔서 공평하게 하자고 했고, 지붕 있는 자리는 겨울에만 번갈아 쓰면 된다고 봤으며, 더위는 사람마다 달라 선풍기 같은 보조가 필요하다고 말했습니다.",
+          "en": "He argued for rotating cleaning by weekday with swaps on missed days to keep it fair, for rotating the roofed seat only in winter, and for using extra cooling aids because heat is felt differently by each person."
         },
         "themes": [
           {
-            "ko": "순서와 고정",
-            "en": "order and stability"
+            "ko": "형평성",
+            "en": "fairness"
           },
           {
-            "ko": "일의 공평성",
-            "en": "fairness in chores"
+            "ko": "계절별 운용",
+            "en": "seasonal use"
           },
           {
-            "ko": "요금 예측성",
-            "en": "predictable bills"
+            "ko": "개인차",
+            "en": "individual differences"
           }
         ],
         "anchors": [
           "u1",
-          "u9",
-          "u15"
+          "u4",
+          "u7"
         ]
       },
       "Lena": {
         "speaker": "Lena",
         "stance": {
-          "ko": "청소는 요일제보다 수시 대응과 월례 대청소가 낫고, 주차와 전기요금은 실제 사용과 요금 부담을 기준으로 봐야 한다고 주장했습니다.",
-          "en": "She argued that cleaning should be handled by immediate response plus a monthly deep clean rather than a day rota, and that parking and electricity should be judged by actual use and bill burden."
+          "ko": "요일제 청소는 빠지는 날이 많아 비현실적이니 눈에 보이는 사람이 하고 한 달에 한 번 대청소하는 쪽이 낫고, 주차는 문이 안 열릴 만큼 좁은 선폭을 먼저 고쳐야 하며, 더위는 온도보다 환기와 차광을 잘 조절하는 게 중요하다고 봤습니다.",
+          "en": "She argued that weekday cleaning is impractical because she is often away, so visible-person cleanup plus a monthly deep clean is better; that parking should be fixed first where the line width prevents opening doors; and that cooling depends more on ventilation and shading than on temperature alone."
         },
         "themes": [
           {
-            "ko": "실사용 기준",
-            "en": "actual use"
+            "ko": "현실성",
+            "en": "practicality"
           },
           {
-            "ko": "요금 부담",
-            "en": "bill pressure"
+            "ko": "주차 동선",
+            "en": "parking access"
           },
           {
-            "ko": "현실적 운영",
-            "en": "practical management"
+            "ko": "환기 조절",
+            "en": "ventilation control"
+          },
+          {
+            "ko": "차광",
+            "en": "shading"
           }
         ],
         "anchors": [
           "u2",
           "u5",
-          "u17"
+          "u9"
         ]
       },
       "Hugo": {
         "speaker": "Hugo",
         "stance": {
-          "ko": "공간별 담당과 석 달 순환이 요일제나 선착순보다 더 공평하며, 에어컨은 밤에만 24도로 내리는 절충이 필요하다고 주장했습니다.",
-          "en": "He argued that room-by-room responsibility and quarterly rotation are fairer than a day rota or first-come-first-served, and that the air conditioner should be compromised by lowering it to 24 degrees only at night."
+          "ko": "청소와 전기요금은 담당을 정해 나누고 기록해야 한다고 했고, 자전거는 현관 앞이 아니라 비를 피할 수 있는 처마 밑 거치 공간을 만들어야 한다고 주장했습니다.",
+          "en": "He argued that cleaning and electricity bills should be assigned and tracked by responsible area, and that bikes need a storage spot under an eave rather than at the front door."
         },
         "themes": [
           {
-            "ko": "책임의 분명함",
-            "en": "clear responsibility"
+            "ko": "구역 분담",
+            "en": "area assignment"
           },
           {
-            "ko": "공평성 우선",
-            "en": "fairness first"
+            "ko": "기록과 책임",
+            "en": "recording and accountability"
           },
           {
-            "ko": "수면 온도",
-            "en": "sleep comfort"
+            "ko": "자전거 보관",
+            "en": "bike storage"
+          },
+          {
+            "ko": "비 피하기",
+            "en": "rain protection"
           }
         ],
         "anchors": [
           "u3",
-          "u10",
-          "u16"
+          "u6",
+          "u11"
         ]
       }
     },
     "diagnostics": {
-      "turns": 25,
+      "turns": 27,
       "speakers": [
         "진행",
         "Ted",
