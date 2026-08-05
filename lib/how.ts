@@ -82,7 +82,10 @@ export const GROUPS: Group[] = [
     },
     entries: [
       {
-        term: { ko: '사람 배치', en: 'People layout' },
+        term: {
+          ko: '사람 배치 — 화면의 “사람별로 갈라 보기”',
+          en: 'People layout — “Spread the people apart” on screen',
+        },
         value: 'centroid PCA · √n weighted',
         body: {
           ko: '기본값입니다. 발언이 아니라 사람의 중심점들에 평면을 맞춥니다 — 지도가 답하려는 질문이 “누가 누구와 다른가”이기 때문입니다. 발언 수의 제곱근으로 가중치를 줘서, 세 번 말한 사람이 마흔 번 말한 사람만큼 방향을 끌지 못하게 합니다. 사람 사이 차이 중 얼마가 남았는지가 계산되고, 실제 회의록에서는 76~100%가 남습니다. 참여자가 세 명 이하면 세 점은 언제나 한 평면에 정확히 놓이므로 이 수치는 산수의 결과일 뿐이고, 그럴 때는 그렇다고 표시합니다.',
@@ -90,7 +93,10 @@ export const GROUPS: Group[] = [
         },
       },
       {
-        term: { ko: 'PCA', en: 'PCA' },
+        term: {
+          ko: 'PCA — 화면의 “주제별로 갈라 보기”',
+          en: 'PCA — “Spread the topics apart” on screen',
+        },
         value: 'power iteration',
         body: {
           ko: '발언들이 가장 크게 갈리는 방향 두 개를 찾아 그 방향으로 펼칩니다. 가로·세로에 뜻이 생겨서, 회의가 무엇을 두고 갈렸는지 읽을 때 씁니다. 남는 비율은 보통 10~25%인데, 이것이 낮다고 지도가 나쁜 것은 아닙니다 — PCA는 발언 전체의 차이를 최대로 남기려 하고, 문장 임베딩에서 그 차이의 대부분은 주제와 표현 방식입니다. 즉 PCA가 가장 열심히 지키는 것이 이 지도가 보려는 것과 다릅니다.',
@@ -98,7 +104,10 @@ export const GROUPS: Group[] = [
         },
       },
       {
-        term: { ko: 'MDS', en: 'Metric MDS' },
+        term: {
+          ko: 'MDS — 화면의 “거리 그대로 보기”',
+          en: 'Metric MDS — “Keep the distances true” on screen',
+        },
         value: 'classical · cosine',
         body: {
           ko: '방향을 찾는 대신, 모든 쌍의 거리를 최대한 그대로 옮깁니다. 코사인 거리를 씁니다. 축 자체에는 뜻이 없고, 얼마가 남았는지를 나타내는 수치도 없습니다.',

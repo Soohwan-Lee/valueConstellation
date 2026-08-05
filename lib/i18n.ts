@@ -62,24 +62,27 @@ export const STRINGS = {
     ko: '중심 표식과 영역을 함께',
     en: 'Centroid marker together with the region',
   },
-  methodPeople: { ko: '사람', en: 'People' },
+  // Named for the question each one answers, not for what it optimises. "사람 /
+  // 이야기 / 거리" was three nouns with no verb: a reader could see that the
+  // picture moved and not what had been asked of it.
+  methodPeople: { ko: '사람별로 갈라 보기', en: 'Spread the people apart' },
   methodPeopleHint: {
-    ko: '참여자들이 서로 가장 크게 갈리는 방향으로 펼칩니다. 누가 누구와 다른지 보려면 이 배치입니다',
-    en: 'Opens along what separates the participants most. The layout for seeing who differs from whom',
+    ko: '참여자들이 서로 가장 크게 갈리는 두 방향을 화면의 가로·세로로 씁니다. 누가 누구와 다른지 보려면 이 배치입니다.',
+    en: 'Uses the two directions the participants differ on most as the screen’s across and down. The layout for seeing who differs from whom.',
   },
-  methodPca: { ko: '이야기', en: 'Topics' },
+  methodPca: { ko: '주제별로 갈라 보기', en: 'Spread the topics apart' },
   methodPcaHint: {
-    ko: '회의 전체에서 이야기가 가장 크게 갈린 방향으로 펼칩니다. 무엇을 두고 논의했는지가 축이 됩니다',
-    en: 'Opens along what the room as a whole differed on, so the axes describe the discussion',
+    ko: '회의 전체에서 이야기가 가장 크게 갈린 두 방향을 씁니다. 축이 “무엇을 두고 논의했는가”를 가리키므로, 축에 이름이 붙는 배치입니다.',
+    en: 'Uses the two directions the discussion as a whole split on, so the axes describe what was argued about — and this is the layout whose axes get names.',
   },
-  methodMds: { ko: '거리', en: 'Distance' },
+  methodMds: { ko: '거리 그대로 보기', en: 'Keep the distances true' },
   methodMdsHint: {
-    ko: '누가 누구와 얼마나 떨어져 있는지를 최대한 그대로 옮깁니다. 거리가 더 정확합니다',
-    en: 'Keeps who is how far from whom as close to the original as it can',
+    ko: '방향은 포기하고, 누가 누구와 얼마나 떨어져 있는지만 최대한 그대로 옮깁니다. 그래서 축에 이름이 없습니다.',
+    en: 'Gives up on direction and carries only who is how far from whom, as faithfully as it can. That is why its axes have no names.',
   },
   methodNote: {
-    ko: '같은 발언을 세 가지로 펼친 것입니다. 지도 아래의 “발언 되찾기” 수치는 펼치기 전 원래 값에서 재기 때문에 어느 배치를 골라도 똑같습니다 — 어떤 배치가 더 갈라 보이게 만드는지와, 실제로 갈라져 있는지는 다른 문제이고, 전자로 후자를 판단할 수는 없습니다.',
-    en: 'Three ways of laying out the same statements. The figure under the map is measured before any of them, so it reads the same whichever you pick — how far apart a layout draws people and how far apart they are are different questions, and the first cannot answer the second.',
+    ko: '세 배치는 같은 결과를 화면에 옮기는 방법만 다릅니다. 발언도, 사람도, 사람 사이 관계도 그대로이고 보는 각도만 바뀝니다. 위의 판정은 화면이 아니라 옮기기 전 원래 값에서 재므로 어느 배치를 골라도 같은 수치입니다 — 어떤 배치가 더 갈라 보이게 그리는지와 실제로 갈라져 있는지는 다른 문제이고, 앞의 것으로 뒤의 것을 판단할 수는 없습니다.',
+    en: 'The three differ only in how one result is carried onto the screen: same statements, same people, same relationships, a different angle on them. The verdict above is measured before any of that, so it reads the same whichever you pick — how far apart a layout draws people and how far apart they are are different questions, and the first cannot answer the second.',
   },
   secondAxisNote: {
     ko: '참여자가 두 명이라 사람 사이 방향은 하나뿐입니다. 세로축은 대신 각자의 발언이 가장 크게 갈리는 방향을 보여줍니다.',
