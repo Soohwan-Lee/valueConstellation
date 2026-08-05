@@ -55,23 +55,53 @@ export function Wordmark({
   )
 }
 
-/** A titled block in the console rail. */
-export function Section({
+/**
+ * The rail's one primary block.
+ *
+ * Everything else in the console is an eyebrow: a small uppercase label that
+ * names a region without claiming importance. That is right for a list of
+ * preferences and wrong for the participants, which is not one block among
+ * several but the thing the console is for — and when it wore the same label
+ * as "표시 설정", choosing a person and choosing how dots are drawn read as
+ * two decisions of equal size.
+ *
+ * So this one gets a heading in ink at reading size, a count beside it, and
+ * a line saying what to do with the rows. No border above it either: it opens
+ * the rail rather than continuing a stack.
+ */
+export function PrimarySection({
   title,
-  aside,
+  count,
+  hint,
   children,
 }: {
   title: string
-  aside?: React.ReactNode
+  /** Sits beside the heading — how many people are in this room. */
+  count?: React.ReactNode
+  /** One line naming the action the rows support. Hidden once one is open. */
+  hint?: React.ReactNode
   children: React.ReactNode
 }) {
   return (
-    <section className="border-t border-[var(--line)] px-5 py-4">
-      <header className="mb-2.5 flex items-center justify-between gap-2">
-        <h2 className="eyebrow">{title}</h2>
-        {aside}
+    <section className="border-t border-[var(--line)] px-5 pb-4 pt-4">
+      <header className="mb-1">
+        <div className="flex items-baseline justify-between gap-2">
+          <h2 className="text-[14.5px] font-medium leading-[1.4] text-[var(--ink)]">
+            {title}
+          </h2>
+          {count && (
+            <span className="shrink-0 text-[12px] text-[var(--muted)]">
+              {count}
+            </span>
+          )}
+        </div>
+        {hint && (
+          <p className="mt-1.5 text-[12px] leading-[1.55] text-[var(--muted)]">
+            {hint}
+          </p>
+        )}
       </header>
-      {children}
+      <div className="mt-2.5">{children}</div>
     </section>
   )
 }

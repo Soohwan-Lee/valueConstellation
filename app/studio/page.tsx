@@ -4,18 +4,22 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { ConstellationMap } from '@/components/ConstellationMap'
 import { Caveat, DetailPanel, ProjectionNotice } from '@/components/DetailPanel'
 import Link from 'next/link'
-import { Disclosure, Section, StageList, type Stage } from '@/components/Chrome'
+import {
+  Disclosure,
+  PrimarySection,
+  StageList,
+  type Stage,
+} from '@/components/Chrome'
 import { SourceMenu } from '@/components/studio/SourceMenu'
 import { GuideButton } from '@/components/studio/GuideButton'
 import { LangSwitch, ThemeSwitch, usePreferences } from '@/components/Preferences'
 import {
-  ChoiceList,
   MarkLegend,
-  methodOptions,
   ParticipantList,
   renderModeOptions,
   SegmentedControl,
 } from '@/components/MapControls'
+import { LayoutMenu } from '@/components/studio/LayoutMenu'
 import { MethodFooter } from '@/components/studio/MethodFooter'
 import { SCENARIOS, getScenario } from '@/data/scenarios'
 import { Composer } from '@/components/Composer'
@@ -303,25 +307,19 @@ export default function Studio() {
 
         {hasMap && (
           <>
-            {/* The one thing somebody is here to do: look at a person. Nothing
-                above it, and the distances to everyone else unfold inside the
-                row when one is chosen. */}
-            <Section
+            {/* The one thing somebody is here to do: look at a person. It is
+                the only block in the rail with a heading rather than an
+                eyebrow, and the distances to everyone else unfold inside the
+                row when one is chosen.
+
+                The instruction sits above the list, not under it: an
+                instruction that arrives after the thing it describes has
+                already been scrolled past is not one. */}
+            <PrimarySection
               title={t('participantsLabel', lang)}
-              aside={
-                <span className="text-[12px] text-[var(--muted)]">
-                  {tf('cardPeople', lang, { n: speakerCount })}
-                </span>
-              }
+              count={tf('cardPeople', lang, { n: speakerCount })}
+              hint={!selectedSpeaker ? t('measureHint', lang) : undefined}
             >
-              {/* Above the list, not under it. It says what to do with the
-                  rows, and an instruction that arrives after the thing it
-                  describes has already been scrolled past is not one. */}
-              {!selectedSpeaker && (
-                <p className="mb-2.5 px-0.5 text-[12px] leading-[1.55] text-[var(--muted)]">
-                  {t('measureHint', lang)}
-                </p>
-              )}
               <ParticipantList
                 speakers={projection.speakers}
                 pairs={visiblePairs}
@@ -335,27 +333,7 @@ export default function Studio() {
                 speakerNames={analysis?.speakerNames ?? null}
                 summaries={analysis?.speakerSummaries ?? null}
               />
-            </Section>
-
-            {/* Open, and second only to the participants.
-                This was a closed disclosure holding three words with their
-                reasons in tooltips, on the theory that nobody arrives wanting
-                to choose a layout. True — but they do arrive wanting to know
-                what they are looking at, and "this is one of three ways to
-                lay out the same statements" is part of the answer. Hidden, the
-                option read as a setting; shown with its reasons, it reads as
-                what it is: the same room seen three ways. */}
-            <Section title={t('layoutLabel', lang)}>
-              <ChoiceList
-                name="layout"
-                value={method}
-                options={methodOptions(lang)}
-                onChange={setMethod}
-              />
-              <p className="mt-2.5 px-0.5 text-[12px] leading-[1.6] text-[var(--muted)]">
-                {t('methodNote', lang)}
-              </p>
-            </Section>
+            </PrimarySection>
 
             {/* Still closed. How a person is drawn changes the picture without
                 changing what it says, which is the definition of a preference
@@ -439,7 +417,20 @@ export default function Studio() {
                     onPaste={openComposer}
                     disabled={loading}
                   />
-                  <GuideButton lang={lang} />
+                  {/* The layout belongs to the map, not to the console: it
+                      changes the angle this picture is drawn from and nothing
+                      about what it says. In the rail it sat directly under the
+                      participants at equal weight, which read as two equally
+                      important decisions. */}
+                  <div className="flex items-center gap-2">
+                    <LayoutMenu
+                      value={method}
+                      onChange={setMethod}
+                      lang={lang}
+                      disabled={loading}
+                    />
+                    <GuideButton lang={lang} />
+                  </div>
                 </div>
                 {/* What was being decided, then what to look for. Both carried
                     over from the overview: somebody who arrived by picking an
