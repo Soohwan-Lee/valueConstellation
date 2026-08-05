@@ -83,8 +83,8 @@ export const SCENARIOS: Scenario[] = [
       en: 'One question, four different conversations',
     },
     teaser: {
-      ko: '출시일 회의 — 일정, 품질, 고객, 팀 피로도로 갈립니다',
-      en: 'A ship-date meeting — split across deadline, quality, customers, burnout',
+      ko: '일정, 품질, 고객, 팀 피로도로 갈립니다',
+      en: 'split across deadline, quality, customers and burnout',
     },
     lookFor: {
       ko: '네 사람이 지도 곳곳에 흩어집니다. 같은 회의에 앉아 사실은 서로 다른 네 가지 회의를 하고 있었다는 뜻입니다. 두 사람의 영역이 두 덩어리로 갈라져 있는데, 회의 도중 다른 근거로 옮겨간 자리입니다.',
@@ -130,8 +130,8 @@ Dave: 저는 영업팀에 오늘 중으로 상황을 알리겠습니다.`,
       en: 'Everyone said yes to a different holiday',
     },
     teaser: {
-      ko: '전원 찬성한 제주 여행 — 각자 머릿속 여행이 서로 충돌합니다',
-      en: 'A unanimous yes to Jeju — and three incompatible holidays behind it',
+      ko: '전원 찬성했지만 각자 머릿속 여행이 서로 충돌합니다',
+      en: 'a unanimous yes with three incompatible holidays behind it',
     },
     lookFor: {
       ko: '대화만 보면 세 사람 다 찬성입니다. 지도에서는 서로 멀리 떨어집니다. "다들 좋다고 했잖아"가 왜 나중에 싸움이 되는지가 이 모양입니다.',
@@ -176,8 +176,8 @@ Felix: 나도 150만 원 넘으면 반대로 돌아서. 숙소부터 정하고 �
       en: 'Two people, two worlds',
     },
     teaser: {
-      ko: '강아지 입양 — 한 사람은 감정으로, 한 사람은 일과표로 말합니다',
-      en: 'Getting a dog — one argues from what it would feel like, the other from the daily schedule',
+      ko: '한 사람은 감정으로, 한 사람은 일과표로 말합니다',
+      en: 'one argues from what it would feel like, the other from the daily rota',
     },
     lookFor: {
       ko: '네 지도 중 가장 뚜렷하게 갈린 지도입니다. 두 사람이 같은 질문을 두고 각자 한 가지 근거로만 일관되게 말하면 이런 모양이 나옵니다 — 참여자가 둘뿐인 것은 문제가 아닙니다.',
@@ -226,8 +226,8 @@ Mia: 나도 알아. 나는 계산이 맞아야 그 마음이 오래간다고 보
       en: 'When the map fails',
     },
     teaser: {
-      ko: '세 안건을 한 회의에서 — 모든 평균이 가운데로 모입니다',
-      en: 'Three unrelated items at once — every average collapses to the middle',
+      ko: '상관없는 세 안건을 섞으니 모든 평균이 가운데로 모입니다',
+      en: 'three unrelated items mixed together, and every average collapses to the middle',
     },
     lookFor: {
       ko: '표식이 가운데로 몰리고, 지도가 스스로 "이 회의에서는 사람을 구분하지 못한다"고 알립니다. 영역도 서너 조각으로 흩어지는데, 안건이 바뀔 때마다 발언이 딴 곳으로 튀었다는 표시입니다. 회의 하나에 쟁점이 하나여야 하는 이유입니다.',
