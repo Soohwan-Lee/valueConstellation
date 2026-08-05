@@ -275,8 +275,8 @@ export const STRINGS = {
     en: 'This layout carried {pct}% of what separates the participants onto the screen. It was chosen to show them apart, so the figure runs high by construction — whether they really are apart is what the verdict above answers.',
   },
   keptPlain: {
-    ko: '발언의 차이는 두 방향보다 훨씬 많은 방향으로 나 있고, 그중 {pct}%를 이 화면에 옮겼습니다. 회의 전체를 담으려는 배치라 보통 10~25%에 그치는데, 화면에 못 담긴 대부분은 누가 말했는지가 아니라 무슨 주제였는지의 차이입니다.',
-    en: 'Statements differ in far more than two directions, and this layout carried {pct}% of that onto the screen. A layout holding the whole discussion usually lands between 10 and 25%, and most of what it leaves behind is topic rather than person.',
+    ko: '발언의 차이는 두 방향보다 훨씬 많은 방향으로 나 있고, 그중 {pct}%를 이 화면에 옮겼습니다. 낮아 보이지만 이 배치에서는 이게 정상입니다 — 차이가 한두 방향에 몰려 있지 않고 수십 방향에 얇게 퍼져 있어서, 가장 큰 방향 하나가 10%대이고 그다음도 비슷합니다. 둘을 골라 담으면 보통 10~25%가 됩니다. 못 담긴 대부분은 누가 말했는지가 아니라 무슨 주제였는지의 차이입니다.',
+    en: 'Statements differ in far more than two directions, and this layout carried {pct}% of that onto the screen. That looks low and is normal here: the differences are not concentrated in one or two directions but spread thinly across dozens, so the largest single direction holds only around a tenth and the next is no bigger. Any two of them come to 10-25%. Most of what is left behind is topic rather than person.',
   },
   mappedTerm: { ko: '지도에 올린 발언', en: 'Statements mapped' },
   mappedHelp: {
