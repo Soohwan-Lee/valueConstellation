@@ -75,6 +75,10 @@ Rules:
   coherence they did not have.
 - Neutral register. You are reporting what was argued, not judging it, and not
   saying who was right.
+- Never write the speaker's name in "stance" or "themes". The summary is shown
+  directly under their name, so repeating it wastes the one line there is —
+  and a name transliterated into the other language stops matching the label
+  beside it. Start with the position.
 - Give Korean and English for every field. The Korean is primary and must read
   naturally; it is not a translation of the English.
 - Copy "speaker" exactly as given.`
