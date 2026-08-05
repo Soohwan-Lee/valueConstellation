@@ -146,14 +146,22 @@ export const STRINGS = {
   // Console rail
   sourceLabel: { ko: '자료', en: 'Source' },
   participantsLabel: { ko: '참여자', en: 'Participants' },
-  distanceLabel: { ko: '사이 거리', en: 'Distance' },
+  distanceLabel: { ko: '다른 참여자와의 거리', en: 'Distance to the others' },
   distanceNote: {
-    ko: '이 지도에서 가장 먼 두 사람을 1.00으로 둔 상대 거리입니다.',
-    en: 'Relative to the widest gap on this map, which is 1.00.',
+    ko: '숫자는 이 지도에서 가장 먼 두 사람을 1.00으로 뒀을 때의 비율입니다. 0.50이면 그 가장 먼 간격의 절반이라는 뜻이고, 다른 지도의 숫자와는 비교할 수 없습니다.',
+    en: 'The figure is a share of the widest gap on this map, which is 1.00 — so 0.50 is half that gap. It cannot be compared against a figure from another map.',
   },
+  // Gaps in words, so the number beside them is a reference rather than the
+  // thing being read. Phrased about the ground somebody argued on, never about
+  // agreement: two people who reached opposite conclusions from the same kind
+  // of reason sit close together here.
+  bandSimilar: { ko: '비슷한 근거로 말함', en: 'Argued on similar ground' },
+  bandSomeDifference: { ko: '근거가 조금 다름', en: 'Somewhat different ground' },
+  bandClearDifference: { ko: '근거가 뚜렷이 다름', en: 'Clearly different ground' },
+  bandFurthest: { ko: '이 회의에서 가장 멀리 갈림', en: 'Furthest apart in this meeting' },
   measureHint: {
-    ko: '참여자를 선택하면 나머지와의 거리를 지도에 긋습니다.',
-    en: 'Select a participant to draw their distance to everyone else.',
+    ko: '이름을 누르면 그 사람의 요약이 펼쳐지고, 다른 참여자와의 거리가 지도에 그어집니다.',
+    en: 'Press a name to open what they argued and draw their distance to everyone else on the map.',
   },
   backToOverview: { ko: '소개로 돌아가기', en: 'Overview' },
   pasteTitle: { ko: '회의록 붙여넣기', en: 'Paste a transcript' },
@@ -329,6 +337,20 @@ export function kindLabel(
     procedural: 'kindProcedural',
   } as const
   return t(keys[kind], lang)
+}
+
+/** Interface phrase for a distance band. See `distanceBand` in `lib/pairs.ts`. */
+export function bandLabel(
+  band: 'similar' | 'someDifference' | 'clearDifference' | 'furthest',
+  lang: Lang,
+): string {
+  const keys = {
+    similar: 'bandSimilar',
+    someDifference: 'bandSomeDifference',
+    clearDifference: 'bandClearDifference',
+    furthest: 'bandFurthest',
+  } as const
+  return t(keys[band], lang)
 }
 
 /** Renders **bold** spans in a string as React-ready segments. */

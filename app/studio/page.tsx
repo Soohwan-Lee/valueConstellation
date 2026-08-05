@@ -306,7 +306,22 @@ export default function Studio() {
             {/* The one thing somebody is here to do: look at a person. Nothing
                 above it, and the distances to everyone else unfold inside the
                 row when one is chosen. */}
-            <Section title={t('participantsLabel', lang)}>
+            <Section
+              title={t('participantsLabel', lang)}
+              aside={
+                <span className="text-[11.5px] text-[var(--muted)]">
+                  {tf('cardPeople', lang, { n: speakerCount })}
+                </span>
+              }
+            >
+              {/* Above the list, not under it. It says what to do with the
+                  rows, and an instruction that arrives after the thing it
+                  describes has already been scrolled past is not one. */}
+              {!selectedSpeaker && (
+                <p className="mb-2.5 px-0.5 text-[11.5px] leading-[1.55] text-[var(--muted)]">
+                  {t('measureHint', lang)}
+                </p>
+              )}
               <ParticipantList
                 speakers={projection.speakers}
                 pairs={visiblePairs}
@@ -320,11 +335,6 @@ export default function Studio() {
                 speakerNames={analysis?.speakerNames ?? null}
                 summaries={analysis?.speakerSummaries ?? null}
               />
-              {!selectedSpeaker && (
-                <p className="mt-2.5 px-0.5 text-[11.5px] leading-[1.55] text-[var(--muted)]">
-                  {t('measureHint', lang)}
-                </p>
-              )}
             </Section>
 
             {/* Open, and second only to the participants.

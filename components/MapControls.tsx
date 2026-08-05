@@ -6,9 +6,9 @@ import type {
   SpeakerRenderMode,
 } from '@/lib/types'
 import type { SpeakerPair } from '@/lib/pairs'
-import { counterpart, pairsWith } from '@/lib/pairs'
+import { counterpart, distanceBand, pairsWith } from '@/lib/pairs'
 import { shapePath, speakerColor, speakerShape } from '@/lib/colors'
-import { t, tf, type Lang } from '@/lib/i18n'
+import { bandLabel, t, tf, type Lang } from '@/lib/i18n'
 import { speakerLabel, type SpeakerNames } from '@/lib/speakers'
 import { say, type SpeakerSummaries } from '@/lib/summaries'
 
@@ -60,17 +60,18 @@ export function ParticipantList({
           return (
             <li
               key={s.speaker}
-              className="group rounded-[6px] transition-colors"
+              className="group rounded-[7px] border transition-colors"
               style={{
                 background: isSelected ? 'var(--panel-2)' : 'transparent',
+                borderColor: isSelected ? 'var(--line-strong)' : 'transparent',
               }}
             >
               <div className="flex items-center">
               <button
                 type="button"
                 onClick={() => onSelect(s.speaker)}
-                aria-pressed={isSelected}
-                className="flex min-w-0 flex-1 flex-col gap-1 px-1.5 py-1.5 text-left"
+                aria-expanded={isSelected}
+                className="flex min-w-0 flex-1 cursor-pointer flex-col gap-1 rounded-[7px] px-2 py-2 text-left transition-colors group-hover:bg-[var(--panel-2)]"
                 style={{ opacity: visible ? 1 : 0.4 }}
               >
                 <span className="flex w-full items-center gap-2.5">
@@ -106,6 +107,17 @@ export function ParticipantList({
                   <span className="readout ml-auto shrink-0 pl-2 text-[11.5px] text-[var(--muted)]">
                     {s.n}
                   </span>
+                  {/* The one mark saying this row opens. Without it the list
+                      was a column of names, a count and a dot, and nothing in
+                      it suggested that the thing to do was press one — which
+                      is the first move the studio expects of anybody. */}
+                  <span
+                    aria-hidden
+                    className="readout shrink-0 text-[8px] text-[var(--faint)] transition-transform group-hover:text-[var(--muted)]"
+                    style={{ transform: isSelected ? 'rotate(90deg)' : 'none' }}
+                  >
+                    ▶
+                  </span>
                 </span>
 
                 {/* What this person argued, in the list rather than behind a
@@ -132,7 +144,8 @@ export function ParticipantList({
                 onClick={() => onToggleVisible(s.speaker)}
                 aria-pressed={!visible}
                 title={visible ? t('hideOnMap', lang) : t('showOnMap', lang)}
-                className="mr-0.5 rounded-[4px] px-1.5 py-1.5 text-[var(--muted)] transition-colors hover:text-[var(--ink)]"
+                aria-label={visible ? t('hideOnMap', lang) : t('showOnMap', lang)}
+                className="mr-1 rounded-[4px] px-1.5 py-2 text-[var(--faint)] transition-colors hover:text-[var(--ink)]"
               >
                 <svg width={12} height={12} viewBox="0 0 12 12" aria-hidden>
                   <circle
@@ -216,26 +229,36 @@ function DistancesFrom({
           <li key={`${pair.a.speaker}-${pair.b.speaker}`}>
             <div
               onMouseEnter={() => onHover(pair)}
-              className="flex items-baseline gap-2 rounded-[5px] py-1 pl-[21px] pr-1 transition-colors hover:bg-[var(--panel)]"
+              className="rounded-[5px] py-1.5 pl-[21px] pr-1 transition-colors hover:bg-[var(--panel)]"
             >
-              <span className="min-w-0 flex-1 truncate text-[12.5px] text-[var(--body)]">
-                {speakerLabel(counterpart(pair, speaker).speaker, lang, speakerNames)}
-              </span>
-              {/* A bar, so the column can be scanned without reading every
-                  number. Its width is the ratio the number states. */}
-              <span
-                aria-hidden
-                className="h-px shrink-0 bg-[var(--line-strong)]"
-                style={{ width: `${Math.max(3, pair.relative * 40)}px` }}
-              />
-              <span className="readout w-[30px] shrink-0 text-right text-[11px] text-[var(--ink)]">
-                {pair.relative.toFixed(2)}
+              <div className="flex items-baseline gap-2">
+                <span className="min-w-0 flex-1 truncate text-[12.5px] text-[var(--body)]">
+                  {speakerLabel(counterpart(pair, speaker).speaker, lang, speakerNames)}
+                </span>
+                {/* A bar, so the column can be scanned without reading every
+                    number. Its width is the ratio the number states. */}
+                <span
+                  aria-hidden
+                  className="h-px shrink-0 bg-[var(--line-strong)]"
+                  style={{ width: `${Math.max(3, pair.relative * 40)}px` }}
+                />
+                <span className="readout w-[30px] shrink-0 text-right text-[11px] text-[var(--muted)]">
+                  {pair.relative.toFixed(2)}
+                </span>
+              </div>
+              {/* The gap in words, carrying the emphasis the number used to
+                  hold. "0.47" is a ratio nobody can read without first being
+                  told what it is a ratio of; "근거가 조금 다름" is the sentence
+                  somebody came to the panel for, and the figure behind it is
+                  there for whoever wants to check the ordering. */}
+              <span className="mt-0.5 block text-[11.5px] leading-[1.45] text-[var(--ink)]">
+                {bandLabel(distanceBand(pair.relative), lang)}
               </span>
             </div>
           </li>
         ))}
       </ul>
-      <p className="mt-1.5 pl-[21px] text-[11px] leading-[1.55] text-[var(--muted)]">
+      <p className="mt-2 pl-[21px] text-[11px] leading-[1.55] text-[var(--muted)]">
         {t('distanceNote', lang)}
       </p>
     </div>

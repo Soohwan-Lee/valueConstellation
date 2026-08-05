@@ -67,6 +67,28 @@ export function asShare(distance: number, unit: number): number | null {
   return distance / unit
 }
 
+/**
+ * A gap, in words.
+ *
+ * `relative` is a share of the widest gap on this map, which is a ratio a
+ * reader has to be told how to read before it says anything — and it was being
+ * shown as a bare "0.47" beside a name. The band is what somebody actually
+ * wants from that number, so it is said first and the figure follows it.
+ *
+ * The wording is about the ground people argued on rather than about agreement.
+ * Two people who reached opposite conclusions from the same kind of reason sit
+ * close together here, and a label reading "거의 같은 의견" would be wrong about
+ * them in the one way this tool must not be wrong.
+ */
+export type DistanceBand = 'similar' | 'someDifference' | 'clearDifference' | 'furthest'
+
+export function distanceBand(relative: number): DistanceBand {
+  if (relative >= 0.8) return 'furthest'
+  if (relative >= 0.55) return 'clearDifference'
+  if (relative >= 0.3) return 'someDifference'
+  return 'similar'
+}
+
 /** Mean distance from `center`, in projected units. */
 export function meanRadius(
   points: { x: number; y: number }[],
