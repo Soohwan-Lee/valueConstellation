@@ -163,26 +163,38 @@ pipeline; none is a picture drawn in advance. Rebuild with `npm run fixtures`.
 
 | Example | Agenda | Statements | Who-said-it | Chance | What it shows |
 |---|---|---:|---:|---:|---|
-| One question, four positions | Where to site a renewable energy plant | 25 | **60%** | 25% | Four grounds, wide spread, no clustering — and two regions that come apart where somebody changed their kind of reason |
-| Same yes, different reasons | Whether to rebuild the city hall | 22 | **91%** | 33% | A unanimous vote hiding three positions |
-| Two people, two worlds | Safety on the primary school route | 23 | **87%** | 50% | The sharpest split of the four, from a room of two |
-| When the map fails | Parking, school meals and library hours at once | 21 | **5%** | 33% | Three agenda items; every average collapses to the middle and the regions scatter |
+| One question, four different conversations | Ship next week, or push the date | 24 | **63%** | 25% | Four grounds, wide spread, no clustering — and two regions that come apart where somebody changed their kind of reason |
+| Everyone said yes to a different holiday | Whether to go to Jeju this summer | 23 | **87%** | 33% | A unanimous yes hiding three incompatible holidays |
+| Two people, two worlds | Whether to get a dog | 28 | **86%** | 50% | The sharpest split of the four, from a room of two |
+| When the map fails | Cleaning rota, parking and thermostat at once | 21 | **33%** | 33% | Three subjects; every average collapses to the middle and the regions scatter |
+
+The situations are ordinary on purpose. They were four municipal council
+meetings — plant siting, a city hall rebuild, school-route safety, a combined
+fees agenda — accurate as demonstrations and useless as an invitation: somebody
+deciding in ten seconds whether this applies to them met four indistinguishable
+town-hall agendas they had never sat in. A team arguing about a ship date, a
+family picking a holiday, two people arguing about a dog, and a share-house
+meeting that covers everything at once answer "have I been in this room"
+without being asked.
 
 The meetings are Korean; the participants are named in English — Dave, Rosa,
 Ivan, Clara and eight more. An example is read rather than analysed, and a
 reader choosing between four maps should not also be holding four unfamiliar
 names in a script they may not read. Pasted transcripts keep their own names.
 
-The fourth is included **because** it fails, and it fails convincingly: 5% against
-33% chance is *worse than guessing*. A reader should meet that case here, where the
+The fourth is included **because** it fails, and it fails completely: 33% against
+33% chance is *exactly guessing*. A reader should meet that case here, where the
 map states it, rather than first on their own transcript.
 
-Writing them was itself the finding. The first draft of the consensus example could
-not tell its three speakers apart at all, because each had been given several
-distinct sub-arguments — a rich range scatters somebody's own statements and buries
-the difference between them and everybody else. Rewriting it so each speaker stays
-inside one vocabulary, drawn from a genuinely different world — legal liability,
-cost recovery, and what happens at the service counter — is what took it to 82%.
+Writing them was itself the finding, twice over. The first draft of the consensus
+example could not tell its three speakers apart at all, because each had been given
+several distinct sub-arguments — a rich range scatters somebody's own statements and
+buries the difference between them and everybody else. The rewrite that put the
+examples into everyday settings reproduced the same failure in the dog example: a
+first pass where each speaker conceded ground to the other scored 57% against 50%
+chance, because conceding means adopting the other person's vocabulary. Keeping
+Owen inside what it would feel like and Mia inside the daily rota — neither ever
+crossing — took the same conversation to 86%.
 
 ## What testing on real data showed
 

@@ -111,7 +111,7 @@ export const WORKS_BEST = {
       en: `At least ${MIN_STATEMENTS_FOR_ATTRIBUTION} statements from each person. Below that the map is still drawn, but it declines to say whether the people differ.`,
     },
     {
-      ko: '참여자는 두 명이어도 됩니다. 사람 수보다 각자가 얼마나 말했는지가 결과를 정합니다 — 예시 “둘만 있어도 갈린다”가 두 명짜리입니다.',
+      ko: '참여자는 두 명이어도 됩니다. 사람 수보다 각자가 얼마나 말했는지가 결과를 정합니다 — 예시 “둘이서도 이렇게 갈린다”가 두 명짜리입니다.',
       en: 'Two participants is enough. How much each of them said matters more than how many there were — the “Two people, two worlds” example has exactly two.',
     },
   ] satisfies Bilingual[],
