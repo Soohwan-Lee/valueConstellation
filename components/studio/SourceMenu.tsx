@@ -47,9 +47,13 @@ export function SourceMenu({
     }
   }, [open])
 
+  // The agenda item, not the finding. This control answers "which meeting am
+  // I looking at", and "말은 같고, 이유는 다르다" is an answer to a different
+  // question — one a reader cannot even check until they know what was being
+  // decided.
   const current = pasting
     ? t('pasteTitle', lang)
-    : (SCENARIOS.find((s) => s.id === activeId)?.title[lang] ??
+    : (SCENARIOS.find((s) => s.id === activeId)?.topic[lang] ??
       t('customSource', lang))
 
   return (
@@ -95,17 +99,17 @@ export function SourceMenu({
                     className="w-full rounded-[8px] px-3 py-2 text-left transition-colors hover:bg-[var(--panel-2)]"
                     style={{ background: active ? 'var(--panel-2)' : undefined }}
                   >
+                    {/* Switching between examples is switching between
+                        meetings, so the agenda leads and what the map found
+                        follows it. */}
                     <span
-                      className="block text-[13.5px]"
+                      className="block text-[13.5px] leading-[1.4]"
                       style={{ color: active ? 'var(--ink)' : 'var(--body)' }}
                     >
-                      {s.title[lang]}
-                    </span>
-                    {/* The agenda item rather than the teaser. Switching
-                        between examples is switching between meetings, and
-                        this is the line that says which meeting. */}
-                    <span className="mt-0.5 block text-[11.5px] leading-[1.5] text-[var(--muted)]">
                       {s.topic[lang]}
+                    </span>
+                    <span className="mt-0.5 block text-[12px] leading-[1.5] text-[var(--muted)]">
+                      {s.title[lang]}
                     </span>
                   </button>
                 </li>

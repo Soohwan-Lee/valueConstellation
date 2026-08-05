@@ -31,6 +31,15 @@ export const HERO = {
     ko: '회의록을 붙여넣으면 각 참여자의 발언을 주장 단위로 나누고, 의미가 비슷한 발언끼리 가깝게 배치합니다. 누가 누구와 가까운지, 누가 혼자 떨어져 있는지가 한 장에 보입니다.',
     en: 'Paste a transcript. Each participant’s speech is split into argument units and laid out so that statements meaning similar things sit close together — who stands near whom, and who stands alone, on one page.',
   },
+  // The page's own action, at the top of it. Pasting a transcript is what this
+  // tool is for, and it was reachable only from a link in the header or from a
+  // dashed box below four examples — so the primary thing looked like the
+  // afterthought and the demonstration looked like the product.
+  secondary: { ko: '예시부터 보기', en: 'See an example first' },
+  ctaNote: {
+    ko: '한 줄에 한 발언씩이면 됩니다. 30초쯤 걸리고, 회의록은 저장하지 않습니다.',
+    en: 'One statement per line is all it takes. About thirty seconds, and the transcript is not stored.',
+  },
 } satisfies Record<string, Bilingual>
 
 export const EXAMPLES_LEAD = {

@@ -27,8 +27,8 @@ export function MethodFooter({ lang }: { lang: Lang }) {
           [t('builtWithPlace', lang), EMBEDDING_MODEL],
         ].map(([label, value]) => (
           <div key={value} className="flex items-baseline gap-2">
-            <dt className="shrink-0 text-[11.5px] text-[var(--muted)]">{label}</dt>
-            <dd className="readout min-w-0 truncate text-[11px] text-[var(--body)]">
+            <dt className="shrink-0 text-[12px] text-[var(--muted)]">{label}</dt>
+            <dd className="readout min-w-0 truncate text-[12px] text-[var(--body)]">
               {value}
             </dd>
           </div>
@@ -36,7 +36,7 @@ export function MethodFooter({ lang }: { lang: Lang }) {
       </dl>
       <Link
         href="/how-it-works"
-        className="mt-2.5 inline-block text-[11.5px] text-[var(--muted)] underline decoration-[var(--line-strong)] underline-offset-[3px] transition-colors hover:text-[var(--ink)]"
+        className="mt-2.5 inline-block text-[12px] text-[var(--muted)] underline decoration-[var(--line-strong)] underline-offset-[3px] transition-colors hover:text-[var(--ink)]"
       >
         {t('builtWithMore', lang)}
       </Link>

@@ -68,7 +68,7 @@ export function ScenarioCard({
           viewBox={`0 0 ${W} ${H}`}
           className="h-full w-full"
           role="img"
-          aria-label={scenario.title[lang]}
+          aria-label={scenario.topic[lang]}
         >
           <defs>
             <pattern
@@ -154,15 +154,21 @@ export function ScenarioCard({
       </div>
 
       <div className="flex flex-1 flex-col p-5">
-        {/* The agenda item first. Somebody scanning these is deciding whether
-            the tool fits their own meeting, and that is answered by what was
-            being decided — not by what this particular map happened to find. */}
-        <p className="text-[11.5px] leading-[1.5] text-[var(--muted)]">
-          <span className="eyebrow mr-1.5">{t('agendaLabel', lang)}</span>
-          {scenario.topic[lang]}
-        </p>
-        <h3 className="t-title mt-2">{scenario.title[lang]}</h3>
-        <p className="mt-2 flex-1 text-[13px] leading-[1.65] text-[var(--muted)]">
+        {/* The agenda is the card's headline, not a caption above one.
+            Somebody scanning four of these is deciding whether the tool fits
+            a meeting of their own, and that is answered by what was being
+            decided — which was set at 12px in muted grey under an eyebrow,
+            below a title naming a finding they had no context for yet. */}
+        <p className="eyebrow">{t('agendaLabel', lang)}</p>
+        <h3 className="t-title mt-1.5">{scenario.topic[lang]}</h3>
+
+        {/* What this particular map turned out to show, marked as the finding
+            it is rather than left to read as a second headline. */}
+        <p className="mt-3 flex-1 text-[13.5px] leading-[1.65] text-[var(--muted)]">
+          <span className="font-medium text-[var(--ink)]">
+            {scenario.title[lang]}
+          </span>
+          {' — '}
           {scenario.teaser[lang]}
         </p>
 
@@ -170,7 +176,7 @@ export function ScenarioCard({
             of these four is a failure and says so here: an example gallery
             where every tile promises success teaches that the tool always
             works, which is the one thing it must not teach. */}
-        <div className="mt-3.5 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[11.5px] text-[var(--muted)]">
+        <div className="mt-3.5 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[12px] text-[var(--muted)]">
           <span>
             {tf('cardPeople', lang, { n: projection.speakers.length })}
           </span>

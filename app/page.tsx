@@ -68,6 +68,35 @@ export default function Overview() {
               {say(HERO.headline)}
             </h2>
             <p className="t-lead mt-7 max-w-[42rem]">{say(HERO.lead)}</p>
+
+            {/* Pasting a transcript is the product; the examples are the
+                demonstration. Until this pair existed the only way to reach
+                the composer from the top of the page was a link in the header,
+                and the page read as a gallery that happened to have a tool
+                attached. */}
+            <div className="mt-9 flex flex-wrap items-center gap-3">
+              <Link
+                href="/new"
+                className="group inline-flex items-center gap-2 rounded-full bg-[var(--signal)] px-6 py-3.5 text-[15px] font-medium text-[var(--on-signal)] transition-opacity hover:opacity-88"
+              >
+                {say(OWN_TRANSCRIPT.cta)}
+                <span
+                  aria-hidden
+                  className="readout transition-transform group-hover:translate-x-1"
+                >
+                  →
+                </span>
+              </Link>
+              <a
+                href="#examples"
+                className="rounded-full border border-[var(--line-strong)] px-5 py-3.5 text-[14.5px] text-[var(--body)] transition-colors hover:border-[var(--ink)] hover:text-[var(--ink)]"
+              >
+                {say(HERO.secondary)}
+              </a>
+            </div>
+            <p className="mt-3.5 text-[13px] leading-[1.6] text-[var(--muted)]">
+              {say(HERO.ctaNote)}
+            </p>
           </div>
         </section>
 
@@ -112,13 +141,16 @@ export default function Overview() {
             have to scroll through the explanations to find it. */}
         <section className="mx-auto max-w-[1240px] px-5 py-14 sm:px-8 sm:py-20">
           <Reveal>
-            <div className="flex flex-col items-start gap-6 rounded-[18px] border border-dashed border-[var(--line-strong)] p-7 sm:flex-row sm:items-center sm:justify-between sm:p-10">
+            {/* Solid, not dashed. A dashed outline is the convention for an
+                empty slot waiting to be filled, which read as "nothing here
+                yet" over the one action on the page that is not an example. */}
+            <div className="flex flex-col items-start gap-6 rounded-[18px] border border-[var(--line)] bg-[var(--panel)] p-7 shadow-[var(--shadow-card)] sm:flex-row sm:items-center sm:justify-between sm:p-10">
               <div>
                 <p className="eyebrow">{say(OWN_TRANSCRIPT.or)}</p>
-                <h3 className="t-title mt-2 text-[1.15rem]">
+                <h3 className="t-title mt-2 text-[1.3rem]">
                   {say(OWN_TRANSCRIPT.headline)}
                 </h3>
-                <p className="mt-1.5 text-[13.5px] text-[var(--muted)]">
+                <p className="mt-2 text-[14px] leading-[1.65] text-[var(--muted)]">
                   {say(OWN_TRANSCRIPT.lead)}
                 </p>
               </div>
@@ -227,7 +259,7 @@ export default function Overview() {
               <li key={step.title.en}>
                 <Reveal delay={i * 70}>
                   <div className="rule mb-5" />
-                  <span className="readout text-[11px] text-[var(--muted)]">
+                  <span className="readout text-[12px] text-[var(--muted)]">
                     {String(i + 1).padStart(2, '0')}
                   </span>
                   <h4 className="t-title mt-3">{say(step.title)}</h4>
@@ -283,7 +315,7 @@ export default function Overview() {
             </Link>
             <a
               href="https://github.com/Soohwan-Lee/valueConstellation"
-              className="readout text-[11px] uppercase tracking-[0.16em] text-[var(--muted)] transition-colors hover:text-[var(--ink)]"
+              className="readout text-[12px] uppercase tracking-[0.16em] text-[var(--muted)] transition-colors hover:text-[var(--ink)]"
             >
               {say(FOOTER.repo)}
             </a>

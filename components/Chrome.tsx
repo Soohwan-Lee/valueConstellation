@@ -40,7 +40,7 @@ export function Wordmark({
             strokeWidth={1.4}
           />
         </svg>
-        <h1 className="readout text-[11px] font-medium uppercase leading-[1.5] tracking-[0.22em] text-[var(--ink)]">
+        <h1 className="readout text-[12px] font-medium uppercase leading-[1.5] tracking-[0.22em] text-[var(--ink)]">
           Value
           <br />
           Constellation

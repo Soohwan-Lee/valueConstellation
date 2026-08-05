@@ -104,7 +104,7 @@ export function ParticipantList({
                       ?
                     </span>
                   )}
-                  <span className="readout ml-auto shrink-0 pl-2 text-[11.5px] text-[var(--muted)]">
+                  <span className="readout ml-auto shrink-0 pl-2 text-[12px] text-[var(--muted)]">
                     {s.n}
                   </span>
                   {/* The one mark saying this row opens. Without it the list
@@ -131,7 +131,7 @@ export function ParticipantList({
                     scannable and the full sentence is one click away. */}
                 {summaries?.[s.speaker] && (
                   <span
-                    className={`block pl-[21px] text-[11.5px] leading-[1.5] text-[var(--muted)] ${
+                    className={`block pl-[21px] text-[12px] leading-[1.5] text-[var(--muted)] ${
                       isSelected ? '' : 'line-clamp-2'
                     }`}
                   >
@@ -242,7 +242,7 @@ function DistancesFrom({
                   className="h-px shrink-0 bg-[var(--line-strong)]"
                   style={{ width: `${Math.max(3, pair.relative * 40)}px` }}
                 />
-                <span className="readout w-[30px] shrink-0 text-right text-[11px] text-[var(--muted)]">
+                <span className="readout w-[30px] shrink-0 text-right text-[12px] text-[var(--muted)]">
                   {pair.relative.toFixed(2)}
                 </span>
               </div>
@@ -251,14 +251,14 @@ function DistancesFrom({
                   told what it is a ratio of; "근거가 조금 다름" is the sentence
                   somebody came to the panel for, and the figure behind it is
                   there for whoever wants to check the ordering. */}
-              <span className="mt-0.5 block text-[11.5px] leading-[1.45] text-[var(--ink)]">
+              <span className="mt-0.5 block text-[12px] leading-[1.45] text-[var(--ink)]">
                 {bandLabel(distanceBand(pair.relative), lang)}
               </span>
             </div>
           </li>
         ))}
       </ul>
-      <p className="mt-2 pl-[21px] text-[11px] leading-[1.55] text-[var(--muted)]">
+      <p className="mt-2 pl-[21px] text-[12px] leading-[1.55] text-[var(--muted)]">
         {t('distanceNote', lang)}
       </p>
     </div>
@@ -349,7 +349,7 @@ export function MarkLegend({
       {items.map((item) => (
         <li
           key={item.key}
-          className="flex items-center gap-1.5 text-[11.5px] text-[var(--muted)]"
+          className="flex items-center gap-1.5 text-[12px] text-[var(--muted)]"
         >
           <svg width={14} height={14} viewBox="0 0 14 14" aria-hidden className="shrink-0">
             {item.glyph}
@@ -416,7 +416,7 @@ export function ChoiceList<T extends string>({
               >
                 {o.label}
               </span>
-              <span className="mt-0.5 block text-[11.5px] leading-[1.5] text-[var(--muted)]">
+              <span className="mt-0.5 block text-[12px] leading-[1.5] text-[var(--muted)]">
                 {o.description}
               </span>
             </span>
@@ -451,7 +451,7 @@ export function SegmentedControl<T extends string>({
               title={o.title}
               onClick={() => onChange(o.value)}
               aria-pressed={on}
-              className="rounded-[4px] px-2 py-1 text-[11.5px] transition-colors"
+              className="rounded-[4px] px-2 py-1 text-[12px] transition-colors"
               style={{
                 background: on ? 'var(--signal)' : 'transparent',
                 color: on ? 'var(--on-signal)' : 'var(--muted)',

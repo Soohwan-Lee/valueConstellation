@@ -50,7 +50,7 @@ export function GuideButton({ lang }: { lang: Lang }) {
         aria-expanded={open}
         className="flex items-center gap-1.5 rounded-full border border-[var(--line)] px-3 py-1.5 text-[12.5px] text-[var(--muted)] transition-colors hover:border-[var(--line-strong)] hover:text-[var(--ink)]"
       >
-        <span aria-hidden className="readout text-[11px]">
+        <span aria-hidden className="readout text-[12px]">
           ?
         </span>
         {t('howToRead', lang)}

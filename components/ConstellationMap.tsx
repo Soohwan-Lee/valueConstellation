@@ -399,7 +399,7 @@ export function ConstellationMap({
                       {s.underdetermined && (
                         <tspan
                           fill="var(--muted)"
-                          className="readout text-[11px]"
+                          className="readout text-[12px]"
                         >
                           {' '}
                           n={s.n}
@@ -429,7 +429,7 @@ export function ConstellationMap({
         <button
           type="button"
           onClick={resetZoom}
-          className="readout absolute bottom-3 right-3 rounded-[5px] border border-[var(--line)] bg-[var(--panel)]/90 px-2 py-1 text-[11px] text-[var(--body)] backdrop-blur-sm transition-colors hover:border-[var(--line-strong)] hover:text-[var(--ink)]"
+          className="readout absolute bottom-3 right-3 rounded-[5px] border border-[var(--line)] bg-[var(--panel)]/90 px-2 py-1 text-[12px] text-[var(--body)] backdrop-blur-sm transition-colors hover:border-[var(--line-strong)] hover:text-[var(--ink)]"
         >
           {transform.k.toFixed(1)}× · reset
         </button>
@@ -469,7 +469,7 @@ function AxisName({
 }) {
   return (
     <span
-      className={`absolute max-w-[34%] text-[11px] font-medium leading-[1.4] tracking-[0.06em] text-[var(--muted)] ${className}`}
+      className={`absolute max-w-[34%] text-[12px] font-medium leading-[1.4] tracking-[0.06em] text-[var(--muted)] ${className}`}
     >
       {pole[lang]}
     </span>
@@ -571,7 +571,7 @@ function MeasureLine({
         x={mx}
         y={my - 4 * inv}
         textAnchor="middle"
-        className="readout text-[11px]"
+        className="readout text-[12px]"
         fill="var(--body)"
         stroke="var(--plate)"
         strokeWidth={3.5 * inv}

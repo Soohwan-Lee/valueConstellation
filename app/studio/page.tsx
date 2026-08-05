@@ -309,7 +309,7 @@ export default function Studio() {
             <Section
               title={t('participantsLabel', lang)}
               aside={
-                <span className="text-[11.5px] text-[var(--muted)]">
+                <span className="text-[12px] text-[var(--muted)]">
                   {tf('cardPeople', lang, { n: speakerCount })}
                 </span>
               }
@@ -318,7 +318,7 @@ export default function Studio() {
                   rows, and an instruction that arrives after the thing it
                   describes has already been scrolled past is not one. */}
               {!selectedSpeaker && (
-                <p className="mb-2.5 px-0.5 text-[11.5px] leading-[1.55] text-[var(--muted)]">
+                <p className="mb-2.5 px-0.5 text-[12px] leading-[1.55] text-[var(--muted)]">
                   {t('measureHint', lang)}
                 </p>
               )}
@@ -352,7 +352,7 @@ export default function Studio() {
                 options={methodOptions(lang)}
                 onChange={setMethod}
               />
-              <p className="mt-2.5 px-0.5 text-[11.5px] leading-[1.6] text-[var(--muted)]">
+              <p className="mt-2.5 px-0.5 text-[12px] leading-[1.6] text-[var(--muted)]">
                 {t('methodNote', lang)}
               </p>
             </Section>
@@ -367,14 +367,14 @@ export default function Studio() {
                 options={renderModeOptions(lang)}
                 onChange={setRenderMode}
               />
-              <p className="mt-2.5 text-[11.5px] leading-[1.6] text-[var(--muted)]">
+              <p className="mt-2.5 text-[12px] leading-[1.6] text-[var(--muted)]">
                 {t(
                   renderMode === 'point' ? 'modePointHint' : 'modeRegionHint',
                   lang,
                 )}
               </p>
               {shapeNotice && (
-                <p className="mt-2 text-[11.5px] leading-[1.55] text-[var(--muted)]">
+                <p className="mt-2 text-[12px] leading-[1.55] text-[var(--muted)]">
                   {tf('shapeNote', lang, {
                     n: speakerCount,
                     max: SPEAKER_SLOTS,
@@ -446,13 +446,15 @@ export default function Studio() {
                     example should not have to work out which meeting they are
                     looking at, nor why this one was worth opening. */}
                 {scenario && (
-                  <p className="mt-3 text-[12px] leading-[1.6] text-[var(--muted)]">
-                    <span className="eyebrow mr-1.5">{t('agendaLabel', lang)}</span>
-                    {scenario.topic[lang]}
-                  </p>
+                  <div className="mt-3">
+                    <p className="eyebrow">{t('agendaLabel', lang)}</p>
+                    <p className="mt-1 text-[14.5px] font-medium leading-[1.45] text-[var(--ink)]">
+                      {scenario.topic[lang]}
+                    </p>
+                  </div>
                 )}
                 {lookFor && (
-                  <p className="mt-1.5 text-[12.5px] leading-[1.7] text-[var(--body)]">
+                  <p className="mt-2 text-[13px] leading-[1.7] text-[var(--body)]">
                     {lookFor}
                   </p>
                 )}

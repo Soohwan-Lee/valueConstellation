@@ -153,7 +153,7 @@ export function Composer({
                     >
                       {name}
                       {facilitator && (
-                        <span className="ml-1 text-[11.5px] text-[var(--muted)]">
+                        <span className="ml-1 text-[12px] text-[var(--muted)]">
                           — {t('moderatorExcluded', lang)}
                         </span>
                       )}
