@@ -418,10 +418,10 @@ export function ConstellationMap({
           away when the map is panned. */}
       {axes && (
         <div className="pointer-events-none absolute inset-0">
-          <AxisName className="left-3 top-1/2 -translate-y-1/2 text-left" pole={axes.horizontal.low} lang={lang} />
-          <AxisName className="right-3 top-1/2 -translate-y-1/2 text-right" pole={axes.horizontal.high} lang={lang} />
-          <AxisName className="left-1/2 top-2 -translate-x-1/2 text-center" pole={axes.vertical.high} lang={lang} />
-          <AxisName className="bottom-2 left-1/2 -translate-x-1/2 text-center" pole={axes.vertical.low} lang={lang} />
+          <AxisName className="left-3 top-1/2 -translate-y-1/2 text-left" pole={axes.horizontal.low} arrow="←" lang={lang} />
+          <AxisName className="right-3 top-1/2 -translate-y-1/2 text-right" pole={axes.horizontal.high} arrow="→" lang={lang} />
+          <AxisName className="left-1/2 top-2 -translate-x-1/2 text-center" pole={axes.vertical.high} arrow="↑" lang={lang} />
+          <AxisName className="bottom-2 left-1/2 -translate-x-1/2 text-center" pole={axes.vertical.low} arrow="↓" lang={lang} />
         </div>
       )}
 
@@ -460,18 +460,34 @@ export function ConstellationMap({
  */
 function AxisName({
   pole,
+  arrow,
   lang,
   className,
 }: {
   pole: AxisPole
+  /** Points along the axis toward this end. */
+  arrow: '←' | '→' | '↑' | '↓'
   lang: Lang
   className: string
 }) {
+  // Four phrases floating at the edges of a plate read as captions until
+  // something says they describe a direction. The arrow is that something, and
+  // it points the way the map opens out rather than at the label.
+  const mark = (
+    <span aria-hidden className="readout text-[var(--faint)]">
+      {arrow}
+    </span>
+  )
+  const vertical = arrow === '↑' || arrow === '↓'
   return (
     <span
       className={`absolute max-w-[34%] text-[12px] font-medium leading-[1.4] tracking-[0.06em] text-[var(--muted)] ${className}`}
     >
-      {pole[lang]}
+      {arrow === '↑' && <span className="block leading-none">{mark}</span>}
+      {arrow === '←' && <>{mark} </>}
+      <span className={vertical ? 'block' : undefined}>{pole[lang]}</span>
+      {arrow === '→' && <> {mark}</>}
+      {arrow === '↓' && <span className="block leading-none">{mark}</span>}
     </span>
   )
 }

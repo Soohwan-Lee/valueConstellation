@@ -67,7 +67,13 @@ to run the pipeline without one of your own.
 | **Axes** | The two directions the map opens along, named from the statements at each end. Not on MDS, whose orientation is arbitrary. |
 
 Distances are always relative. Projected units mean nothing across two maps, so
-nothing in the interface ever reports one.
+nothing in the interface ever reports one — and every gap is stated as a phrase
+before it is stated as a ratio. *근거가 뚜렷이 다름 / Clearly different ground*
+comes first and `0.63` follows it, because a share of the widest gap on one
+particular map is not something a reader can act on until somebody says what it
+is a share of. The wording is about the ground somebody argued from, never about
+agreement: two people who reached opposite conclusions from the same kind of
+reason sit close together here.
 
 ### How a region decides its shape
 
@@ -115,10 +121,15 @@ four participants and a coin toss with two.
 
 | Result | What the map says |
 |---|---|
-| ≥ 2× chance and ≥ 55% | Tells the participants apart clearly |
+| clears the bar and ≥ 55% | Tells the participants apart clearly |
 | > chance + 10 points | Separates them, but not sharply |
 | below that | **Cannot** tell them apart — usually one meeting covering several agenda items |
 | fewer than 6 statements per person | Declines to judge, and says how little it had |
+
+The bar is the lower of *twice chance* and *halfway from chance to a perfect
+score*. Doubling is the rule wherever doubling is attainable; with two
+participants chance is 50%, so doubling it is perfection and no two-person
+meeting could ever have been called well separated however cleanly it split.
 
 That last row exists because the figure cannot otherwise distinguish *these people
 did not differ* from *there was not enough of them to tell*, and those need
@@ -136,13 +147,13 @@ this was measured on the projection, the figures came out more than twice as hig
 
 ### Why the second figure is not a grade
 
-Under the layout switcher sits how much of the difference survived the flattening.
-For **Topics** (PCA) that runs 17–22%, which looks alarming and is not a verdict on
-the map. PCA maximises variance among *all statements*, and most of a sentence
-embedding is topic and phrasing — so what PCA works hardest to keep is not what
-this map is for. The **People** layout fits the plane to the speaker centroids
-instead and keeps **76–100%** of the between-speaker difference on the same
-transcripts. With three or fewer participants that figure is arithmetic rather
+Behind the layout switcher sits how much of the difference was carried onto the
+screen. For **Spread the topics apart** (PCA) that runs 17–22%, which looks
+alarming and is not a verdict on the map. PCA maximises variance among *all
+statements*, and most of a sentence embedding is topic and phrasing — so what
+PCA works hardest to keep is not what this map is for. **Spread the people
+apart** fits the plane to the speaker centroids instead and keeps **76–100%** of
+the between-speaker difference on the same transcripts. With three or fewer participants that figure is arithmetic rather
 than evidence — three points always lie in a plane exactly — and is marked as such.
 
 ## The built-in examples
@@ -150,12 +161,17 @@ than evidence — three points always lie in a plane exactly — and is marked a
 Four meetings, each producing a different shape. All four run through the real
 pipeline; none is a picture drawn in advance. Rebuild with `npm run fixtures`.
 
-| Example | Agenda | Statements | Traced back | Chance | What it shows |
+| Example | Agenda | Statements | Who-said-it | Chance | What it shows |
 |---|---|---:|---:|---:|---|
-| One question, four positions | Where to site a renewable energy plant | 25 | **64%** | 25% | Four grounds, wide spread, no clustering — and two regions that come apart where somebody changed their kind of reason |
-| Same yes, different reasons | Whether to rebuild the city hall | 22 | **82%** | 33% | A unanimous vote hiding three positions |
-| Two people, two worlds | Safety on the primary school route | 22 | **86%** | 50% | The sharpest split of the four, from a room of two |
+| One question, four positions | Where to site a renewable energy plant | 25 | **60%** | 25% | Four grounds, wide spread, no clustering — and two regions that come apart where somebody changed their kind of reason |
+| Same yes, different reasons | Whether to rebuild the city hall | 22 | **91%** | 33% | A unanimous vote hiding three positions |
+| Two people, two worlds | Safety on the primary school route | 23 | **87%** | 50% | The sharpest split of the four, from a room of two |
 | When the map fails | Parking, school meals and library hours at once | 21 | **5%** | 33% | Three agenda items; every average collapses to the middle and the regions scatter |
+
+The meetings are Korean; the participants are named in English — Dave, Rosa,
+Ivan, Clara and eight more. An example is read rather than analysed, and a
+reader choosing between four maps should not also be holding four unfamiliar
+names in a script they may not read. Pasted transcripts keep their own names.
 
 The fourth is included **because** it fails, and it fails convincingly: 5% against
 33% chance is *worse than guessing*. A reader should meet that case here, where the
@@ -185,7 +201,7 @@ The practical consequence: **one map wants one question.** A meeting covering
 several agenda items needs a map per item. Per-speaker averaging over heterogeneous
 topics is a real limitation of the method, not a bug to tune away.
 
-The People layout is a partial answer, not a solution. Fitting the plane to the
+The people layout is a partial answer, not a solution. Fitting the plane to the
 speaker centroids recovers whatever separates them from the directions PCA spends
 on topic, which is why it keeps 76–100% where PCA keeps 17–22%. But it can only
 project a difference that is there: on the `mixed` example it keeps 100% of the
@@ -221,13 +237,16 @@ projected coordinates. The two agree only for a linear map, which is why the
 default layout is linear; MDS has no out-of-sample extension, so its centroids are
 embedded jointly with the statements.
 
-**Three layouts, one set of statements.** *People* fits the plane to the speaker
+**Three layouts, one set of statements.** They differ only in how one result is
+carried onto the screen — same statements, same people, same relationships, a
+different angle on them. *Spread the people apart* fits the plane to the speaker
 centroids, weighted by √n so somebody who spoke three times does not steer it as
-hard as somebody who spoke forty — this is the default, because the question the
-tool exists for is who differs from whom. *Topics* (PCA) fits it to the statements,
-so the axes describe what the room argued about. *Distance* (metric MDS on cosine
-distance) preserves pairwise distance instead of finding directions at all, and so
-gets no axis names — rotate an MDS picture and nothing is lost.
+hard as somebody who spoke forty; this is the default, because the question the
+tool exists for is who differs from whom. *Spread the topics apart* (PCA) fits it
+to the statements, so the axes describe what the room argued about — and it is
+therefore the layout whose axes get names. *Keep the distances true* (metric MDS
+on cosine distance) preserves pairwise distance instead of finding directions at
+all, and so gets no names: rotate an MDS picture and nothing is lost.
 
 **Per-speaker summaries** are read from the transcript, not from the coordinates,
 so they say the same thing whichever layout is on screen. One call covers every
@@ -267,7 +286,16 @@ uses, and what happens to a pasted transcript.
   carries the statements it was read from, and they are marked in the list.
 - **Say what the number means, not what it is called.** No variance, no
   saturation, no explained-variance ratio in front of somebody trying to
-  understand a meeting.
+  understand a meeting. And the answer before the working: the map's verdict is
+  a sentence — *이 지도는 참여자를 구분하지 못합니다* — with the arithmetic that
+  produced it underneath, and the figures themselves one click away, each with
+  the line that makes it readable. A number nobody can interpret is not
+  transparency; it is noise that looks like transparency.
+- **Say what a transcript needs before it is pasted, not after.** The tool
+  reports that a meeting covered too many agenda items, and reports it thirty
+  seconds and one API call after the reader could have done anything about it.
+  The paste page states the conditions up front and points at the example that
+  demonstrates each one.
 - **Assent is counted but not positioned.** "네, 맞습니다" is not a location.
   Assent and procedural turns are excluded from positions and reported
   separately: the gap between how much somebody agreed and where they actually
