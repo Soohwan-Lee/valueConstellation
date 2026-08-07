@@ -3,6 +3,8 @@ import type { SpeakerNames } from './speakers.ts'
 import type { SpeakerSummaries } from './summaries.ts'
 import type { Attribution } from './aggregate.ts'
 import type { Timeline } from './timeline.ts'
+import type { Consensus } from './consensus.ts'
+import type { Exchange } from './exchanges.ts'
 
 /** What kind of contribution an utterance makes to the discussion. */
 export type UtteranceKind =
@@ -167,6 +169,16 @@ export interface Projection {
   utterances: ProjectedUtterance[]
   speakers: SpeakerProfile[]
   meta: ProjectionMeta
+  /**
+   * The middle of the room in this layout — the average of the speaker
+   * positions, one vote each. Null only when no speaker could be placed.
+   */
+  groupCentre: [number, number] | null
+  /**
+   * Where the written consensus sits, when the meeting reached one. Its text
+   * lives on the result, since it does not change with the layout.
+   */
+  consensus: [number, number] | null
 }
 
 /** Everything the map needs, for both projection methods. */
@@ -201,6 +213,19 @@ export interface AnalysisResult {
    * split to compare. Never inferred from line order — see `lib/timeline.ts`.
    */
   timeline: Timeline | null
+  /**
+   * What the room landed on, and how far each statement sat from it.
+   *
+   * Null only when there was nothing to measure. `reached` is false for the
+   * ordinary meeting that ended without agreement, and then the gaps are
+   * measured from the middle of the room instead — see `lib/consensus.ts`.
+   */
+  consensus: Consensus | null
+  /**
+   * Who answered whom, and what the answer did to the earlier point. Empty for
+   * a transcript where nobody engaged, which is a finding rather than a gap.
+   */
+  exchanges: Exchange[]
 }
 
 /** How a speaker is drawn. Which of these is right is an empirical question. */

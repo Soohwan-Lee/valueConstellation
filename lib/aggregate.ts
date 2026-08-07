@@ -136,11 +136,29 @@ export interface AggregateInput {
   method: ProjectionMethod
   /** Speakers to exclude from the map (moderators, by default). */
   excludeSpeakers?: string[]
+  /**
+   * The written consensus, embedded like any statement.
+   *
+   * Projected with everything else rather than placed by hand: a point drawn at
+   * the middle of the picture would be a decoration, and this one is a claim
+   * about where the room landed. It goes through the same model as the
+   * statements so that its distance to each speaker means what every other
+   * distance on the map means.
+   */
+  consensusVector?: Vector | null
 }
 
 export interface AggregateOutput {
   projectedUtterances: ProjectedUtterance[]
   speakers: SpeakerProfile[]
+  /**
+   * The middle of the room: the average of the speaker centroids, one vote
+   * each rather than one vote per statement. Somebody who spoke forty times
+   * would otherwise be most of "the group".
+   */
+  groupCentre: [number, number] | null
+  /** Where the written consensus landed, when there was one. */
+  consensus: [number, number] | null
   explainedVariance: number | null
   componentVariance: [number, number] | null
   droppedSpeakers: string[]
@@ -423,6 +441,8 @@ export function aggregateAndProject(input: AggregateInput): AggregateOutput {
   const emptyResult: AggregateOutput = {
     projectedUtterances: [],
     speakers: [],
+    groupCentre: null,
+    consensus: null,
     explainedVariance: null,
     componentVariance: null,
     droppedSpeakers: [],
@@ -465,8 +485,23 @@ export function aggregateAndProject(input: AggregateInput): AggregateOutput {
   })
   const centroidSpeakers = speakerOrder.filter((s) => centroids.has(s))
 
+  // Two more points to place, on the same axes as everything else.
+  //
+  // The group centre is the average of the speaker centroids rather than of the
+  // statements: with one vote per statement, "the group" is wherever the person
+  // who talked most was standing.
+  const groupVector = centroid(centroidSpeakers.map((s) => centroids.get(s)!))
+  const consensusVector =
+    input.consensusVector && input.consensusVector.length === dim
+      ? normalize(input.consensusVector)
+      : null
+  const landmarks: Vector[] = []
+  const groupSlot = groupVector ? landmarks.push(groupVector) - 1 : -1
+  const consensusSlot = consensusVector ? landmarks.push(consensusVector) - 1 : -1
+
   let utterancePoints: [number, number][] = []
   let centroidPoints: [number, number][] = []
+  let landmarkPoints: [number, number][] = []
   let explainedVariance: number | null = null
   let componentVariance: [number, number] | null = null
   let secondAxisFromResiduals = false
@@ -487,6 +522,7 @@ export function aggregateAndProject(input: AggregateInput): AggregateOutput {
     if (!model) return emptyResult
     utterancePoints = utteranceVectors.map((v) => applyPca(model, v))
     centroidPoints = centroidSpeakers.map((s) => applyPca(model, centroids.get(s)!))
+    landmarkPoints = landmarks.map((v) => applyPca(model, v))
     explainedVariance = model.explainedVariance
     componentVariance = model.componentVariance
     secondAxisFromResiduals = model.secondAxisFromResiduals
@@ -495,15 +531,26 @@ export function aggregateAndProject(input: AggregateInput): AggregateOutput {
     if (!model) return emptyResult
     utterancePoints = utteranceVectors.map((v) => applyPca(model, v))
     centroidPoints = centroidSpeakers.map((s) => applyPca(model, centroids.get(s)!))
+    landmarkPoints = landmarks.map((v) => applyPca(model, v))
     explainedVariance = model.explainedVariance
     componentVariance = model.componentVariance
   } else {
-    // Embed utterances and centroids together; MDS cannot project new points.
-    const combined = [...utteranceVectors, ...centroidSpeakers.map((s) => centroids.get(s)!)]
+    // Embed utterances, centroids and the two landmarks together; MDS cannot
+    // project new points afterwards, so anything that has to appear on this
+    // layout has to be in the matrix it is solved from.
+    const combined = [
+      ...utteranceVectors,
+      ...centroidSpeakers.map((s) => centroids.get(s)!),
+      ...landmarks,
+    ]
     const coords = classicalMds(combined)
     if (!coords) return emptyResult
     utterancePoints = coords.slice(0, utteranceVectors.length)
-    centroidPoints = coords.slice(utteranceVectors.length)
+    centroidPoints = coords.slice(
+      utteranceVectors.length,
+      utteranceVectors.length + centroidSpeakers.length,
+    )
+    landmarkPoints = coords.slice(utteranceVectors.length + centroidSpeakers.length)
   }
 
   const projectedUtterances: ProjectedUtterance[] = mappableIdx.map((idx, k) => ({
@@ -550,6 +597,8 @@ export function aggregateAndProject(input: AggregateInput): AggregateOutput {
   return {
     projectedUtterances,
     speakers,
+    groupCentre: groupSlot >= 0 ? landmarkPoints[groupSlot] ?? null : null,
+    consensus: consensusSlot >= 0 ? landmarkPoints[consensusSlot] ?? null : null,
     explainedVariance,
     componentVariance,
     droppedSpeakers,

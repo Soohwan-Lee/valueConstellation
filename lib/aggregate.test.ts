@@ -167,6 +167,57 @@ test('each speaker centroid lands nearest its own utterances', () => {
   }
 })
 
+test('the group centre and the consensus land on the same axes as everyone', () => {
+  const r = rng(23)
+  const dim = 40
+  const utterances: Utterance[] = []
+  const vectors: number[][] = []
+  let i = 0
+  for (const [speaker, axis] of [['A', 0], ['B', 5], ['C', 9]] as [string, number][]) {
+    for (let k = 0; k < 6; k++) {
+      utterances.push(claim(speaker, i++))
+      const v = Array.from({ length: dim }, () => (r() - 0.5) * 0.05)
+      v[axis] += 1
+      vectors.push(v)
+    }
+  }
+  // A landing point beside speaker A, which is where it should be drawn.
+  const consensusVector = Array.from({ length: dim }, () => 0)
+  consensusVector[0] = 1
+
+  for (const method of ['people', 'pca', 'mds'] as const) {
+    const out = aggregateAndProject({ utterances, vectors, method, consensusVector })
+    const centre = out.groupCentre
+    const consensus = out.consensus
+    assert.ok(centre && consensus, method)
+
+    // The middle of the room is inside the room: no further from the speakers
+    // than they are from each other.
+    const spread = Math.max(
+      ...out.speakers.flatMap((a) =>
+        out.speakers.map((b) => Math.hypot(a.x - b.x, a.y - b.y)),
+      ),
+    )
+    for (const s of out.speakers) {
+      assert.ok(
+        Math.hypot(s.x - centre[0], s.y - centre[1]) <= spread,
+        `${method}: centre outside the room`,
+      )
+    }
+
+    // MDS is solved jointly rather than projected, so its landing point is
+    // placed by the same solve as everybody else — this is the check that it
+    // was not appended to the wrong slice.
+    const nearest = out.speakers.reduce((best, s) =>
+      Math.hypot(s.x - consensus[0], s.y - consensus[1]) <
+      Math.hypot(best.x - consensus[0], best.y - consensus[1])
+        ? s
+        : best,
+    )
+    assert.equal(nearest.speaker, 'A', `${method}: consensus landed on the wrong speaker`)
+  }
+})
+
 test('a missing embedding does not poison the whole map', () => {
   // An empty array is truthy in JS, so a bare existence check let a missing
   // embedding through and the column-wise mean became NaN in every dimension.

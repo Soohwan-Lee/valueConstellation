@@ -9,7 +9,7 @@ import {
   filterHallucinated,
   type LocatedUtterance,
 } from './segment.ts'
-import { aggregateAndProject, isMappable } from './aggregate.ts'
+import { aggregateAndProject, centroid, isMappable } from './aggregate.ts'
 import {
   formatForTranslation,
   needsTranslation,
@@ -35,6 +35,22 @@ import {
   SUMMARY_SYSTEM_PROMPT,
   type SpeakerSummaries,
 } from './summaries.ts'
+import {
+  CONSENSUS_SYSTEM_PROMPT,
+  ConsensusSchema,
+  formatForConsensus,
+  measureGaps,
+  verifyConsensus,
+  type Consensus,
+  type ConsensusRead,
+} from './consensus.ts'
+import {
+  EXCHANGE_SYSTEM_PROMPT,
+  ExchangesSchema,
+  formatForExchanges,
+  verifyExchanges,
+  type Exchange,
+} from './exchanges.ts'
 import { buildTimeline } from './timeline.ts'
 import { EMBEDDING_MODEL, MODEL } from './models.ts'
 import type {
@@ -280,12 +296,55 @@ export async function analyzeTranscript(
     return { ok: false, status: 502, error: `Embedding failed: ${message}` }
   }
 
-  // 4. Project, once per method, so the client can switch without a round trip.
   const vectors = utterances.map((u) => vectorByIndex.get(u.index) ?? [])
   const excludeSpeakers = includeModerators
     ? []
     : parsed.speakers.filter(isModerator)
+  const excluded = new Set(excludeSpeakers)
 
+  // Everything that will carry a position: the statements the map is built
+  // from, and the ones the readings below are read from. One list, so a
+  // sentence about the meeting cannot rest on something the map left out.
+  const onMap = utterances.filter(
+    (u) =>
+      isMappable(u) &&
+      !excluded.has(u.speaker) &&
+      (vectorByIndex.get(u.index)?.length ?? 0) > 0,
+  )
+
+  // 4. Read what the room arrived at, and how its statements answered one
+  // another. Both run before the projection because the consensus, if there was
+  // one, is embedded and laid out with everything else — a point placed
+  // afterwards would be a drawing rather than a measurement.
+  const [consensusRead, exchanges] = await Promise.all([
+    readConsensus(onMap),
+    readExchanges(onMap),
+  ])
+
+  let consensusVector: number[] | null = null
+  if (consensusRead?.reached) {
+    // Embedded in the language the meeting was held in. The same sentence in
+    // two languages does not land in the same place — cross-language distances
+    // in this model run systematically longer — so embedding the Korean text of
+    // an English meeting would push the landing point away from every statement
+    // it was read from, and the map would show a room that agreed as a room
+    // that did not.
+    const korean = onMap.some((u) => /[가-힣]/.test(u.text))
+    const text = korean
+      ? consensusRead.statement.ko
+      : consensusRead.statement.en || consensusRead.statement.ko
+    try {
+      const { embeddings } = await embedMany({
+        model: openai.embeddingModel(EMBEDDING_MODEL),
+        values: [text],
+      })
+      consensusVector = embeddings[0] ?? null
+    } catch (error) {
+      console.error('consensus embedding failed', error)
+    }
+  }
+
+  // 5. Project, once per method, so the client can switch without a round trip.
   const methods: ProjectionMethod[] = ['people', 'pca', 'mds']
   const projections = {} as AnalysisResult['projections']
   let droppedSpeakers: string[] = []
@@ -296,10 +355,13 @@ export async function analyzeTranscript(
       vectors,
       method,
       excludeSpeakers,
+      consensusVector,
     })
     projections[method] = {
       utterances: out.projectedUtterances,
       speakers: out.speakers,
+      groupCentre: out.groupCentre,
+      consensus: out.consensus,
       meta: {
         method,
         explainedVariance: out.explainedVariance,
@@ -369,13 +431,25 @@ export async function analyzeTranscript(
     (u) => isMappable(u) && placedSpeakers.has(u.speaker),
   )
 
-  // 7. Compare the first half of the meeting with the second, when the
-  // transcript says which half a statement was in. Free — the vectors are
-  // already in hand — and null for the ordinary untimed paste.
+  // Compare the first half of the meeting with the second, when the transcript
+  // says which half a statement was in. Free — the vectors are already in hand
+  // — and null for the ordinary untimed paste.
   const timeline = buildTimeline({
     utterances: mappable,
     vectors: mappable.map((u) => vectorByIndex.get(u.index)),
   })
+
+  // How far every statement sits from what the room landed on, or — when it
+  // landed on nothing — from the middle of the room. The second is not a
+  // consolation prize: a meeting that agreed on nothing still has statements
+  // near its centre of gravity and statements far from it, and saying so is
+  // more use than an empty view.
+  const consensus = buildConsensus(
+    consensusRead,
+    mappable,
+    (u) => vectorByIndex.get(u.index) ?? null,
+    consensusVector,
+  )
 
   const [, speakerSummaries] = await Promise.all([
     Promise.all(
@@ -417,6 +491,8 @@ export async function analyzeTranscript(
       speakerNames,
       speakerSummaries,
       timeline,
+      consensus,
+      exchanges,
       diagnostics: {
         turns: parsed.turns.length,
         speakers: parsed.speakers,
@@ -432,6 +508,100 @@ export async function analyzeTranscript(
         embeddingModel: EMBEDDING_MODEL,
       },
     },
+  }
+}
+
+/**
+ * What the room arrived at, or that it arrived at nothing.
+ *
+ * Never rejects, like every other reading pass: a map without a landing point
+ * is the map this tool shipped with, and losing one to a timeout is a smaller
+ * loss than losing the analysis. Anything the model returns that the transcript
+ * cannot support is downgraded to "no consensus" rather than shown — see
+ * `verifyConsensus`.
+ */
+async function readConsensus(
+  utterances: Utterance[],
+): Promise<(ConsensusRead & { anchors: string[] }) | null> {
+  if (utterances.length < 2) return null
+  try {
+    const { object } = await generateObject({
+      model: openai(MODEL),
+      schema: ConsensusSchema,
+      system: CONSENSUS_SYSTEM_PROMPT,
+      prompt: formatForConsensus(utterances),
+    })
+    const { reached, anchors } = verifyConsensus(object, utterances)
+    return { ...object, reached, anchors }
+  } catch (error) {
+    console.error('consensus reading failed', error)
+    return null
+  }
+}
+
+/** Who answered whom. Verified against the transcript; see `verifyExchanges`. */
+async function readExchanges(utterances: Utterance[]): Promise<Exchange[]> {
+  if (utterances.length < 2) return []
+  try {
+    const { object } = await generateObject({
+      model: openai(MODEL),
+      schema: ExchangesSchema,
+      system: EXCHANGE_SYSTEM_PROMPT,
+      prompt: formatForExchanges(utterances),
+    })
+    return verifyExchanges(object.exchanges, utterances).kept
+  } catch (error) {
+    console.error('exchange reading failed', error)
+    return []
+  }
+}
+
+/**
+ * The landing point together with how far each statement sat from it.
+ *
+ * When there was no consensus the gaps are measured from the middle of the
+ * room — the average of the speaker centroids, one vote each — so the
+ * convergence view still describes a meeting that agreed on nothing, which is
+ * most meetings.
+ */
+function buildConsensus(
+  read: (ConsensusRead & { anchors: string[] }) | null,
+  onMap: Utterance[],
+  vectorFor: (u: Utterance) => number[] | null,
+  consensusVector: number[] | null,
+): Consensus | null {
+  const entries = onMap
+    .map((u) => ({ id: u.id, speaker: u.speaker, vector: vectorFor(u) }))
+    .filter((e): e is { id: string; speaker: string; vector: number[] } =>
+      Boolean(e.vector?.length),
+    )
+  if (entries.length === 0) return null
+
+  const bySpeaker = new Map<string, number[][]>()
+  for (const e of entries) {
+    const list = bySpeaker.get(e.speaker) ?? []
+    list.push(e.vector)
+    bySpeaker.set(e.speaker, list)
+  }
+  const centres = [...bySpeaker.values()]
+    .map((vs) => centroid(vs))
+    .filter((v): v is number[] => Boolean(v))
+  const groupCentre = centroid(centres)
+
+  // A landing point that could not be embedded is not one the view can measure
+  // against, so it falls back to the room's middle rather than reporting gaps
+  // from something it does not have.
+  const reached = Boolean(read?.reached) && Boolean(consensusVector?.length)
+  const basisVector = reached ? consensusVector! : groupCentre
+  if (!basisVector) return null
+
+  return {
+    reached,
+    statement: read?.statement ?? { ko: '', en: '' },
+    open: read?.open ?? { ko: '', en: '' },
+    anchors: read?.anchors ?? [],
+    gap: measureGaps(entries, basisVector),
+    basis: reached ? 'consensus' : 'group',
   }
 }
 
