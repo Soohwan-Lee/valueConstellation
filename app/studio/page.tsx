@@ -21,6 +21,7 @@ import {
 } from '@/components/MapControls'
 import { LayoutMenu } from '@/components/studio/LayoutMenu'
 import { MethodFooter } from '@/components/studio/MethodFooter'
+import { attributionVerdict } from '@/lib/aggregate'
 import { SCENARIOS, getScenario } from '@/data/scenarios'
 import { Composer } from '@/components/Composer'
 import { takeStagedTranscript } from '@/lib/handoff'
@@ -333,6 +334,9 @@ export default function Studio() {
                 speakerNames={analysis?.speakerNames ?? null}
                 summaries={analysis?.speakerSummaries ?? null}
                 timeline={analysis?.timeline ?? null}
+                separable={
+                  attributionVerdict(projection.meta.attribution) !== 'none'
+                }
               />
             </PrimarySection>
 

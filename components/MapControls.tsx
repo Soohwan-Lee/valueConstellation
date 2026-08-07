@@ -38,6 +38,7 @@ export function ParticipantList({
   speakerNames,
   summaries,
   timeline,
+  separable,
 }: {
   speakers: SpeakerProfile[]
   /** Every gap on the map, widest first. Drives the distances shown on select. */
@@ -46,6 +47,11 @@ export function ParticipantList({
   summaries: SpeakerSummaries | null
   /** First half against second, when the transcript was timed. Usually null. */
   timeline: Timeline | null
+  /**
+   * Whether the map can tell these people apart at all. Qualifies what a
+   * movement between the halves is allowed to be read as — see below.
+   */
+  separable: boolean
   hidden: Set<string>
   selected: string | null
   onSelect: (speaker: string) => void
@@ -224,6 +230,14 @@ export function ParticipantList({
               : 'timeSplitNoneNote',
             lang,
             { at: timeline.splitAt },
+          )}
+          {/* Only where the map has already admitted it cannot separate these
+              people, which is the same condition that means several agenda
+              items were covered — and then the second half is about something
+              else, so everybody's late statements differ without anybody
+              having moved. */}
+          {!separable && timeline.moves.some((m) => m.moved) && (
+            <> {t('timeTopicCaveat', lang)}</>
           )}
         </p>
       )}

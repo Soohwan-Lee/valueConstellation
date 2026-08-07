@@ -188,6 +188,13 @@ export const STRINGS = {
     ko: '시각은 없어도 됩니다. 있으면 회의 전반과 후반을 나눠 누가 자리를 옮겼는지까지 볼 수 있습니다.',
     en: 'Times are optional. With them, the map can also split the meeting in half and show who moved between the two.',
   },
+  // The confound, said where it applies. A meeting that worked through several
+  // agenda items has a second half that is about something else, so everybody's
+  // late statements differ from their early ones without anybody having moved.
+  timeTopicCaveat: {
+    ko: '다만 이 지도는 참여자를 구분하지 못합니다. 안건이 여러 개인 회의라면 후반 발언이 다른 것은 사람이 옮겨서가 아니라 다루는 주제가 바뀌었기 때문일 수 있습니다.',
+    en: 'This map cannot tell these participants apart, though. Where a meeting worked through several agenda items, statements differing later may be the subject changing rather than the person moving.',
+  },
   pairCloser: { ko: '후반에 가까워짐', en: 'closer by the end' },
   pairApart: { ko: '후반에 멀어짐', en: 'further by the end' },
   saidAt: { ko: '말한 시각', en: 'Said at' },
