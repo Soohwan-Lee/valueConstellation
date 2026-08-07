@@ -35,6 +35,7 @@ import {
   SUMMARY_SYSTEM_PROMPT,
   type SpeakerSummaries,
 } from './summaries.ts'
+import { buildTimeline } from './timeline.ts'
 import { EMBEDDING_MODEL, MODEL } from './models.ts'
 import type {
   AnalysisResult,
@@ -368,6 +369,14 @@ export async function analyzeTranscript(
     (u) => isMappable(u) && placedSpeakers.has(u.speaker),
   )
 
+  // 7. Compare the first half of the meeting with the second, when the
+  // transcript says which half a statement was in. Free — the vectors are
+  // already in hand — and null for the ordinary untimed paste.
+  const timeline = buildTimeline({
+    utterances: mappable,
+    vectors: mappable.map((u) => vectorByIndex.get(u.index)),
+  })
+
   const [, speakerSummaries] = await Promise.all([
     Promise.all(
       (['people', 'pca'] as const).map(async (method) => {
@@ -407,6 +416,7 @@ export async function analyzeTranscript(
       droppedSpeakers,
       speakerNames,
       speakerSummaries,
+      timeline,
       diagnostics: {
         turns: parsed.turns.length,
         speakers: parsed.speakers,

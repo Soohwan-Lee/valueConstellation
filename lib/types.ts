@@ -2,6 +2,7 @@ import type { AxisLabels } from './axes.ts'
 import type { SpeakerNames } from './speakers.ts'
 import type { SpeakerSummaries } from './summaries.ts'
 import type { Attribution } from './aggregate.ts'
+import type { Timeline } from './timeline.ts'
 
 /** What kind of contribution an utterance makes to the discussion. */
 export type UtteranceKind =
@@ -192,6 +193,14 @@ export interface AnalysisResult {
    * reached or when nobody said enough for a position to be readable.
    */
   speakerSummaries: SpeakerSummaries | null
+  /**
+   * How the first half of the meeting compared with the second.
+   *
+   * Null for the ordinary case of a transcript with no timestamps, and null
+   * again when the times are there but too little was said either side of the
+   * split to compare. Never inferred from line order — see `lib/timeline.ts`.
+   */
+  timeline: Timeline | null
 }
 
 /** How a speaker is drawn. Which of these is right is an empirical question. */

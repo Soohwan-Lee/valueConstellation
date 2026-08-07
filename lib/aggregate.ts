@@ -40,7 +40,7 @@ export function isMappable(u: Utterance): boolean {
 }
 
 /** Unit-normalises, so the mean is a direction in cosine space. */
-function normalize(v: Vector): Vector {
+export function normalize(v: Vector): Vector {
   let sum = 0
   for (const x of v) sum += x * x
   const len = Math.sqrt(sum)
