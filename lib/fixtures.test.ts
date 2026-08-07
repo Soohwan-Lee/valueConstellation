@@ -216,6 +216,64 @@ test('every example is timed, and its halves can be compared', () => {
   }
 })
 
+test('what each example landed on is checkable, and its exchanges are real', () => {
+  for (const [id, map] of Object.entries(MAPS)) {
+    const consensus = map.consensus
+    assert.ok(consensus, `"${id}" has no landing point at all`)
+
+    const onMap = map.projections.people.utterances
+    const ids = new Set(onMap.map((u) => u.id))
+
+    if (consensus.reached) {
+      assert.ok(consensus.statement.ko.trim() && consensus.statement.en.trim())
+      // Two speakers behind it, or it is one person's position relabelled.
+      const speakers = new Set(
+        consensus.anchors.map(
+          (a) => onMap.find((u) => u.id === a)?.speaker ?? '',
+        ),
+      )
+      assert.ok(
+        speakers.size >= 2,
+        `"${id}" rests its landing point on ${speakers.size} speaker(s)`,
+      )
+      assert.equal(consensus.basis, 'consensus')
+      assert.ok(
+        map.projections.people.consensus,
+        `"${id}" agreed on something but did not place it`,
+      )
+    } else {
+      // No agreement means no point drawn, and gaps measured from the middle.
+      assert.equal(consensus.basis, 'group')
+      assert.deepEqual(consensus.anchors, [])
+      assert.equal(map.projections.people.consensus, null)
+    }
+
+    // Every mapped statement has a distance, or the flow view drops it
+    // silently — a chart missing statements looks exactly like a quiet meeting.
+    for (const u of onMap) {
+      assert.ok(
+        Number.isFinite(consensus.gap[u.id]),
+        `"${id}" has no distance for ${u.id}`,
+      )
+    }
+
+    for (const e of map.exchanges) {
+      assert.ok(ids.has(e.from) && ids.has(e.to), `"${id}" cites a missing id`)
+      const from = onMap.find((u) => u.id === e.from)!
+      const to = onMap.find((u) => u.id === e.to)!
+      assert.ok(from.index > to.index, `"${id}" answers a later statement`)
+      assert.notEqual(from.speaker, to.speaker, `"${id}" has somebody replying to themselves`)
+      assert.ok(e.note.ko.trim() && e.note.en.trim(), `"${id}" has an unlabelled exchange`)
+    }
+  }
+
+  // The examples exist to show the range, so the set must still contain both a
+  // meeting that landed on something and one that did not.
+  const outcomes = Object.values(MAPS).map((m) => m.consensus?.reached)
+  assert.ok(outcomes.includes(true), 'no example reaches a consensus')
+  assert.ok(outcomes.includes(false), 'no example fails to reach one')
+})
+
 test('every placed speaker is summarised, from statements they made', () => {
   for (const [id, map] of Object.entries(MAPS)) {
     const summaries = map.speakerSummaries

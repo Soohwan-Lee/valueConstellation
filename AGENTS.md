@@ -50,9 +50,13 @@ Node 22.6+ is required for native type stripping. `OPENAI_API_KEY` goes in
 - Every figure on screen gets a plain-language name and one line saying how to
   read it, and the verdict is stated before the arithmetic behind it.
 - Anything reporting a change over time is measured against the same statements
-  re-split at random, never against a fixed threshold — see `lib/timeline.ts` —
-  and says so when it found no change. Timestamps are optional in every
-  transcript, so nothing else on screen may depend on one being there.
+  re-split or reordered at random, never against a fixed threshold — see
+  `lib/timeline.ts` — and says so when it found no change. Timestamps are
+  optional in every transcript, so nothing else on screen may depend on one
+  being there.
+- Model-written text that appears on the map is embedded and projected like a
+  statement, never placed at a chosen coordinate, and carries the statement ids
+  it rests on. Verification of those ids lives in `lib/`, not in the prompt.
 - The mono face carries no Hangul: use it for digits and Latin identifiers only.
   That applies inside a value too — put `readout` on the digits, not on a string
   that may contain a participant's name.

@@ -109,8 +109,8 @@ export const SCENARIOS: Scenario[] = [
       en: 'split across deadline, quality, customers and burnout',
     },
     lookFor: {
-      ko: '네 사람이 지도 곳곳에 흩어집니다. 같은 회의에 앉아 사실은 서로 다른 네 가지 회의를 하고 있었다는 뜻입니다. Dave의 영역만 두 덩어리로 갈라져 있는데, 약속한 날짜를 지키자는 이야기에서 결제만 우회하자는 이야기로 옮겨간 자리입니다.',
-      en: 'Four people spread right across the map: one meeting that was really four. Only Dave’s region comes apart into two shapes — where he moved from keeping the promised date to routing around the payment code instead.',
+      ko: '네 사람이 지도 곳곳에 흩어집니다. 같은 회의에 앉아 사실은 서로 다른 네 가지 회의를 하고 있었다는 뜻입니다. Dave의 영역만 두 덩어리로 갈라져 있는데, 약속한 날짜를 지키자는 이야기에서 결제만 우회하자는 이야기로 옮겨간 자리입니다. “흐름”으로 바꾸면 열 번의 주고받음과, 발언이 점점 아래 선으로 내려오는 것이 보입니다 — 네 예시 중 실제로 수렴한 유일한 회의입니다.',
+      en: 'Four people spread right across the map: one meeting that was really four. Only Dave’s region comes apart into two shapes — where he moved from keeping the promised date to routing around the payment code instead. Switch to “Flow” for the ten exchanges, and for the statements descending toward the line: this is the one example of the four that actually converged.',
     },
     transcript: `[00:00] 진행: 다음 주 목요일 출시를 그대로 갈지 미룰지 오늘 정하겠습니다. 한 분씩 의견 주세요.
 [00:14] Dave: 저는 예정대로 가야 한다고 봅니다. 이 날짜를 기준으로 마케팅 메일이 이미 나갔고, 영업팀이 고객사 세 곳에 목요일이라고 말해뒀습니다. 지금 미루면 그 약속을 저희가 깨는 겁니다.
@@ -156,8 +156,8 @@ export const SCENARIOS: Scenario[] = [
       en: 'a unanimous yes with three incompatible jobs behind it',
     },
     lookFor: {
-      ko: '대화만 보면 세 사람 다 찬성입니다. 지도에서는 서로 멀리 떨어집니다. "다들 뽑자고 했잖아"가 입사 석 달 뒤에 왜 싸움이 되는지가 이 모양입니다.',
-      en: 'Read the debrief and all three said hire. On the map they sit far apart — which is why "but everyone agreed" turns into an argument three months after the start date.',
+      ko: '대화만 보면 세 사람 다 찬성입니다. 지도에서는 서로 멀리 떨어집니다. "다들 뽑자고 했잖아"가 입사 석 달 뒤에 왜 싸움이 되는지가 이 모양입니다. “흐름”으로 바꾸면 화살표가 세 개뿐인데, 그것도 전부 회의 앞부분입니다 — 서로의 말에 답한 적이 거의 없이 각자 찬성한 회의입니다.',
+      en: 'Read the debrief and all three said hire. On the map they sit far apart — which is why "but everyone agreed" turns into an argument three months after the start date. Switch to “Flow” and there are three arrows, all of them early: they agreed in parallel, almost never answering one another.',
     },
     transcript: `[00:00] 진행: 최종 후보 한 분, 채용할지 오늘 정하겠습니다. 세 분 순서대로 의견 주세요.
 [00:22] Nora: 저는 뽑는 쪽입니다. 지금 밀린 요청이 여든 건이고 그중 절반이 한 사람한테 몰려 있습니다. 이번 분기 안에 손이 하나 더 붙어야 합니다.
@@ -247,8 +247,8 @@ export const SCENARIOS: Scenario[] = [
       en: 'three unrelated items mixed together, and the map does worse than guessing',
     },
     lookFor: {
-      ko: '지도 아래를 먼저 보세요. "이 지도는 참여자를 구분하지 못합니다"라고 적혀 있습니다 — 이름을 지운 발언을 돌려주면 100개 중 18개만 맞는데, 찍으면 33개가 맞습니다. 찍느니만 못하다는 뜻입니다. 그런데도 그림은 세 사람을 제법 떨어뜨려 그립니다. 이 배치가 사람을 갈라 보이게 하려고 고른 것이고, 참여자가 세 명이면 어떤 세 점이든 평면에 정확히 놓이기 때문입니다. 갈라 보이는 것과 실제로 갈린 것은 다릅니다 — “거리 그대로 보기”로 바꾸면 셋이 겹칩니다. 회의 하나에 쟁점이 하나여야 하는 이유입니다.',
-      en: 'Read under the map first: it says it cannot tell these people apart — 18 of 100 name-stripped statements go back to the right person, where guessing gets 33. It is doing worse than guessing. The picture still draws the three of them some way apart, because this layout was chosen to show people apart and any three points lie in a plane exactly. Drawn apart and actually apart are different things — switch to “Keep the distances true” and the three of them overlap. This is why one map wants one question.',
+      ko: '지도 아래를 먼저 보세요. "이 지도는 참여자를 구분하지 못합니다"라고 적혀 있습니다 — 이름을 지운 발언을 돌려주면 100개 중 18개만 맞는데, 찍으면 33개가 맞습니다. 찍느니만 못하다는 뜻입니다. 그런데도 그림은 세 사람을 제법 떨어뜨려 그립니다. 이 배치가 사람을 갈라 보이게 하려고 고른 것이고, 참여자가 세 명이면 어떤 세 점이든 평면에 정확히 놓이기 때문입니다. 갈라 보이는 것과 실제로 갈린 것은 다릅니다 — “거리 그대로 보기”로 바꾸면 셋이 겹칩니다. 회의 하나에 쟁점이 하나여야 하는 이유입니다. “흐름”에서는 합의한 지점이 없어 아래 선이 참여자 평균으로 바뀌고, 발언이 시간이 갈수록 그 선에서 멀어집니다 — 사람이 멀어진 게 아니라 안건이 옮겨간 것입니다.',
+      en: 'Read under the map first: it says it cannot tell these people apart — 18 of 100 name-stripped statements go back to the right person, where guessing gets 33. It is doing worse than guessing. The picture still draws the three of them some way apart, because this layout was chosen to show people apart and any three points lie in a plane exactly. Drawn apart and actually apart are different things — switch to “Keep the distances true” and the three of them overlap. This is why one map wants one question. In “Flow”, with nothing agreed, the floor becomes the average of the participants — and the statements walk away from it as the meeting goes on. That is the subject moving, not the people.',
     },
     transcript: `[00:00] 진행: 오늘은 세 가지를 한 번에 정하겠습니다. 주간 회의 시간, 탕비실 커피머신, 고객 데이터 보관 기간 순서입니다.
 [00:20] Ted: 회의는 월요일 오전으로 고정했으면 합니다. 매주 요일이 바뀌어서 외부 일정을 못 잡습니다.

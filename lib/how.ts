@@ -218,6 +218,38 @@ export const GROUPS: Group[] = [
         },
       },
       {
+        term: { ko: '회의가 도달한 지점', en: 'Where the room landed' },
+        value: 'embedded, not placed',
+        body: {
+          ko: '모델이 회의 전체를 읽고 “이 방이 도달한 지점”을 한두 문장으로 씁니다. 그다음이 중요합니다 — 그 문장을 발언과 똑같은 임베딩 모델에 넣어 나온 벡터를 다른 점들과 같은 방식으로 평면에 올립니다. 좌표를 계산해 놓고 설명을 붙이는 것이 아니라, 문장을 먼저 쓰고 그 문장이 놓이는 자리를 보는 것입니다. 그래서 이 점은 눈으로 검증할 수 있습니다. 자기가 포함한다고 주장한 사람에게서 멀리 떨어져 있으면 지도에 그렇게 보이고, “근거” 표시가 붙은 발언이 확인할 자리입니다.\n\n합의가 없었으면 점을 그리지 않습니다. 서로 다른 두 사람의 발언에 근거를 걸 수 없는 문장은 합의로 치지 않습니다 — 한 사람의 발언에서만 읽은 합의는 그 사람의 주장에 이름표만 바꿔 단 것이기 때문입니다. 이때 거리는 대신 참여자들의 평균 자리에서 잽니다.',
+          en: 'The model reads the whole meeting and writes what the room landed on, in one or two sentences. What matters is what happens next: that sentence goes through the same embedding model the statements went through, and the vector it returns is laid out with everything else. The sentence is written first and its position is then observed — not a coordinate computed and narrated afterwards. Which is what makes the point checkable: if it sits far from somebody it claims to include, the map shows that, and the statements marked “Basis” are where to look.\n\nA meeting that agreed on nothing gets no point. A sentence that cannot be anchored to statements from two different speakers is not treated as agreement, since a landing point read from one person is that person\'s position with a different label on it. The distances are then measured from the average of the participants instead.',
+        },
+      },
+      {
+        term: { ko: '누가 누구에게 답했는가', en: 'Who answered whom' },
+        value: 'verified against the transcript',
+        body: {
+          ko: '모델이 “이 발언은 앞의 어느 발언에 답한 것인가”를 표시하고, 확인할 수 없는 것은 전부 버립니다. 실제로 있는 발언을 가리켜야 하고, 시간상 뒤에서 앞으로 향해야 하며, 서로 다른 사람이어야 합니다. 앞뒤 순서만으로 추정하지 않는 이유는 바로 다음에 말한 사람이 대개 자기 이야기를 계속하고 있고, 정작 답한 발언은 십 분 전 것일 때가 많기 때문입니다. 아무도 서로에게 답하지 않은 회의는 화살표가 없이 나오며, 그것도 하나의 결과입니다.',
+          en: 'The model marks where one statement answers an earlier one, and everything unverifiable is dropped: it must point at statements that exist, run backwards in time, and connect two different people. Adjacency is not used, because the next person to speak is usually continuing their own point while the statement being answered was ten minutes ago. A meeting where nobody engaged comes back with no arrows, which is itself a finding.',
+        },
+      },
+      {
+        term: { ko: '흐름 화면의 세로축', en: 'The flow view’s vertical axis' },
+        value: 'rescaled to this meeting',
+        body: {
+          ko: '아래 선에서 얼마나 멀리 있는 발언인지를 임베딩 공간에서 잰 값입니다. 다만 축에 절대 거리를 적지 않고 “이 회의에서 가장 가까운 발언 ↔ 가장 먼 발언”으로만 적습니다. 1536차원에서는 어떤 두 문장이든 거리가 좁은 구간에 몰리기 때문입니다 — 실제로 측정한 모든 회의에서 0.75~1.00 사이였습니다. 그대로 그리면 모든 점이 꼭대기에 붙은 평평한 그림이 되고, 그 구간만 확대하면 작은 차이가 큰 차이처럼 보입니다. 그래서 위치는 회의 안에서의 상대 순서이고, 축 이름도 그렇게만 말합니다.',
+          en: 'How far a statement sat from the line at the bottom, measured in embedding space — but the axis is never labelled with a distance. It reads "closest of what was said" to "furthest", because in 1536 dimensions any two sentences are bunched into a narrow band: every meeting measured came out between 0.75 and 1.00. Drawn on that scale the chart is a flat line at the top, and zooming into the band alone makes small differences look large. So the position is relative within the meeting, and the axis says only that.',
+        },
+      },
+      {
+        term: { ko: '가까워졌는가 멀어졌는가', en: 'Toward it or away from it' },
+        value: `rank correlation · ${NULL_DRAWS} shuffles · ${Math.round(NULL_PERCENTILE * 100)}%`,
+        body: {
+          ko: `발언한 순서와 아래 선까지의 거리 사이의 순위 상관입니다. 값이 아니라 순위로 재는 이유는 거리가 좁은 구간에 몰려 있어 한 발언이 기울기를 혼자 정할 수 있기 때문입니다. 판정은 회의 전후반 비교와 같은 방식입니다 — 같은 거리들을 순서만 무작위로 섞어 ${NULL_DRAWS}번 다시 재고, 그보다 뚜렷할 때만 “가까워졌다”나 “멀어졌다”고 적습니다. 발언 스무 개에서 -0.3 정도의 상관은 우연히도 잘 나오고, 그걸로 “회의가 수렴했다”고 말하는 도구는 아무 말도 안 하는 도구보다 나쁩니다.`,
+          en: `A rank correlation between when a statement was said and how far it sat from the line. Ranks rather than values, because the distances are bunched and one statement would otherwise set the slope alone. Judged the same way the halves comparison is: the same distances are shuffled into a different order ${NULL_DRAWS} times, and only a clearer result than ${Math.round(NULL_PERCENTILE * 100)}% of those is reported as movement either way. A correlation of -0.3 over twenty statements is easy to produce by accident, and a tool that calls that convergence is worse than one that says nothing.`,
+        },
+      },
+      {
         term: { ko: '회의 전반과 후반', en: 'First half against second' },
         value: `${MIN_STATEMENTS_PER_HALF} per half · ${NULL_DRAWS} re-splits · ${Math.round(NULL_PERCENTILE * 100)}%`,
         body: {

@@ -19,7 +19,7 @@ this codebase exist because a specific misreading was observed.
 app/page.tsx              overview: the example gallery, reading guide, region
                           rule, limits
 app/new/page.tsx          the composer, on its own page
-app/studio/page.tsx       the tool: console rail, plate, inspector
+app/studio/page.tsx       the tool: console rail, plate (map or flow), inspector
 app/how-it-works/page.tsx reference: models, thresholds, data handling
 app/api/analyze/route.ts  request handling only
 lib/analyze.ts            the pipeline, shared with the fixture builders
@@ -143,6 +143,26 @@ overview publishes that rule to the reader. A constant chosen because the
 picture looked better with it cannot be defended to somebody who disagrees with
 what the picture says about them, so if a shape needs fixing, change what is
 measured rather than adding a multiplier.
+
+**A generated point is placed by measurement.** The consensus is a sentence the
+model wrote, and it earns its position on the map the way everything else does:
+it goes through the same embedding model as the statements and is projected with
+them (`lib/consensus.ts`, `aggregateAndProject`'s `consensusVector`). Never
+compute a coordinate and attach a story to it. It carries anchors from two
+different speakers or it is not a consensus at all — a landing point read from
+one person's statements is that person's position relabelled — and a meeting
+that agreed on nothing gets no point, with distances measured from the group
+centre instead. Anything the model returns that the transcript cannot support is
+dropped, in `verifyConsensus` and `verifyExchanges`, not in the prompt.
+
+**Two views, and neither is a rearrangement of the other.** The map has no time
+in it and the flow view has no distance between people in it. Anything about
+who is near whom belongs on the map; anything about order, replies or
+convergence belongs in `components/FlowView.tsx`. The flow view's vertical axis
+is labelled by its ends — closest and furthest of what was said — never with a
+distance: sentence distances in 1536 dimensions bunch into 0.75–1.00, so the
+rescaling in `spreadPositions` is what makes the chart legible and is also why
+no absolute closeness may be claimed from it.
 
 **A comparison needs something to be compared against.** Anything that reports
 a change — who moved between the halves of a meeting, which pair closed — is

@@ -261,6 +261,8 @@ transcript
   → embedding                   text-embedding-3-small, 1536d
   → centroid + spread           per speaker, in embedding space
   → attribution + separation    leave-one-out, in embedding space, before any layout
+  → what the room landed on     written from the statements, then embedded like one
+  → who answered whom           extracted, then verified against the transcript
   → first half vs second        only if the transcript was timed; permutation null
   → People / PCA / metric MDS   flattened to 2D, all three computed
   → axis naming                 from the statements at each end, not for MDS
@@ -288,6 +290,32 @@ to the statements, so the axes describe what the room argued about — and it is
 therefore the layout whose axes get names. *Keep the distances true* (metric MDS
 on cosine distance) preserves pairwise distance instead of finding directions at
 all, and so gets no names: rotate an MDS picture and nothing is lost.
+
+**Two views, because a scatter has no time in it.** The map answers who is near
+whom. The flow view answers how they got there: time across, distance from what
+the room landed on down, and an arrow wherever one statement answered another.
+Two rooms with identical coordinates can be four people taking each other's
+arguments apart and four people delivering monologues in turn, and for whoever
+has to run the next meeting that is the whole difference.
+
+**What the room landed on** is written by the model from the statements, and
+then — this is the part that matters — embedded with the same model that
+embedded them and laid out with everything else. The sentence comes first and
+its position is observed, rather than a coordinate being computed and narrated.
+So the point can be wrong in a way a reader can see: if it sits far from
+somebody it claims to include, the map shows that, and its anchors name the
+statements to go and read. A meeting that agreed on nothing gets no point at
+all — a sentence that cannot be anchored to two different speakers is one
+person's position with a different label on it — and the distances are then
+measured from the middle of the room instead.
+
+**Who answered whom** is extracted and then verified: an edge must point at
+statements that exist, run backwards in time, and connect two different people.
+Adjacency was not enough, because the next person to speak is usually
+continuing their own point while the statement being answered was ten minutes
+ago. Of the four examples, the release call has ten exchanges and the hiring
+debrief has three — three people who agreed in parallel without answering one
+another, which is that example's whole lesson.
 
 **The first half against the second**, when the transcript carries timestamps —
 which most do not, so nothing on the map depends on it. Order in the file says
@@ -371,6 +399,11 @@ uses, and what happens to a pasted transcript.
   under common colour-vision deficiencies, so marker shape takes over.
 - **A transcript is other people's words.** It is sent only to build the map,
   never stored, and never put in a URL.
+- **A generated point is placed by measurement, never by hand.** The consensus
+  is a sentence nobody said, so it earns its position the only way anything
+  here does: it goes through the same embedding model as the statements and
+  lands where that puts it. Anything drawn at a coordinate chosen to look right
+  would be a decoration making a claim about people.
 - **Nothing requires a timestamp.** Most transcripts have none, and every figure
   on the map holds without one. What times buy is the first half against the
   second — and that is measured against the same statements re-split at random,
@@ -393,7 +426,9 @@ lib/
   segment.ts               argument-unit schema, prompt, fabrication filter
   project.ts               PCA (power iteration), classical MDS, centroid fitting
   aggregate.ts             centroids, spread, attribution, separation
-  timeline.ts              first half against second, against a permutation null
+  consensus.ts             what the room landed on, and distance to it
+  exchanges.ts             who answered whom, and what the answer did
+  timeline.ts              first half against second, and convergence over time
   models.ts                the two model names, with no other dependencies
   blob.ts                  map resolution, and regions as its contours
   axes.ts                  naming the two axes from their extremes
@@ -405,8 +440,8 @@ lib/
   colors.ts                speaker colour and shape assignment
   i18n.ts                  every interface string, KOR and ENG
   landing.ts / how.ts      overview and reference prose, KOR and ENG
-components/                ConstellationMap, Composer, MapControls, DetailPanel,
-                           Chrome, SiteHeader, Preferences, Reveal
+components/                ConstellationMap, FlowView, Composer, MapControls,
+                           DetailPanel, Chrome, SiteHeader, Preferences, Reveal
   landing/                 ScenarioCard, MarkFigure, RegionSteps
   studio/                  SourceMenu, GuideButton, MethodFooter
 scripts/                   fixture builders and the hero renderer
