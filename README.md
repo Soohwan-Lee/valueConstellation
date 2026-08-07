@@ -148,11 +148,11 @@ this was measured on the projection, the figures came out more than twice as hig
 ### Why the second figure is not a grade
 
 Behind the layout switcher sits how much of the difference was carried onto the
-screen. For **Spread the topics apart** (PCA) that runs 17–22%, which looks
+screen. For **Spread the topics apart** (PCA) that runs 19–22%, which looks
 alarming and is not a verdict on the map. PCA maximises variance among *all
 statements*, and most of a sentence embedding is topic and phrasing — so what
 PCA works hardest to keep is not what this map is for. **Spread the people
-apart** fits the plane to the speaker centroids instead and keeps **76–100%** of
+apart** fits the plane to the speaker centroids instead and keeps **80–100%** of
 the between-speaker difference on the same transcripts. With three or fewer participants that figure is arithmetic rather
 than evidence — three points always lie in a plane exactly — and is marked as such.
 
@@ -164,53 +164,65 @@ pipeline; none is a picture drawn in advance. Rebuild with `npm run fixtures`.
 | Example | Agenda | Statements | Who-said-it | Chance | What it shows |
 |---|---|---:|---:|---:|---|
 | One question, four different conversations | Ship next week, or push the date | 24 | **63%** | 25% | Four grounds, wide spread, no clustering — and two regions that come apart where somebody changed their kind of reason |
-| Everyone said yes to a different holiday | Whether to go to Jeju this summer | 23 | **87%** | 33% | A unanimous yes hiding three incompatible holidays |
-| Two people, two worlds | Whether to get a dog | 28 | **86%** | 50% | The sharpest split of the four, from a room of two |
-| When the map fails | Cleaning rota, parking and thermostat at once | 23 | **26%** | 33% | Three subjects, no thread running through any one person; the map does worse than guessing |
+| Three yeses to three different hires | Whether to hire the final candidate | 24 | **79%** | 33% | A unanimous yes with three incompatible jobs behind it |
+| Two people, two worlds | Whether to raise the price | 22 | **82%** | 50% | One room, two people, two registers — and the one example where the pair ends closer than it started |
+| When the map fails | Meeting time, the coffee machine and data retention at once | 22 | **18%** | 33% | Three unrelated subjects, no thread through any one person; the map does worse than guessing |
 
-The situations are ordinary on purpose. They were four municipal council
-meetings — plant siting, a city hall rebuild, school-route safety, a combined
-fees agenda — accurate as demonstrations and useless as an invitation: somebody
-deciding in ten seconds whether this applies to them met four indistinguishable
-town-hall agendas they had never sat in. A team arguing about a ship date, a
-family picking a holiday, two people arguing about a dog, and a share-house
-meeting that covers everything at once answer "have I been in this room"
-without being asked.
+They are meetings with something at stake, which took two attempts to get right.
+They were four municipal council agendas first — plant siting, a city hall
+rebuild, school-route safety, a combined fees item — accurate as demonstrations
+and useless as an invitation: somebody deciding in ten seconds whether this
+applies to them met four indistinguishable town halls they had never sat in.
+Replacing those with a family holiday, a dog and a share-house rota fixed the
+recognition and lost the point, since a tool for reading a room of people who
+have to decide something together was demonstrating on rooms where nothing was
+being decided. A release call, a hiring debrief, a pricing decision and the
+weekly meeting where three unrelated things get discussed at once answer "have I
+been in this room" without giving up the stakes.
+
+Every line of all four carries a timestamp, in the bracketed form transcription
+tools export — so the format a reader is most likely to paste is the one the
+examples demonstrate, and the before/after comparison it unlocks is visible in
+all four rather than in none.
 
 The meetings are Korean; the participants are named in English — Dave, Rosa,
 Ivan, Clara and eight more. An example is read rather than analysed, and a
 reader choosing between four maps should not also be holding four unfamiliar
 names in a script they may not read. Pasted transcripts keep their own names.
 
-The fourth is included **because** it fails, and it fails completely: 26% against
+The fourth is included **because** it fails, and it fails completely: 18% against
 33% chance is *worse than guessing*. A reader should meet that case here, where the
 map states it, rather than first on their own transcript.
 
-Making it fail took three attempts, and the reason is worth recording. Giving each
-speaker a consistent temperament across the three subjects — one always arguing
-fairness, one always practicality — is enough signal to identify them, so the map
-scored 39% and the fixture test rejected it for teaching nothing. A meeting only
-truly collapses when no thread runs through any one person: Lena worries about the
-big clean, then the width of the parking bays, then when to open the windows, and
-those three have nothing in common. That is what a real multi-item meeting does to
-a transcript, and it is what drops the score below chance.
+Making it fail took four attempts across two rewrites, and what it took is the
+finding. Giving each speaker a consistent temperament across the three subjects —
+one always arguing fairness, one always practicality — is enough signal to
+identify them, and the map scored 39%. Rotating the temperaments so that nobody
+holds one for two items running did not help either: with a weekly slot, a job ad
+and a seating plan on the agenda, it scored 61%, better than two of the examples
+that are meant to separate their speakers. Three items close enough to share a
+vocabulary leave the embedding no topic to spend itself on, and what is left is
+how each person writes. Meeting time, the coffee machine and a data-retention
+policy have nothing in common: every centroid becomes the same average of the
+three, and the score falls to 18%.
 
 One caveat this example makes visible: the default **Spread the people apart**
 layout still draws these three some way apart, because it fits a plane to the
 speaker centroids and any three points lie in a plane exactly — which the interface
 already flags as arithmetic rather than evidence. The other two layouts show the
-overlap directly (gap-to-spread 0.93 and 0.97, both below 1). The example's
-"what to look for" text says so and names the layout to switch to.
+overlap directly (gap-to-spread 0.85, below 1). The example's "what to look for"
+text says so and names the layout to switch to.
 
-Writing them was itself the finding, twice over. The first draft of the consensus
-example could not tell its three speakers apart at all, because each had been given
-several distinct sub-arguments — a rich range scatters somebody's own statements and
-buries the difference between them and everybody else. The rewrite that put the
-examples into everyday settings reproduced the same failure in the dog example: a
-first pass where each speaker conceded ground to the other scored 57% against 50%
-chance, because conceding means adopting the other person's vocabulary. Keeping
-Owen inside what it would feel like and Mia inside the daily rota — neither ever
-crossing — took the same conversation to 86%.
+Writing them was itself the finding, three times over. The first draft of the
+consensus example could not tell its three speakers apart at all, because each had
+been given several distinct sub-arguments — a rich range scatters somebody's own
+statements and buries the difference between them and everybody else. A later
+draft where two speakers conceded ground to each other scored 57% against 50%
+chance, because conceding means adopting the other person's vocabulary. And the
+hiring debrief scored 48% on its first pass, where all three interviewers weighed
+in on the same sub-questions — onboarding, then the salary band, then the first
+quarter. Keeping each of them inside their own frame, and letting them disagree by
+restating it rather than by answering the others', took the same meeting to 79%.
 
 ## What testing on real data showed
 
@@ -231,9 +243,9 @@ topics is a real limitation of the method, not a bug to tune away.
 
 The people layout is a partial answer, not a solution. Fitting the plane to the
 speaker centroids recovers whatever separates them from the directions PCA spends
-on topic, which is why it keeps 76–100% where PCA keeps 17–22%. But it can only
-project a difference that is there: on the `mixed` example it keeps 100% of the
-between-speaker variance and still traces back only 5% of statements, because the
+on topic, which is why it keeps 80–100% where PCA keeps 19–22%. But it can only
+project a difference that is there: on the `omnibus` example it keeps 100% of the
+between-speaker variance and still traces back only 18% of statements, because the
 speakers genuinely do not differ once three agendas are averaged together. Making
 speaker identity separable in the first place — rather than relying on raw
 embedding distance — remains the open research problem here.
@@ -242,13 +254,14 @@ embedding distance — remains the open research problem here.
 
 ```text
 transcript
-  → speaker attribution         rule-based, six formats, no model call
+  → speaker attribution         rule-based, seven formats, no model call
   → argument-unit segmentation  gpt-5.4-mini, 15 turns per call, 8 in flight
   → translation repair          any Korean unit segmentation left untranslated
   → speaker names               each name rendered in the other language
   → embedding                   text-embedding-3-small, 1536d
   → centroid + spread           per speaker, in embedding space
   → attribution + separation    leave-one-out, in embedding space, before any layout
+  → first half vs second        only if the transcript was timed; permutation null
   → People / PCA / metric MDS   flattened to 2D, all three computed
   → axis naming                 from the statements at each end, not for MDS
   → speaker summaries           one call covering everybody, anchored to statement ids
@@ -275,6 +288,22 @@ to the statements, so the axes describe what the room argued about — and it is
 therefore the layout whose axes get names. *Keep the distances true* (metric MDS
 on cosine distance) preserves pairwise distance instead of finding directions at
 all, and so gets no names: rotate an MDS picture and nothing is lost.
+
+**The first half against the second**, when the transcript carries timestamps —
+which most do not, so nothing on the map depends on it. Order in the file says
+who spoke after whom, not how much of the meeting had passed, so a half counted
+in lines would cut a meeting where one person talks in long turns straight
+through the middle of their argument. The clock is taken from the source turn
+rather than asked of the model, which never sees a timestamp.
+
+The hard part is not measuring movement but knowing when there is none: split any
+set of statements in two and the halves' centres differ. So each speaker's own
+statements are re-split at random 99 times, and the clock's split has to separate
+their halves further than 95 of those before it is reported; the gaps between
+pairs are read against the same draws. The draws are seeded, so one transcript
+always gives one answer. Two of the four examples find a real movement, and where
+nothing moved the interface says *that* — a comparison that ran and found nothing
+looks exactly like one that never ran.
 
 **Per-speaker summaries** are read from the transcript, not from the coordinates,
 so they say the same thing whichever layout is on screen. One call covers every
@@ -342,6 +371,10 @@ uses, and what happens to a pasted transcript.
   under common colour-vision deficiencies, so marker shape takes over.
 - **A transcript is other people's words.** It is sent only to build the map,
   never stored, and never put in a URL.
+- **Nothing requires a timestamp.** Most transcripts have none, and every figure
+  on the map holds without one. What times buy is the first half against the
+  second — and that is measured against the same statements re-split at random,
+  so "everybody moved" is never the answer, and "nobody did" is said out loud.
 
 </details>
 
@@ -356,10 +389,11 @@ app/
   api/analyze/route.ts     request handling only
 lib/
   analyze.ts               the pipeline, shared by the route and the fixture builder
-  parse.ts                 speaker attribution, six transcript formats
+  parse.ts                 speaker attribution, seven transcript formats
   segment.ts               argument-unit schema, prompt, fabrication filter
   project.ts               PCA (power iteration), classical MDS, centroid fitting
   aggregate.ts             centroids, spread, attribution, separation
+  timeline.ts              first half against second, against a permutation null
   models.ts                the two model names, with no other dependencies
   blob.ts                  map resolution, and regions as its contours
   axes.ts                  naming the two axes from their extremes

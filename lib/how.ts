@@ -4,6 +4,11 @@ import {
   MIN_USEFUL_SEPARATION,
 } from './aggregate'
 import { EMBEDDING_DIMENSIONS, EMBEDDING_MODEL, MODEL } from './models'
+import {
+  MIN_STATEMENTS_PER_HALF,
+  NULL_DRAWS,
+  NULL_PERCENTILE,
+} from './timeline'
 import type { Bilingual } from './landing'
 
 /**
@@ -213,6 +218,14 @@ export const GROUPS: Group[] = [
         },
       },
       {
+        term: { ko: '회의 전반과 후반', en: 'First half against second' },
+        value: `${MIN_STATEMENTS_PER_HALF} per half · ${NULL_DRAWS} re-splits · ${Math.round(NULL_PERCENTILE * 100)}%`,
+        body: {
+          ko: `회의록에 시각이 적혀 있을 때만 계산합니다. 발언 순서는 누가 누구 뒤에 말했는지만 알려줄 뿐 회의가 얼마나 지났는지는 말해주지 않아서, 줄 수로 반을 나누면 길게 말하는 사람의 주장 한가운데가 잘립니다. 시각은 원래 발언 줄에서 가져오며 모델에게 묻지 않습니다. 어느 쪽 반에든 발언이 ${MIN_STATEMENTS_PER_HALF}개 미만인 사람은 비교 대상에서 빠집니다.\n\n어려운 부분은 움직임을 재는 게 아니라 움직임이 없다는 걸 아는 쪽입니다. 어떤 발언 묶음이든 반으로 가르면 두 반의 중심은 서로 다릅니다. 그래서 각자의 발언을 무작위로 ${NULL_DRAWS}번 다시 반씩 나눠보고, 시각으로 나눈 결과가 그중 ${Math.round(NULL_PERCENTILE * 100)}%보다 더 벌어졌을 때만 “후반에 이동”이라고 적습니다. 두 사람 사이 거리의 변화도 같은 ${NULL_DRAWS}번에 견줍니다. 난수는 고정된 값에서 뽑으므로 같은 회의록은 항상 같은 답을 냅니다.`,
+          en: `Computed only when the transcript carries times. Position in the file says who spoke after whom, not how much of the meeting had passed, so halves counted in lines cut a long-talking speaker through the middle of one argument. The clock is read from the source turn and never asked of the model. Anybody with fewer than ${MIN_STATEMENTS_PER_HALF} statements on either side of the split is left out of the comparison.\n\nThe hard part is not measuring movement but knowing when there is none: split any set of statements in two and the halves' centres differ. So each speaker's own statements are re-split at random ${NULL_DRAWS} times, and the clock's split has to separate their halves further than ${Math.round(NULL_PERCENTILE * 100)}% of those before it is reported. Changes in the gap between two people are read against the same ${NULL_DRAWS} draws. The draws come from a fixed seed, so one transcript always gives one answer.`,
+        },
+      },
+      {
         term: { ko: '잠정 위치', en: 'Provisional position' },
         value: `< ${MIN_UTTERANCES_FOR_POSITION} statements`,
         body: {
@@ -243,10 +256,10 @@ export const GROUPS: Group[] = [
     entries: [
       {
         term: { ko: '인식하는 회의록 형식', en: 'Transcript formats' },
-        value: '6',
+        value: '7',
         body: {
-          ko: '“이름:”, “[이름]”, 공식 회의록의 “◯ 이름 위원”, 이름 뒤 시각 표기, 이름만 한 줄에 있고 다음 줄부터 발언인 형식(Clova·Otter·Daglo 내보내기), 영어 이름 형식을 인식합니다. 같은 사람의 다른 표기는 한 사람으로 묶습니다.',
-          en: '"Name:", "[Name]", the "◯ Name 위원" of Korean official minutes, a name followed by a timestamp, a name alone on its own line with the speech following (the Clova, Otter and Daglo export), and the English form. Different spellings of one person are merged.',
+          ko: '“이름:”, “[이름]”, 공식 회의록의 “◯ 이름 위원”, 이름 뒤 시각 표기, 발언 앞 대괄호 시각(“[00:12] 이름: …”), 이름만 한 줄에 있고 다음 줄부터 발언인 형식(Clova·Otter·Daglo 내보내기), 영어 이름 형식을 인식합니다. 같은 사람의 다른 표기는 한 사람으로 묶습니다. 시각은 없어도 되고, 있으면 회의 전반과 후반을 비교하는 데 쓰입니다.',
+          en: '"Name:", "[Name]", the "◯ Name 위원" of Korean official minutes, a name followed by a timestamp, a bracketed time before the name ("[00:12] Alice: …"), a name alone on its own line with the speech following (the Clova, Otter and Daglo export), and the English form. Different spellings of one person are merged. Times are optional; when present they are what the first-half/second-half comparison reads.',
         },
       },
       {

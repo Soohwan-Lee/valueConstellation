@@ -63,8 +63,17 @@ export default function HowItWorks() {
                           </p>
                         )}
                       </div>
+                      {/* Split on blank lines rather than rendered as one
+                          block: an entry long enough to need two paragraphs is
+                          exactly the one nobody will read as a wall. */}
                       <dd className="text-[13.5px] leading-[1.75] text-[var(--body)]">
-                        {say(entry.body)}
+                        {say(entry.body)
+                          .split('\n\n')
+                          .map((paragraph, k) => (
+                            <p key={k} className={k > 0 ? 'mt-3' : undefined}>
+                              {paragraph}
+                            </p>
+                          ))}
                       </dd>
                     </div>
                   ))}

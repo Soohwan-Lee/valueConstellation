@@ -101,14 +101,25 @@ which is where the layout picker lives. Giving a rendering preference the same
 heading as the participants asks a first-time reader to make two decisions of
 apparently equal size, and only one of them is what the tool is for.
 
-**An example has to be a room the reader has sat in.** The four examples exist
-to answer "does this apply to my meeting" in ten seconds. They were municipal
-council agendas — accurate, and answering that question with "only if you sit
-on a council". A speaker in an example must also stay inside one kind of reason
-for the whole meeting: conceding ground means adopting the other person's
-vocabulary, which is measured as the two of them being alike. Two drafts have
-now failed this way, one at 57% against 50% chance. Rebuild with
-`npm run fixtures` and read the printed attribution before shipping one.
+**An example has to be a room the reader has sat in, with something at stake.**
+The four examples exist to answer "does this apply to my meeting" in ten
+seconds. They were municipal council agendas — accurate, and answering that
+question with "only if you sit on a council". The correction overshot into a
+holiday, a dog and a share-house rota: recognisable, and demonstrating a tool
+for rooms that have to decide something on rooms deciding nothing. A release
+call, a hiring debrief and a pricing decision are both.
+
+A speaker in an example must also stay inside one kind of reason for the whole
+meeting: conceding ground means adopting the other person's vocabulary, which is
+measured as the two of them being alike. Three drafts have now failed this way,
+one at 57% against 50% chance and one at 48% against 33%, the latter because
+three people took turns answering the same sub-questions instead of each
+restating their own frame. The example that must *fail* is the mirror of this
+and is harder: its agenda items have to be genuinely unrelated. Three items
+inside one domain — a weekly slot, a job ad, a seating plan — leave the
+embedding no topic to spend itself on and the personal signature comes back,
+which scored 61% where the target was below 33%. Rebuild with `npm run fixtures`
+and read the printed attribution before shipping one.
 
 **Colour means a person.** The eight speaker hues are the only saturated colour
 in the interface. Buttons, selection, focus and warnings are ink on paper, and
@@ -132,6 +143,21 @@ overview publishes that rule to the reader. A constant chosen because the
 picture looked better with it cannot be defended to somebody who disagrees with
 what the picture says about them, so if a shape needs fixing, change what is
 measured rather than adding a multiplier.
+
+**A comparison needs something to be compared against.** Anything that reports
+a change — who moved between the halves of a meeting, which pair closed — is
+measured against the same data rearranged: `lib/timeline.ts` re-splits each
+speaker's statements at random 99 times and reports only what beats 95 of them.
+Split any set of points in two and the halves differ, so a fixed threshold makes
+"everybody moved" the answer for every meeting, loudest for whoever said least.
+Draws are seeded: a finding that changes between two runs of one transcript
+cannot be told from a finding about the meeting. And when nothing changed, say
+so — a comparison that ran and found nothing looks exactly like one that never
+ran.
+
+**Timestamps are optional, everywhere.** Most transcripts have none, and no
+figure on the map may require one. What times buy is the before/after
+comparison, and nothing else on screen may depend on their being there.
 
 **Tests pin observed failures.** Every case in `lib/*.test.ts` is a format or
 failure mode seen in real data. Tests must not call a model. When fixing a bug in

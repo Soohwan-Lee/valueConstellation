@@ -49,6 +49,10 @@ Node 22.6+ is required for native type stripping. `OPENAI_API_KEY` goes in
   included. Transcript content is never translated.
 - Every figure on screen gets a plain-language name and one line saying how to
   read it, and the verdict is stated before the arithmetic behind it.
+- Anything reporting a change over time is measured against the same statements
+  re-split at random, never against a fixed threshold — see `lib/timeline.ts` —
+  and says so when it found no change. Timestamps are optional in every
+  transcript, so nothing else on screen may depend on one being there.
 - The mono face carries no Hangul: use it for digits and Latin identifiers only.
   That applies inside a value too — put `readout` on the digits, not on a string
   that may contain a participant's name.
@@ -70,9 +74,11 @@ that produced it.
 
 The properties worth pinning are the ones that break silently: PCA linearity,
 rejection of non-finite input, region coverage, the degenerate cases where a
-divisor can be zero, and that every layout of a meeting reports the same trust
+divisor can be zero, that every layout of a meeting reports the same trust
 figures — the default one is fitted to separate speakers and must not be able to
-grade itself on having done so.
+grade itself on having done so — and that a speaker who merely ranged widely is
+not reported as having moved, which is the failure any before/after comparison
+defaults to.
 
 ## Git And Security
 
