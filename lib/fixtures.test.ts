@@ -4,6 +4,7 @@ import assert from 'node:assert/strict'
 import fixtures from '../data/fixtures/precomputed.json' with { type: 'json' }
 import { SCENARIOS } from '../data/scenarios.ts'
 import { MIN_STATEMENTS_FOR_ATTRIBUTION } from './aggregate.ts'
+import { MIN_STATEMENTS_PER_HALF } from './timeline.ts'
 import { needsTranslation } from './translate.ts'
 import { speakerLabel } from './speakers.ts'
 import type { SpeakerSummary } from './summaries.ts'
@@ -157,7 +158,7 @@ test('the examples still demonstrate what they claim to', () => {
     return a
   }
 
-  for (const id of ['siting', 'consensus', 'drift']) {
+  for (const id of ['release', 'hiring', 'pricing']) {
     const { share, chance } = attribution(id)
     assert.ok(
       share >= chance * 1.5,
@@ -166,7 +167,7 @@ test('the examples still demonstrate what they claim to', () => {
     )
   }
 
-  const failing = attribution('mixed')
+  const failing = attribution('omnibus')
   assert.ok(
     failing.share <= failing.chance,
     'the "map fails" example now tells its speakers apart, so it teaches nothing',
@@ -182,6 +183,36 @@ test('the examples still demonstrate what they claim to', () => {
       `"${id}" has only ${attribution(id).perSpeaker} statements per speaker,` +
         ' so the map reports that it cannot judge rather than what it found',
     )
+  }
+})
+
+test('every example is timed, and its halves can be compared', () => {
+  // All four transcripts are timestamped on every line, so a fixture with a
+  // statement missing its time means the pipeline dropped it somewhere between
+  // the parser and the map — which is silent damage: the map looks the same and
+  // simply stops being able to say what changed over the meeting.
+  for (const [id, map] of Object.entries(MAPS)) {
+    for (const u of map.projections.people.utterances) {
+      assert.ok(u.at, `"${id}" statement ${u.id} lost its timestamp`)
+    }
+    const timeline = map.timeline
+    assert.ok(timeline, `"${id}" has no before/after comparison`)
+    assert.equal(timeline.timed, timeline.total)
+
+    const placed = new Set(
+      map.projections.people.speakers.map((s) => s.speaker),
+    )
+    for (const move of timeline.moves) {
+      assert.ok(
+        placed.has(move.speaker),
+        `"${id}" reports movement for ${move.speaker}, who is not on the map`,
+      )
+      assert.ok(
+        move.early >= MIN_STATEMENTS_PER_HALF &&
+          move.late >= MIN_STATEMENTS_PER_HALF,
+        `"${id}" compares halves of ${move.early} and ${move.late} for ${move.speaker}`,
+      )
+    }
   }
 })
 
