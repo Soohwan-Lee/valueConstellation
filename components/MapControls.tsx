@@ -11,6 +11,7 @@ import { shapePath, speakerColor, speakerShape } from '@/lib/colors'
 import { bandLabel, t, tf, type Lang } from '@/lib/i18n'
 import { speakerLabel, type SpeakerNames } from '@/lib/speakers'
 import { say, type SpeakerSummaries } from '@/lib/summaries'
+import { pairChange, speakerMove, type Timeline } from '@/lib/timeline'
 
 /**
  * The participant list.
@@ -36,12 +37,15 @@ export function ParticipantList({
   lang,
   speakerNames,
   summaries,
+  timeline,
 }: {
   speakers: SpeakerProfile[]
   /** Every gap on the map, widest first. Drives the distances shown on select. */
   pairs: SpeakerPair[]
   /** What each participant argued, shown inline under their name. */
   summaries: SpeakerSummaries | null
+  /** First half against second, when the transcript was timed. Usually null. */
+  timeline: Timeline | null
   hidden: Set<string>
   selected: string | null
   onSelect: (speaker: string) => void
@@ -57,6 +61,7 @@ export function ParticipantList({
         {speakers.map((s) => {
           const visible = !hidden.has(s.speaker)
           const isSelected = selected === s.speaker
+          const move = speakerMove(timeline, s.speaker)
           return (
             <li
               key={s.speaker}
@@ -104,7 +109,26 @@ export function ParticipantList({
                       ?
                     </span>
                   )}
-                  <span className="readout ml-auto shrink-0 pl-2 text-[12px] text-[var(--muted)]">
+                  {/* Only for the people the clock actually separated. A tag
+                      on everybody would be a tag on nobody — and half the
+                      transcripts this tool sees carry no time at all, so
+                      nothing in the row may depend on one being there. */}
+                  {move?.moved && (
+                    <span
+                      className="ml-auto shrink-0 rounded-[3px] border border-[var(--line-strong)] px-1.5 py-px text-[12px] leading-[1.4] text-[var(--body)]"
+                      title={tf('movedHint', lang, {
+                        early: move.early,
+                        late: move.late,
+                      })}
+                    >
+                      {t('movedTag', lang)}
+                    </span>
+                  )}
+                  <span
+                    className={`readout shrink-0 pl-2 text-[12px] text-[var(--muted)] ${
+                      move?.moved ? '' : 'ml-auto'
+                    }`}
+                  >
                     {s.n}
                   </span>
                   {/* The one mark saying this row opens. Without it the list
@@ -172,6 +196,7 @@ export function ParticipantList({
                   onHover={onHoverPair}
                   lang={lang}
                   speakerNames={speakerNames}
+                  timeline={timeline}
                 />
               )}
             </li>
@@ -186,6 +211,21 @@ export function ParticipantList({
         >
           {t('showAll', lang)}
         </button>
+      )}
+
+      {/* What the tag above means, and where the meeting was cut. A mark with
+          no sentence beside it is a coinage, and this one would be read as
+          "changed their mind" — which is not what was measured. */}
+      {timeline && (
+        <p className="mt-3 text-[12px] leading-[1.55] text-[var(--muted)]">
+          {tf(
+            timeline.moves.some((m) => m.moved)
+              ? 'timeSplitNote'
+              : 'timeSplitNoneNote',
+            lang,
+            { at: timeline.splitAt },
+          )}
+        </p>
       )}
     </div>
   )
@@ -209,12 +249,14 @@ function DistancesFrom({
   onHover,
   lang,
   speakerNames,
+  timeline,
 }: {
   pairs: SpeakerPair[]
   speaker: string
   onHover: (pair: SpeakerPair | null) => void
   lang: Lang
   speakerNames: SpeakerNames | null
+  timeline: Timeline | null
 }) {
   const mine = [...pairsWith(pairs, speaker)].sort(
     (a, b) => a.distance - b.distance,
@@ -225,7 +267,14 @@ function DistancesFrom({
     <div className="px-1.5 pb-2.5 pt-0.5">
       <div className="eyebrow mb-1.5 pl-[21px]">{t('distanceLabel', lang)}</div>
       <ul className="space-y-px">
-        {mine.map((pair) => (
+        {mine.map((pair) => {
+          const other = counterpart(pair, speaker).speaker
+          // Only when it changed. `same` is a real answer and it is the answer
+          // for most pairs, but printing "unchanged" on every row would bury
+          // the one that is not — it is said once, in the note below.
+          const change = pairChange(timeline, speaker, other)
+          const moved = change && change.direction !== 'same' ? change : null
+          return (
           <li key={`${pair.a.speaker}-${pair.b.speaker}`}>
             <div
               onMouseEnter={() => onHover(pair)}
@@ -233,7 +282,7 @@ function DistancesFrom({
             >
               <div className="flex items-baseline gap-2">
                 <span className="min-w-0 flex-1 truncate text-[12.5px] text-[var(--body)]">
-                  {speakerLabel(counterpart(pair, speaker).speaker, lang, speakerNames)}
+                  {speakerLabel(other, lang, speakerNames)}
                 </span>
                 {/* A bar, so the column can be scanned without reading every
                     number. Its width is the ratio the number states. */}
@@ -253,10 +302,17 @@ function DistancesFrom({
                   there for whoever wants to check the ordering. */}
               <span className="mt-0.5 block text-[12px] leading-[1.45] text-[var(--ink)]">
                 {bandLabel(distanceBand(pair.relative), lang)}
+                {moved && (
+                  <span className="text-[var(--muted)]">
+                    {' · '}
+                    {t(moved.direction === 'closer' ? 'pairCloser' : 'pairApart', lang)}
+                  </span>
+                )}
               </span>
             </div>
           </li>
-        ))}
+          )
+        })}
       </ul>
       <p className="mt-2 pl-[21px] text-[12px] leading-[1.55] text-[var(--muted)]">
         {t('distanceNote', lang)}

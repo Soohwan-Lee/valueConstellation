@@ -19,12 +19,26 @@ import { Caveat } from '@/components/DetailPanel'
  * The line shapes the parser recognises, shown while the editor is empty.
  *
  * Taken from the formats the parser is tested against rather than invented, so
- * following one of them is a guarantee rather than a suggestion. The last is
- * the speaker-header form that Clova, Otter and Daglo export.
+ * following one of them is a guarantee rather than a suggestion. The last two
+ * are the timed forms — a leading clock, and the speaker-header form that
+ * Clova, Otter and Daglo export. Times are optional everywhere; when they are
+ * there, the map can also compare the first half of the meeting with the
+ * second, which is what `timedNote` says.
  */
 export const TRANSCRIPT_FORMATS: Record<Lang, string[]> = {
-  ko: ['김철수: 발언', '[김철수] 발언', '◯ 김철수 위원  발언', '김철수 00:12 ⏎ 발언'],
-  en: ['Alice: what she said', '[Alice] what she said', 'Alice 00:12 ⏎ what she said'],
+  ko: [
+    '김철수: 발언',
+    '[김철수] 발언',
+    '◯ 김철수 위원  발언',
+    '[00:12] 김철수: 발언',
+    '김철수 00:12 ⏎ 발언',
+  ],
+  en: [
+    'Alice: what she said',
+    '[Alice] what she said',
+    '[00:12] Alice: what she said',
+    'Alice 00:12 ⏎ what she said',
+  ],
 }
 
 /**
@@ -128,6 +142,12 @@ export function Composer({
                   </li>
                 ))}
               </ul>
+              {/* Said here rather than after the analysis: whether the
+                  timestamps survive the copy-paste is decided in this box, and
+                  a reader who strips them will never be told what they lost. */}
+              <p className="mt-2 text-[12px] leading-[1.55] text-[var(--muted)]">
+                {t('timedNote', lang)}
+              </p>
             </div>
           ) : detected.speakers.length === 0 ? (
             <p className="text-[12.5px] leading-[1.6] text-[var(--body)]">

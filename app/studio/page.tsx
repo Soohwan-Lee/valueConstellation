@@ -332,6 +332,7 @@ export default function Studio() {
                 lang={lang}
                 speakerNames={analysis?.speakerNames ?? null}
                 summaries={analysis?.speakerSummaries ?? null}
+                timeline={analysis?.timeline ?? null}
               />
             </PrimarySection>
 

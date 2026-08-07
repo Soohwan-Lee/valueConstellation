@@ -104,6 +104,32 @@ export interface Timeline {
 }
 
 /**
+ * Lookups for the interface, so a component never walks the arrays itself.
+ *
+ * Both take a nullable timeline and answer for the untimed case, which is the
+ * common one: every caller is a component that has to render the same thing
+ * whether or not the transcript had a clock in it.
+ */
+export function speakerMove(
+  timeline: Timeline | null,
+  speaker: string,
+): SpeakerMove | null {
+  return timeline?.moves.find((m) => m.speaker === speaker) ?? null
+}
+
+export function pairChange(
+  timeline: Timeline | null,
+  a: string,
+  b: string,
+): PairChange | null {
+  return (
+    timeline?.pairs.find(
+      (p) => (p.a === a && p.b === b) || (p.a === b && p.b === a),
+    ) ?? null
+  )
+}
+
+/**
  * Seconds from a written timestamp, or null if it is not one.
  *
  * Two parts are read as minutes and seconds, three as hours, minutes and

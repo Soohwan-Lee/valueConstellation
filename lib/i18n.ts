@@ -163,6 +163,34 @@ export const STRINGS = {
     ko: '이름을 누르면 그 사람의 요약이 펼쳐지고, 다른 참여자와의 거리가 지도에 그어집니다.',
     en: 'Press a name to open what they argued and draw their distance to everyone else on the map.',
   },
+
+  // The first half of the meeting against the second. Only ever shown when the
+  // transcript carried timestamps — see lib/timeline.ts. Everything here says
+  // "later in the meeting" rather than "changed their mind": what is measured
+  // is where somebody's statements sat, and a person can move a long way
+  // without conceding anything.
+  movedTag: { ko: '후반에 이동', en: 'moved later' },
+  movedHint: {
+    ko: '앞 {early}개와 뒤 {late}개의 위치가 서로 달랐습니다. 같은 발언을 무작위로 반씩 나눠 99번 재본 것보다 큰 차이입니다.',
+    en: 'Their first {early} statements sat somewhere their last {late} did not — a bigger gap than 95 of 99 random re-splits of the same statements.',
+  },
+  timeSplitNote: {
+    ko: '이 회의록에는 시각이 적혀 있어 {at}을 기준으로 앞뒤를 나눠 비교했습니다. “후반에 이동”은 그 사람의 발언을 무작위로 반씩 나눠봤을 때보다 앞뒤 차이가 컸다는 뜻입니다.',
+    en: 'This transcript carries times, so it was cut at {at} and the halves compared. “Moved later” means the split by clock separated that person’s statements further than re-splitting them at random does.',
+  },
+  // Said rather than left blank. A comparison that ran and found nothing looks
+  // exactly like one that never ran, and only one of those is a finding.
+  timeSplitNoneNote: {
+    ko: '이 회의록에는 시각이 적혀 있어 {at}을 기준으로 앞뒤를 나눠 비교했습니다. 앞뒤로 자리를 옮긴 사람은 없었습니다 — 각자 회의 내내 같은 자리에서 말했습니다.',
+    en: 'This transcript carries times, so it was cut at {at} and the halves compared. Nobody moved between them: each of them argued from the same place all meeting.',
+  },
+  timedNote: {
+    ko: '시각은 없어도 됩니다. 있으면 회의 전반과 후반을 나눠 누가 자리를 옮겼는지까지 볼 수 있습니다.',
+    en: 'Times are optional. With them, the map can also split the meeting in half and show who moved between the two.',
+  },
+  pairCloser: { ko: '후반에 가까워짐', en: 'closer by the end' },
+  pairApart: { ko: '후반에 멀어짐', en: 'further by the end' },
+  saidAt: { ko: '말한 시각', en: 'Said at' },
   backToOverview: { ko: '소개로 돌아가기', en: 'Overview' },
   pasteTitle: { ko: '회의록 붙여넣기', en: 'Paste a transcript' },
   customSource: { ko: '붙여넣은 회의록', en: 'Pasted transcript' },
