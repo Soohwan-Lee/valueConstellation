@@ -1,7 +1,7 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 
-import { buildTimeline, clockSeconds, MIN_MOVE_RATIO } from './timeline.ts'
+import { buildTimeline, clockSeconds } from './timeline.ts'
 import type { Utterance } from './types.ts'
 
 /**
@@ -94,9 +94,13 @@ test('a speaker who changed ground is found; one who alternated is not', () => {
   assert.equal(moved.moved, true)
   assert.equal(ranged.moved, false)
   assert.ok(
-    moved.ratio > MIN_MOVE_RATIO && ranged.ratio < MIN_MOVE_RATIO,
+    moved.ratio > ranged.ratio,
     `moved ${moved.ratio.toFixed(2)} vs ranged ${ranged.ratio.toFixed(2)}`,
   )
+  // The same input twice gives the same answer: the null is drawn from a fixed
+  // seed, and a finding that moved between two runs of one transcript would be
+  // indistinguishable from a finding about the meeting.
+  assert.deepEqual(buildTimeline({ utterances, vectors }), timeline)
   // Largest movement first, so the interface can take the head of the list.
   assert.equal(timeline.moves[0].speaker, 'Moved')
 })

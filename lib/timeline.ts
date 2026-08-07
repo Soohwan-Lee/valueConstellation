@@ -12,12 +12,17 @@
  * fitted to push speakers apart cannot be asked whether speakers moved.
  *
  * The hard part is not measuring movement but knowing when there is none.
- * Split any set of statements in two and the halves' centres will differ, by
- * an amount that depends only on how many statements there were and how widely
- * that person ranges. That amount is the baseline every figure here is divided
- * by: a move counts when it is larger than reshuffling the same statements
- * would produce. Without it, "everybody moved" is the answer for every meeting,
- * and most loudly for the people who said least.
+ * Split any set of statements in two and the halves' centres will differ, by an
+ * amount that depends on how many statements there were and how widely that
+ * person ranges. So nothing here is compared against a fixed threshold: every
+ * figure is compared against the same statements re-split at random, over and
+ * over. A speaker moved if the real split separates their halves further than
+ * `NULL_PERCENTILE` of random splits do. Without that, "everybody moved" is the
+ * answer for every meeting, loudest for whoever said least.
+ *
+ * The re-splits are drawn from a fixed seed, so the same transcript always
+ * produces the same answer. A finding that changed between two runs of the same
+ * input would be indistinguishable from a finding about the meeting.
  */
 
 import { centroid, normalize } from './aggregate.ts'
@@ -44,15 +49,17 @@ export const MIN_STATEMENTS_PER_HALF = 3
 export const MIN_TIMED_SHARE = 0.8
 
 /**
- * How much bigger than the reshuffle baseline a move has to be to be reported.
+ * Random re-splits each figure is measured against, and where the line is
+ * drawn among them.
  *
- * 1.5 is chosen the way `MIN_USEFUL_SEPARATION` is: at 1.0 the figure equals
- * what chance produces, so anything at or near it is noise being read as a
- * finding. Half again as large is the smallest gap that survives being wrong
- * about the baseline by a few tens of percent, which the analytic form below
- * certainly is.
+ * 99 draws put the 95th percentile between two of them rather than on one, and
+ * cost a few milliseconds over vectors already in memory. The percentile is the
+ * usual one, and it means what it says here: nineteen of twenty ways of cutting
+ * this person's own statements in half produce less movement than the clock
+ * did.
  */
-export const MIN_MOVE_RATIO = 1.5
+export const NULL_DRAWS = 99
+export const NULL_PERCENTILE = 0.95
 
 /** How far a speaker's second half sat from their first. */
 export interface SpeakerMove {
@@ -61,10 +68,11 @@ export interface SpeakerMove {
   early: number
   late: number
   /**
-   * Distance between the two halves' centres, over the distance reshuffling
-   * the same statements would have produced. 1 is chance; see MIN_MOVE_RATIO.
+   * Distance between the two halves' centres, over the typical distance a
+   * random re-split of the same statements produces. 1 is what chance gives.
    */
   ratio: number
+  /** Further apart than `NULL_PERCENTILE` of random re-splits. */
   moved: boolean
 }
 
@@ -123,25 +131,69 @@ function distance(a: Vector, b: Vector): number {
   return Math.sqrt(sum)
 }
 
-/** Mean distance from a set of points to their own centre. */
-function spread(vectors: Vector[], centre: Vector): number {
-  if (vectors.length === 0) return 0
-  let sum = 0
-  for (const v of vectors) sum += distance(v, centre)
-  return sum / vectors.length
+/**
+ * A small deterministic generator, so the same transcript always gets the same
+ * answer. Nothing here is cryptographic; it needs only to be even and fixed.
+ */
+function seeded(seed: number): () => number {
+  let a = seed >>> 0
+  return () => {
+    a = (a + 0x6d2b79f5) >>> 0
+    let t = Math.imul(a ^ (a >>> 15), 1 | a)
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
+  }
 }
 
+/** The seed. Any fixed value; this one is the year the pipeline was written. */
+const SEED = 2026
+
 /**
- * What splitting the same statements at random would move the centre by.
+ * The same statements cut into halves of the same sizes, `NULL_DRAWS` times.
  *
- * Points scattered at radius `s` around a centre have a mean of k of them
- * landing about `s / sqrt(k)` from it, so two halves' centres sit roughly
- * `s * sqrt(1/nEarly + 1/nLate)` apart with no drift at all. Approximate — it
- * treats the statements as independent draws, which real speech is not — and
- * so used only as a scale, never as a p-value.
+ * This is what "no change" looks like for this particular person: their own
+ * range, their own counts, and no relationship to the clock. Every figure
+ * reported is read against it.
  */
-function reshuffleBaseline(s: number, nEarly: number, nLate: number): number {
-  return s * Math.sqrt(1 / nEarly + 1 / nLate)
+function randomHalves(
+  vectors: Vector[],
+  nEarly: number,
+): { early: Vector; late: Vector }[] {
+  const random = seeded(SEED + vectors.length * 1000 + nEarly)
+  const draws: { early: Vector; late: Vector }[] = []
+
+  for (let k = 0; k < NULL_DRAWS; k += 1) {
+    const order = vectors.map((_, i) => i)
+    for (let i = order.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(random() * (i + 1))
+      ;[order[i], order[j]] = [order[j], order[i]]
+    }
+    const early = centroid(order.slice(0, nEarly).map((i) => vectors[i]))
+    const late = centroid(order.slice(nEarly).map((i) => vectors[i]))
+    if (early && late) draws.push({ early, late })
+  }
+  return draws
+}
+
+/** The value at `NULL_PERCENTILE` of a set of draws. */
+function percentile(values: number[]): number {
+  if (values.length === 0) return Infinity
+  const sorted = [...values].sort((a, b) => a - b)
+  const at = Math.min(
+    sorted.length - 1,
+    Math.floor(NULL_PERCENTILE * sorted.length),
+  )
+  return sorted[at]
+}
+
+/** The middle value of a set of draws, used as the scale a figure is read on. */
+function median(values: number[]): number {
+  if (values.length === 0) return 0
+  const sorted = [...values].sort((a, b) => a - b)
+  const mid = Math.floor(sorted.length / 2)
+  return sorted.length % 2 === 1
+    ? sorted[mid]
+    : (sorted[mid - 1] + sorted[mid]) / 2
 }
 
 export interface TimelineInput {
@@ -198,7 +250,10 @@ export function buildTimeline({
   }
 
   const moves: SpeakerMove[] = []
-  const halves = new Map<string, { early: Vector; late: Vector; noise: number }>()
+  const halves = new Map<
+    string,
+    { early: Vector; late: Vector; draws: { early: Vector; late: Vector }[] }
+  >()
 
   for (const [speaker, { early, late }] of bySpeaker) {
     if (
@@ -207,28 +262,24 @@ export function buildTimeline({
     ) {
       continue
     }
-    const all = [...early, ...late]
-    const centre = centroid(all)
     const earlyCentre = centroid(early)
     const lateCentre = centroid(late)
-    if (!centre || !earlyCentre || !lateCentre) continue
+    if (!earlyCentre || !lateCentre) continue
 
-    const baseline = reshuffleBaseline(
-      spread(all, centre),
-      early.length,
-      late.length,
-    )
-    if (baseline < 1e-9) continue
+    const draws = randomHalves([...early, ...late], early.length)
+    const nullShifts = draws.map((d) => distance(d.early, d.late))
+    const typical = median(nullShifts)
+    if (typical < 1e-9) continue
 
-    const ratio = distance(earlyCentre, lateCentre) / baseline
+    const shift = distance(earlyCentre, lateCentre)
     moves.push({
       speaker,
       early: early.length,
       late: late.length,
-      ratio,
-      moved: ratio >= MIN_MOVE_RATIO,
+      ratio: shift / typical,
+      moved: shift > percentile(nullShifts),
     })
-    halves.set(speaker, { early: earlyCentre, late: lateCentre, noise: baseline })
+    halves.set(speaker, { early: earlyCentre, late: lateCentre, draws })
   }
 
   const names = [...halves.keys()]
@@ -241,10 +292,27 @@ export function buildTimeline({
       const lateGap = distance(a.late, b.late)
       if (earlyGap < 1e-9) continue
 
-      // Both people's centres carry their own reshuffle noise, so the gap
-      // between them carries both. A change smaller than that is not a change.
-      const noise = Math.sqrt(a.noise * a.noise + b.noise * b.noise)
+      // The same question asked of the gap: how much do these two people's
+      // halves drift apart or together when the clock is taken away? A change
+      // the shuffles produce just as often is not a change.
+      //
+      // It has to be measured rather than derived. A half-centroid moves a long
+      // way in 1536 dimensions while the distance between two of them barely
+      // changes, since only the component along the line between them counts —
+      // so a threshold taken from how far the centres move rejects everything.
+      const draws = Math.min(a.draws.length, b.draws.length)
+      const nullDeltas: number[] = []
+      for (let k = 0; k < draws; k += 1) {
+        nullDeltas.push(
+          Math.abs(
+            distance(a.draws[k].late, b.draws[k].late) -
+              distance(a.draws[k].early, b.draws[k].early),
+          ),
+        )
+      }
+
       const delta = lateGap - earlyGap
+      const noise = percentile(nullDeltas)
       pairs.push({
         a: names[i],
         b: names[j],
@@ -252,7 +320,7 @@ export function buildTimeline({
         lateGap,
         ratio: lateGap / earlyGap,
         direction:
-          Math.abs(delta) < noise ? 'same' : delta < 0 ? 'closer' : 'apart',
+          Math.abs(delta) <= noise ? 'same' : delta < 0 ? 'closer' : 'apart',
       })
     }
   }

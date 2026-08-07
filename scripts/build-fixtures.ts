@@ -128,6 +128,39 @@ function report(id: string, result: AnalysisWithDiagnostics) {
     }
   }
 
+  // Printed because it is the one figure a rewrite of a transcript can destroy
+  // without changing anything else: drop the timestamps, or let one speaker's
+  // statements bunch into one half, and the before/after comparison silently
+  // stops being produced.
+  const timeline = result.timeline
+  if (!timeline) {
+    console.log('        timeline: none')
+  } else {
+    console.log(
+      `        timeline: split ${timeline.splitAt} of ${timeline.span.join('–')}` +
+        `  ${timeline.moves
+          .map(
+            (m) =>
+              `${m.speaker} ${m.ratio.toFixed(2)}${m.moved ? '*' : ''}` +
+              ` (${m.early}/${m.late})`,
+          )
+          .join('  ')}`,
+    )
+    const changed = timeline.pairs.filter((p) => p.direction !== 'same')
+    console.log(
+      `        pairs: ${
+        changed.length === 0
+          ? 'none changed'
+          : changed
+              .map(
+                (p) =>
+                  `${p.a}–${p.b} ${p.direction} ${p.ratio.toFixed(2)}`,
+              )
+              .join('  ')
+      }`,
+    )
+  }
+
   const counts = result.counts
   console.log(
     `        claims ${counts.claim}  questions ${counts.question}` +
