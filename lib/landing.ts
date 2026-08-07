@@ -14,7 +14,14 @@ export type Bilingual = Record<Lang, string>
 
 export interface MarkEntry {
   /** Which figure to draw beside it. */
-  figure: 'dot' | 'marker' | 'region' | 'measure' | 'provisional' | 'axes'
+  figure:
+    | 'dot'
+    | 'marker'
+    | 'region'
+    | 'measure'
+    | 'landed'
+    | 'provisional'
+    | 'axes'
   title: Bilingual
   body: Bilingual
 }
@@ -124,8 +131,8 @@ export const MARKS_SECTION = {
     en: 'Every mark on the map means one thing.',
   },
   lead: {
-    ko: '여섯 가지만 알면 됩니다. 하나씩 그림과 함께 보시면 됩니다.',
-    en: 'Six things to know, each with the figure the map actually draws.',
+    ko: '일곱 가지만 알면 됩니다. 하나씩 그림과 함께 보시면 됩니다.',
+    en: 'Seven things to know, each with the figure the map actually draws.',
   },
 } satisfies Record<string, Bilingual>
 
@@ -168,6 +175,17 @@ export const MARKS: MarkEntry[] = [
     body: {
       ko: '가로와 세로는 이 회의에서 의견이 가장 크게 갈린 두 방향입니다. 축 양 끝의 발언을 읽고 이름을 붙여둔 것이라, 이름은 참고용이고 근거가 되는 발언은 클릭 한 번 거리에 있습니다. MDS 배치에서는 방향이 임의로 정해지므로 이름을 붙이지 않습니다.',
       en: 'Across and up are the two directions this room differed on most. The names come from reading the statements at each end, so treat them as a reading aid — the statements themselves are one click away. The MDS layout gets none: its orientation is arbitrary.',
+    },
+  },
+  {
+    figure: 'landed',
+    title: {
+      ko: '속이 빈 원 — 회의가 도달한 지점',
+      en: 'Hollow ring — where the room landed',
+    },
+    body: {
+      ko: '발언들을 읽어 “이 방이 도달한 지점”을 한 문장으로 쓴 다음, 그 문장을 발언과 똑같은 방식으로 임베딩해 지도에 올린 자리입니다. 좌표를 먼저 잡고 설명을 붙인 것이 아니라서, 자기가 포함한다고 한 사람에게서 멀리 떨어져 있으면 그대로 보입니다. 사람 색이 아니라 잉크로 그리는 이유는 이것이 참여자가 아니기 때문이고, 합의가 없던 회의에는 그리지 않습니다.',
+      en: 'A sentence written from the statements, then embedded exactly as they were and placed from that — not a coordinate with a story attached. Which is why it can be seen to be wrong: a landing point sitting far from somebody it claims to include shows that on the map. It is drawn in ink rather than in a speaker colour because it is not a participant, and a meeting that agreed on nothing has none.',
     },
   },
   {

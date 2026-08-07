@@ -48,6 +48,57 @@ const SPLIT_LEFT = 'M30 46C36 34 54 32 62 40C70 48 66 66 56 72C46 78 32 70 30 60
 const SPLIT_RIGHT = 'M104 40C114 32 132 38 134 50C136 62 126 74 114 72C102 70 96 60 98 52Z'
 
 const FIGURES: Record<MarkEntry['figure'], React.ReactNode> = {
+  /**
+   * Three people around a hollow ring.
+   *
+   * The ring is in ink while the statements are in a speaker colour, which is
+   * the whole distinction the figure exists to teach: what the room landed on
+   * is not one more participant.
+   */
+  landed: (
+    <g>
+      {[
+        [40, 40],
+        [122, 38],
+        [78, 88],
+      ].map(([cx, cy], i) => (
+        <circle
+          key={i}
+          cx={cx}
+          cy={cy}
+          r={7}
+          fill={i === 1 ? SECOND : ACCENT}
+          fillOpacity={0.85}
+        />
+      ))}
+      {[
+        [40, 40],
+        [122, 38],
+        [78, 88],
+      ].map(([cx, cy], i) => (
+        <line
+          key={`l${i}`}
+          x1={cx}
+          y1={cy}
+          x2={80}
+          y2={54}
+          stroke="var(--line-strong)"
+          strokeWidth={1}
+          strokeDasharray="2 3"
+        />
+      ))}
+      <circle
+        cx={80}
+        cy={54}
+        r={10}
+        fill="var(--plate)"
+        stroke="var(--ink)"
+        strokeWidth={1.5}
+      />
+      <circle cx={80} cy={54} r={3.2} fill="var(--ink)" />
+    </g>
+  ),
+
   dot: (
     <g>
       {[

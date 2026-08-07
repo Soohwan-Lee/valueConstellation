@@ -19,6 +19,8 @@ const BULLETS = [
   'readRegion',
   'readAxes',
   'readMeasure',
+  'readLanded',
+  'readFlow',
   'readDashed',
 ] as const
 

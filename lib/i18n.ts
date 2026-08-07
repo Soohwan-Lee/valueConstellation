@@ -135,6 +135,14 @@ export const STRINGS = {
     ko: '**측정선**은 참여자를 선택하면 그어집니다. 옆의 숫자는 이 지도에서 가장 먼 쌍을 1.00으로 둔 상대 거리입니다.',
     en: '**Measure lines** appear when you select a participant. The number beside each is that gap as a share of the widest gap on this map.',
   },
+  readLanded: {
+    ko: '**속이 빈 원**은 이 회의가 도달한 지점입니다. 발언들을 읽어 쓴 문장을 발언과 같은 방식으로 임베딩해 올린 자리라, 아무도 그렇게 말하지는 않았습니다. 눌러서 문장과 근거를 볼 수 있고, 합의가 없던 회의에는 아예 그려지지 않습니다.',
+    en: '**The hollow ring** is what the room landed on: a sentence written from the statements and then embedded the same way they were, so nobody actually said it. Press it for the sentence and its basis. A meeting that agreed on nothing has no ring at all.',
+  },
+  readFlow: {
+    ko: '**흐름**으로 바꾸면 같은 회의를 시간 순서로 봅니다. 왼쪽이 시작, 오른쪽이 끝이고, 아래로 내려올수록 도달한 지점에 가까운 발언이며, 곡선은 누가 누구 말에 답했는지입니다.',
+    en: '**Flow** shows the same meeting in the order it happened: time left to right, statements nearer the landing point sitting lower, and a curve wherever one person answered another.',
+  },
 
   // Mark legend, on the plate
   legendMarker: { ko: '그 사람의 중심', en: 'Their centre' },
