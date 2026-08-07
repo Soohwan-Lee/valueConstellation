@@ -52,6 +52,22 @@ test('standalone timestamps are not speakers', () => {
   assert.equal(r.turns[1].time, '01:20')
 })
 
+test('a bracketed timestamp before the label', () => {
+  // The form transcription exports and video platforms write. Read as a label,
+  // "[00" is rejected for being mostly digits and the line is swallowed as a
+  // continuation of the previous speaker — so Rosa vanishes and her words are
+  // credited to Dave.
+  const r = parseTranscript(
+    '[00:03] Dave: 예정대로 가야 합니다.\n[01:12] Rosa: 저는 미루자는 쪽입니다.\n(02:40) Dave: 날짜를 못 박았으면 합니다.',
+  )
+  assert.deepEqual(r.speakers, ['Dave', 'Rosa'])
+  assert.deepEqual(
+    r.turns.map((t) => t.time),
+    ['00:03', '01:12', '02:40'],
+  )
+  assert.equal(r.continuationLines, 0)
+})
+
 test('recording metadata is not a speaker', () => {
   const r = parseTranscript(
     '2026.05.21 Thu AM 11:37 ・ 56Minutes\n김철수: 시작합니다.',

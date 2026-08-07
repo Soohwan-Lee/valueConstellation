@@ -155,6 +155,23 @@ export function isModerator(speaker: string): boolean {
 const TIMESTAMP_ONLY = /^[[(（]?\s*\d{1,2}:\d{2}(?::\d{2})?\s*[)）\]]?$/
 
 /**
+ * A timestamp in brackets before the speaker label:
+ *
+ *   [00:03] Dave: 저는 예정대로 가야 한다고 봅니다.
+ *
+ * The form every transcription export and every video platform writes. Without
+ * this the label patterns read "[00" as the name, reject it for being mostly
+ * digits, and the whole line is swallowed as a continuation of whoever spoke
+ * last — so a timestamped paste silently loses one speaker's every word.
+ *
+ * Only the bracketed form is stripped. A bare "00:03 Dave: ..." is left to the
+ * label patterns, since a leading number with no brackets is as likely to be a
+ * clause as a clock.
+ */
+const LEADING_TIMESTAMP =
+  /^[[(（]\s*(?<time>\d{1,2}:\d{2}(?::\d{2})?)\s*[)）\]]\s*(?=\S)/
+
+/**
  * A speaker header on its own line, with the speech following:
  *
  *   사회자 00:00
@@ -237,7 +254,7 @@ export function parseTranscript(input: string): ParseResult {
   for (const rawLine of lines) {
     const trimmedRaw = rawLine.trim()
     const hadMarker = LEADING_MARKER.test(trimmedRaw)
-    const line = trimmedRaw.replace(LEADING_MARKER, '').trim()
+    let line = trimmedRaw.replace(LEADING_MARKER, '').trim()
     if (!line) continue
 
     // A standalone timestamp is a structural marker, not speech. Record it so
@@ -245,6 +262,14 @@ export function parseTranscript(input: string): ParseResult {
     if (TIMESTAMP_ONLY.test(line)) {
       pendingTime = line.replace(/[^\d:]/g, '')
       continue
+    }
+
+    // "[00:03] Dave: ..." — the time belongs to the turn that follows it on the
+    // same line, so it is lifted off before the label is read.
+    const leading = LEADING_TIMESTAMP.exec(line)
+    if (leading?.groups) {
+      pendingTime = leading.groups.time
+      line = line.replace(LEADING_TIMESTAMP, '')
     }
 
     // "이름 00:00" alone on a line: open a turn whose speech follows.
