@@ -70,6 +70,33 @@ export interface Consensus {
 }
 
 /**
+ * Where each statement sits between the closest and the furthest, 0 to 1.
+ *
+ * The gaps themselves run 0.75 to 1.00 on every meeting measured, and that is
+ * not a property of these meetings: in 1536 dimensions everything is roughly
+ * equally far from everything, so a chart drawn on the raw share is a flat line
+ * against an axis of empty space. Rescaling to the observed range is what makes
+ * the differences visible — and it is also why nothing here may be labelled
+ * with a distance. The view says "closest of what was said" and "furthest",
+ * never "close to the consensus", because the first is what this number knows.
+ */
+export function spreadPositions(
+  gap: Record<string, number>,
+): Record<string, number> {
+  const values = Object.values(gap).filter((g) => Number.isFinite(g))
+  if (values.length === 0) return {}
+  const low = Math.min(...values)
+  const high = Math.max(...values)
+  if (high - low < 1e-12) return {}
+
+  const out: Record<string, number> = {}
+  for (const [id, g] of Object.entries(gap)) {
+    if (Number.isFinite(g)) out[id] = (g - low) / (high - low)
+  }
+  return out
+}
+
+/**
  * How far each statement sits from the landing point, as a share of the
  * furthest one.
  *
@@ -113,7 +140,8 @@ You are given every substantive statement with an id and a speaker.
 
 Decide "reached":
 - true only if the discussion arrived at something EVERY listed speaker could sign: a decision, an agreed next step, or a shared framing of the problem they all came to use.
-- false if they stated positions and stopped, if the agreement is only the facilitator summarising, or if speakers attached conditions that contradict each other. Most meetings are false. Do not reward a meeting for being polite.
+- false if they stated positions and stopped, or if speakers attached conditions that contradict each other. Most meetings are false. Do not reward a meeting for being polite.
+- a facilitator's closing summary is evidence of what was landed on, but not proof: it counts when the participants' own words show them taking it up, and not when it papers over a disagreement they never resolved.
 
 When "reached" is true, write "statement":
 - one or two sentences saying what the room landed on, in the participants' own words and level of detail. "Thursday's release is held; logs go in this week and the date is set once the bug reproduces" — not "the team agreed to postpone".
@@ -127,9 +155,25 @@ Always write "open": the question that is still unsettled, in one sentence. If e
 Both languages for every field. The Korean is primary and must read naturally; it is not a translation of the English. Neutral register — you are reporting, not judging, and never saying who was right.`
 
 /** Statements shown to the model, oldest first, capped for a long meeting. */
-const MAX_STATEMENTS = 80
+const MAX_STATEMENTS = 100
 
-export function formatForConsensus(utterances: Utterance[]): string {
+/**
+ * The whole meeting, with only the mapped statements given ids.
+ *
+ * The facilitator's closing line and the procedural turns are shown even though
+ * they carry no position: "then we hold Thursday and revisit on Friday" is
+ * where a room's landing point is usually said out loud, and it is almost
+ * always said by whoever was chairing — who is excluded from the map by
+ * default. Reading the meeting without it returned "no consensus" for a meeting
+ * that ended with four people taking away four agreed actions.
+ *
+ * They are shown without ids, so they cannot be anchored to. The evidence a
+ * reader is pointed at stays inside the statements that are on the map.
+ */
+export function formatForConsensus(
+  utterances: Utterance[],
+  anchorable: Set<string>,
+): string {
   const shown =
     utterances.length <= MAX_STATEMENTS
       ? utterances
@@ -138,10 +182,17 @@ export function formatForConsensus(utterances: Utterance[]): string {
           ...utterances.slice(-MAX_STATEMENTS / 2),
         ]
   const lines = shown
-    .map((u) => `[${u.id}] ${u.speaker}${u.at ? ` (${u.at})` : ''}: ${u.text}`)
+    .map((u) => {
+      const mark = anchorable.has(u.id) ? `[${u.id}]` : '[ — ]'
+      return `${mark} ${u.speaker}${u.at ? ` (${u.at})` : ''}: ${u.text}`
+    })
     .join('\n')
-  const speakers = [...new Set(utterances.map((u) => u.speaker))].join(', ')
-  return `SPEAKERS: ${speakers}\n\n${lines}`
+  const speakers = [
+    ...new Set(
+      utterances.filter((u) => anchorable.has(u.id)).map((u) => u.speaker),
+    ),
+  ].join(', ')
+  return `MAPPED SPEAKERS: ${speakers}\n\nLines marked [ — ] are facilitation or process talk. Read them for what was decided, but never cite them: "anchors" may only contain the bracketed ids.\n\n${lines}`
 }
 
 /**

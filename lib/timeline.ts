@@ -103,6 +103,105 @@ export interface Timeline {
   pairs: PairChange[]
 }
 
+/** Whether the meeting's statements approached what it landed on, or left it. */
+export interface ConvergenceTrend {
+  /**
+   * Rank correlation between when something was said and how far it sat from
+   * the landing point. Negative means later statements were closer.
+   */
+  r: number
+  /** Statements compared. */
+  n: number
+  /**
+   * `toward` and `away` are only used when the correlation beat
+   * `NULL_PERCENTILE` of the same gaps shuffled into a different order.
+   */
+  direction: 'toward' | 'away' | 'none'
+}
+
+/** Below this, a correlation is a shape in six points rather than a trend. */
+export const MIN_STATEMENTS_FOR_TREND = 8
+
+/** Pearson correlation of two equal-length series. */
+function correlation(xs: number[], ys: number[]): number {
+  const n = xs.length
+  if (n < 2) return 0
+  const mean = (a: number[]) => a.reduce((s, x) => s + x, 0) / a.length
+  const mx = mean(xs)
+  const my = mean(ys)
+  let sxy = 0
+  let sxx = 0
+  let syy = 0
+  for (let i = 0; i < n; i += 1) {
+    const dx = xs[i] - mx
+    const dy = ys[i] - my
+    sxy += dx * dy
+    sxx += dx * dx
+    syy += dy * dy
+  }
+  const denom = Math.sqrt(sxx * syy)
+  return denom < 1e-12 ? 0 : sxy / denom
+}
+
+/** Ranks, ties averaged, so one outlying distance cannot make a trend. */
+function ranks(values: number[]): number[] {
+  const order = values.map((v, i) => ({ v, i })).sort((a, b) => a.v - b.v)
+  const out = new Array<number>(values.length)
+  let i = 0
+  while (i < order.length) {
+    let j = i
+    while (j + 1 < order.length && order[j + 1].v === order[i].v) j += 1
+    const rank = (i + j) / 2
+    for (let k = i; k <= j; k += 1) out[order[k].i] = rank
+    i = j + 1
+  }
+  return out
+}
+
+/**
+ * Did the meeting move toward what it landed on, or away from it?
+ *
+ * Correlates when a statement was said against how far it sat from the landing
+ * point, on ranks rather than values: the distances are bunched — in 1536
+ * dimensions everything is roughly equally far from everything — so one
+ * outlying statement would otherwise set the slope on its own.
+ *
+ * Judged against the same gaps shuffled into a different order, `NULL_DRAWS`
+ * times, exactly as movement between the halves is. A correlation of -0.3 over
+ * twenty statements is easy to produce by accident, and a tool that reports
+ * "the room converged" from one is worse than one that says nothing.
+ */
+export function convergenceTrend(
+  ordered: string[],
+  gap: Record<string, number>,
+): ConvergenceTrend | null {
+  const gaps = ordered.map((id) => gap[id]).filter((g) => Number.isFinite(g))
+  if (gaps.length < MIN_STATEMENTS_FOR_TREND) return null
+
+  const position = gaps.map((_, i) => i)
+  const observed = correlation(position, ranks(gaps))
+
+  const random = seeded(SEED + gaps.length)
+  let beaten = 0
+  for (let k = 0; k < NULL_DRAWS; k += 1) {
+    const shuffled = [...gaps]
+    for (let i = shuffled.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(random() * (i + 1))
+      ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+    }
+    if (Math.abs(correlation(position, ranks(shuffled))) >= Math.abs(observed)) {
+      beaten += 1
+    }
+  }
+
+  const real = beaten <= Math.floor((1 - NULL_PERCENTILE) * NULL_DRAWS)
+  return {
+    r: observed,
+    n: gaps.length,
+    direction: !real ? 'none' : observed < 0 ? 'toward' : 'away',
+  }
+}
+
 /**
  * Lookups for the interface, so a component never walks the arrays itself.
  *

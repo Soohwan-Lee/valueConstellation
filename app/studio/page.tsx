@@ -22,6 +22,13 @@ import {
 import { LayoutMenu } from '@/components/studio/LayoutMenu'
 import { MethodFooter } from '@/components/studio/MethodFooter'
 import { attributionVerdict } from '@/lib/aggregate'
+import { FlowView } from '@/components/FlowView'
+import {
+  clockSeconds,
+  convergenceTrend,
+  type ConvergenceTrend,
+} from '@/lib/timeline'
+import type { Consensus } from '@/lib/consensus'
 import { SCENARIOS, getScenario } from '@/data/scenarios'
 import { Composer } from '@/components/Composer'
 import { takeStagedTranscript } from '@/lib/handoff'
@@ -79,6 +86,15 @@ export default function Studio() {
   const [selected, setSelected] = useState<ProjectedUtterance | null>(null)
   const [selectedSpeaker, setSelectedSpeaker] = useState<string | null>(null)
   const [hoveredPair, setHoveredPair] = useState<SpeakerPair | null>(null)
+  /**
+   * Which of the two the plate is showing. The map answers who is near whom;
+   * the flow answers how they got there, and no arrangement of one picture
+   * answers both — a scatter has no time in it and a timeline has no distance
+   * between people in it.
+   */
+  const [view, setView] = useState<'map' | 'flow'>('map')
+  /** Set when the reader opens the sentence the room landed on. */
+  const [showConsensus, setShowConsensus] = useState(false)
   /** Set when a transcript arrived from the overview and should run on its own. */
   const [runStaged, setRunStaged] = useState(false)
 
@@ -140,6 +156,7 @@ export default function Studio() {
       if (e.key !== 'Escape') return
       setSelected(null)
       setSelectedSpeaker(null)
+      setShowConsensus(false)
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
@@ -149,6 +166,7 @@ export default function Studio() {
     setSelected(null)
     setSelectedSpeaker(null)
     setHoveredPair(null)
+    setShowConsensus(false)
     setHiddenSpeakers(new Set())
   }, [])
 
@@ -253,6 +271,33 @@ export default function Studio() {
   const measure = useMemo(
     () => pairsWith(visiblePairs, selectedSpeaker),
     [visiblePairs, selectedSpeaker],
+  )
+
+  /** Colour slot per speaker, so the map and the flow agree on who is who. */
+  const colorIndex = useMemo(() => {
+    const out: Record<string, number> = {}
+    for (const s of projection?.speakers ?? []) out[s.speaker] = s.colorIndex
+    return out
+  }, [projection])
+
+  // Whether the meeting moved toward what it landed on. Derived rather than
+  // stored: it is a property of the gaps, which are already in the result, and
+  // a second copy in the fixture is a second thing that can disagree.
+  const trend = useMemo(
+    () =>
+      analysis?.consensus
+        ? convergenceTrend(
+            [...(projection?.utterances ?? [])]
+              .sort((a, b) => {
+                const at = clockSeconds(a.at)
+                const bt = clockSeconds(b.at)
+                return at !== null && bt !== null ? at - bt : a.index - b.index
+              })
+              .map((u) => u.id),
+            analysis.consensus.gap,
+          )
+        : null,
+    [analysis, projection],
   )
 
   const scenario = scenarioId ? getScenario(scenarioId) : null
@@ -428,12 +473,19 @@ export default function Studio() {
                       participants at equal weight, which read as two equally
                       important decisions. */}
                   <div className="flex items-center gap-2">
-                    <LayoutMenu
-                      value={method}
-                      onChange={setMethod}
-                      lang={lang}
-                      disabled={loading}
-                    />
+                    {/* Two questions, two pictures. The switch sits beside the
+                        layout picker because both are about how to look, and
+                        ahead of it because which question you are asking comes
+                        before which angle you ask it from. */}
+                    <ViewSwitch value={view} onChange={setView} lang={lang} />
+                    {view === 'map' && (
+                      <LayoutMenu
+                        value={method}
+                        onChange={setMethod}
+                        lang={lang}
+                        disabled={loading}
+                      />
+                    )}
                     <GuideButton lang={lang} />
                   </div>
                 </div>
@@ -454,13 +506,25 @@ export default function Studio() {
                     {lookFor}
                   </p>
                 )}
+                {/* The legend belongs to the map; the flow view states its own
+                    verdict instead, which is the sentence the picture under it
+                    is standing in for. */}
                 <div className="mt-3">
-                  <MarkLegend
-                    showRegions={renderMode !== 'point'}
-                    showPoints={renderMode !== 'region'}
-                    hasAxes={projection.meta.axes !== null}
-                    lang={lang}
-                  />
+                  {view === 'map' ? (
+                    <MarkLegend
+                      showRegions={renderMode !== 'point'}
+                      showPoints={renderMode !== 'region'}
+                      hasAxes={projection.meta.axes !== null}
+                      hasConsensus={projection.consensus !== null}
+                      lang={lang}
+                    />
+                  ) : (
+                    <FlowVerdict
+                      trend={trend}
+                      consensus={analysis?.consensus ?? null}
+                      lang={lang}
+                    />
+                  )}
                 </div>
               </header>
 
@@ -472,43 +536,74 @@ export default function Studio() {
                   reflows rather than being obscured, which is also how the
                   layout tools this borrows from behave. */}
               <div className="flex min-h-0 flex-1 flex-col sm:flex-row">
-              <div className="relative min-h-0 flex-1">
-                <ConstellationMap
-                  projection={projection}
-                  renderMode={renderMode}
-                  hiddenSpeakers={hiddenSpeakers}
-                  selectedId={selected?.id ?? null}
-                  selectedSpeaker={selectedSpeaker}
-                  measure={measure}
-                  emphasised={hoveredPair}
-                  lang={lang}
-                  speakerNames={analysis?.speakerNames ?? null}
-                  settleKey={String(analysisSerial)}
-                  onSelect={(u) => {
-                    setSelected(u)
-                    if (u) setSelectedSpeaker(null)
-                  }}
-                  onSelectSpeaker={selectSpeaker}
-                />
+              <div className="relative flex min-h-0 flex-1 flex-col">
+                {view === 'map' ? (
+                  <ConstellationMap
+                    projection={projection}
+                    renderMode={renderMode}
+                    hiddenSpeakers={hiddenSpeakers}
+                    selectedId={selected?.id ?? null}
+                    selectedSpeaker={selectedSpeaker}
+                    measure={measure}
+                    emphasised={hoveredPair}
+                    lang={lang}
+                    speakerNames={analysis?.speakerNames ?? null}
+                    settleKey={String(analysisSerial)}
+                    onSelect={(u) => {
+                      setSelected(u)
+                      if (u) setSelectedSpeaker(null)
+                    }}
+                    onSelectSpeaker={selectSpeaker}
+                    onSelectConsensus={
+                      analysis?.consensus?.reached
+                        ? () => {
+                            setShowConsensus(true)
+                            setSelected(null)
+                            setSelectedSpeaker(null)
+                          }
+                        : undefined
+                    }
+                  />
+                ) : (
+                  <FlowView
+                    utterances={projection.utterances}
+                    consensus={analysis?.consensus ?? null}
+                    exchanges={analysis?.exchanges ?? []}
+                    hiddenSpeakers={hiddenSpeakers}
+                    selectedId={selected?.id ?? null}
+                    selectedSpeaker={selectedSpeaker}
+                    onSelect={(u) => {
+                      setSelected(u)
+                      if (u) setSelectedSpeaker(null)
+                    }}
+                    lang={lang}
+                    speakerNames={analysis?.speakerNames ?? null}
+                    colorIndex={colorIndex}
+                  />
+                )}
               </div>
 
-              {(selected || selectedSpeaker) && (
+              {(selected || selectedSpeaker || showConsensus) && (
                 <aside className="animate-rise flex max-h-[46%] min-h-0 shrink-0 flex-col border-t border-[var(--line)] bg-[var(--panel)] sm:max-h-none sm:w-[336px] sm:border-l sm:border-t-0">
                   <DetailPanel
                     projection={projection}
                     pairs={pairs}
                     selectedUtterance={selected}
                     selectedSpeaker={selectedSpeaker}
+                    consensus={showConsensus ? (analysis?.consensus ?? null) : null}
+                    exchanges={analysis?.exchanges ?? []}
                     lang={lang}
                     speakerNames={analysis?.speakerNames ?? null}
                     summaries={analysis?.speakerSummaries ?? null}
                     onSelectUtterance={(u) => {
                       setSelected(u)
                       setSelectedSpeaker(null)
+                      setShowConsensus(false)
                     }}
                     onClose={() => {
                       setSelected(null)
                       setSelectedSpeaker(null)
+                      setShowConsensus(false)
                     }}
                   />
                 </aside>
@@ -543,6 +638,101 @@ export default function Studio() {
           )}
         </div>
       </main>
+    </div>
+  )
+}
+
+/**
+ * Map or flow.
+ *
+ * Two buttons rather than a menu: there are two of them, they are the top-level
+ * question this page answers, and a control that has to be opened to find out
+ * what is behind it is the wrong shape for a choice somebody makes in the first
+ * ten seconds.
+ */
+function ViewSwitch({
+  value,
+  onChange,
+  lang,
+}: {
+  value: 'map' | 'flow'
+  onChange: (v: 'map' | 'flow') => void
+  lang: Lang
+}) {
+  return (
+    <div className="flex rounded-[7px] bg-[var(--panel-2)] p-0.5">
+      {(['map', 'flow'] as const).map((v) => {
+        const on = value === v
+        return (
+          <button
+            key={v}
+            type="button"
+            onClick={() => onChange(v)}
+            aria-pressed={on}
+            className="cursor-pointer rounded-[5px] px-2.5 py-1 text-[12.5px] transition-colors"
+            style={{
+              background: on ? 'var(--signal)' : 'transparent',
+              color: on ? 'var(--on-signal)' : 'var(--muted)',
+            }}
+          >
+            {t(v === 'map' ? 'viewMap' : 'viewFlow', lang)}
+          </button>
+        )
+      })}
+    </div>
+  )
+}
+
+/**
+ * What the flow view found, above the flow view.
+ *
+ * The picture shows dots descending or not descending, and a reader should not
+ * have to decide from a scatter whether a trend is there — that is what the
+ * permutation test is for. So the sentence comes first and the picture is the
+ * evidence for it, in the same order every other figure on this page is given.
+ */
+function FlowVerdict({
+  trend,
+  consensus,
+  lang,
+}: {
+  trend: ConvergenceTrend | null
+  consensus: Consensus | null
+  lang: Lang
+}) {
+  if (!consensus) return null
+  return (
+    <div>
+      {trend && (
+        <>
+          <p className="text-[13px] font-medium leading-[1.5] text-[var(--ink)]">
+            {t(
+              trend.direction === 'toward'
+                ? 'flowTowardHead'
+                : trend.direction === 'away'
+                  ? 'flowAwayHead'
+                  : 'flowNoneHead',
+              lang,
+            )}
+          </p>
+          <p className="mt-1 text-[12px] leading-[1.65] text-[var(--muted)]">
+            {tf(
+              trend.direction === 'toward'
+                ? 'flowToward'
+                : trend.direction === 'away'
+                  ? 'flowAway'
+                  : 'flowNone',
+              lang,
+              { n: trend.n },
+            )}
+          </p>
+        </>
+      )}
+      {!consensus.reached && (
+        <p className="mt-2 text-[12px] leading-[1.6] text-[var(--muted)]">
+          {t('consensusNone', lang)}
+        </p>
+      )}
     </div>
   )
 }

@@ -352,12 +352,15 @@ export function MarkLegend({
   showRegions,
   showPoints,
   hasAxes,
+  hasConsensus,
   lang,
 }: {
   showRegions: boolean
   showPoints: boolean
   /** True when the layout named its axes, which only PCA does. */
   hasAxes: boolean
+  /** True when the meeting landed on something and the mark is drawn. */
+  hasConsensus: boolean
   lang: Lang
 }) {
   const items: { key: string; glyph: React.ReactNode; label: string }[] = []
@@ -402,6 +405,30 @@ export function MarkLegend({
       label: t('legendRegion', lang),
     })
   }
+  // The two marks that are not people, named so nobody has to guess what an
+  // ink ring in the middle of four coloured shapes is.
+  if (hasConsensus) {
+    items.push({
+      key: 'consensus',
+      glyph: (
+        <>
+          <circle cx={7} cy={7} r={4.5} fill="none" stroke="var(--ink)" strokeWidth={1.2} />
+          <circle cx={7} cy={7} r={1.5} fill="var(--ink)" />
+        </>
+      ),
+      label: t('legendConsensus', lang),
+    })
+  }
+  items.push({
+    key: 'group',
+    glyph: (
+      <>
+        <line x1={3} y1={7} x2={11} y2={7} stroke="var(--muted)" strokeWidth={1} />
+        <line x1={7} y1={3} x2={7} y2={11} stroke="var(--muted)" strokeWidth={1} />
+      </>
+    ),
+    label: t('legendGroup', lang),
+  })
   items.push({
     key: 'measure',
     glyph: (

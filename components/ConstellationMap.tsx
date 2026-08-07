@@ -19,7 +19,7 @@ import {
 import { buildScales, PADDING, VIEW_H, VIEW_W } from '@/lib/frame'
 import type { AxisPole } from '@/lib/axes'
 import { shapePath, speakerColor, speakerShape } from '@/lib/colors'
-import { kindLabel, type Lang } from '@/lib/i18n'
+import { kindLabel, t, type Lang } from '@/lib/i18n'
 import { speakerLabel, type SpeakerNames } from '@/lib/speakers'
 
 interface Props {
@@ -35,6 +35,8 @@ interface Props {
   emphasised: SpeakerPair | null
   onSelect: (utterance: ProjectedUtterance | null) => void
   onSelectSpeaker: (speaker: string) => void
+  /** Opens the sentence behind the landing point. Absent when there is none. */
+  onSelectConsensus?: () => void
   lang: Lang
   /** English renderings of the speaker names, for the language toggle. */
   speakerNames: SpeakerNames | null
@@ -82,6 +84,7 @@ export function ConstellationMap({
   emphasised,
   onSelect,
   onSelectSpeaker,
+  onSelectConsensus,
   lang,
   speakerNames,
   settleKey,
@@ -314,6 +317,32 @@ export function ConstellationMap({
               )
             })}
 
+            {/* The middle of the room, and what it landed on.
+                Both in ink, both hollow: colour on this map is a participant,
+                and neither of these is one. The consensus is a sentence nobody
+                said — placed here because it was embedded like a statement, not
+                because it looked right — so it is drawn as a mark that could
+                not be mistaken for somebody's position. */}
+            {projection.groupCentre && (
+              <Landmark
+                x={toX(projection.groupCentre[0])}
+                y={toY(projection.groupCentre[1])}
+                inv={inv}
+                label={t('legendGroup', lang)}
+                kind="group"
+              />
+            )}
+            {projection.consensus && (
+              <Landmark
+                x={toX(projection.consensus[0])}
+                y={toY(projection.consensus[1])}
+                inv={inv}
+                label={t('legendConsensus', lang)}
+                kind="consensus"
+                onClick={onSelectConsensus}
+              />
+            )}
+
             {/* Measure lines: the gap between two people, stated. Drawn above
                 the utterances so the line reads as an instrument laid over the
                 data rather than as another data mark. */}
@@ -538,6 +567,74 @@ function RegionLayer({
       }}
     >
       {children}
+    </g>
+  )
+}
+
+/**
+ * A point on the map that is not a person.
+ *
+ * Drawn in ink and hollow, at a size below every speaker marker. Both of these
+ * are true of the room rather than of anybody in it, and the one rule this
+ * interface will not bend is that saturated colour means a participant — a
+ * filled coloured mark for "the consensus" would read as a ninth person who
+ * agreed with everybody.
+ */
+function Landmark({
+  x,
+  y,
+  inv,
+  label,
+  kind,
+  onClick,
+}: {
+  x: number
+  y: number
+  inv: number
+  label: string
+  kind: 'group' | 'consensus'
+  onClick?: () => void
+}) {
+  const consensus = kind === 'consensus'
+  return (
+    <g
+      transform={`translate(${x} ${y}) scale(${inv})`}
+      className={`motion-safe:[transition:transform_560ms_cubic-bezier(0.32,0.72,0,1)] ${
+        onClick ? 'cursor-pointer' : ''
+      }`}
+      onClick={
+        onClick
+          ? (e) => {
+              e.stopPropagation()
+              onClick()
+            }
+          : undefined
+      }
+    >
+      {consensus ? (
+        <>
+          <circle r={9} fill="var(--plate)" stroke="var(--ink)" strokeWidth={1.4} />
+          <circle r={3} fill="var(--ink)" />
+        </>
+      ) : (
+        <>
+          <line x1={-6} y1={0} x2={6} y2={0} stroke="var(--muted)" strokeWidth={1.1} />
+          <line x1={0} y1={-6} x2={0} y2={6} stroke="var(--muted)" strokeWidth={1.1} />
+        </>
+      )}
+      <text
+        x={0}
+        y={consensus ? -15 : -11}
+        textAnchor="middle"
+        className="pointer-events-none text-[12px]"
+        fill={consensus ? 'var(--ink)' : 'var(--muted)'}
+        stroke="var(--plate)"
+        strokeWidth={3.5}
+        strokeLinejoin="round"
+        style={{ paintOrder: 'stroke' }}
+      >
+        {label}
+      </text>
     </g>
   )
 }

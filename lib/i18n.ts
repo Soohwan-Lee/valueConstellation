@@ -184,6 +184,71 @@ export const STRINGS = {
     ko: '이 회의록에는 시각이 적혀 있어 {at}을 기준으로 앞뒤를 나눠 비교했습니다. 앞뒤로 자리를 옮긴 사람은 없었습니다 — 각자 회의 내내 같은 자리에서 말했습니다.',
     en: 'This transcript carries times, so it was cut at {at} and the halves compared. Nobody moved between them: each of them argued from the same place all meeting.',
   },
+  // The flow view: the meeting as it happened, rather than as a shape.
+  viewMap: { ko: '지도', en: 'Map' },
+  viewFlow: { ko: '흐름', en: 'Flow' },
+  flowTitle: { ko: '주고받은 순서', en: 'How it went' },
+  flowFloorConsensus: { ko: '회의가 도달한 지점', en: 'Where the room landed' },
+  flowFloorGroup: { ko: '이 회의의 가운데', en: 'The middle of this room' },
+  flowAxisFar: {
+    ko: '↑ 이 회의에서 가장 멀리 있던 발언',
+    en: '↑ The furthest anybody got from it',
+  },
+  flowHint: {
+    ko: '점 하나가 발언 하나입니다. 왼쪽이 회의 시작, 오른쪽이 끝이고, 아래로 내려올수록 아래 선에 가까운 발언입니다. 선으로 이어진 화살표 {n}개는 누가 누구 말에 답했는지입니다 — 화살표나 점 위에 올려보세요.',
+    en: 'One mark is one statement. Time runs left to right; the lower a mark sits, the closer it was to the line below. The {n} curves are one person answering another — hover a curve or a mark.',
+  },
+  flowUnavailable: {
+    ko: '이 회의는 발언 사이 거리를 잴 기준이 없어 흐름을 그릴 수 없습니다.',
+    en: 'There is nothing to measure these statements against, so this meeting has no flow to draw.',
+  },
+  // The verdict, before the picture that shows it.
+  flowTowardHead: {
+    ko: '회의가 진행될수록 발언이 이 지점에 가까워졌습니다',
+    en: 'Statements moved toward it as the meeting went on',
+  },
+  flowAwayHead: {
+    ko: '회의가 진행될수록 발언이 이 지점에서 멀어졌습니다',
+    en: 'Statements moved away from it as the meeting went on',
+  },
+  flowNoneHead: {
+    ko: '가까워지지도 멀어지지도 않았습니다',
+    en: 'No movement either way',
+  },
+  flowToward: {
+    ko: '{n}개 발언을 순서대로 놓고 잰 결과입니다. 같은 발언을 순서만 무작위로 섞어 99번 다시 재봤을 때보다 뚜렷한 방향입니다.',
+    en: 'Measured over {n} statements in the order they were said, and a clearer direction than 95 of 99 shufflings of the same statements produce.',
+  },
+  flowAway: {
+    ko: '{n}개 발언을 순서대로 놓고 잰 결과입니다. 안건이 여러 개인 회의라면 사람이 멀어진 것이 아니라 주제가 옮겨간 것일 수 있습니다.',
+    en: 'Measured over {n} statements in the order they were said. Where a meeting worked through several agenda items, this is the subject moving on rather than the people moving apart.',
+  },
+  flowNone: {
+    ko: '{n}개 발언을 순서대로 놓고 재봤지만, 순서를 무작위로 섞은 것과 구분되지 않았습니다.',
+    en: 'Measured over {n} statements in the order they were said, and not distinguishable from the same statements in a random order.',
+  },
+  consensusHeading: { ko: '회의가 도달한 지점', en: 'Where the room landed' },
+  consensusNone: {
+    ko: '이 회의는 합의한 지점이 없습니다. 아래 거리는 대신 참여자들의 평균 자리에서 잰 것입니다.',
+    en: 'This meeting agreed on nothing, so the distances below are measured from the average of the participants instead.',
+  },
+  consensusOrigin: {
+    ko: '발언들을 읽어 쓴 문장이며, 그 문장을 발언과 같은 방식으로 임베딩해 지도에 올린 것입니다. 아무도 이렇게 말하지는 않았습니다. “근거” 표시가 붙은 발언이 이 문장의 근거입니다.',
+    en: 'Written from the statements, then embedded the same way they were and placed on the map from that. Nobody said this sentence. The statements marked “Basis” are what it rests on.',
+  },
+  openHeading: { ko: '아직 남은 것', en: 'Still open' },
+  legendConsensus: { ko: '회의가 도달한 지점', en: 'Where the room landed' },
+  legendGroup: { ko: '참여자 평균', en: 'Everyone’s average' },
+  // What one statement did to an earlier one. Verbs, because a noun would make
+  // these categories rather than moves somebody made.
+  exchangeChallenges: { ko: '반박했다', en: 'disputed it' },
+  exchangeBuilds: { ko: '이어받았다', en: 'built on it' },
+  exchangeConcedes: { ko: '물러섰다', en: 'gave ground' },
+  exchangeAnswers: { ko: '답했다', en: 'answered it' },
+  exchangeReframes: { ko: '다르게 봤다', en: 'reframed it' },
+  repliesHeading: { ko: '주고받음', en: 'Exchanges' },
+  replyTo: { ko: '이 발언에 답함', en: 'answering' },
+  replyFrom: { ko: '이 발언에 답한 사람', en: 'answered by' },
   timedNote: {
     ko: '시각은 없어도 됩니다. 있으면 회의 전반과 후반을 나눠 누가 자리를 옮겼는지까지 볼 수 있습니다.',
     en: 'Times are optional. With them, the map can also split the meeting in half and show who moved between the two.',
@@ -375,6 +440,21 @@ export function kindLabel(
 }
 
 /** Interface phrase for a distance band. See `distanceBand` in `lib/pairs.ts`. */
+/** What one statement did to an earlier one, as a verb. */
+export function exchangeLabel(
+  kind: 'challenges' | 'builds' | 'concedes' | 'answers' | 'reframes',
+  lang: Lang,
+): string {
+  const keys = {
+    challenges: 'exchangeChallenges',
+    builds: 'exchangeBuilds',
+    concedes: 'exchangeConcedes',
+    answers: 'exchangeAnswers',
+    reframes: 'exchangeReframes',
+  } as const
+  return t(keys[kind], lang)
+}
+
 export function bandLabel(
   band: 'similar' | 'someDifference' | 'clearDifference' | 'furthest',
   lang: Lang,

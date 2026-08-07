@@ -316,8 +316,11 @@ export async function analyzeTranscript(
   // another. Both run before the projection because the consensus, if there was
   // one, is embedded and laid out with everything else — a point placed
   // afterwards would be a drawing rather than a measurement.
+  // The consensus reading sees the whole meeting, including the facilitation
+  // and process turns that carry no position — that is where a room's landing
+  // point is usually said out loud. It may still only cite what is on the map.
   const [consensusRead, exchanges] = await Promise.all([
-    readConsensus(onMap),
+    readConsensus(utterances, onMap),
     readExchanges(onMap),
   ])
 
@@ -521,17 +524,20 @@ export async function analyzeTranscript(
  * `verifyConsensus`.
  */
 async function readConsensus(
-  utterances: Utterance[],
+  all: Utterance[],
+  onMap: Utterance[],
 ): Promise<(ConsensusRead & { anchors: string[] }) | null> {
-  if (utterances.length < 2) return null
+  if (onMap.length < 2) return null
   try {
     const { object } = await generateObject({
       model: openai(MODEL),
       schema: ConsensusSchema,
       system: CONSENSUS_SYSTEM_PROMPT,
-      prompt: formatForConsensus(utterances),
+      prompt: formatForConsensus(all, new Set(onMap.map((u) => u.id))),
     })
-    const { reached, anchors } = verifyConsensus(object, utterances)
+    // Verified against the mapped statements only, so a landing point can never
+    // rest on a line the reader cannot find in the interface.
+    const { reached, anchors } = verifyConsensus(object, onMap)
     return { ...object, reached, anchors }
   } catch (error) {
     console.error('consensus reading failed', error)

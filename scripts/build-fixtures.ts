@@ -161,6 +161,31 @@ function report(id: string, result: AnalysisWithDiagnostics) {
     )
   }
 
+  // The landing point and the exchanges are the two readings a rewritten
+  // transcript can quietly empty out: a meeting that stops stating conclusions
+  // loses its consensus, and one where people stop answering each other loses
+  // its edges. Both look like a working analysis from the outside.
+  const consensus = result.consensus
+  if (!consensus) {
+    console.log('        consensus: none computed')
+  } else if (!consensus.reached) {
+    console.log(`        consensus: not reached — open: ${consensus.open.ko}`)
+  } else {
+    console.log(`        consensus: ${consensus.statement.ko}`)
+    console.log(`          [${consensus.anchors.join(' ')}]  open: ${consensus.open.ko}`)
+  }
+  const exchanges = result.exchanges
+  const said = result.projections.pca.utterances
+  console.log(`        exchanges: ${exchanges.length}`)
+  for (const e of exchanges) {
+    const from = said.find((u) => u.id === e.from)
+    const to = said.find((u) => u.id === e.to)
+    console.log(
+      `          ${from?.speaker ?? e.from} → ${to?.speaker ?? e.to}` +
+        ` ${e.kind.padEnd(10)} ${e.note.ko}`,
+    )
+  }
+
   const counts = result.counts
   console.log(
     `        claims ${counts.claim}  questions ${counts.question}` +
