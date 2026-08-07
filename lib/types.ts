@@ -25,6 +25,14 @@ export interface Utterance {
   kind: UtteranceKind
   /** Position in the transcript, used for ordering and trajectories. */
   index: number
+  /**
+   * Clock time of the turn this came from, as written in the transcript.
+   *
+   * Absent whenever the source line carried no timestamp, which is most
+   * transcripts. Nothing may require it: a paste without times is the normal
+   * case, and everything the map says has to hold for that reader too.
+   */
+  at?: string
 }
 
 /**

@@ -7,7 +7,7 @@ import {
   SEGMENTATION_SYSTEM_PROMPT,
   formatTurnsForPrompt,
   filterHallucinated,
-  type SegmentedUtterance,
+  type LocatedUtterance,
 } from './segment.ts'
 import { aggregateAndProject, isMappable } from './aggregate.ts'
 import {
@@ -138,10 +138,10 @@ export async function analyzeTranscript(
   // 110s and would have been killed by the 60s function limit. The batches are
   // independent — each needs only its own turns — so wall clock is the slowest
   // call rather than their sum.
-  let units: SegmentedUtterance[] = []
+  let units: LocatedUtterance[] = []
   let hallucinatedCount = 0
 
-  const batches: { index: number; turns: { speaker: string; text: string }[] }[] = []
+  const batches: { index: number; turns: typeof parsed.turns }[] = []
   for (let i = 0; i < parsed.turns.length; i += SEGMENT_BATCH_TURNS) {
     batches.push({
       index: batches.length,
@@ -227,6 +227,7 @@ export async function analyzeTranscript(
       : {}),
     kind: u.kind,
     index: i,
+    ...(u.at ? { at: u.at } : {}),
   }))
 
   // Fill in translations segmentation left out. See lib/translate.ts: whether a

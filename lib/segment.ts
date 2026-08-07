@@ -47,6 +47,20 @@ export const SegmentationSchema = z.object({
 
 export type SegmentedUtterance = z.infer<typeof SegmentedUtteranceSchema>
 
+/**
+ * A verified unit together with the clock time of the turn it was copied from.
+ *
+ * The time is taken from the source turn rather than asked of the model. The
+ * model never sees a timestamp: it is not needed to split an argument, and a
+ * time in the prompt is a time that can end up copied into the statement text
+ * or attached to the wrong unit. Verification already finds which turn a unit
+ * came from, so the exact answer is free.
+ */
+export interface LocatedUtterance extends SegmentedUtterance {
+  /** Timestamp as written in the transcript. Absent when the source had none. */
+  at?: string
+}
+
 export const SEGMENTATION_SYSTEM_PROMPT = `You split meeting-transcript turns into argument units.
 
 An argument unit is one claim together with the reasons and implications that belong to it. Rules:
@@ -91,21 +105,21 @@ export function formatTurnsForPrompt(
  */
 export function filterHallucinated(
   units: SegmentedUtterance[],
-  turns: { speaker: string; text: string }[],
-): { kept: SegmentedUtterance[]; dropped: SegmentedUtterance[] } {
+  turns: { speaker: string; text: string; time?: string }[],
+): { kept: LocatedUtterance[]; dropped: SegmentedUtterance[] } {
   const normalize = (s: string) => s.replace(/\s+/g, '').toLowerCase()
 
   // Each turn is kept as a separate haystack. Concatenating a speaker's turns
   // would erase the boundaries between them, letting a unit that splices the
   // end of one turn onto the start of the next pass verification.
-  const turnsBySpeaker = new Map<string, string[]>()
+  const turnsBySpeaker = new Map<string, { text: string; time?: string }[]>()
   for (const t of turns) {
     const list = turnsBySpeaker.get(t.speaker) ?? []
-    list.push(normalize(t.text))
+    list.push({ text: normalize(t.text), time: t.time })
     turnsBySpeaker.set(t.speaker, list)
   }
 
-  const kept: SegmentedUtterance[] = []
+  const kept: LocatedUtterance[] = []
   const dropped: SegmentedUtterance[] = []
 
   for (const u of units) {
@@ -120,8 +134,13 @@ export function filterHallucinated(
     // the whole transcript would let one speaker's words be credited to
     // another, which is exactly the corruption this check exists to stop.
     const own = turnsBySpeaker.get(u.speaker) ?? []
-    if (own.some((turn) => turn.includes(needle))) {
-      kept.push(u)
+    // The first turn that contains the unit. A unit that occurs twice is one
+    // sentence somebody repeated, and the earlier saying is the one it came
+    // from — guessing the later one would move a statement forward in a
+    // timeline it did not belong to.
+    const source = own.find((turn) => turn.text.includes(needle))
+    if (source) {
+      kept.push({ ...u, ...(source.time ? { at: source.time } : {}) })
     } else {
       dropped.push(u)
     }
